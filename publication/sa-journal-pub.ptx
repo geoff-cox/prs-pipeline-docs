@@ -35,7 +35,7 @@
 	</common>
 
 	<numbering>
-		<divisions chapter-start="0" level="2" />
+		<divisions chapter-start="1" level="2" />
 		<!-- 
 			Set how deep the levels break up the numbering of the 
 			respective divisions. Can't be more than the @level on 

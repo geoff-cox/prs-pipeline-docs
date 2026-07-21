@@ -86,12 +86,6 @@
         </row>
       </tabular>
     </table>
-
-    <p xml:id="p-roadmap-source">
-      <term>Source</term>. The source for this report, together with the code
-      for the pipeline it describes, is maintained as a public repository at
-      <url href="https://github.com/geoff-cox/proteus-rs-pipeline"/>.
-    </p>
   </introduction>
 
   <section xml:id="sec-roadmap-stage-1">

@@ -9,7 +9,7 @@
     <subtitle>A Research Journal and Reference Guide</subtitle>
 
     <xi:include href="./bookends/frontmatter.ptx" />
-
+    <xi:include href="./ch-student-guide.ptx" />
     <xi:include href="./ch-automation-roadmap-report.ptx" />
     <xi:include href="./ch-using-the-tool.ptx" />
     <xi:include href="./ch-framing-models.ptx" />
