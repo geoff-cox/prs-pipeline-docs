@@ -1,0 +1,2 @@
+response_id,episode_n,own_words_rule,my_category,criterion_verbatim,judgment_verbatim,link_stated (explicit|implicit|absent),complete (1|0),c1,c2,relation (chained(k)|independent|blank),oov_note,confidence (3|2|1),notes
+EXAMPLE-000,1,"The student decides the solution is not unique because a variable is left over without a pivot.","leftover-variable rule","there is a free variable","not possible to have a unique solution",explicit,1,1,1,,,3,"EXAMPLE ROW - delete before use"

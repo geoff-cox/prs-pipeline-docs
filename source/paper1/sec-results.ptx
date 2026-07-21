@@ -1,0 +1,239 @@
+    <!-- ================================================================ -->
+    <!-- 6. RESULTS ≈ 1400-1800 words.                                    -->
+    <!-- ================================================================ -->
+
+    <section xml:id="sec-results">
+      <title>Results</title>
+
+      <introduction>
+        <warning>
+        <p>
+          [STUB: Begin with one compact paragraph giving the final sample,
+          anchor coverage, exact agreement, and readiness.  Do not repeat every
+          number from the tables.]
+        </p>
+        </warning>
+
+
+        <!--
+        RESULTS-WRITING ORDER
+        1. Freeze tables and figures before drafting prose.
+        2. Write one subsection per research question.
+        3. Lead each subsection with the answer, then provide supporting estimates.
+        4. Report unexpected or adverse results with the same specificity as favorable results.
+        5. Keep interpretation for the Discussion unless needed to explain a diagnostic.
+        -->
+      </introduction>
+
+      <subsection xml:id="subsec-results-validation">
+        <title>Reconstruction Coverage and Validity</title>
+
+        <warning>
+        <p>
+          [STUB: Report source-alignment coverage, eligible anchors, exact matches,
+          mismatch distances, and reasons for noncomparability.  State whether
+          failures were concentrated by item, source version, offering, or export.]
+        </p>
+        </warning>
+
+
+        <table xml:id="tab-validation-results">
+          <title>Anchor validation and readiness results.</title>
+          <tabular halign="center">
+            <col width="20%" />
+            <col width="15%" />
+            <col width="15%" />
+            <col width="15%" />
+            <col width="15%" />
+            <col width="20%" />
+            <row header="yes">
+              <cell><p>Stratum</p></cell>
+              <cell><p>Attempts</p></cell>
+              <cell><p>Eligible checks</p></cell>
+              <cell><p>Exact agreement</p></cell>
+              <cell><p>Ready</p></cell>
+              <cell><p>Primary warning</p></cell>
+            </row>
+            <row>
+              <cell><p>Overall</p></cell>
+              <cell><p>[n]</p></cell>
+              <cell><p>[n]</p></cell>
+              <cell><p>[estimate][interval]</p></cell>
+              <cell><p>[estimate][interval]</p></cell>
+              <cell><p>[flag]</p></cell>
+            </row>
+            <row>
+              <cell><p>[Item or offering rows]</p></cell>
+              <cell><p>[n]</p></cell>
+              <cell><p>[n]</p></cell>
+              <cell><p>[estimate]</p></cell>
+              <cell><p>[estimate]</p></cell>
+              <cell><p>[flag]</p></cell>
+            </row>
+          </tabular>
+        </table>
+
+        <warning>
+        <figure xml:id="fig-validation-results">
+          <caption>
+            Anchor agreement and feature readiness overall and by item.
+          </caption>
+          <sidebyside>
+            <p>
+              <em>Figure stub:</em> Use aligned panels for exact anchor agreement
+              with uncertainty intervals and ready, limited, and excluded attempt
+              proportions.  Include denominators and avoid ranking items when
+              sample sizes are too small.
+            </p>
+          </sidebyside>
+        </figure>
+        </warning>
+
+        <!--
+        VALIDATION-RESULTS CHECKLIST
+        1. Populate the table from a single versioned result file.
+        2. Report eligible anchors and all checks separately.
+        3. Give exact agreement with an interval overall and by item.
+        4. Report mismatch causes and median mismatch distance.
+        5. Report manual-audit findings and synthetic-fault detection.
+        6. Explain any discrepancy between automated and manual classifications.
+        7. State whether the primary reconstruction claim is supported, qualified, or unsupported.
+        -->
+      </subsection>
+
+      <subsection xml:id="subsec-results-process">
+        <title>Response-Process Variation Beyond Endpoint Correctness</title>
+
+        <warning>
+        <p>
+          [STUB: Report the frozen primary RQ3 contrast.  Give group sizes,
+          effect estimates or distributional differences, clustered uncertainty,
+          and the features on which the groups do and do not differ.]
+        </p>
+
+        <p>
+          [STUB: Describe representative trajectories selected by the prespecified
+          rule.  Connect them to aggregate findings rather than presenting
+          exceptional anecdotes.]
+        </p>
+        </warning>
+
+        <table xml:id="tab-process-results">
+          <title>Primary response-process comparison among endpoint-equivalent attempts.</title>
+          <tabular halign="center">
+            <col width="17%" halign="right"/>
+            <col width="20%" />
+            <col width="20%" />
+            <col width="17%" />
+            <col width="21%" />
+            <row header="yes">
+              <cell><p>Feature</p></cell>
+              <cell><p>[Group A]</p></cell>
+              <cell><p>[Group B]</p></cell>
+              <cell><p>Difference or ratio</p></cell>
+              <cell><p>Uncertainty interval</p></cell>
+            </row>
+            <row><cell><p>Effective moves</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell></row>
+            <row><cell><p>Excess moves</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell></row>
+            <row><cell><p>Checks</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell></row>
+            <row><cell><p>Takebacks</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell></row>
+            <row><cell><p>Active time</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell><cell><p>[ ]</p></cell></row>
+          </tabular>
+        </table>
+
+        <warning>
+        <figure xml:id="fig-process-results">
+          <caption>
+            Process-feature distributions for attempts with the same endpoint outcome.
+          </caption>
+          <sidebyside>
+            <p>
+              <em>Figure stub:</em> Display the primary groups with distribution
+              plots or model-based intervals for no more than four high-value
+              features.  Add two or three algorithmically selected trajectory
+              examples only if they clarify the aggregate result.
+            </p>
+          </sidebyside>
+        </figure>
+        </warning>
+
+        <!--
+        PROCESS-RESULTS CHECKLIST
+        1. Confirm the group definition matches the preregistered or frozen analysis plan.
+        2. Report sample size by student, item, and attempt.
+        3. Inspect distributions and influential observations before choosing summaries.
+        4. Report estimates with student-clustered uncertainty.
+        5. Repeat the analysis by item or include item effects to check concentration.
+        6. State null or weak differences explicitly.
+        7. Avoid cognitive labels not supported by additional evidence.
+        -->
+      </subsection>
+
+      <subsection xml:id="subsec-results-sensitivity">
+        <title>Sensitivity to Processing Decisions</title>
+
+        <warning>
+        <p>
+          [STUB: Identify which reconstruction and substantive findings remain
+          stable across defensible alternatives.  Quantify changes rather than
+          declaring the analysis robust without a criterion.]
+        </p>
+        </warning>
+
+        <table xml:id="tab-sensitivity-results">
+          <title>Effect of alternative processing configurations.</title>
+          <tabular halign="center">
+            <col width="18%" />
+            <col width="15%" />
+            <col width="16%" />
+            <col width="17%" />
+            <col width="30%" />
+            <row header="yes">
+              <cell><p>Alternative</p></cell>
+              <cell><p><m>\Delta</m> attempts</p></cell>
+              <cell><p><m>\Delta</m> ready percentage</p></cell>
+              <cell><p><m>\Delta</m> anchor agreement</p></cell>
+              <cell><p><m>\Delta</m> primary RQ3 estimate</p></cell>
+            </row>
+            <row>
+              <cell><p>[Configuration]</p></cell>
+              <cell><p>[ ]</p></cell>
+              <cell><p>[ ]</p></cell>
+              <cell><p>[ ]</p></cell>
+              <cell><p>[ ]</p></cell>
+            </row>
+          </tabular>
+        </table>
+
+        <!--
+        SENSITIVITY-RESULTS CHECKLIST
+        1. Choose one primary reference configuration and label it clearly.
+        2. Populate every row from a saved comparison table.
+        3. Define a practical threshold for material change before interpretation.
+        4. Separate alternatives that change reconstruction from those that only change features.
+        5. Discuss the largest observed change even if the main conclusion survives.
+        6. Move complete configuration-specific tables to the supplement.
+        -->
+      </subsection>
+
+      <subsection xml:id="subsec-results-rq-summary">
+        <title>Summary of Findings</title>
+
+        <warning>
+        <p>
+          [STUB: End the Results with four short sentences, one answer per research
+          question.  Include no new statistics.]
+        </p>
+        </warning>
+
+
+        <!--
+        RQ-SUMMARY CHECKLIST
+        1. Write one declarative sentence answering RQ1.
+        2. Write one declarative sentence answering RQ2 with the central estimate.
+        3. Write one declarative sentence answering RQ3 with the primary process finding.
+        4. Write one declarative sentence answering RQ4 with the principal sensitivity qualification.
+        5. Verify that the Discussion opens from these four answers.
+        -->
+      </subsection>
+    </section>

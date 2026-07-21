@@ -1,0 +1,580 @@
+<chapter xml:id="ch-dnd-anatomy" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Anatomy of a Drag-and-Drop Item</title>
+
+  <introduction>
+    <p>
+      A conventional autograded question records almost nothing about the act
+      of answering it. A multiple-choice item stores the option chosen; a
+      numeric-entry item stores the number typed. Each try is, in effect, a
+      single correctness verdict, perhaps tagged with which wrong option was
+      selected. The <em>process</em> by which the student arrived at that
+      verdict is invisible.
+    </p>
+
+    <p>
+      In contrast, a drag-and-drop item, fully logged, tracks every individual 
+      placement of a card, every <xref ref="gt-reset" text="custom">reset</xref>, 
+      and every answer <xref ref="gt-check" text="custom">check</xref> together
+      with feedback and timestamps. We therefore have two layers of information
+      rather than one.
+    </p>
+
+    <p>
+      The <term>outcome</term> layer answers questions about the final answer:
+      was it correct, on which check, with how much partial credit, and which
+      decoys caught the student. The <term>process</term> layer answers
+      questions about the path: did the student converge steadily toward the
+      key or thrash among configurations, which cards were placed first and
+      which were repeatedly second-guessed, where did long pauses occur, and
+      did the student reason the answer out or instead probe the grader by
+      checking after each small change.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-sample-question">
+    <title>Sample Question</title>
+
+    <introduction>
+      <p>
+        Before analyzing drag-and-drop questions, it is helpful to see how one is
+        constructed. The example introduced in this section is a small
+        <xref ref="gt-cardsort" text="custom">cardsort</xref> that asks a student to
+        match four shapes to their general category. It will serve as a running example 
+        to illustrate the concepts throughout this document. 
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-cardsort-elements">
+      <title>Cardsort Elements</title>
+      <p>
+        <xref ref="question-source"/> shows the <pretext/> source used to create our 
+        sample question. Placing a <tag>cardsort</tag> element inside an <tag>exercise</tag>
+        tells <pretext/> that this exercise should be a drag-and-drop question. The 
+        <tag>premise</tag> elements define the text on the objects that the student will drag, 
+        and the <tag>response</tag> elements define the text on objects that the student will 
+        drop them onto. 
+      </p>
+
+      <p>
+        Each <tag>premise</tag> <q>belongs</q> to the <tag>response</tag> in the same 
+        <tag>match</tag> block. There can be any number of <tag>premise</tag> elements in a
+        <tag>match</tag> block, but there can be at most one <tag>response</tag> element.
+      </p>
+      
+      <listing xml:id="question-source">
+        <title>The source code for the sample question.</title>
+        <program line-numbers="yes">
+          <![CDATA[ 
+          <exercise>
+            <statement>
+              <p>
+                Match each shape to its general category.
+              </p>
+            </statement>
+            <cardsort>
+              <match>
+                <premise>equilateral triangle</premise>
+                <premise>right triangle</premise>
+                <response>Triangle</response>
+              </match>
+              <match>
+                <premise>square</premise>
+                <response>Quadrilateral</response>
+              </match>
+              <match>
+                <response>Pentagon</response>
+              </match>
+              <match>
+                <premise>circle</premise>
+              </match>
+            </cardsort>
+          </exercise>
+          ]]>
+        </program>
+      </listing>
+    </subsection>
+
+    <subsection xml:id="subsec-cardsort-key">
+      <title>Cardsort Key</title>
+      <p>
+        The correct answer to a drag-and-drop question is called the 
+        <xref ref="gt-key" text="title"/> and it is defined by matching each <tag>premise</tag> 
+        to the <tag>response</tag> it belongs to (i.e., in the same <tag>match</tag> block).
+        If a <tag>premise</tag> has no corresponding <tag>response</tag>, it is a card that 
+        should remain unplaced. If a <tag>response</tag> has no corresponding <tag>premise</tag>, 
+        it is a slot that should remain empty. The only rule is that every premise must either be 
+        placed inside a response or left unplaced.
+      </p>
+
+      <p>
+        From <xref ref="question-source"/>, we know:
+        <ul>
+          <li>
+            <c>equilateral triangle</c> and <c>right triangle</c> belong to <c>Triangle</c>,
+          </li>
+          <li>
+            <c>square</c> belongs to <c>Quadrilateral</c>,
+          </li>
+          <li>
+            <c>Pentagon</c> is meant to be empty, and
+          </li>
+          <li>
+            <c>circle</c> is meant to be unplaced.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        For ease of discussion, we will refer to the draggable objects (<tag>premise</tag>) as 
+        <term>cards</term> and the drop areas (<tag>response</tag>) as <term>slots</term>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-rendered-board">
+      <title>Rendered Board</title>
+      <p>
+        When the question's source in <xref ref="question-source"/> is built, it renders the 
+        following Drag-and-Drop <term>board</term> that the student interacts with. The cards 
+        are on the left, and the slots are on the right. The area that holds the cards before 
+        they are placed is the <term>dragzone</term> or <term>tray</term>.
+      </p>
+
+      <p>
+        A card sitting in the dragzone is
+        <em><xref ref="gt-placed" text="custom">unplaced</xref></em>, and one sitting in a slot
+        is <em><xref ref="gt-placed" text="custom">placed</xref></em>. A <term>zone</term> is
+        any place a card can rest, so this board has four zones: the tray and the three slots.
+        A complete snapshot of the board, recording which zone every card currently occupies, is
+        a <term>configuration</term>, and the <term>key configuration</term> is the correct
+        arrangement.
+      </p>
+
+      <!-- The solution figure lives inside the sample exercise, which is
+           component="html" only; the PDF build drops it, so an unconditional
+           xref would dangle there (audit D6). Each version references the
+           figure that actually exists in its output. -->
+      <p component="html">
+        The key configuration is shown in the sample question's
+        <xref ref="fig-motivation-solution" text="custom">expected
+        solution</xref> below.
+      </p>
+
+      <p component="pdf">
+        The rendered board and its key configuration are shown side by side
+        in <xref ref="fig-motivation-exercise-pdf" text="custom">the
+        rendered-board figure</xref>.
+      </p>
+
+      <exercise xml:id="sample-dnd" component="html">
+        <statement>
+          <p>
+            Match each shape to its general category.
+          </p>
+        </statement>
+        <cardsort>
+          <match>
+            <premise>equilateral triangle</premise>
+            <premise>right triangle</premise>
+            <response>Triangle</response>
+          </match>
+          <match>
+            <premise>square</premise>
+            <response>Quadrilateral</response>
+          </match>
+          <match>
+            <response>Pentagon</response>
+          </match>
+          <match>
+            <premise>circle</premise>
+          </match>
+        </cardsort>
+        <solution>
+          <title>Expected Solution</title>
+          <figure xml:id="fig-motivation-solution">
+            <caption>The solution to the four-card question.</caption>
+            <image source="figures/rendered-cardsort-soln.png" width="90%"/>
+          </figure>
+        </solution>
+      </exercise>
+
+      <figure xml:id="fig-motivation-exercise-pdf" component="pdf">
+        <caption>
+          Rendered Initial and Solution Board for a Drag-and-Drop (<tag>cardsort</tag>) question.
+        </caption>
+        <sidebyside widths="48% 48%">
+          <image source="figures/rendered-cardsort.png" width="100%"/>
+          <image source="figures/rendered-cardsort-soln.png" width="100%"/>
+        </sidebyside>
+      </figure>
+      
+    </subsection>
+
+    <subsection xml:id="subsec-basic-actions">
+      <title>Basic Actions</title>
+      <p>
+        The student interacts with the board through three basic <term>actions</term>, and each one 
+        is logged:
+        <ul>
+          <li>
+            <p>
+              A <term>move</term>: dragging a single card from one zone to
+              another. A <xref ref="gt-move" text="custom">move</xref> whose destination is the 
+              dragzone, putting a card back, is a <term>takeback</term>.
+            </p>
+          </li>
+          <li>
+            <p>
+              A <term>check</term>: pressing the <q>check</q> button. It moves
+              nothing; it records the current <xref ref="gt-configuration" text="title"/> and 
+              returns <xref ref="gt-feedback" text="custom">feedback</xref>, graded against the 
+              <xref ref="gt-key" text="custom">key</xref>.
+            </p>
+          </li>
+          <li>
+            <p>
+              A <term>reset</term>: pressing the <q>reset</q> button, which in one step returns 
+              every <xref ref="gt-card" text="custom">card</xref> to the 
+              <xref ref="gt-dragzone" text="custom">dragzone</xref>, restoring the 
+              <xref ref="gt-initial-state" text="custom">initial state</xref>.
+            </p>
+          </li>
+        </ul>
+        A fourth less common action, the <xref ref="gt-page-view" text="custom">page view</xref>,
+        is logged when the student first sees the question and when they return to it after 
+        leaving the page.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-raw-data">
+    <title>Raw Data</title>
+
+    <introduction>
+      <p>
+        Runestone logs every <xref ref="gt-action" text="custom">action</xref> a student takes on a 
+        <xref ref="gt-cardsort" text="custom">cardsort</xref>, and the logs reach us as a tab-separated 
+        (<c>.tab</c>) export through DataShop: the <term>raw data</term>. The export is a table with one 
+        row per logged action, in time order, across all students, problems, and sessions in the course. 
+        Sixteen columns appear in the current export; <xref ref="tab-datashop-columns"/> groups the ones 
+        that matter for this study.
+      </p>
+
+      <table xml:id="tab-datashop-columns">
+        <title>The columns of the raw data export, grouped by role.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="33%" halign="left"/>
+          <col width="67%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Column</p></cell>
+            <cell><p>What it holds</p></cell>
+          </row>
+          <row>
+            <cell><p><c>Time</c></p></cell>
+            <cell><p>Timestamp of the action, to the microsecond. Every timing
+            quantity in this study, whether pauses,
+            <xref ref="gt-move-gap" text="custom">gaps between moves</xref>, or
+            <xref ref="gt-check-gap" text="custom">gaps between checks</xref>,
+            is a difference of these.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>Anon Student Id</c></p></cell>
+            <cell><p>The anonymized student, the unit every attempt belongs to.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>Session Id</c></p></cell>
+            <cell><p>One continuous sitting; separates work within one session from
+            work resumed later.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>Problem Name</c></p></cell>
+            <cell><p>The cardsort question the row belongs to, e.g. <c>bookID__questionID</c>.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>Problem View</c></p></cell>
+            <cell><p>A running counter of the student's logged interactions with
+            that problem; it gives the within-problem order even if rows are
+            shuffled.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>Selection</c></p></cell>
+            <cell><p>The kind of row: <c>dragNdrop-drop</c> for a move,
+            <c>dragNdrop</c> for a check, <c>dragNdrop-reset</c> for a reset,
+            and <c>page</c> for a page view. The export is not
+            cardsort-only: other question types log their own values here
+            (<c>shortanswer</c>, <c>mChoice</c>, <c>parsons</c>, …), which
+            this study ignores.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>Action</c></p></cell>
+            <cell>
+              <p>
+                The output of the action. Its format depends on the trigger
+                that generated it. Long values are <em>truncated</em> in the export,
+                so a check row's configuration JSON can arrive cut off mid-object
+                here and should be read from <c>Input</c> instead.
+              </p>
+            </cell>
+          </row>
+          <row>
+            <cell><p><c>Input</c></p></cell>
+            <cell><p>On a check row, the complete configuration as JSON, never
+            truncated <mdash/> the authoritative parse target; empty
+            otherwise.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>Feedback Text</c>, <c>Feedback Classification</c></p></cell>
+            <cell>
+              <p>
+                The graded result of a check (<c>Correct</c> or <c>Incorrect</c>); empty on non-check 
+                action rows.
+              </p>
+            </cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>Class</c>, <c>Level (Chapter)</c>,
+            <c>Level (SubChapter)</c>, <c>CF (...)</c></p></cell>
+            <cell><p>Where the problem lives in the course, plus custom fields
+            (code, week number, institution); bookkeeping rather than
+            behavior.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </introduction>
+
+    <subsection xml:id="subsec-positional-labels">
+      <title>Positional Labels</title>
+      <p>
+        The <xref ref="gt-raw-data" text="title"/> never uses the authored names of the 
+        <xref ref="gt-card" text="custom">cards</xref> and 
+        <xref ref="gt-zone" text="custom">zones</xref>. Instead, it assigns generic labels of the form:
+        <ul>
+          <li><em>card</em>: <c>bookID__questionID_drag#</c></li>
+          <li><em>zone</em>: <c>bookID__questionID_drop#</c></li>
+        </ul>
+        and attaches a <term>positional</term> index on the <c>#</c> corresponding to order of the element in the 
+        question's source. The only exception is the <xref ref="gt-dragzone" text="custom">dragzone</xref>, which 
+        is not indexed and whose label is the literal <c>dragzone</c> (see <xref ref="tab-raw-data-labels"/>).
+        Decoding <xref ref="gt-positional-labels" text="custom">positional labels</xref> back to authored names is
+        therefore the first step of every analysis, and it requires the question source.
+      </p>
+
+      <table xml:id="tab-raw-data-labels">
+        <title>Card/Zone Data Labels (<c>*</c>=<c>bookID__questionID</c>)</title>
+        <tabular halign="center">
+          <col width="30%" />
+          <col width="18%" right="medium"/>
+          <col width="27%" />
+          <col width="18%" />
+          <row header="yes">
+            <cell colspan="2">Cards</cell>
+            <cell colspan="2">Zones</cell>
+          </row>
+          <row header="yes" bottom="medium">
+            <cell><p>text label</p></cell>
+            <cell><p>data label</p></cell>
+            <cell><p>text label</p></cell>
+            <cell><p>data label</p></cell>
+          </row>
+          <row>
+            <cell><p><c>equilateral triangle</c></p></cell>
+            <cell><p><c>*_drag1</c></p></cell>
+            <cell><p><c>Triangle</c></p></cell>
+            <cell><p><c>*_drop1</c></p></cell>
+          </row>
+          <row>
+            <cell><p><c>right triangle</c></p></cell>
+            <cell><p><c>*_drag2</c></p></cell>
+            <cell><p><c>Triangle</c></p></cell>
+            <cell><p><c>*_drop1</c></p></cell>
+          </row>
+          <row>
+            <cell><p><c>square</c></p></cell>
+            <cell><p><c>*_drag3</c></p></cell>
+            <cell><p><c>Quadrilateral</c></p></cell>
+            <cell><p><c>*_drop2</c></p></cell>
+          </row>
+          <row>
+            <cell><p><c>circle</c></p></cell>
+            <cell><p><c>*_drag4</c></p></cell>
+            <cell><p><mdash/></p></cell>
+            <cell><p><c>dragzone</c></p></cell>
+          </row>
+          <row>
+            <cell><p><mdash/></p></cell>
+            <cell><p><mdash/></p></cell>
+            <cell><p><c>Pentagon</c></p></cell>
+            <cell><p><c>*_drop3</c></p></cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+
+    <subsection xml:id="subsec-outcome-and-process-layers">
+      <title>Outcome and Process Layers</title>
+      <p>
+        <xref ref="tab-raw-data-trace"/> assembles these row types into a short illustrative <xref ref="gt-attempt" text="custom">attempt</xref> 
+        where the columns are abbreviated and the timestamps shown as elapsed time to fit the page. The student places three cards quickly, 
+        hesitates, places the circle in Pentagon, checks and is told <c>Incorrect</c>, takes the circle back, and checks again.
+      </p>
+
+      <table xml:id="tab-raw-data-trace">
+        <title>An illustrative attempt as it would appear in the raw data
+        (bookkeeping columns omitted; <c>*_</c> labels abbreviated).</title>
+        <tabular halign="center">
+          <col width="10%"/>
+          <col width="26%" halign="center"/>
+          <col width="26%" halign="center"/>
+          <col width="14%" halign="center"/>
+          <col width="14%" halign="center"/>
+          <row bottom="medium">
+            <cell><p><c>Time</c></p></cell>
+            <cell><p><c>Selection</c></p></cell>
+            <cell><p><c>Action</c></p></cell>
+            <cell><p><c>Feedback</c></p></cell>
+            <cell><p>Type</p></cell>
+          </row>
+          <row>
+            <cell><p>0:00</p></cell>
+            <cell><p><c>dragNdrop-drop</c></p></cell>
+            <cell><p><c>drag1 -&gt; drop1</c></p></cell>
+            <cell></cell>
+            <cell>move</cell>
+          </row>
+          <row>
+            <cell><p>0:06</p></cell>
+            <cell><p><c>dragNdrop-drop</c></p></cell>
+            <cell><p><c>drag2 -&gt; drop1</c></p></cell>
+            <cell></cell>
+            <cell>move</cell>
+          </row>
+          <row>
+            <cell><p>0:11</p></cell>
+            <cell><p><c>dragNdrop-drop</c></p></cell>
+            <cell><p><c>drag3 -&gt; drop2</c></p></cell>
+            <cell></cell>
+            <cell>move</cell>
+          </row>
+          <row>
+            <cell><p>0:31</p></cell>
+            <cell><p><c>dragNdrop-drop</c></p></cell>
+            <cell><p><c>drag4 -&gt; drop3</c></p></cell>
+            <cell></cell>
+            <cell>move</cell>
+          </row>
+          <row>
+            <cell><p>0:35</p></cell>
+            <cell><p><c>dragNdrop</c></p></cell>
+            <cell><p><c>{ JSON object }</c></p></cell>
+            <cell><c>Incorrect</c></cell>
+            <cell>check</cell>
+          </row>
+          <row>
+            <cell><p>0:51</p></cell>
+            <cell><p><c>dragNdrop-drop</c></p></cell>
+            <cell><p><c>drag4 -&gt; dragzone</c></p></cell>
+            <cell></cell>
+            <cell>move</cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>0:55</p></cell>
+            <cell><p><c>dragNdrop</c></p></cell>
+            <cell><p><c>{ JSON object }</c></p></cell>
+            <cell><p><c>Correct</c></p></cell>
+            <cell>check</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        The check actions provide the outcome layer: two checks, the first 
+        <c>Incorrect</c> and the second <c>Correct</c>, each carrying the 
+        full configuration that was graded. Every other row is the process 
+        layer: the order of placements (the two triangles and the square in 
+        eleven seconds, then a twenty-second hesitation before the circle 
+        was forced into Pentagon), and the takeback that responded directly 
+        to the feedback.
+      </p>
+
+      <p>
+        The <c>Selection</c> and <c>Action</c> columns identify the type of 
+        layer. For example, the second recorded entry of 
+        <xref ref="tab-raw-data-trace"/> shows a <term>move</term> with
+        <ul>
+          <li><c>Selection</c><m>\to</m><c>dragNdrop-drop</c>, and</li>
+          <li><c>Action</c><m>\to</m><c>bookID__questionID_drag2 -&gt; bookID__questionID_drop1</c>.</li>
+        </ul> 
+        In terms of the running example, this translates to 
+        <md>
+          \overset{\large\text{card 2}}{\boxed{\text{right triangle}}} \to\ \overset{\large\text{zone 1}}{\boxed{\text{Triangle}}}
+        </md>.
+      </p>
+
+      <p>
+        The second to last entry illustrates a move from card 4 to <c>dragzone</c>, the tray.
+      </p>
+
+      <p>
+        A <term>Reset</term> (not shown in <xref ref="tab-raw-data-trace"/>) is identified by
+        <ul>
+          <li><c>Selection</c><m>\to</m><c>dragNdrop-reset</c>, and</li>
+          <li><c>Action</c><m>\to</m><c>reset</c>.</li>
+        </ul> 
+      </p>
+
+      <p>
+        There are two <term>checks</term> in <xref ref="tab-raw-data-trace"/>, denoted by:
+        <ul>
+          <li><c>Selection</c><m>\to</m><c>dragNdrop</c>, and</li>
+          <li><c>Action</c> and <c>Input</c><m>\to</m><c>{ JSON object }</c>.</li>
+        </ul>
+        where the JSON object is a recording of the current board configuration.
+        The same JSON is logged in both columns, but the export truncates long
+        <c>Action</c> values and a wide JSON can be cut off mid-object. Therefore, 
+        <c>Input</c> is the authoritative copy every 
+        <xref ref="subsec-event-payloads" text="custom">event payload</xref>. For 
+        example, the last logged row has an <c>Input</c> value containing:
+      </p>
+
+      <program language="json">
+        <![CDATA[
+        {
+          "*_drop1": ["*_drag1","*_drag2"],
+          "*_drop2": ["*_drag3"],
+          "*_drop3": []
+        }
+        ]]>
+      </program>
+
+      <p>
+        This JSON tells us that
+        <ul>
+          <li><c>drop1</c> (zone 1) holds <c>drag1</c> (card 1) and <c>drag2</c> (card 2)</li>
+          <li><c>drop2</c> (zone 2) holds <c>drag3</c> (card 3)</li>
+          <li><c>drop3</c> (zone 3) is empty, and</li>
+          <li><c>dragzone</c> (tray zone 0) <em>implicitly</em> holds <c>drag4</c> (card 4)</li>
+        </ul>
+      </p>
+
+      <p>
+        Note that some rows are logged with <c>Selection</c> equal to <c>page</c>. These entries
+        mark the student opening the page containing the question. Although they are not part of
+        any attempt, they help delimit <xref ref="gt-session" text="custom">sessions</xref> and
+        <xref ref="gt-attempt" text="custom">attempts</xref>: under the default boundary rules,
+        an intervening page view starts a new attempt
+        (<xref ref="sec-session-and-attempt-boundaries" text="title"/>).
+      </p>
+    </subsection>
+  </section>
+
+  <conclusion>
+    <p>
+      This chapter introduced a question as authored, the
+      <xref ref="gt-board" text="custom">board</xref> as the student sees it, the 
+      raw data as the platform records it. The next chapter turns these concrete 
+      parts into a formal <term>item design</term>. It records the cards, slots, 
+      and tray as index sets, encodes the answer key together with its decoy cards 
+      and decoy slots, and treats the feedback policy as a design choice, holding 
+      this fixed authored structure apart from any single student's trajectory.
+    </p>
+  </conclusion>
+</chapter>

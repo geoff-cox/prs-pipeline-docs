@@ -1,0 +1,857 @@
+<chapter xml:id="ch-framing-models" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Framing and Models</title>
+
+  <introduction>
+    <warning>
+      <p>
+        WORK IN PROGRESS
+      </p>
+    </warning>
+
+    <p><xref provisional="WORK-IN-PROGRESS"/></p>
+  
+    <p>
+      This section lays out a plan for a potential research methods paper. 
+      The cK&#162; vocabulary (Balacheff &amp; Gaudin, 2009) and the two-
+      digit correctness coding (Gerami et&#160;al., 2024; Deng et&#160;al., 
+      2026) are the framework we adopt; the contribution is the
+      <em>operationalization</em> of that framework into an auditable,
+      reproducible, human-in-the-loop pipeline, together with an
+      empirical evaluation of whether the pipeline helps. Reproducible
+      LLM-assisted qualitative coding is the part the field has not
+      solved, and that is where the novelty lives. The formalism is
+      <em>scaffolding</em>, not the headline.
+    </p>
+
+    <p><term>Potential Titles</term></p>
+    <p>
+      <ol>
+        <li>
+          <q>
+            Auditable Human-in-the-Loop Coding of Student Mathematical Justifications:
+            Operationalizing a cK&#162;-Anchored Scheme with an LLM-Assisted Pipeline.
+          </q>
+        </li>
+        <li>
+          <q>
+            A Human-in-the-Loop Pipeline for Theory-Anchored Coding of
+            Mathematical Justification in Short-Answer Reading Responses.
+          </q>
+        </li>
+
+      </ol>
+    </p>
+
+    <p><term>Contribution</term></p>
+    <p>
+      The contribution is stated in three parts, and the paper must
+      deliver all three.
+      <dl>
+        <li><title> Framing </title>
+          <p>
+            Adapt the cK&#162; vocabulary to <em>response-level traces</em>
+            without claiming that a single response is a conception.
+          </p>
+        </li>
+        <li><title> Tool Design Methods </title>
+          <p>
+            Formalize the coding workflow into auditable stages that
+            preserve uncertainty, out-of-vocabulary cases, multiple
+            matches, and reviewer overrides, with per-run provenance.
+          </p>
+        </li>
+        <li><title> Empirical Methods </title>
+          <p>
+            Evaluate whether the pipeline improves coding consistency,
+            speed, transparency, or disagreement diagnosis against ordinary
+            spreadsheet coding. The paper needs results, not just
+            architecture.
+          </p>
+        </li>
+      </dl>
+    </p>
+
+    <p><term>Central Claim</term></p>
+    <blockquote>
+      <p>
+        We present and validate a human-in-the-loop pipeline for coding
+        short-answer mathematical justifications.  The pipeline operationalizes
+        a cK&#162;-anchored coding scheme by extracting response-level episodes
+        of justification, matching them to a question-specific codebook, and
+        preserving uncertainty, disagreement, and reviewer overrides as
+        analyzable data.  The tool is not designed to infer complete student
+        conceptions from individual responses; instead, it supports reliable,
+        auditable analysis of the evidence for control structures that appears
+        in student writing.
+      </p>
+    </blockquote>
+
+    <p><term>Research Questions</term></p>
+    <p>
+      <ol>
+        <li>
+          <p>
+            <term>Reliability.</term> To what extent does the pipeline reproduce
+            human screening and coding decisions on a held-out set of student
+            short-answer responses?
+          </p>
+        </li>
+
+        <li>
+          <p>
+            <term>Auditability.</term> What kinds of uncertainty, ambiguity, and
+            codebook disagreement does the pipeline surface for human review?
+          </p>
+        </li>
+
+        <li>
+          <p>
+            <term>Efficiency.</term> How much coding labor is reduced or
+            reorganized when the pipeline identifies clear cases, ambiguous cases,
+            OOV cases, and multiple-match cases?
+          </p>
+        </li>
+
+        <li>
+          <p>
+            <term>Methodological insight.</term> What error types account for
+            disagreement between the pipeline and human coders, and what do those
+            errors reveal about the codebook, controlled vocabulary, and coding
+            protocol?
+          </p>
+        </li>
+      </ol>
+    </p>
+
+    <p>
+      Checkpoint tracking for this plan lives in
+      <c>dev/claude-build-tasks/proteus-sa-expansion-build-checklist.md</c>;
+      the checklist section formerly included in this chapter was merged
+      into that file and deleted.
+    </p>
+
+  </introduction>
+
+	<section xml:id="subsec-paper-proposal-framework">
+		<title>Analytic Framework</title>
+
+	<introduction>
+		<p>
+			We adapt the cK&#162; vocabulary to model response-level traces rather than complete cognitive conceptions. By treating responses as episodes of justification consisting of a criterion, an inferential link, and a judgment, we establish a cognitively aligned framework for automated reasoning extraction. The framework is the <term>Episode Model</term> and the primary analytic object is a <term>coded episode</term>.  For a student response <m>x</m> to a question <m>q</m>, the pipeline extracts a sequence of local episodes:
+			<md>
+				E(x)=\langle e_1,e_2,\ldots,e_n\rangle.
+			</md>
+		</p>
+
+		<p>
+			Each episode has the form <md>e_k=(C_k, I_k, J_k)</md>, where <m>C_k</m> is the criterion the student cites, <m>I_k</m> is the inferential link that connects the criterion to the judgment, and <m>J_k</m> is the judgment the student draws. The three parts are written in that order &#8212; criterion, inferential link, judgment &#8212; everywhere in this book. An episode is a visible trace of justification, not a claim that a conception has been observed.
+		</p>
+
+		<p>
+			The cK&#162; model supplies the theoretical vocabulary, but the response itself is not treated as a complete conception.  Instead, it enters at the question level as an analytic frame
+			<md>
+				K_q=(P_q,R_q,L_q,\Sigma_q),
+			</md>
+			where <m>P_q</m> is the relevant problem class, <m>R_q</m> is the set of relevant operators, <m>L_q</m> is the representation system, and <m>\Sigma_q</m> is the question-level controls. The student's response provides evidence for elements of this frame, but it does not determine the whole frame.
+		</p>
+
+		<p>
+			Complete episodes receive a two-part correctness code:
+			<md>
+				\operatorname{code}(e_k)=(c^1_k,c^2_k).
+			</md>
+			The first digit <m>c^1_k</m> records whether the cited criterion is true of the adopted reference state. The second digit <m>c^2_k</m> records whether the inference from criterion to judgment is mathematically valid for the question. Incomplete episodes are not forced into this two-digit scheme; they are preserved as partial evidence or routed to human review.
+		</p>
+
+		<p>
+			Two secondary structures are included to solve recurring coding problems.
+			<dl>
+				<li>
+					<title>Nesting and independence</title>
+					<p>
+						If one episode's judgment becomes the criterion for another episode, the episodes are chained or nested. We write <m>e_i \sqsubseteq e_j</m> when episode <m>e_i</m> functions as a sub-step inside episode <m>e_j</m>, and <m>e_i\parallel e_j</m> when two episodes are independent for coding purposes.
+					</p>
+				</li>
+
+				<li>
+					<title>Coding policy for nested episodes</title>
+					<p>
+						A policy
+						<m>\pi</m> determines whether nested episodes are coded as both parent and child, parent only, or child only. This is a coding convention, not a fact the mathematics determines by itself. The group must fix <m>\pi</m> before producing a validation dataset.
+					</p>
+				</li>
+			</dl>
+		</p>
+
+		<p>
+			The distinction between <term>justification quality</term> and <term>goal coverage</term> is retained, but it is secondary to the episode code.  A response may contain locally sound episodes while failing to answer the whole prompt.  Thus, an episode-level code of <m>(1,1)</m> certifies the local justification, not necessarily the completeness of the response.
+		</p>
+
+		<p>
+			This section records the working model of how we code student responses against control structures &#8212; it is the one coding-model document for the project. We borrow vocabulary from the cK&#162; model of a conception (Balacheff &amp; Gaudin, 2009) because that vocabulary already names the parts we care about.  The aim throughout is a notation precise enough that a coder &#8212; human or automated &#8212; and an engineer can talk about the same object.
+		</p>
+
+		<p>
+			Two sources are layered here, and it is worth keeping them distinct because they do different work.
+			<dl>
+				<li><title> The descriptive skeleton </title>
+					<p>
+						From Balacheff &amp; Gaudin (2009) we take the quadruplet <m>(P, R, L, \Sigma)</m> that models a <term>conception</term>. This describes the student's knowing as an equilibrium; it is a description, not a score, and not a process.
+					</p>
+				</li>
+				<li><title> The correctness overlay </title>
+					<p>
+						From Gerami et&#160;al. (2024) we take the two-digit correctness code.  This is a <em>normative</em> annotation we place on top of the description; it asks whether the student's reasoning was right, a question the cK&#162; model itself does not ask.
+					</p>
+				</li>
+			</dl>
+			The episode layer itself &#8212; reading a single response as a sequence of coded episodes &#8212; is our own addition; it is not part of cK&#162;, and we treat it as an addition rather than a reading of the source.
+		</p>
+
+		<p>
+			Within a response we distinguish two kinds of move.  An <term>operation</term> is generative: it builds or transforms an object and outputs a new object (a system, a matrix, a parametric solution).  A <term>control</term> is evaluative: it reads a feature of the current state and returns a judgment (consistent or not; unique or infinitely many).  An episode records an enacted control; an operation is not itself coded.  This split is convenient but it is a <em>stipulation we impose for coding</em>, not a distinction cK&#162; hands us cleanly: Balacheff allows an operator to take the form of a theorem applied in an inference, so an inferential operator and a control can look alike.  The cases where the line is genuinely blurred are exactly the sub-step disputes the nesting policy <m>\pi</m> exists to resolve.
+		</p>
+	</introduction>
+
+	<subsection>
+		<title> The conception layer </title>
+
+		<p>
+			Following Balacheff &amp; Gaudin, a conception is modeled by the quadruplet <m>(P, R, L, \Sigma)</m>, where
+			<dl>
+				<li>
+					<title> <m>P</m>, problems </title>
+					<p> the class of situations the conception is able to resolve. </p>
+				</li>
+				<li>
+					<title> <m>R</m>, operators </title>
+					<p>
+						the means that perform actions or transform symbolic, graphical, and linguistic representations.  Note that the letter <m>R</m> denotes <em>operators</em>, not representations; this is Balacheff's assignment and we keep it.
+					</p>
+				</li>
+				<li>
+					<title> <m>L</m>, representation system </title>
+					<p> the symbolic and linguistic means that carry the work and its feedback. </p>
+				</li>
+				<li>
+					<title> <m>\Sigma</m>, control structure </title>
+					<p>
+						the means by which choices are made, decisions taken, and judgments expressed &#8212; the validation dimension.
+					</p>
+				</li>
+			</dl>
+		</p>
+
+		<p>
+			It is important that this layer describes the <em>student's</em> conception, and that a conception is an equilibrium rather than a trajectory.  The episode layer adds the notion of a sequence of local justification moves read from a single response; that notion is useful for us but is not itself a cK&#162; construct, and we treat it as an addition rather than a reading of the source.
+		</p>
+	</subsection>
+
+	<subsection>
+		<title> The correctness overlay </title>
+
+		<p>
+			Correctness is an annotation laid on episodes, kept deliberately
+			outside the conception layer.  It is defined against a
+			<term>normative reference</term>: the true state of the
+			mathematics, and the per-question set <m>\mathcal{T}</m> of
+			inferential links that are valid (which criteria genuinely entail
+			which judgments for this question).
+		</p>
+
+		<definition>
+			<idx> correctness code </idx>
+			<p>
+	For an episode <m>e_k = (C_k, I_k, J_k)</m> that is
+	<term>complete</term> (its inferential link and judgment are both
+	stated), the <term>correctness code</term> is the pair
+	<md>
+		\operatorname{code}(e_k) = (c^1_k, c^2_k) \in \{0,1\}^2,
+	</md>
+	where <m>c^1_k</m> records whether the criterion <m>C_k</m> is
+	correct against the true state, and <m>c^2_k</m> records whether
+	the inferential link <m>I_k</m> belongs to <m>\mathcal{T}</m>.  An
+	episode whose link or judgment is missing is <term>incomplete</term>;
+	it is flagged <q>link not satisfied</q> and is not scored.
+			</p>
+		</definition>
+
+		<p>
+			Two consequences are worth stating, because they keep the overlay
+			honest about what it certifies.  First, the two digits are
+			independent: the criterion and the judgment of an episode can both
+			be sound while the inference between them is wrong, so
+			<m>c^1_k = 1</m> together with <m>c^2_k = 0</m> is an ordinary and
+			important case, and the link is the thing <m>c^2</m> grades.
+			Second, scoring every stated episode <m>(1,1)</m> certifies the
+			<term>quality of the justification offered</term>, which is not
+			the same as the <term>correctness of the solution</term>.  A
+			response can leave the question's goal uncovered while every
+			episode it does state is sound, and a criterion can be read
+			correctly off work that was itself faulty, so the proposition it
+			records is false against the true state.  We therefore keep two
+			axes apart: justification quality, which the code measures episode
+			by episode, and solution correctness, which additionally asks
+			whether the sound episodes <em>cover</em> the question's goal on a
+			correctly computed state.
+		</p>
+	</subsection>
+
+	<subsection>
+		<title> A worked example </title>
+
+		<p>
+			To make the vocabulary concrete, we trace one real response
+			through the pipeline's stages &#8212; screen, extract, match,
+			dispose, with human review as the standing layer above them.
+			Checkpoint <m>1.4.6\mathrm{A}</m> presents an augmented matrix in
+			reduced row echelon form, states that the corresponding system is
+			consistent, and asks the student to decide whether the solution is
+			unique and to identify the basic and free variables.  The
+			question's goal is therefore a classification of the solution
+			set.  Consider the response
+			<q>we only have 2 pivot points, so one variable will be free</q>,
+			and read it stage by stage.
+			<dl>
+	<li> <title> Screen </title>
+	<p>
+		The response cites a feature of the matrix and draws a conclusion
+		from it &#8212; a justification worth coding &#8212; so screening
+		admits it: <c>INCLUDE</c>.
+	</p> </li>
+	<li> <title> Extract </title>
+	<p>
+		Reading off and counting the pivots is an operation: it transforms
+		the given matrix into a count &#8212; two pivots among three
+		variables &#8212; and, being generative rather than evaluative, it
+		is not itself coded.  On top of that count sits one episode
+		<md>
+			e_1 = (C_1, I_1, J_1),
+		</md>
+		with criterion <m>C_1</m> &#8220;two pivots, three
+		variables,&#8221; inferential link <m>I_1</m> &#8220;fewer pivots
+		than variables, so a variable is unconstrained,&#8221; and judgment
+		<m>J_1</m> &#8220;one variable is free.&#8221;  The student stops
+		here; note for later that <m>J_1</m> is not yet the classification
+		the task asks for.
+	</p> </li>
+	<li> <title> Match </title>
+	<p>
+		Matching classifies the episode against the codebook: counting
+		pivots against variables to force a free variable is
+		<m>\mathrm{CS6}</m>.  Locating the pivots was an operation, not a
+		control, so it is not coded.  A coder might be tempted to add a
+		second episode <m>e_2</m> of type <m>\mathrm{CS7}</m> for
+		&#8220;a free variable exists&#8221; &#8212; but that proposition
+		<em>is</em> <m>J_1</m>, the judgment already produced by
+		<m>e_1</m>: its content is consumed inside <m>e_1</m> rather than
+		standing on its own.  This is the nested case
+		<md>
+			e_2 \sqsubseteq e_1,
+		</md>
+		detected here rather than resolved.
+	</p> </li>
+	<li> <title> Dispose </title>
+	<p>
+		Disposition hands the nested pair to the policy <m>\pi</m>: under
+		a &#8220;parent only&#8221; policy we keep <m>e_1</m> and drop the
+		contained <m>e_2</m>, which is where the open question is actually
+		decided.  The surviving episode is complete, so it is eligible for
+		the two-digit annotation &#8212; and that annotation is the human
+		review layer's work: checking the criterion against the true state
+		and the inferential link against <m>\mathcal{T}</m>, the reviewer
+		records
+		<md>
+			\operatorname{code}(e_1) = (1, 1).
+		</md>
+	</p> </li>
+			</dl>
+		</p>
+
+		<p>
+			The example also shows why the two axes are kept apart.  Although
+			<m>e_1</m> scores <m>(1,1)</m>, the response never reaches the
+			question's goal: it establishes that a free variable exists but
+			never draws the classification the task asks for.  The
+			justification offered is sound; the solution is incomplete because
+			the stated episodes do not <em>cover</em> the goal.
+		</p>
+
+		<p>
+			For contrast, take the shorter response
+			<q>We cannot determine the value of free variable</q>
+			to the same checkpoint.  Extraction yields a criterion
+			&#8212; a free variable is present &#8212; but the continuation
+			restates what &#8220;free&#8221; means rather than inferring a
+			solution-set type, so the inferential link and the judgment are
+			absent.  Matching tentatively reads this as <m>\mathrm{CS7}</m>,
+			but the episode is incomplete: it has a <m>C</m> with no
+			<m>I</m> or <m>J</m>.  Disposition therefore does not assign a
+			code; the episode is flagged <q>link not satisfied</q> and routed
+			to a human.  This is the incomplete-episode branch of the
+			pipeline, and it is deliberately kept outside the
+			<m>(c^1, c^2)</m> annotation.
+		</p>
+	</subsection>
+
+	<subsection>
+		<title> Correspondence with the stored schema </title>
+
+		<p>
+			The pipeline stores episodes in the frozen v3 schema, where a
+			response's extracted reasoning lives in the <c>chains</c> and
+			<c>chain_steps</c> tables and each question's valid inferences
+			live in <c>question_controls</c>.  The table below fixes the
+			correspondence between the document's terms, the symbols above,
+			and the stored columns, so that a coder and an engineer reading
+			the same episode can point at the same fields.
+		</p>
+
+		<table xml:id="table-episode-schema-correspondence">
+			<title>Episode Model terms, symbols, and schema locations</title>
+			<tabular halign="left" top="minor" bottom="minor" left="minor" right="minor">
+				<row header="yes">
+					<cell>Document term</cell>
+					<cell>Symbol</cell>
+					<cell>Schema location</cell>
+				</row>
+				<row>
+					<cell>criterion</cell>
+					<cell><m>C_k</m></cell>
+					<cell>the chain-step <c>premise</c> slot; <c>question_controls.criterion</c></cell>
+				</row>
+				<row>
+					<cell>inferential link</cell>
+					<cell><m>I_k</m></cell>
+					<cell><c>question_controls.normative_link</c></cell>
+				</row>
+				<row>
+					<cell>judgment</cell>
+					<cell><m>J_k</m></cell>
+					<cell>the chain-step <c>conclusion</c>; <c>question_controls.conclusion</c></cell>
+				</row>
+				<row>
+					<cell>valid-inference set</cell>
+					<cell><m>\mathcal{T}</m></cell>
+					<cell>the per-question rows of <c>question_controls</c></cell>
+				</row>
+			</tabular>
+		</table>
+
+		<p>
+			One naming collision deserves a note, because it cannot be fixed
+			where it occurs.  The schema's column comment glosses
+			<c>normative_link</c> with the letter <q>L</q>, which collides
+			with <m>L</m> = representation system in the cK&#162; quadruplet
+			<m>(P, R, L, \Sigma)</m> &#8212; indeed the neighboring
+			<c>reads_representation_id</c> comment uses <q>L</q> in the
+			representation sense.  In the Episode Model the inferential link
+			is <m>I</m>, never <m>L</m>.  The SQL baseline is frozen, so the
+			fix of record is this table plus a note in the durable reference
+			record (<c>dev/claude-build-tasks/important-references.md</c>);
+			<c>shortanswer.sql</c> is not edited &#8212; even its comments
+			&#8212; without explicit owner approval.
+		</p>
+	</subsection>
+
+	<subsection>
+		<title> Notation summary </title>
+
+		<p>
+			<dl>
+	<li> <title> <m>(P, R, L, \Sigma)</m> </title>
+	<p> a conception: problems, operators, representation system, control structure. </p> </li>
+	<li> <title> <m>K_q = (P_q, R_q, L_q, \Sigma_q)</m> </title>
+	<p> the question-level analytic frame. </p> </li>
+	<li> <title> <m>E(x) = \langle e_1, \ldots, e_n \rangle</m> </title>
+	<p> the episode sequence extracted from response <m>x</m>. </p> </li>
+	<li> <title> <m>e_k = (C_k, I_k, J_k)</m> </title>
+	<p> a coded episode: criterion, inferential link, judgment. </p> </li>
+	<li> <title> <m>e_i \sqsubseteq e_j</m>, <m>\ e_a \parallel e_b</m> </title>
+	<p> sub-step containment (nesting); independence. </p> </li>
+	<li> <title> <m>\pi</m> </title>
+	<p> the coding policy resolving nested episodes (a convention the group fixes, not a fact the mathematics decides). </p> </li>
+	<li> <title> <m>\mathcal{T}</m> </title>
+	<p> the per-question set of valid inferential links. </p> </li>
+	<li> <title> <m>\operatorname{code}(e_k) = (c^1_k, c^2_k)</m> </title>
+	<p> the two-digit correctness annotation: criterion against the true state; link against <m>\mathcal{T}</m>. </p> </li>
+			</dl>
+		</p>
+	</subsection>
+</section>
+<section>
+  <title>Tool Design</title>
+
+  <p>
+    The workflow is a sequence of small, auditable stages, each
+    reading a simple table and writing a slightly richer one:
+    <term>screening</term>, <term>extraction</term>,
+    <term>matching</term>, <term>disposition</term>, and
+    <term>human review</term>. Three properties make this more than an
+    implementation note and are worth foregrounding as the
+    methodological result.
+    <dl>
+      <li><title> Per-run provenance </title>
+        <p>
+          Every row the pipeline writes references a <c>run_id</c> tagged
+          with prompt version, model identifier, vocabulary version, and
+          codebook version. Re-running with a new prompt produces a
+          parallel set of rows rather than an overwrite, so two
+          configurations can be compared on the same corpus. This is what
+          makes the LLM-assisted coding <em>reproducible</em>.
+        </p>
+      </li>
+      <li><title> Question-relative correctness </title>
+        <p>
+          Valid criterion-to-judgment links are stored per question (in
+          <c>question_controls</c>), so correctness is judged against the
+          task, not against a global codebook assumption.
+        </p>
+      </li>
+      <li><title> Preserved uncertainty and human authority </title>
+        <p>
+          Ambiguity, multiple plausible matches, out-of-vocabulary terms,
+          and incomplete (<q>link not satisfied</q>) episodes are
+          preserved and routed, not forced into a code. AI-proposed
+          entries are gated by an acceptance flag that only a human can
+          flip, and every override is logged.
+        </p>
+      </li>
+    </dl>
+  </p>
+  
+  <p>
+    The methodological contribution the paper claims from this design is
+    the operationalization of qualitative coding as an auditable
+    computational sequence of stages &#8212; screening, extraction,
+    matching, disposition, and human review &#8212; that preserves
+    uncertainty instead of hiding it: ambiguous cases, out-of-vocabulary
+    terminology, multiple matches, and reviewer overrides are treated as
+    data.  Complex phenomena like nested reasoning are resolved via the
+    explicit coding policy <m>\pi</m>, a convention the group fixes, not
+    a structure the software imposes.
+  </p>
+</section>
+<section xml:id="sec-paper-proposal-study-design">
+  <title>Proposed Study Design</title>
+
+  <p>
+    The evaluation is the part that converts a tool description into a
+    research result. A credible design has the following components.
+    <dl>
+<li> <title> A research corpus </title>
+<p>
+  Real short-answer reading responses drawn from several
+  questions, de-identified, with IRB status recorded. The current
+  repository fixtures demonstrate ingestion but are test data, not
+  research evidence, and must not be reported as such.
+</p> </li>
+<li> <title> A human ground truth with a reliability ceiling </title>
+<p>
+  Two independent coders plus adjudication. Report percent
+  agreement and <m>\kappa</m> (or Krippendorff's <m>\alpha</m>)
+  for include/exclude decisions and for control-structure
+  assignment. Human&#8211;human agreement is the ceiling against
+  which the tool is measured.
+</p> </li>
+<li> <title> A three-system comparison </title>
+<p>
+  Human-only coding, a deterministic pattern baseline, and the
+  LLM-assisted pipeline. Report precision, recall, and
+  <m>F_1</m> for include/exclude, and code-level agreement for
+  control-structure assignment, each against the adjudicated gold
+  set.
+</p> </li>
+<li> <title> An ablation </title>
+<p>
+  Literal extraction versus interpretive extraction, the
+  experiment the repository documentation already identifies as a
+  natural first comparison.
+</p> </li>
+<li> <title> An error taxonomy </title>
+<p>
+  Screening errors, extraction errors, matching errors,
+  missing-vocabulary / OOV errors, nested-control ambiguity, and
+  human-codebook instability, each with counts and representative
+  cases.
+</p> </li>
+<li> <title> A productivity and auditability result </title>
+<p>
+  Time saved, number auto-accepted, number escalated, override
+  rate, and how often the tool surfaces a needed codebook
+  revision.
+</p> </li>
+    </dl>
+  </p>
+
+  <p>
+    Two design controls are not optional. First, to avoid
+    <term>anchoring bias</term>, reviewers should make a first-pass
+    judgment with candidate codes hidden, and this protocol must be
+    reported. Second, the ethics and consent basis for using real
+    student data must be stated explicitly.
+  </p>
+
+  <p>
+    The empirical contribution the paper claims from this design is the
+    evaluation itself: whether the pipeline improves coding reliability
+    and consistency, efficiency, transparency, or disagreement diagnosis
+    relative to the current human-only workflow, measured against human
+    coders on the adjudicated gold set.
+  </p>
+
+
+  <p>
+    The empirical study compares three coding workflows:
+    <ol>
+      <li>
+        <p>
+          <term>Human-only coding.</term> Two independent human coders apply
+          the codebook using the current spreadsheet or manual workflow.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>Deterministic baseline.</term> The rule-based screener,
+          connector-based extractor, pattern matcher, and rule-based
+          disposer are run without an LLM.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>LLM-assisted pipeline.</term> The same pipeline architecture
+          is used, but selected language-heavy stages are replaced by
+          LLM-assisted components that produce structured, reviewable output.
+        </p>
+      </li>
+    </ol>
+  </p>
+
+  <p>
+    The dataset includes real short-answer reading-question responses
+    from several questions. The sample is stratified by question and by expected
+    coding difficulty. At minimum, it should include:
+    <ul>
+      <li>
+        <p>
+          clean single-control responses;
+        </p>
+      </li>
+      <li>
+        <p>
+          blank or no-effort responses;
+        </p>
+      </li>
+      <li>
+        <p>
+          bare-answer responses with no justification;
+        </p>
+      </li>
+      <li>
+        <p>
+          responses with multiple possible control structures;
+        </p>
+      </li>
+      <li>
+        <p>
+          responses with nested or chained reasoning;
+        </p>
+      </li>
+      <li>
+        <p>
+          responses using terminology outside the current vocabulary; and
+        </p>
+      </li>
+      <li>
+        <p>
+          responses where the final answer is correct but the inferential
+          link offered for it is incomplete or invalid.
+        </p>
+      </li>
+    </ul>
+  </p>
+
+  <p>
+    The validation report 1:
+    <dl>
+      <li>
+        <title>Human agreement</title>
+        <p>
+          Percent agreement and Cohen's <m>\kappa</m> or Krippendorff's
+          <m>\alpha</m> between independent human coders, before
+          adjudication.
+        </p>
+      </li>
+
+      <li>
+        <title>Pipeline agreement</title>
+        <p>
+          Accuracy, precision, recall, and F1 for screening decisions, and
+          code-level agreement between the pipeline's candidate codes and the
+          adjudicated human codes.
+        </p>
+      </li>
+
+      <li>
+        <title>Disposition distribution</title>
+        <p>
+          The number and percentage of responses assigned to
+          <c>auto_accept</c>, <c>standard_review</c>,
+          <c>terminology_flag</c>, <c>no_match</c>, and
+          <c>escalate</c>.
+        </p>
+      </li>
+
+      <li>
+        <title>Override analysis</title>
+        <p>
+          The rate at which human reviewers confirm, add, remove, replace,
+          or reject the pipeline's candidate codes.
+        </p>
+      </li>
+
+      <li>
+        <title>Error taxonomy</title>
+        <p>
+          A qualitative analysis of screening errors, extraction errors,
+          codebook-matching errors, OOV errors, nested-control ambiguity,
+          question-coverage failures, and human-codebook instability.
+        </p>
+      </li>
+    </dl>
+  </p>
+
+  <p>
+    The validation report 2:
+    <ul>
+      <li>
+        <p>
+          Construct a representative corpus of short-answer reading
+          responses spanning multiple question types, ensuring the valid
+          reasoning for a control is question-relative rather than universal.
+        </p>
+      </li>
+      <li>
+        <p>
+          Deploy a three-way comparison study: human-only coding, a
+          deterministic/traditional NLP baseline, and the LLM-assisted
+          pipeline.
+        </p>
+      </li>
+      <li>
+        <p>
+          Employ two independent human coders with an adjudication phase,
+          reporting precision, recall, F1 scores for screening decisions,
+          and inter-rater reliability metrics (Cohen's <m>\kappa</m> or
+          Krippendorff's <m>\alpha</m>) for control-structure assignments.
+        </p>
+      </li>
+      <li>
+        <p>
+          Publish a comprehensive error taxonomy categorizing failures into
+          screening errors, extraction errors, codebook-matching errors,
+          out-of-vocabulary (OOV) instances, and nested-control ambiguities.
+        </p>
+      </li>
+    </ul>
+  </p>
+</section>
+<section xml:id="sec-publication-proposal-cl"
+	 xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <title>Final Thoughts</title>
+
+  <subsection>
+    <title> Threats, scope, and a horizon </title>
+
+    <p>
+      Three honest limits should be stated in the paper rather than
+      discovered by a reviewer. The study is a <em>case study</em> on one
+      question family and a small number of courses; generality is not
+      claimed. The LLM is treated as unreliable at exactly the
+      mathematical judgment correctness coding depends on, which is why
+      human authority and the deterministic baseline are load-bearing
+      rather than decorative. And the coder's discipline of not
+      supplying a judgment the student did not make is preserved
+      throughout, so incomplete responses are reported as partial
+      evidence, never completed by the tool.
+    </p>
+
+    <p>
+      A horizon, not a claim for this paper: the same
+      criterion-and-link decomposition that localizes a coding decision
+      also localizes <em>where</em> a student's reasoning breaks, which
+      is the natural ingredient for instructor-facing draft feedback on
+      reading questions that are presently graded by hand. That
+      extension keeps a human in the loop and is the sensible next study
+      once the coding pipeline is validated; it is named here only to
+      mark the direction.
+    </p>
+
+    <p>
+      The project is promising, but several risks should be addressed directly
+      in the paper.
+      <dl>
+        <li>
+          <title>Risk 1: Overclaiming what the tool detects</title>
+          <p>
+            Avoid saying that the tool detects student conceptions.  Say instead
+            that it extracts and organizes evidence-bearing traces of
+            justification that may support later interpretation across tasks.
+          </p>
+        </li>
+
+        <li>
+          <title>Risk 2: Treating LLM output as a final code</title>
+          <p>
+            The pipeline should produce candidate codes and review dispositions,
+            not final research claims.  Human review remains part of the method.
+          </p>
+        </li>
+
+        <li>
+          <title>Risk 3: Letting formalism outrun evidence</title>
+          <p>
+            This risk was resolved by removal: on 2026-07-17 the owner cut
+            the reasoning-graph formalism from the framework entirely, and
+            the Episode Model is the single canonical framework.  The paper
+            foregrounds episodes and the explicit coding policy; no graph
+            machinery remains to outrun the evidence.
+          </p>
+        </li>
+
+        <li>
+          <title>Risk 4: Validating against an unstable codebook</title>
+          <p>
+            The group must freeze the codebook, vocabulary, and nested-episode
+            policy before measuring tool performance.  Otherwise, disagreement
+            may reflect moving definitions rather than tool failure.
+          </p>
+        </li>
+
+        <li>
+          <title>Risk 5: Reporting only aggregate performance</title>
+          <p>
+            Accuracy alone is not enough. The paper should include qualitative
+            examples of errors and disagreements because those examples are where
+            the methodological contribution becomes visible.
+          </p>
+        </li>
+      </dl>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-paper-proposal-bottom-line">
+    <title>Bottom Line</title>
+
+    <p>
+      The group has developed and validated a reproducible workflow for
+      theory-anchored, human-in-the-loop coding of mathematical justification.
+      The episode model supplies the analytic unit, the pipeline supplies the
+      auditable workflow, and the empirical study supplies the evidence that the
+      method improves or clarifies the research process.
+    </p>
+  </subsection>
+</section>
+
+</chapter>

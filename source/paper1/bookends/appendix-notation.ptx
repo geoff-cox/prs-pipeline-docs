@@ -1,0 +1,305 @@
+<appendix xml:id="appendix-notation">
+  <title>Symbols &amp; Notation</title>
+
+  <p>
+    Every symbol and named term is defined where it is first used; this
+    section gathers them in one place for reference. Each entry closes
+    with a pointer to the defining chapter anchor, and the formulas here
+    agree with those definitions.
+  </p>
+
+  <p>
+    <dl>
+      <li xml:id="an-P">
+        <title><m>\mathcal{P}=\{1,\dots,P\}</m></title>
+        <p>
+          The cards (the draggable objects) and their number, indexed in 
+          source order. See <xref ref="subsec-design-index-sets" text="title"/>.
+        </p>
+      </li>
+      <li xml:id="an-R">
+        <title><m>\mathcal{R}=\{1,\dots,R\}</m></title>
+        <p>
+          The slots (the labeled drop areas) and their number, also in 
+          source order. See <xref ref="subsec-design-index-sets" text="title"/>.
+        </p>
+      </li>
+      <li xml:id="an-Z">
+        <title><m>\mathcal{Z}=\{0,1,\dots,R\}</m></title>
+        <p>
+          The zones: the slots together with zone <m>0</m>, the tray; 
+          <m>|\mathcal{Z}|=R+1</m>. See 
+          <xref ref="subsec-design-index-sets" text="title"/>.
+        </p>
+      </li>
+      <li xml:id="an-e">
+        <title><m>e_a,\ e_b</m></title>
+        <p>
+          Standard basis vectors in <m>\mathbb{R}^{R+1}</m> selecting a zone 
+          (a matrix row), indexed by the zone labels <m>0,\dots,R</m>. See 
+          <xref ref="sec-membership-matrix" text="title"/>.
+        </p>
+      </li>
+      <li xml:id="an-ej">
+        <title><m>e_j</m></title>
+        <p>
+          Standard basis vector in <m>\mathbb{R}^{P}</m> selecting a card (a 
+          matrix column). See <xref ref="sec-membership-matrix" text="title"/>.
+        </p>
+      </li>
+      <li xml:id="an-1">
+        <title><m>\mathbf{1}_n</m></title>
+        <p>The all-ones vector of length <m>n</m>; the subscript is omitted when the dimension is clear (<xref ref="sec-valid-states-configuration-space" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-s">
+        <title><m>s</m></title>
+        <p>The configuration function <m>s\colon\mathcal{P}\to\mathcal{Z}</m> assigning each card to the zone holding it: <m>s(j)</m> is the zone of card <m>j</m> (<xref ref="sec-configuration-state" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-X">
+        <title><m>X=X(s)</m></title>
+        <p>The membership matrix of a configuration, <m>X_{ij}=1</m> iff <m>s(j)=i</m>; column <m>j</m> is <m>e_{s(j)}</m>. A zero-one <term>column-stochastic</term> matrix (<xref ref="an-membership-matrix" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-invariant">
+        <title><m>\mathbf{1}^{\top}_{R+1}X=\mathbf{1}^{\top}_P</m></title>
+        <p>Membership validity: every column sums to one, so every card occupies exactly one zone (<xref ref="an-valid-membership-condition" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-column-stochastic">
+        <title>membership matrices as vertices</title>
+        <p>
+          The valid membership matrices <m>\mathcal{X}</m> are the zero-one
+          column-stochastic matrices, and they are exactly the vertices (extreme
+          points) of the full column-stochastic set: each column is a one-hot zone
+          distribution. Relaxing those one-hots to probability vectors gives a
+          general column-stochastic matrix; the
+          <xref ref="an-placement-heatmap" text="custom">placement heatmap</xref>
+          <m>\bar{X}</m> is the cohort-mean instance, its column <m>j</m> the
+          empirical zone distribution of card <m>j</m>
+          (<xref ref="an-valid-membership-space" text="custom">state model</xref>).
+        </p>
+      </li>
+      <li xml:id="an-occupancy">
+        <title><m>\mathbf{o}(X)=X\mathbf{1}_P</m></title>
+        <p>The <xref ref="gt-occupancy" text="title"/> vector, the number of cards in each zone (<xref ref="an-occupancy-vector" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-totalsum">
+        <title><m>\mathbf{1}^\top X\mathbf{1} = P</m></title>
+        <p>The occupancy entries sum to the total number of cards; a property of every membership matrix (<xref ref="subsec-occupancy-vector-rewrite" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-s0">
+        <title><m>s_0,\ X_0=e_0\mathbf{1}^\top_P</m></title>
+        <p>The all-tray starting configuration: top row all ones, the rest zero (<xref ref="an-initial-state-matrix" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-sstar">
+        <title><m>s^\star,\ X^\star</m></title>
+        <p>The key: the correct configuration and its matrix, the fixed representative against which answers are scored (<xref ref="an-key-state-function" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-rank">
+        <title><m>\operatorname{rank}(X)=q(X)</m></title>
+        <p>The number of occupied zones (<xref ref="subsec-occupied-zones-rank" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-configurations">
+        <title><m>(R+1)^P</m></title>
+        <p>The number of possible configurations, <m>|\mathcal{C}|</m> (<xref ref="an-configuration-space" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-grouping">
+        <title>grouping <m>\Pi_X</m></title>
+        <p>The partition of the cards induced by a state, two cards together when they share a zone, with blocks <m>B_i(X)</m>; the content that survives relabeling, with the tray block distinguished (<xref ref="an-state-induced-blocks" text="custom">advanced comparison</xref>).</p>
+      </li>
+      <li xml:id="an-relabelling">
+        <title><m>\pi,\ P_\pi</m></title>
+        <p>A relabeling of the slots (a permutation of <m>\mathcal{R}</m>, extended by <m>\pi(0)=0</m>) and the matrix permuting slot rows while fixing the tray row, <m>X\mapsto P_\pi X</m> (<xref ref="subsec-slot-permutations" text="custom">advanced comparison</xref>).</p>
+      </li>
+      <li xml:id="an-move">
+        <title>move <m>m=(j,a,b)</m></title>
+        <p>Dragging card <m>j</m> from zone <m>a</m> to zone <m>b\neq a</m> (<xref ref="an-move-triple" text="custom">trajectory model</xref>).</p>
+      </li>
+      <li xml:id="an-update">
+        <title><m>X'=X+(e_b-e_a)\,e_j^\top</m></title>
+        <p>The rank-one update a single drop makes to the matrix (<xref ref="an-move-state-update-matrix" text="custom">trajectory model</xref>).</p>
+      </li>
+      <li xml:id="an-takeback">
+        <title>takeback</title>
+        <p>A move with <m>b=0</m>, returning a card to the tray; counted separately as <m>T</m> (<xref ref="an-baseline-takeback-count" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-reset">
+        <title>reset</title>
+        <p>The single action <m>X\mapsto X_0</m> returning the whole board to the start; not an ordinary move, and counted separately (<xref ref="an-reset-state-update" text="custom">trajectory model</xref>).</p>
+      </li>
+      <li xml:id="an-attempt">
+        <title>attempt, marked trajectory <m>\Gamma</m></title>
+        <p>One student's work on one item: the states <m>X_0,\dots,X_n</m> together with the action and timestamp marks, <m>\Gamma=\bigl((a_0,t_0,X_0),\dots,(a_n,t_n,X_n)\bigr)</m> (<xref ref="an-event-trajectory" text="custom">trajectory model</xref>).</p>
+      </li>
+      <li xml:id="an-delta">
+        <title><m>X_k-X_{k-1}=\Delta_{m_k}</m></title>
+        <p>The first difference between consecutive states, <m>(e_{b_k}-e_{a_k})\,e_{j_k}^\top</m> for a drop; its nonzero columns recover the move (<xref ref="an-move-state-update-matrix" text="custom">trajectory model</xref>).</p>
+      </li>
+      <li xml:id="an-check-count">
+        <title><m>K=\{k_1,\dots,k_q\}\subseteq\{0,\dots,n\}</m></title>
+        <p>The checks: the steps at which the student pressed <q>check</q>, a marked subsequence (<xref ref="an-check-index-set" text="custom">trajectory model</xref>). The number of checks is <m>q=|K|</m>. The letter is reserved twice more: <m>q(X)</m>, with a state argument, is the occupied-zone count of the state model, and the subscripted <m>q_k</m> is the item identifier in the parsed event record (<xref ref="an-parsed-event-record" text="custom">data processing</xref>). Argument and subscript keep the three apart, and they never co-occur.</p>
+      </li>
+      <li xml:id="an-state-graph">
+        <title>configuration graph <m>H(P,R+1)</m></title>
+        <p>All configurations <m>\mathcal{C}=\mathcal{Z}^{\mathcal{P}}</m>, joined by an edge for each single-card move; the Hamming graph, every vertex of degree <m>P\cdot R</m> (<xref ref="an-configuration-graph" text="custom">trajectory model</xref>).</p>
+      </li>
+      <li xml:id="an-hamming-distance">
+        <title>Hamming distance <m>d_{\mathcal{C}}=d_{\mathcal{X}}</m></title>
+        <p>The number of coordinates in which two configurations differ, <m>\tfrac12\lVert X-Y\rVert_F^2</m> in matrix form; the fewest moves between them (<xref ref="an-state-distance-function" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-c">
+        <title><m>\mathbf{a}(X)=\operatorname{diag}(X^\top X^\star)</m></title>
+        <p component="html">
+          The per-card agreement vector, <m>a_j=\mathbb{1}_{[s(j)=s^\star(j)]}</m> (<xref ref="an-baseline-agreement-vector" text="custom">baseline features</xref>).
+        </p>
+        <p component="pdf">
+          The per-card agreement vector, <m>a_j=\mathds{1}_{[s(j)=s^\star(j)]}</m> (<xref ref="an-baseline-agreement-vector" text="custom">baseline features</xref>).
+        </p>
+      </li>
+      <li xml:id="an-agreement">
+        <title>agreement score <m>\sigma(X)</m></title>
+        <p>The number of cards in their keyed zone, <m>\operatorname{tr}(X^\top X^\star)=\langle X,X^\star\rangle_F</m> (<xref ref="an-baseline-agreement-score" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-frobenius">
+        <title><m>\langle\cdot,\cdot\rangle_F</m>, <m>\lVert\cdot\rVert_F</m></title>
+        <p>The Frobenius inner product and norm of matrices; <m>\lVert X\rVert_F^2=P</m> for every membership matrix (<xref ref="an-frobenius-inner-product" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-distance">
+        <title>key distance <m>d^\star(X)</m></title>
+        <p><m>d^\star(X)=d_{\mathcal{X}}(X,X^\star)=\tfrac12\lVert X-X^\star\rVert_F^2=P-\sigma(X)</m>: the Hamming distance to the key, and the minimum number of moves still needed to solve (<xref ref="an-baseline-key-distance" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-agreement-baseline">
+        <title><m>\sigma(X_0)</m></title>
+        <p>The initial agreement score, equal to the number of decoy cards, since every decoy card is correctly trayed from the start; the baseline that corrected progress removes (<xref ref="an-baseline-corrected-progress" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-grader-counts">
+        <title><m>w(X)</m>, <m>u(X)</m></title>
+        <p>The grader counts: cards in a wrong non-tray zone, and cards in the tray but due in a slot (<q>left to place</q>); <m>\sigma+w+u=P</m> and <m>d^\star=w+u</m> (<xref ref="an-baseline-grader-count-identity" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-feedback-policy">
+        <title>feedback policy <m>\phi</m></title>
+        <p>The rule applied at check events, <m>\phi(s_t,\text{check history})</m>: what a check discloses, from an all-or-nothing verdict, through counts such as <m>w</m> and <m>u</m>, to highlighted cards (<xref ref="sec-feedback-policy" text="custom">item design</xref>).</p>
+      </li>
+      <li xml:id="an-agreement-baseline-leak">
+        <title>decoy-card leak <m>L_{\mathcal{P}}</m>, decoy-slot leak <m>L_{\mathcal{R}}</m></title>
+        <p>Decoy cards dragged into a slot, <m>L_{\mathcal{P}}(X)=\sum_{i=1}^{R}M_{i0}</m>; and cards in a slot the key leaves empty, <m>L_{\mathcal{R}}(X)=\sum_{i\in\mathcal{D}_{\mathcal{R}}}\sum_{h}M_{ih}</m>, where <m>\mathcal{D}_{\mathcal{R}}</m> is the set of decoy slots (<xref ref="an-baseline-decoy-card-leak" text="custom">baseline features</xref>, <xref ref="an-baseline-decoy-slot-leak" text="custom">decoy-slot leak</xref>).</p>
+      </li>
+      <li xml:id="an-label-free-score">
+        <title>label-free score <m>\widetilde{\sigma}(X)=\max_\pi\langle P_\pi X,X^\star\rangle_F</m></title>
+        <p>The best agreement over slot relabelings; <m>\widetilde{\sigma}\ge\sigma</m>, with label-free distance <m>\widetilde{d}^{\star}=P-\widetilde{\sigma}</m> and labeling gap <m>\widetilde{\sigma}-\sigma</m>; the slot part is read off the slot block <m>N</m> (<xref ref="an-label-free-agreement" text="custom">advanced comparison</xref>, <xref ref="an-labeling-gap" text="custom">labeling gap</xref>).</p>
+      </li>
+      <li xml:id="an-confusion-submatrix">
+        <title>slot block <m>N(X)</m></title>
+        <p>The slot-by-slot block of the zone confusion matrix: <m>N_{ab}</m> is the number of cards the student puts in slot <m>a</m> that the key assigns to slot <m>b</m>; <m>\sum_a N_{aa}</m> is the labeled and <m>\max_\pi\sum_a N_{\pi(a)a}</m> the label-free slot agreement (<xref ref="an-slot-confusion-submatrix" text="custom">advanced comparison</xref>).</p>
+      </li>
+      <li xml:id="an-partial-credit">
+        <title>partial credit</title>
+        <p component="html">All-or-nothing
+          <m>A(X)=\mathbb{1}_{[d^\star(X)=0]}</m>; per-card fraction <m>p(X)=\sigma(X)/P</m>; and baseline-corrected progress <m>g(X)=1-d^\star(X)/d^\star(X_0)</m>, which places the initial state at <m>0</m> and the key at <m>1</m> (<xref ref="subsec-partial-credit-baseline" text="custom">baseline features</xref>).
+        </p>
+        <p component="pdf">All-or-nothing
+          <m>A(X)=\mathds{1}_{[d^\star(X)=0]}</m>; per-card fraction <m>p(X)=\sigma(X)/P</m>; and baseline-corrected progress <m>g(X)=1-d^\star(X)/d^\star(X_0)</m>, which places the initial state at <m>0</m> and the key at <m>1</m> (<xref ref="subsec-partial-credit-baseline" text="custom">baseline features</xref>).
+        </p>
+      </li>
+      <li xml:id="an-marked-partition">
+        <title>marked and unmarked partitions; <m>\Pi^\star</m></title>
+        <p>A marked partition remembers which block belongs to which zone; an unmarked partition keeps only which cards are together. <m>\Pi^\star=\Pi_{X^\star}</m> is the key partition, with its tray block of decoy cards distinguished (<xref ref="subsec-marked-and-unmarked-partitions" text="custom">advanced comparison</xref>).</p>
+      </li>
+      <li xml:id="an-confusion-matrix">
+        <title>zone confusion matrix <m>M(X)=XX^{\star\top}</m></title>
+        <p>The cross-tabulation <m>M_{ih}=\#\{j:s(j)=i,\ s^\star(j)=h\}</m>; row sums are the student's occupancy, column sums the key's, and <m>\operatorname{tr}(M)=\sigma</m>. Its tray row holds omissions, its tray column decoy-card placements, and its slot block is <m>N</m>. Read as a partition comparison, it is the confusion matrix of <m>\Pi_X</m> against <m>\Pi^\star</m> (<xref ref="an-baseline-zone-confusion-matrix" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-omission-card-decoy-placed">
+        <title>omission, decoy card placed</title>
+        <p>Boundary errors: a card left in the tray though the key places it, <m>O(X)=\sum_{h\ge1}M_{0h}</m>; and a card placed in a slot though the key trays it, the tray column of <m>M</m> (<xref ref="an-baseline-omission-count" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-merge-split">
+        <title>merge, split; <m>E_{\operatorname{merge}}</m>, <m>E_{\operatorname{split}}</m></title>
+        <p>The grouping errors, read off <m>N</m>: a merge slot draws on more than one key group (a row of <m>N</m> with several nonzero entries), a split key group is spread over several slots (such a column). The excesses <m>E_{\operatorname{merge}}(X)</m> and <m>E_{\operatorname{split}}(X)</m> count the extra groups combined and the extra slots used. Together these form the grouping profile, distinct from the baseline error profile <m>\boldsymbol{\varepsilon}(X)</m> below (<xref ref="sec-merge-and-split-features" text="custom">advanced comparison</xref>).</p>
+      </li>
+      <li xml:id="an-mislabel">
+        <title>mislabel</title>
+        <p>Correct grouping under the wrong slot names: <m>N</m> a permuted diagonal, <m>\sigma\lt P</m> but <m>\widetilde{\sigma}=P</m>; the labeling gap <m>\widetilde{\sigma}-\sigma</m> counts the labeled errors a renaming would repair (<xref ref="an-labeling-gap" text="custom">advanced comparison</xref>).</p>
+      </li>
+      <li xml:id="an-pairwise-agreement-pairwise-disagreement">
+        <title><m>n</m>; pairwise-agreement, pairwise-disagreement pairs</title>
+        <p>The co-placed cards (in a slot for both student and key) number <m>n</m>, the sum of the entries of <m>N</m>. An unordered pair is pairwise-agreement when the two groupings agree on whether it is together (a grouped or separated pair), pairwise-disagreement otherwise, splitting into merge pairs and split pairs (<xref ref="an-pair-together-counts" text="custom">advanced comparison</xref>).</p>
+      </li>
+      <li xml:id="an-rand-index">
+        <title>Rand index <m>RI</m>; <m>ARI</m>, <m>VI</m></title>
+        <p>Summaries of grouping agreement over the co-placed cards, all functions of <m>N</m>: the pairwise-agreement fraction; its chance-adjusted form; and the variation of information <m>H(\Pi)+H(\Pi^\star)-2I(\Pi;\Pi^\star)</m>, a true metric on partitions (<xref ref="rand-index" text="custom">Rand</xref>, <xref ref="an-adjusted-rand-index" text="custom">adjusted Rand</xref>, <xref ref="an-variation-of-information" text="custom">variation of information</xref>).</p>
+      </li>
+      <li xml:id="an-error-profile">
+        <title>baseline error profile <m>\boldsymbol{\varepsilon}(X)</m></title>
+        <p>The per-check boundary record <m>\boldsymbol{\varepsilon}(X)=(O,W_{\operatorname{slot}},L_{\mathcal{P}},L_{\mathcal{R}})</m>: omissions, wrong-slot placements, decoy-card leaks, and the overlapping decoy-slot flag; the first three sum to <m>d^\star(X)</m>. The merge/split grouping profile is the separate entry above, and the two should not be conflated (<xref ref="an-baseline-error-profile" text="custom">baseline features</xref>, <xref ref="subsec-grouping-versus-baseline-profile" text="custom">contrast</xref>).</p>
+      </li>
+      <li xml:id="an-convergence-curve">
+        <title>distance curve <m>d_k=d^\star(X_k)</m></title>
+        <p>The distance to the key after each logged state, from <m>d^\star(X_0)</m> toward <m>0</m>; checks appear as marked positions, resets return the curve to <m>d^\star(X_0)</m> (<xref ref="an-baseline-distance-curve" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-per-move-change">
+        <title><m>\Delta d_k</m>; fixing, lateral, breaking</title>
+        <p>The per-move change <m>\Delta d_k=d^\star(X_k)-d^\star(X_{k-1})\in\{-1,0,+1\}</m>: a wrong card sent to its keyed zone (<m>-1</m>), a move that leaves the distance unchanged (<m>0</m>), or a correct card disturbed (<m>+1</m>) (<xref ref="subsec-move-classification" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-FBL">
+        <title><m>F,\ L,\ B</m>; <m>E_{\operatorname{move}}</m></title>
+        <p>Counts of fixing, lateral, and breaking moves within a reset-free segment of <m>n</m> ordinary moves, <m>F+L+B=n</m>; net progress <m>F-B</m>; and the excess moves <m>E_{\operatorname{move}}=n-(F-B)=2B+L</m> (<xref ref="an-baseline-flb-counts" text="custom">baseline features</xref>, <xref ref="an-baseline-excess-moves" text="custom">excess moves</xref>).</p>
+      </li>
+      <li xml:id="an-path-excess">
+        <title><m>E_{\operatorname{path}}</m></title>
+        <p>The path excess <m>E_{\operatorname{path}}=n-d_{\mathcal{X}}(X_{\operatorname{start}},X_{\operatorname{end}})</m>, the moves beyond the shortest path between a segment's endpoints; <m>0\le E_{\operatorname{path}}\le E_{\operatorname{move}}</m>, with equality for a reset-free attempt from the initial state to the key (<xref ref="an-baseline-path-excess" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-regressions">
+        <title>regressions, takebacks, resets</title>
+        <p>Breaking moves <m>\#\{k:d^\star(X_k)\gt d^\star(X_{k-1})\}</m>; moves to the tray, cross-classified by their <m>\Delta d_k</m>; and full restarts, each returning the distance curve to <m>d^\star(X_0)</m> (<xref ref="subsec-takeback-and-reset-features" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-cadence">
+        <title>cadence <m>n_i</m>; grader-as-oracle</title>
+        <p>The check cadence counts ordinary moves per check segment: <m>n_i</m> moves between checks <m>i</m> and <m>i+1</m>, and <m>n_0</m> before the first check. A short cadence (checking after nearly every move) is the grader-as-oracle pattern (<xref ref="an-baseline-check-cadence" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-responsiveness">
+        <title><m>\mathcal{H}_i</m>, <m>\mathcal{M}_i</m>; responsiveness <m>\rho_i</m></title>
+        <p>The set of cards highlighted by feedback at check <m>i</m>, the set of cards moved before the next check, and the fraction of the highlighted set acted on, <m>\rho_i=|\mathcal{H}_i\cap\mathcal{M}_i|/|\mathcal{H}_i|</m>; defined only when the feedback policy identifies cards (<xref ref="an-baseline-responsiveness" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-markov-model">
+        <title>Markov model: <m>Q</m>, <m>\mathbf{t}</m></title>
+        <p>The distance-coarsened chain absorbing at <m>0</m>, estimated from a cohort's pooled transitions; <m>Q</m> its transient block, <m>(I-Q)^{-1}</m> the fundamental matrix, and <m>\mathbf{t}=(I-Q)^{-1}\mathbf{1}</m> the expected moves to solve (<xref ref="an-expected-moves-to-solve" text="custom">statistical modeling</xref>).</p>
+      </li>
+      <li xml:id="an-placement-heatmap">
+        <title>placement heatmap <m>\bar{X}=\tfrac1N\sum_{\nu} X^{(\nu)}</m></title>
+        <p>The mean configuration over a cohort of <m>N</m> students, column-stochastic with entries in <m>[0,1]</m>; <m>\bar{X}_{ij}</m> is the fraction placing card <m>j</m> at zone <m>i</m> (<xref ref="an-baseline-placement-heatmap" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-mean-score">
+        <title>mean score, per-card difficulty</title>
+        <p><m>\langle\bar{X},X^\star\rangle_F=\sum_j\bar{X}_{s^\star(j),j}</m>; and <m>1-\bar{X}_{s^\star(j),j}</m>, the fraction getting card <m>j</m> wrong (<xref ref="subsec-linear-summaries-from-heatmaps" text="custom">diagnostics</xref>).</p>
+      </li>
+      <li xml:id="an-mean-confusion-matrix">
+        <title>mean zone confusion matrix <m>\bar{M}=\tfrac1N\sum_{\nu} M\bigl(X^{(\nu)}\bigr)</m></title>
+        <p>Carries the mean omission count, mean decoy-card leak, and mean decoy-slot leak as first moments (<xref ref="an-diagnostic-mean-zone-confusion" text="custom">diagnostics</xref>).</p>
+      </li>
+      <li xml:id="an-decoy-pull">
+        <title>decoy pull</title>
+        <p>The decoy-slot row of <m>\bar{X}</m> and the decoy-card column: the row gives, card by card, the fraction wrongly parked in the empty-keyed slot, and the column's off-tray mass <m>1-\bar{X}_{0j}</m> is the decoy-card-leak rate for decoy card <m>j</m> (<xref ref="subsec-decoy-pull" text="custom">diagnostics</xref>).</p>
+      </li>
+      <li xml:id="an-exact-correct-rate">
+        <title>exact-correct rate <m>\bar{A}</m></title>
+        <p>The cohort mean of the all-or-nothing score, <m>\bar{A}=\tfrac1N\sum_{\nu}A\bigl(X^{(\nu)}\bigr)</m>, the fraction with <m>d^\star=0</m>; not a first moment, so it needs the per-student values rather than <m>\bar{X}</m> (<xref ref="an-baseline-exact-correct-rate" text="custom">baseline features</xref>).</p>
+      </li>
+      <li xml:id="an-card-zone-time-array">
+        <title>state stack (card-zone-time array)</title>
+        <p>A student's membership matrices stacked over time, a zero-one <m>(R+1)\times P\times T</m> array; its student-axis mean is <m>\bar{X}</m> and its time slices are the replay. The script letter <m>\mathcal{X}</m> is not used for it: <m>\mathcal{X}</m> is reserved for the space of valid membership matrices (<xref ref="an-valid-membership-space" text="custom">state model</xref>).</p>
+      </li>
+      <li xml:id="an-anchor-condition">
+        <title>anchor condition</title>
+        <p>
+          Let <m>\widehat{X}_k</m> be the reconstructed state at a check
+          event, and let <m>X_k^{\operatorname{check}}</m> be the state
+          parsed from that check's JSON. The basic consistency condition is
+          <md>
+            \widehat{X}_k=X_k^{\operatorname{check}}
+          </md>,
+          which the pipeline verifies at every check
+        </p>
+      </li>
+    </dl>
+  </p>
+
+</appendix>

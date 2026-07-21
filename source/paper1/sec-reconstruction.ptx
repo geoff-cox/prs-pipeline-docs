@@ -1,0 +1,292 @@
+    <!-- ================================================================ -->
+    <!-- 4. RECONSTRUCTION, VALIDATION, AND FEATURES ≈ 1500-1800 words.   -->
+    <!-- ================================================================ -->
+
+    <section xml:id="sec-method">
+      <title>Reconstruction, Validation, and Feature Construction</title>
+
+      <introduction>
+        <p>
+          The processing pipeline preserves three distinct layers: immutable raw
+          rows, reconstructed states and attempts, and derived features.
+          Reconstruction is performed before scoring or process analysis, and each
+          derived object retains provenance identifying the raw import, item
+          source, software stage, and configuration that produced it.
+        </p>
+      </introduction>
+
+      <subsection xml:id="subsec-order-segmentation">
+        <title>Event Ordering and Attempt Segmentation</title>
+
+        <p>
+          Events are grouped by learner and item and ordered deterministically
+          using parsed time, problem-view information, and stable file order as a
+          final tie breaker.  Ties that remain unresolved by substantive ordering
+          fields are retained as a quality-control flag rather than silently
+          treated as certain.
+        </p>
+
+        <p>
+          The current implementation defines an attempt as one learner's work on
+          one item within a sitting.  The default segmentation separates attempts
+          at session changes, page views, or inactivity gaps exceeding 30 minutes;
+          a reset restores the initial state within the attempt rather than
+          automatically starting a new attempt.  The segmentation rule is stored
+          with the derived attempt and is treated as a sensitivity parameter in
+          this study.
+        </p>
+
+        <!--
+        SEGMENTATION COMPLETION CHECKLIST
+        1. Produce distributions of within-trace gaps, session changes, page views, and resets.
+        2. Inspect traces around candidate 10, 20, 30, and 60 minute boundaries.
+        3. Freeze one primary segmentation rule before computing headline results.
+        4. Decide whether events after a correct check remain in the same analytic attempt.
+        5. Decide whether repeated page rows create boundaries or only delimit access.
+        6. Record the exact rule in the pipeline run manifest.
+        7. Implement at least two plausible alternatives for RQ4.
+        8. Report how many attempts each boundary type creates.
+        -->
+      </subsection>
+
+      <subsection xml:id="subsec-replay">
+        <title>State Replay</title>
+
+        <p>
+          Replay initializes the board at <m>s_0=(0,\ldots,0)</m>.  For each
+          decoded move, the source zone is read from the current reconstructed
+          state and the card coordinate is replaced by the decoded destination.
+          A reset restores <m>s_0</m>.  A check repeats the current reconstructed
+          state and stores it beside the full checked configuration decoded from
+          the row's <c>Input</c> payload.  Page events contribute ordering and
+          boundary information but do not update the board.
+        </p>
+
+        <p>
+          A malformed or off-board event is never silently repaired.  The raw
+          event remains traceable, the replay decision is recorded, and an
+          appropriate parse or validity flag is propagated to the enclosing
+          attempt.  No-op drops are retained and flagged but are excluded from
+          effective-move counts by default.
+        </p>
+
+        <table xml:id="tab-replay-rules">
+          <title>Canonical replay rules.</title>
+          <tabular valign="top">
+            <col width="10%" />
+            <col width="34%" />
+            <col width="56%" />
+            <row header="yes">
+              <cell><p>Event</p></cell>
+              <cell><p>Payload</p></cell>
+              <cell><p>Replay effect</p></cell>
+            </row>
+            <row>
+              <cell><p>move</p></cell>
+              <cell><p>card <m>j</m>, destination <m>h</m></p></cell>
+              <cell><p>Set <m>s(j)\leftarrow h</m>; flag no-op or invalid labels when applicable.</p></cell>
+            </row>
+            <row>
+              <cell><p>check</p></cell>
+              <cell><p>full submitted configuration and feedback</p></cell>
+              <cell><p>Repeat the replayed state and compare it with the independently decoded check state.</p></cell>
+            </row>
+            <row>
+              <cell><p>reset</p></cell>
+              <cell><p>reset mark</p></cell>
+              <cell><p>Set <m>s\leftarrow s_0</m>.</p></cell>
+            </row>
+            <row>
+              <cell><p>page</p></cell>
+              <cell><p>access and ordering fields</p></cell>
+              <cell><p>No state change; retain for segmentation and provenance.</p></cell>
+            </row>
+          </tabular>
+        </table>
+      </subsection>
+
+      <subsection xml:id="subsec-anchor-validation">
+        <title>Check-Anchor Validation</title>
+
+        <p>
+          Check rows provide the strongest available internal validation because
+          they contain a complete state that is decoded independently of the
+          preceding move sequence.  An anchor is eligible when its <c>Input</c>
+          payload can be parsed and its labels align with the item specification.
+          Exact anchor agreement occurs when the replayed state immediately before
+          the check equals the decoded checked state.
+        </p>
+
+        <p>
+          Agreement is reported at the check and attempt levels.  Noncomparability
+          and disagreement are separated into missing or malformed payloads,
+          unknown labels, invalid checked states, source-map problems, ambiguous
+          ordering, skipped events, and unexplained mismatches.  A mismatch is
+          treated as evidence that the reconstructed trajectory cannot be assumed
+          complete.
+        </p>
+
+        <!--
+        VALIDATION COMPLETION CHECKLIST
+        1. Define the denominator for eligible anchors before calculating agreement.
+        2. Export one row per check with replayed state, decoded state, eligibility,
+           exact-match indicator, mismatch distance, and diagnostic flags.
+        3. Calculate overall and item-specific agreement with uncertainty intervals.
+        4. Classify every nonmatching or noncomparable check into a prespecified cause.
+        5. Draw a stratified manual-audit sample containing matches, mismatches,
+           limited attempts, excluded attempts, every item, and every offering.
+        6. Write a reviewer protocol that reconstructs the expected state without
+           consulting the pipeline's match label.
+        7. Use two reviewers for a subset if the audit involves interpretive coding.
+        8. Add synthetic fault cases for a missing move, swapped row order,
+           duplicate event, malformed JSON, unknown card, unknown zone, stale source,
+           and invalid double placement.
+        9. Verify that each synthetic fault produces the intended flag or mismatch.
+        10. Summarize automated, manual, synthetic, and regression-test evidence separately.
+        -->
+      </subsection>
+
+      <subsection xml:id="subsec-qc-readiness">
+        <title>Quality Control and Feature Readiness</title>
+
+        <p>
+          Quality-control flags are stored per attempt rather than resolved through
+          undocumented cleaning.  The implemented vocabulary includes successful
+          replay, check mismatch, parse error, missing source map, ambiguous row
+          order, invalid state, no-op move, duplicate row, session break, and long
+          idle gap.  Readiness is computed from these flags rather than from
+          student performance.
+        </p>
+
+        <p>
+          An attempt is <em>ready</em> when a source map is available, parsing and
+          state validity succeed, every comparable check agrees with replay, and
+          no warning remains beyond an informational no-op.  It is
+          <em>excluded</em> when the source map required for key-based features is
+          absent or when an invalid state makes checked-response features
+          unreliable.  All other attempts are <em>limited</em>: some features may
+          remain usable, but the warning must be respected by the analysis.
+        </p>
+
+        <table xml:id="tab-readiness-policy">
+          <title>Feature-readiness policy.</title>
+          <tabular valign="top">
+            <col width="20%" />
+            <col width="40%" />
+            <col width="40%" />
+            <row header="yes">
+              <cell><p>Status</p></cell>
+              <cell><p>Operational condition</p></cell>
+              <cell><p>Primary analytic use</p></cell>
+            </row>
+            <row>
+              <cell><p>ready</p></cell>
+              <cell><p>Anchor-validated replay with no substantive warning.</p></cell>
+              <cell><p>All prespecified features and primary analyses.</p></cell>
+            </row>
+            <row>
+              <cell><p>limited</p></cell>
+              <cell><p>Replay not fully anchor-verified or warning affects selected features.</p></cell>
+              <cell><p>Only analyses unaffected by the specific flag; included in sensitivity analyses when justified.</p></cell>
+            </row>
+            <row>
+              <cell><p>exclude</p></cell>
+              <cell><p>Missing source map or invalid state prevents defensible key-based or checked-state features.</p></cell>
+              <cell><p>QC accounting only.</p></cell>
+            </row>
+          </tabular>
+        </table>
+
+        <!--
+        READINESS COMPLETION CHECKLIST
+        1. Freeze the exact flag vocabulary and readiness function used for the paper.
+        2. Generate a flag-by-feature availability matrix.
+        3. Verify that readiness never depends on correctness, score, or apparent difficulty.
+        4. Count attempts carrying each individual flag and each common flag combination.
+        5. Inspect whether readiness varies by item, offering, or source version.
+        6. Prespecify the primary analysis as ready attempts unless a feature-specific
+           rule justifies otherwise.
+        7. Use ready plus limited only as a named sensitivity condition.
+        8. Move the complete rulebook to supplementary material if the main table becomes too large.
+        -->
+      </subsection>
+
+      <subsection xml:id="subsec-baseline-features">
+        <title>Baseline Outcome and Process Features</title>
+
+        <p>
+          Features are computed only after reconstruction status is known.  The
+          primary state feature is key distance <m>d^\star(X)</m>.  Attempt
+          outcomes include first-check distance, final-check distance,
+          first-check correctness, eventual correctness, and the ordinal of the
+          first correct check.  Error profiles distinguish cards left in the tray
+          when placement is required from cards assigned to an incorrect slot;
+          decoy-card and decoy-slot behavior is retained when defined by the item.
+        </p>
+
+        <p>
+          Process features include effective moves, no-op moves, takebacks,
+          resets, unique cards moved, repeated moves, number and timing of checks,
+          moves before the first check, post-check gain, wall-clock duration, and
+          active duration after removing gaps beyond a reported idle threshold.
+          Excess movement compares the observed number of effective moves with a
+          shortest-path benchmark.  These features describe observable behavior;
+          none uniquely identifies a cognitive strategy.
+        </p>
+
+        <table xml:id="tab-primary-features">
+          <title>Planned primary feature set for Paper 1.</title>
+          <tabular valign="top">
+            <col width="20%" />
+            <col width="40%" />
+            <col width="40%" />
+            <row header="yes">
+              <cell><p>Family</p></cell>
+              <cell><p>Primary fields</p></cell>
+              <cell><p>Role</p></cell>
+            </row>
+            <row>
+              <cell><p>Endpoint</p></cell>
+              <cell><p>first and final check distance; first-check and eventual correctness; correct-check ordinal</p></cell>
+              <cell><p>Define outcome-equivalent groups and summarize success.</p></cell>
+            </row>
+            <row>
+              <cell><p>Error profile</p></cell>
+              <cell><p>omissions; wrong-slot placements; decoy-card and decoy-slot errors</p></cell>
+              <cell><p>Describe how checked states differ from the key.</p></cell>
+            </row>
+            <row>
+              <cell><p>Movement</p></cell>
+              <cell><p>effective moves; no-ops; takebacks; resets; repeated cards; excess movement</p></cell>
+              <cell><p>Describe path length, revision, and efficiency.</p></cell>
+            </row>
+            <row>
+              <cell><p>Checking and time</p></cell>
+              <cell><p>number of checks; moves to first check; post-check gain; active and elapsed duration</p></cell>
+              <cell><p>Describe checking cadence and temporal structure.</p></cell>
+            </row>
+            <row>
+              <cell><p>Quality</p></cell>
+              <cell><p>QC flags; readiness; anchor coverage</p></cell>
+              <cell><p>Control analytic eligibility and sensitivity analyses.</p></cell>
+            </row>
+          </tabular>
+        </table>
+
+        <!--
+        FEATURE-FREEZE CHECKLIST
+        1. Complete and test first_check_distance, final_check_distance,
+           first_check_correct, eventual_correct, and correct_check_ordinal.
+        2. Complete the flat omission and wrong-slot error profile.
+        3. Confirm item covariates: P, R, decoy cards, decoy zones, source version,
+           and feedback-policy era.
+        4. Produce one unified attempt-level analysis table and one item-level diagnostic table.
+        5. Define excess movement mathematically for unsuccessful and successful attempts.
+        6. Freeze the idle threshold used for active duration and record it per run.
+        7. Remove entropy from the main paper unless a research question requires it.
+        8. Remove features that are redundant, sparsely defined, or not used in a table,
+           figure, model, or sensitivity analysis.
+        9. Produce a complete machine-readable dictionary for supplementary material.
+        -->
+      </subsection>
+    </section>

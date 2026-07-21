@@ -1,0 +1,1177 @@
+<chapter xml:id="ch-visualization-diagnostics">
+  <title>Visualization and Item Diagnostics</title>
+
+  <introduction>
+    <p>
+      The previous chapters defined the state, trajectory, processing, and
+      baseline-feature layers for drag-and-drop data. This chapter uses those
+      features to diagnose items. The goal is still descriptive rather than
+      confirmatory: make visible which <xref ref="gt-card" text="custom">cards</xref>
+      attract errors, which <xref ref="gt-zone" text="custom">zones</xref> are
+      overused, how students move through the state space, and which patterns are
+      stable enough to warrant deeper analysis.
+    </p>
+
+    <p>
+      A useful diagnostic display answers a concrete question about an item. A
+      placement heatmap asks where students placed each card. A distance curve asks
+      how close states or trajectories were to the <xref ref="gt-key" text="custom">key</xref>.
+      A transition network asks which state changes were common. An error-profile
+      display asks how wrong placements were structured. The sections below treat
+      these four display families in that order, then close with item-level summary
+      tables that collect them.
+    </p>
+
+    <p>
+      These displays can reveal patterns, but they do not explain those patterns
+      by themselves. Interpretation still depends on the
+      <xref ref="gt-item-design" text="custom">item design</xref>, the
+      <xref ref="gt-feedback-policy" text="custom">feedback policy</xref>, the
+      reconstruction quality, and any later validation evidence. A few displays
+      also preview the label-free and grouping-based comparisons developed in
+      <xref ref="ch-group-features"/>; those previews are identified
+      as such and should be treated as descriptive diagnostics until the later
+      comparison features have been defined.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-placement-heatmaps">
+    <title>Placement Heatmaps</title>
+
+    <introduction>
+      <p>
+        A placement heatmap summarizes where students placed each card at a chosen
+        analysis point. It is the most direct cohort-level visualization of the
+        <xref ref="gt-membership-matrix" text="custom">membership matrix</xref>
+        representation: one row per zone, one column per card, and each entry equal
+        to an empirical placement proportion.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-heatmap-definition">
+      <title>Definition</title>
+
+      <p>
+        Suppose <m>N</m> students produce checked states
+        <md>
+          X^{(1)},X^{(2)},\dots,X^{(N)}
+        </md>
+        for the same item at the same analysis point, such as first check or final
+        check. The placement heatmap, introduced as
+        <xref ref="an-baseline-placement-heatmap" text="custom">a cohort feature</xref>,
+        is the average membership matrix
+        <md xml:id="an-diagnostic-placement-heatmap">
+          \bar{X}
+          =
+          \frac{1}{N}\sum_{\nu=1}^{N} X^{(\nu)}.
+        </md>
+      </p>
+
+      <p>
+        The entry <m>\bar{X}_{ij}</m> is the fraction of students who placed card
+        <m>c_j</m> in zone <m>z_i</m> at the chosen analysis point. Each column sums
+        to one because every checked state assigns each card to exactly one zone:
+        <md>
+          \mathbf{1}^{\top}_{R+1}\bar{X}=\mathbf{1}^{\top}_P.
+        </md>
+        Thus <m>\bar{X}</m> is column-stochastic like each individual membership
+        matrix, but its entries are proportions in <m>[0,1]</m> rather than zeros
+        and ones.
+      </p>
+
+      <p>
+        Common analysis points include:
+        <ul>
+          <li>
+            <p>
+              <term>first check</term>, using each student's first submitted state;
+            </p>
+          </li>
+          <li>
+            <p>
+              <term>final check</term>, using each student's last submitted state;
+            </p>
+          </li>
+          <li>
+            <p>
+              <term>first correct check</term>, using the first correct submitted
+              state among students who eventually solved the item;
+            </p>
+          </li>
+          <li>
+            <p>
+              <term>incorrect checks only</term>, using checked states that were not
+              exactly correct;
+            </p>
+          </li>
+          <li>
+            <p>
+              <term>time-normalized or move-normalized states</term>, using states
+              sampled at a common relative point in the
+              <xref ref="gt-trajectory" text="custom">trajectory</xref>.
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        The analysis point is part of the definition and should always be reported.
+        A first-check heatmap diagnoses initial response structure. A final-check
+        heatmap reflects feedback, revision, persistence, and stopping behavior.
+        Pooling all checks gives still another view, weighted toward students who
+        checked more often.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-heatmap-interpretation">
+      <title>Reading a Placement Heatmap</title>
+
+      <p>
+        Each column of the heatmap describes one card. A concentrated column means
+        most students placed that card in the same zone. A diffuse column means
+        placements were spread across several zones. The home zone for each card
+        should be marked visually or listed alongside the display, since dispersion
+        alone does not distinguish shared correctness from shared error.
+      </p>
+
+      <figure xml:id="fig-cohort-heatmap">
+        <caption>
+          The placement heatmap <m>\bar X</m>: each cell is the fraction of the
+          cohort that placed a card in a zone, with key cells outlined. Dark mass
+          on an outlined cell indicates frequent correct placement; dark mass away
+          from the outline identifies a common wrong placement. Mass in a
+          decoy-slot row shows how strongly that empty slot attracted cards.
+        </caption>
+        <image source="figures/dnd-cohort-heatmap.png" width="70%">
+          <description>
+            <p>
+              Heatmap of zones against cards, shaded by the fraction of the cohort
+              placing each card in each zone, with the key cells outlined.
+            </p>
+          </description>
+        </image>
+      </figure>
+
+      <p>
+        Useful diagnostic questions include:
+        <ul>
+          <li>
+            <p>
+              Which cards are most often placed in their home zones?
+            </p>
+          </li>
+          <li>
+            <p>
+              Which cards are often left in the tray?
+            </p>
+          </li>
+          <li>
+            <p>
+              Which wrong zones attract a particular card?
+            </p>
+          </li>
+          <li>
+            <p>
+              Are decoy cards frequently placed into authored slots?
+            </p>
+          </li>
+          <li>
+            <p>
+              Are decoy slots frequently used?
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        A heatmap is marginal: it shows one card at a time. It does not show which
+        cards were grouped together within the same student's response. Grouping
+        structure requires the partition views and pairwise comparisons developed
+        later in <xref ref="ch-group-features"/>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-card-entropy-diagnostic">
+      <title>Card Placement Entropy</title>
+
+      <p>
+        The placement distribution for card <m>c_j</m> is the <m>j</m>-th column of
+        <m>\bar{X}</m>. Its dispersion is the card placement entropy
+        <m>H_j</m> of
+        <xref ref="an-baseline-card-entropy" text="custom">the cohort-feature
+        definition</xref>. Low entropy means students mostly agreed about the card's
+        placement. High entropy means their placements were spread across several
+        zones.
+      </p>
+
+      <p>
+        Entropy measures dispersion, not correctness. A card can have low entropy
+        because nearly everyone placed it correctly, or because nearly everyone made
+        the same wrong placement. The heatmap column distinguishes those cases.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-linear-summaries-from-heatmaps">
+      <title>Linear Summaries from Heatmaps</title>
+
+      <p>
+        Any linear state feature can be averaged from <m>\bar{X}</m>. For example,
+        the cohort's mean agreement score is
+        <md>
+          \frac{1}{N}\sum_{\nu=1}^{N}\sigma\bigl(X^{(\nu)}\bigr)
+          = \bigl\langle \bar{X},X^\star\bigr\rangle_F
+          = \sum_{j=1}^{P} \bar{X}_{s^\star(j),j}.
+        </md>
+        The mean key distance is therefore
+        <md>
+          \bar{d}^\star
+          =
+          P-\bigl\langle \bar{X},X^\star\bigr\rangle_F.
+        </md>
+        When <m>d^\star(X_0)\neq 0</m>, the corresponding mean baseline-corrected
+        progress is <m>1-\bar{d}^\star/d^\star(X_0)</m>.
+      </p>
+
+      <p>
+        Per card, the fraction correct for card <m>c_j</m> is the heatmap entry
+        <m>\bar{X}_{s^\star(j),j}</m>. The quantity
+        <md>
+          1-\bar{X}_{s^\star(j),j}
+        </md>
+        is the card's empirical difficulty at the chosen analysis point. For a
+        <xref ref="gt-decoy-card" text="custom">decoy card</xref>, the home zone is
+        the tray, so this difficulty is the fraction of students who placed the
+        decoy card into some authored slot.
+      </p>
+
+      <p>
+        <xref ref="tab-cheat-tallies"/> makes these summaries concrete. It gives
+        illustrative placement counts for the four-shape question over <m>N=30</m>
+        final checks. Dividing each entry by <m>30</m> gives <m>\bar{X}</m>.
+      </p>
+
+      <table xml:id="tab-cheat-tallies">
+        <title>
+          Illustrative placement tallies for the running example, counted over
+          <m>N=30</m> final checks; columns sum to <m>30</m>.
+        </title>
+        <tabular halign="center" bottom="minor">
+          <col width="30%" halign="right"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <col width="10%"/>
+          <row bottom="medium">
+            <cell bottom="none"></cell>
+            <cell></cell>
+            <cell><p><m>c_1</m></p></cell>
+            <cell><p><m>c_2</m></p></cell>
+            <cell><p><m>c_3</m></p></cell>
+            <cell><p><m>c_4</m></p></cell>
+          </row>
+          <row>
+            <cell bottom="none"><p>Tray</p></cell>
+            <cell><p><m>z_0</m></p></cell>
+            <cell><p><m>1</m></p></cell>
+            <cell><p><m>2</m></p></cell>
+            <cell><p><m>1</m></p></cell>
+            <cell><p><m>21</m></p></cell>
+          </row>
+          <row>
+            <cell bottom="none"><p>Triangle</p></cell>
+            <cell><p><m>z_1</m></p></cell>
+            <cell><p><m>25</m></p></cell>
+            <cell><p><m>16</m></p></cell>
+            <cell><p><m>3</m></p></cell>
+            <cell><p><m>1</m></p></cell>
+          </row>
+          <row>
+            <cell bottom="none"><p>Quadrilateral</p></cell>
+            <cell><p><m>z_2</m></p></cell>
+            <cell><p><m>4</m></p></cell>
+            <cell><p><m>12</m></p></cell>
+            <cell><p><m>26</m></p></cell>
+            <cell><p><m>1</m></p></cell>
+          </row>
+          <row bottom="minor">
+            <cell bottom="none"><p>Pentagon (decoy)</p></cell>
+            <cell><p><m>z_3</m></p></cell>
+            <cell><p><m>0</m></p></cell>
+            <cell><p><m>0</m></p></cell>
+            <cell><p><m>0</m></p></cell>
+            <cell><p><m>7</m></p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        The key for the example is <m>s^\star=(1,1,2,0)</m>. From the table:
+        <ul>
+          <li>
+            <p>
+              <term>Mean score:</term>
+              <md>
+                \bigl\langle\bar{X},X^\star\bigr\rangle_F
+                =\sum_{j=1}^{4}\bar{X}_{s^\star(j),j}
+                =\frac{25+16+26+21}{30}
+                =\frac{88}{30}\approx2.93,
+              </md>
+              so the mean key distance is
+              <m>\bar{d}^\star=4-2.93\approx1.07</m>.
+            </p>
+          </li>
+          <li>
+            <p>
+              <term>Per-card difficulty</term> <m>(1-\bar{X}_{s^\star(j),j}):</m>
+              <ul>
+                <li>
+                  right triangle <m>c_2^1</m>: <m>14/30\approx0.47</m> 
+                  (the hardest card),
+                </li>
+                <li>circle <m>c_4^0</m>: <m>0.30</m> (decoy card),</li>
+                <li>equilateral triangle <m>c_1^1</m>: <m>0.17</m>,</li>
+                <li>square <m>c_3^2</m>: <m>0.13</m>.</li>
+              </ul>
+            </p>
+          </li>
+          <li>
+            <p>
+              <term>Decoy-slot use:</term> the decoy-slot row is
+              <md>
+                \bar{X}_{3,\cdot}=(0,0,0,7/30),
+              </md>
+              so the empty Pentagon slot was used for the circle in about
+              <m>23\%</m> of final checks.
+            </p>
+          </li>
+          <li>
+            <p>
+              <term>Decoy-card leak:</term> the decoy-card column gives
+              <md>
+                1-\bar{X}_{0,4}=\frac{9}{30}=0.30.
+              </md>
+              Thus <m>30\%</m> of final checks placed the circle into an authored
+              slot.
+            </p>
+          </li>
+          <li>
+            <p>
+              The <term>mean zone confusion matrix</term> <m>\bar{M}</m>, developed
+              in <xref ref="subsec-zone-confusion-displays" text="title"/>, carries the same
+              information as first moments: 
+              <ul>
+                <li>
+                  mean omissions 
+                  <m>4/30\approx0.13</m>,
+                </li>
+                <li>
+                  mean <xref ref="gt-decoy-card-leak" text="title"/>
+                  <m>9/30=0.30</m>,
+                </li>
+                <li>
+                  mean <xref ref="gt-decoy-slot-leak" text="title"/>
+                  <m>7/30\approx0.23</m>.
+                </li>
+              </ul>
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        The same counts also give several mean error features. The mean number of
+        omissions is <m>(1+2+1)/30\approx0.13</m>. The mean decoy-card leak is
+        <m>9/30=0.30</m>. The mean decoy-slot leak is <m>7/30\approx0.23</m>.
+        These are first-moment summaries and can be read from the heatmap.
+      </p>
+
+      <figure xml:id="fig-cohort-difficulty">
+        <caption>
+          Per-card difficulty: one minus the fraction of the cohort that places
+          each card in its key zone. This is the complement of the outlined cells
+          in <xref ref="fig-cohort-heatmap"/>.
+        </caption>
+        <image source="figures/dnd-cohort-difficulty.png" width="65%">
+          <description>
+            <p>
+              Horizontal bar chart of each card's difficulty, sorted with the
+              hardest on top.
+            </p>
+          </description>
+        </image>
+      </figure>
+
+      <p>
+        Nonlinear summaries cannot, in general, be recovered from <m>\bar{X}</m>
+        alone. The exact-correct rate <m>\bar{A}</m> depends on each student's
+        whole configuration, not only on marginal card-placement frequencies.
+        Quantiles, common-state counts, and grouping summaries likewise require
+        the per-student states. As a rule, means of placement counts can be read
+        from <m>\bar{X}</m>, while rates of whole-response properties and
+        distributions must be computed before aggregation.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-decoy-pull">
+      <title>Decoys in the Heatmap</title>
+
+      <p>
+        The two structural decoys appear as a distinguished row and a distinguished
+        column. A <xref ref="gt-decoy-slot" text="custom">decoy slot</xref> is a slot
+        empty in the key; its row <m>\bar{X}_{i,\cdot}</m> gives, card by card,
+        the fraction of the cohort that placed a card into that empty slot. The row
+        sum <m>\sum_j\bar{X}_{ij}</m> is the mean number of cards placed there.
+      </p>
+
+      <p>
+        A <xref ref="gt-decoy-card" text="custom">decoy card</xref> is a card whose
+        home zone is the tray. Its column shows where students placed it. The
+        entries <m>\bar{X}_{i,j}</m> for <m>i\ge 1</m> give the fraction who placed
+        the card in each authored slot, and the total
+        <m>1-\bar{X}_{0,j}</m> is the decoy-card-leak rate. Thus empty-slot pull is
+        read across a row, while decoy-card pull is read down a column.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-heatmap-cautions">
+      <title>Diagnostic Cautions</title>
+
+      <p>
+        Heatmaps are useful precisely because they compress many responses into one
+        display, but that compression has limits:
+        <ul>
+          <li>
+            <p>
+              small samples can make proportions unstable;
+            </p>
+          </li>
+          <li>
+            <p>
+              final-check heatmaps are affected by the feedback policy and by
+              students' stopping behavior;
+            </p>
+          </li>
+          <li>
+            <p>
+              marginal card distributions do not show within-student grouping;
+            </p>
+          </li>
+          <li>
+            <p>
+              visible layout effects may influence placements independently of the
+              mathematical content;
+            </p>
+          </li>
+          <li>
+            <p>
+              first-moment displays do not retain rates, quantiles, or nonlinear
+              grouping metrics.
+            </p>
+          </li>
+        </ul>
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-distance-and-progress-curves">
+    <title>Distance and Progress Curves</title>
+
+    <introduction>
+      <p>
+        Heatmaps freeze a cohort at one analysis point. Distance and progress
+        curves add the temporal axis: they show how close checked states or full
+        trajectories are to the key across checks or over an attempt.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-check-distance-distribution">
+      <title>Checked-State Distance Distributions</title>
+
+      <p>
+        For a checked state <m>X</m>, the baseline key distance is
+        <m>d^\star(X)=d_{\mathcal{X}}(X,X^\star)</m>. Across a cohort, the
+        distribution of <m>d^\star(X)</m> at a chosen check ordinal gives a compact
+        performance summary. Since <m>\sigma(X)=P-d^\star(X)</m>, a histogram of
+        scores is the same display with the horizontal axis reversed.
+      </p>
+
+      <p>
+        Common displays include:
+        <ul>
+          <li>
+            <p>a histogram of first-check distances;</p>
+          </li>
+          <li>
+            <p>a histogram of final-check distances;</p>
+          </li>
+          <li>
+            <p>side-by-side distance distributions for first and final checks;</p>
+          </li>
+          <li>
+            <p>a table or chart of exact-correct rates by check ordinal.</p>
+          </li>
+        </ul>
+      </p>
+
+      <figure xml:id="fig-cohort-score-hist">
+        <caption>
+          Distribution of the agreement score <m>\sigma</m>, counted over all
+          checks and over final checks only. When final-check mass shifts right,
+          later checks contain more correct cards than earlier checks.
+        </caption>
+        <image source="figures/dnd-cohort-score_hist.png" width="70%">
+          <description>
+            <p>
+              Grouped bar chart of how many checks land at each score value, with
+              one series for all checks and one for final checks.
+            </p>
+          </description>
+        </image>
+      </figure>
+
+      <figure xml:id="fig-cohort-cock">
+        <caption>
+          Correct-on-check-<m>k</m>: the fraction of attempts solved exactly on
+          their <m>k</m>-th check. A tall first bar indicates many first-check
+          solutions; mass at later checks indicates correction after one or more
+          rounds of feedback and revision.
+        </caption>
+        <image source="figures/dnd-cohort-cock.png" width="55%">
+          <description>
+            <p>
+              Bar chart of the fraction of attempts solved at each successive check
+              number.
+            </p>
+          </description>
+        </image>
+      </figure>
+
+      <p>
+        First-check distributions are especially useful because they are least
+        affected by feedback. Final-check distributions measure eventual success
+        under the full item environment.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-trajectory-distance-curves">
+      <title>Trajectory Distance Curves</title>
+
+      <p>
+        For a reconstructed trajectory with states
+        <md>
+          X_0,X_1,\dots,X_n,
+        </md>
+        the <xref ref="an-baseline-distance-curve" text="custom">distance curve</xref>
+        is <m>d_k=d^\star(X_k)</m>. A decreasing step indicates movement toward
+        the key. A flat step indicates a move that does not change key distance. An
+        increasing step indicates movement away from the key. Checks can be marked
+        on the curve; resets return the state to the
+        <xref ref="gt-initial-state" text="custom">initial state</xref>.
+      </p>
+
+      <figure xml:id="fig-cohort-convergence">
+        <caption>
+          Distance to the key over successive moves, with one faint line per
+          attempt, dots marking checks, and a bold line for the cohort mean. A
+          steady descent is a direct solve; a rise is a regression; a jump back to
+          the starting distance is a reset.
+        </caption>
+        <image source="figures/dnd-cohort-convergence.png" width="85%">
+          <description>
+            <p>
+              Overlaid line chart of distance against move index for every attempt,
+              colored by whether the attempt was ultimately solved, with a mean
+              curve.
+            </p>
+          </description>
+        </image>
+      </figure>
+
+      <p>
+        Individual distance curves support case analysis. Aggregated curves support
+        item diagnosis. Aggregation requires an alignment rule: by move number, by
+        check ordinal, by first incorrect check, by first correct check, or by a
+        time-normalized scale. The alignment rule should be reported with the
+        display.
+      </p>
+
+      <figure xml:id="fig-cohort-small-multiples">
+        <caption>
+          The same trajectories shown as small multiples, one panel per attempt, so
+          the shape of each path remains legible: direct descents, regressions,
+          resets, stalls, and incomplete paths.
+        </caption>
+        <image source="figures/dnd-cohort-small_multiples.png" width="100%">
+          <description>
+            <p>
+              A grid of small line charts, one per attempt, each showing that
+              attempt's distance over its moves.
+            </p>
+          </description>
+        </image>
+      </figure>
+    </subsection>
+
+    <subsection xml:id="subsec-progress-curves">
+      <title>Progress Curves</title>
+
+      <p>
+        When the initial state already has some correct cards, especially because
+        decoy cards begin in the tray, raw distance can be harder to compare across
+        items. The baseline-corrected progress <m>g(X)</m> of
+        <xref ref="an-baseline-corrected-progress" text="custom">the baseline
+        feature definition</xref> rescales distance so that the initial state has
+        progress <m>0</m> and the key has progress <m>1</m>, provided
+        <m>d^\star(X_0)\neq 0</m>.
+      </p>
+
+      <p>
+        Progress can be negative if a student moves farther from the key than the
+        initial tray state. This can happen when a decoy card begins correctly in
+        the tray but is later moved into an authored slot.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-post-check-progress">
+      <title>Post-Check Progress</title>
+
+      <p>
+        Suppose checks occur at trajectory indices <m>k_1,k_2,\dots,k_q</m>. The
+        <xref ref="an-baseline-post-check-gain" text="custom">post-check gain</xref>
+        from check <m>i</m> to check <m>i+1</m> is
+        <md>
+          G_i=d^\star(X_{k_i})-d^\star(X_{k_{i+1}}).
+        </md>
+        Positive values indicate improvement between checked states. Zero indicates
+        no net improvement. Negative values indicate that the later checked state is
+        farther from the key.
+      </p>
+
+      <figure xml:id="fig-cohort-learning-curve">
+        <caption>
+          Mean agreement score at the <m>k</m>-th check. Unlike
+          correct-on-check-<m>k</m>, this curve tracks partial progress, so a cohort
+          can show improvement even before many students solve the item exactly.
+        </caption>
+        <image source="figures/dnd-cohort-learning_curve.png" width="70%">
+          <description>
+            <p>
+              Line chart of average score against check number, with the maximum
+              score drawn as a dashed ceiling.
+            </p>
+          </description>
+        </image>
+      </figure>
+
+      <p>
+        Post-check displays help diagnose whether feedback is followed by productive
+        revision. This interpretation depends on the feedback policy: detailed
+        feedback and all-or-nothing feedback create different opportunities for
+        improvement.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-transition-networks">
+    <title>Transition Networks</title>
+
+    <introduction>
+      <p>
+        Distance curves compress each state to one number. A transition network
+        keeps the states themselves, or a specified summary of them, and visualizes
+        movement through the configuration graph. Vertices are states or state
+        summaries; directed edges count observed transitions.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-full-state-transition-network">
+      <title>Full-State Transition Networks</title>
+
+      <p>
+        Let <m>\mathcal{X}_{\operatorname{obs}}</m> be the set of membership
+        matrices observed in a cohort of reconstructed trajectories. For observed
+        states <m>X</m> and <m>Y</m>, the transition count is
+        <md xml:id="an-diagnostic-transition-count">
+          C_{XY}
+          =
+          \#\{\text{observed ordinary moves }X\to Y\}.
+        </md>
+        This is the same count introduced in
+        <xref ref="an-baseline-transition-count" text="custom">the cohort-feature
+        section</xref>, now viewed as an edge weight.
+      </p>
+
+      <p>
+        The directed graph with vertex set <m>\mathcal{X}_{\operatorname{obs}}</m>
+        and edge weights <m>C_{XY}</m> is the full-state transition network. It
+        shows which configurations are common and which moves connect them.
+      </p>
+
+      <p>
+        For small items, the full-state network may be readable. For larger items,
+        the possible state space has size <m>(R+1)^P</m>, and the observed network
+        can still be too large or sparse to display directly. Filtered and
+        coarsened networks are usually more useful in that setting.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-filtered-transition-networks">
+      <title>Filtered Networks</title>
+
+      <p>
+        A filtered transition network retains only states or edges satisfying a
+        stated criterion. Common filters include:
+        <ul>
+          <li>
+            <p>states visited by at least a fixed number of students;</p>
+          </li>
+          <li>
+            <p>transitions observed at least a fixed number of times;</p>
+          </li>
+          <li>
+            <p>states within a fixed distance of the key;</p>
+          </li>
+          <li>
+            <p>states occurring before the first check;</p>
+          </li>
+          <li>
+            <p>states occurring after an incorrect check.</p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Filtering improves readability but changes the object being displayed. The
+        filter rule and threshold should be reported with the visualization.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-coarsened-transition-networks">
+      <title>Coarsened Networks</title>
+
+      <p>
+        A coarsened transition network replaces each full state by a state summary.
+        Possible summaries include:
+        <ul>
+          <li>
+            <p>key distance <m>d^\star(X)</m>;</p>
+          </li>
+          <li>
+            <p>progress <m>g(X)</m>;</p>
+          </li>
+          <li>
+            <p>error profile <m>\boldsymbol{\varepsilon}(X)</m>;</p>
+          </li>
+          <li>
+            <p><xref ref="gt-occupancy" text="custom">occupancy</xref> vector;</p>
+          </li>
+          <li>
+            <p>check or feedback status.</p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Coarsened networks are easier to read and often more stable across cohorts,
+        but they discard information. Many distinct configurations can have the
+        same distance, occupancy, or error profile. Coarsened displays should
+        therefore be used for diagnosis rather than exact reconstruction. Distance
+        coarsening also provides the descriptive bridge to the process models in
+        <xref ref="subsec-markov" text="title"/>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-transition-network-questions">
+      <title>Diagnostic Questions</title>
+
+      <p>
+        Transition networks are useful for answering questions such as:
+        <ul>
+          <li>
+            <p>Which wrong states are common hubs?</p>
+          </li>
+          <li>
+            <p>Which moves are common immediately before the first check?</p>
+          </li>
+          <li>
+            <p>Which moves are common immediately after feedback?</p>
+          </li>
+          <li>
+            <p>Do students tend to move monotonically toward the key or cycle among nearby states?</p>
+          </li>
+          <li>
+            <p>Are resets associated with particular regions of the state space?</p>
+          </li>
+        </ul>
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-error-profile-displays">
+    <title>Error Profile Displays</title>
+
+    <introduction>
+      <p>
+        Distance displays count how many cards are wrong. Error-profile displays
+        show how the wrong cards are wrong: left in the tray, placed in the wrong
+        slot, or involved in a decoy error. They visualize the structural error
+        features of the baseline chapter at the cohort level.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-error-profile-bars">
+      <title>Error Profile Bar Charts</title>
+
+      <p>
+        For a checked state <m>X</m>, the baseline error profile
+        <m>\boldsymbol{\varepsilon}(X)</m> collects omissions,
+        wrong-slot placements, decoy-card leaks, and decoy-slot leaks. For a cohort
+        of checked states, the total for displayed component <m>r</m> is
+        <md xml:id="an-diagnostic-mean-error-feature">
+          E_r
+          =
+          \sum_{\nu=1}^{N} \varepsilon_r\bigl(X^{(\nu)}\bigr),
+        </md>
+        where <m>\varepsilon_r</m> denotes that component of the baseline error
+        profile. Dividing by <m>N</m> gives the corresponding mean per checked
+        state.
+      </p>
+
+      <p>
+        The four baseline bars should be read with care. Omissions, wrong-slot
+        placements, and decoy-card leaks form the additive decomposition of
+        <m>d^\star(X)</m>; decoy-slot leaks are an overlapping structural flag, not
+        a fourth part of the distance. If the next chapter's grouping features are
+        added to the display, their units should be labeled explicitly because pair
+        counts and label-free grouping diagnostics are not card-count components of
+        the baseline distance.
+      </p>
+
+      <figure xml:id="fig-cohort-errors">
+        <caption>
+          Error-profile totals over the checked states in scope. The baseline bars
+          separate omissions, wrong-slot placements, decoy-card leaks, and decoy-slot
+          leaks. Optional advanced bars can add grouping failures after the
+          label-free and partition-based features have been defined.
+        </caption>
+        <image source="figures/dnd-cohort-errors.png" width="70%">
+          <description>
+            <p>
+              Bar chart of error-type counts summed across checked states.
+            </p>
+          </description>
+        </image>
+      </figure>
+    </subsection>
+
+    <subsection xml:id="subsec-zone-confusion-displays">
+      <title>Zone Confusion Displays</title>
+
+      <p>
+        The zone confusion matrix <m>M(X)=XX^{\star\top}</m> records where cards
+        are relative to their home zones. For a cohort of checked states, the mean
+        zone confusion matrix is
+        <md xml:id="an-diagnostic-mean-zone-confusion">
+          \bar{M}
+          =
+          \frac{1}{N}\sum_{\nu=1}^{N} M\bigl(X^{(\nu)}\bigr).
+        </md>
+      </p>
+
+      <p>
+        The entry <m>\bar{M}_{ih}</m> is the average number of cards currently in
+        zone <m>z_i</m> whose home zone is <m>z_h</m>. Diagonal entries represent
+        agreement with the key. Off-diagonal entries identify common source-target
+        confusions. The row and column margins give the mean current occupancy and
+        the key occupancy, as in the single-state confusion matrix.
+      </p>
+
+      <figure xml:id="fig-cohort-confusion">
+        <caption>
+          Zone confusion from the key's point of view. Each row corresponds to a key
+          group, and each column corresponds to the zone where those cards were
+          placed. Diagonal mass is correct placement; off-diagonal mass identifies
+          common category confusions; mass in a decoy-slot column is leakage into a
+          slot the key leaves empty.
+        </caption>
+        <image source="figures/dnd-cohort-confusion.png" width="55%">
+          <description>
+            <p>
+              Row-normalized heatmap of key group against the zone where the cohort
+              actually placed those cards.
+            </p>
+          </description>
+        </image>
+      </figure>
+
+      <p>
+        <xref ref="fig-cohort-confusion"/> presents the same information after
+        normalizing each key group by its key occupancy. This form is especially
+        useful when an item has several categories, because it shows whether errors
+        concentrate in particular wrong zones or spread broadly across the response
+        space.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-decoy-diagnostic-displays">
+      <title>Decoy Diagnostics</title>
+
+      <p>
+        Items with decoy cards or decoy slots should include decoy-specific
+        diagnostics. The heatmap row-and-column reading of
+        <xref ref="subsec-decoy-pull" text="title"/> gives the marginal rates.
+        Additional useful displays include:
+        <ul>
+          <li>
+            <p>the proportion of students who placed each decoy card into any slot;</p>
+          </li>
+          <li>
+            <p>the distribution of zones chosen for each decoy card;</p>
+          </li>
+          <li>
+            <p>the proportion of students who used each decoy slot;</p>
+          </li>
+          <li>
+            <p>the joint frequency of decoy-card leaks and decoy-slot leaks.</p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        These displays distinguish a decoy that is rarely used from one that
+        consistently attracts responses. Consistent attraction may be useful when
+        the decoy is intentionally diagnostic, but problematic when it reflects an
+        unintended prompt, layout, or wording effect.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-error-profile-by-check">
+      <title>Error Profiles Across Checks</title>
+
+      <p>
+        Error profiles can be computed separately by check ordinal. For example,
+        the mean decoy-card leak at first check can be compared with the mean
+        decoy-card leak at final check. A large decrease suggests that feedback and
+        revision reduced decoy-card placement. Little or no decrease suggests that
+        the error persisted through revision.
+      </p>
+
+      <p>
+        As with all post-feedback summaries, the feedback policy should be reported.
+        Detailed feedback can change error profiles in ways that belong to the item
+        environment, not only to students' initial responses.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-mislabel-gap-preview">
+      <title>Previewing Label-Free Comparison</title>
+
+      <p>
+        One diagnostic question looks past authored labels. The baseline features
+        treat a card as correct only in its exact home zone, but a student may group
+        the cards correctly while assigning those groups to the wrong slot names.
+        The next chapter defines a label-free agreement score and the corresponding
+        labeling gap that separate grouping errors from naming errors. A histogram
+        of that gap is useful when an item has interchangeable-looking or easily
+        swapped category labels.
+      </p>
+
+      <p>
+        This is only a preview. Until the label-free comparison has been defined,
+        the baseline agreement score <m>\sigma(X)</m> and key distance
+        <m>d^\star(X)</m> remain the operative correctness measures in this
+        chapter.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-item-level-diagnostic-summaries">
+    <title>Item-Level Diagnostic Summaries</title>
+
+    <introduction>
+      <p>
+        The displays above examine one item closely. Item-level summaries collect
+        the most important diagnostic features into a compact table. They support
+        item comparison, unusual-pattern detection, and selection of items for
+        deeper qualitative or statistical study.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-item-diagnostic-table">
+      <title>Diagnostic Summary Table</title>
+
+      <p>
+        A minimal item-level diagnostic table should combine design covariates,
+        outcome summaries, process summaries, error summaries, dispersion summaries,
+        and quality-control summaries.
+      </p>
+
+      <table xml:id="tab-item-diagnostic-summary-fields">
+        <title>Suggested fields for an item-level diagnostic summary.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="28%" halign="left"/>
+          <col width="72%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Field family</p></cell>
+            <cell><p>Examples</p></cell>
+          </row>
+          <row>
+            <cell><p>design</p></cell>
+            <cell>
+              <p>
+                <m>P</m>, <m>R</m>, number of decoy cards, number of decoy slots,
+                feedback policy
+              </p>
+            </cell>
+          </row>
+          <row>
+            <cell><p>outcome</p></cell>
+            <cell>
+              <p>
+                first-check correct rate, eventual correct rate, mean first-check
+                distance, mean final-check distance
+              </p>
+            </cell>
+          </row>
+          <row>
+            <cell><p>process</p></cell>
+            <cell>
+              <p>
+                mean number of moves, mean number of checks, reset rate, median
+                active time, median time to first check
+              </p>
+            </cell>
+          </row>
+          <row>
+            <cell><p>error profile</p></cell>
+            <cell>
+              <p>
+                mean omissions, wrong-slot placements, decoy-card leaks,
+                decoy-slot leaks
+              </p>
+            </cell>
+          </row>
+          <row>
+            <cell><p>dispersion</p></cell>
+            <cell>
+              <p>
+                mean card entropy, maximum card entropy, number of common wrong states
+              </p>
+            </cell>
+          </row>
+          <row>
+            <cell><p>quality control</p></cell>
+            <cell>
+              <p>
+                number of attempts, number passing replay checks, number with parse
+                errors, number with long idle gaps
+              </p>
+            </cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+
+    <subsection xml:id="subsec-diagnostic-flags">
+      <title>Item Diagnostic Flags</title>
+
+      <p>
+        Diagnostic flags identify items that may deserve closer inspection. Examples
+        include:
+        <ul>
+          <li>
+            <p>high first-check distance but high eventual correctness;</p>
+          </li>
+          <li>
+            <p>low first-check distance but many checks before success;</p>
+          </li>
+          <li>
+            <p>high decoy-card leak rate;</p>
+          </li>
+          <li>
+            <p>high decoy-slot usage;</p>
+          </li>
+          <li>
+            <p>high reset rate;</p>
+          </li>
+          <li>
+            <p>many repeated states or cycles;</p>
+          </li>
+          <li>
+            <p>high reconstruction mismatch rate.</p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        These flags are prompts for review, not automatic conclusions. A high
+        decoy-card leak rate may indicate a strong decoy, a confusing prompt, a
+        layout effect, or an intended diagnostic challenge. The display identifies
+        the pattern; interpretation requires returning to the item.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-cross-course-and-semester-stability">
+      <title>Cross-Course and Cross-Semester Stability</title>
+
+      <p>
+        When data are available from multiple courses or semesters, the same
+        diagnostic summaries can be computed separately by cohort. Stable patterns
+        across cohorts are stronger evidence of item-level structure than patterns
+        appearing in only one offering.
+      </p>
+
+      <p>
+        Useful comparisons include:
+        <ul>
+          <li>
+            <p>first-check correct rate by semester;</p>
+          </li>
+          <li>
+            <p>placement heatmaps by course;</p>
+          </li>
+          <li>
+            <p>decoy usage rates by semester;</p>
+          </li>
+          <li>
+            <p>mean distance curves by cohort;</p>
+          </li>
+          <li>
+            <p>reconstruction quality by data source or platform version.</p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Cross-cohort comparisons should account for changes in item design,
+        feedback policy, source version, course context, and student population.
+        Apparent differences across semesters may reflect any of these factors.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-diagnostic-to-research-transition">
+      <title>From Diagnostics to Research Questions</title>
+
+      <p>
+        Diagnostic displays are useful for exploratory work because they locate
+        patterns worth studying. A heatmap may reveal that one card is commonly
+        placed in a particular wrong zone. A transition network may show a common
+        post-feedback repair path. A cross-semester comparison may show that an
+        error pattern is stable across cohorts.
+      </p>
+
+      <p>
+        Such observations can motivate research questions, but they are not
+        research findings by themselves. The next chapter,
+        <xref ref="ch-group-features"/>, extends the comparison
+        vocabulary previewed here with label-free agreement, partition views, merge
+        and split features, and pairwise grouping indices. The statistical models of
+        <xref ref="ch-statistical-modeling"/> and the validity arguments of
+        <xref ref="ch-validity-interpretation"/> then address whether a diagnostic
+        pattern supports a claim about item design, student behavior, feedback use,
+        or learning.
+      </p>
+    </subsection>
+  </section>
+</chapter>

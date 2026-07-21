@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ================================================================== -->
+<!-- Reader guide for the drag-and-drop research journal.               -->
+<!-- ================================================================== -->
+<chapter xml:id="ch-dnd-quick-start-guide">
+  <title>Quick Start Guide</title>
+
+  <introduction>
+    <p>
+      This chapter summarizes a proposed framework and data pipeline for the 
+      analysis of a drag-and-drop interactive question. The organizational 
+      structure of this document is as follows:
+      <md>
+        \text{item design}
+        \rightarrow
+        \text{state model}
+        \rightarrow
+        \text{event trajectory}
+        \rightarrow
+        \text{features}
+        \rightarrow
+        \text{models}.
+      </md>
+    </p>
+  </introduction>
+
+  <section xml:id="sec-reader-guide-fast-map">
+    <title>Fast Map of the Journal</title>
+
+    <p>
+      The journal has ten main chapters. They divide naturally into five blocks.
+    </p>
+
+    <table xml:id="tab-reader-guide-blocks">
+      <title>Conceptual blocks in the drag-and-drop journal.</title>
+      <tabular valign="top" bottom="minor">
+        <col width="20%" halign="left"/>
+        <col width="30%" halign="left"/>
+        <col width="45%" halign="left"/>
+        <row bottom="medium">
+          <cell><p>Block</p></cell>
+          <cell><p>Chapters</p></cell>
+          <cell><p>What the block contributes</p></cell>
+        </row>
+        <row>
+          <cell><p>Motivation and task structure</p></cell>
+          <cell><p><xref ref="ch-dnd-anatomy" text="title"/>; <xref ref="ch-item-design" text="title"/></p></cell>
+          <cell><p>Explains what a cardsort is, what the logs record, and which parts of the task are fixed before students act.</p></cell>
+        </row>
+        <row>
+          <cell><p>Representation</p></cell>
+          <cell><p><xref ref="ch-state-model" text="title"/>; <xref ref="ch-event-trajectory-model" text="title"/></p></cell>
+          <cell><p>Defines board states, membership matrices, moves, checks, resets, and timestamped trajectories.</p></cell>
+        </row>
+        <row>
+          <cell><p>Feature construction</p></cell>
+          <cell><p><xref ref="ch-baseline-features" text="title"/>; <xref ref="ch-group-features" text="title"/></p></cell>
+          <cell><p>Turns states and trajectories into measurable summaries: correctness, distance, error types, movement, timing, grouping, and alternative comparison metrics.</p></cell>
+        </row>
+        <row>
+          <cell><p>Data pipeline and diagnostics</p></cell>
+          <cell><p><xref ref="ch-data-processing" text="title"/>; <xref ref="ch-visualization-diagnostics" text="title"/></p></cell>
+          <cell><p>Explains how raw exports become analysis-ready tables and how feature summaries can diagnose item behavior.</p></cell>
+        </row>
+        <row>
+          <cell><p>Inference and interpretation</p></cell>
+          <cell><p><xref ref="ch-statistical-modeling" text="title"/>; <xref ref="ch-validity-interpretation" text="title"/></p></cell>
+          <cell><p>Asks which patterns are stable, predictive, or interpretable, and states the limits of what interaction logs can support.</p></cell>
+        </row>
+      </tabular>
+    </table>
+  </section>
+
+  <section xml:id="sec-reader-guide-guided-tour">
+    <title>Overview of the Chapters</title>
+
+    <subsection xml:id="subsec-reader-guide-ch1">
+      <title>Chapter 1: What Is Logged, and Why It Matters</title>
+
+      <p>
+        <xref ref="ch-dnd-anatomy" text="title"/> is the conceptual entry point.
+        It explains the contrast between ordinary autograded data and drag-and-drop
+        process data. The reader should come away understanding that the log is
+        not only an outcome record. It contains an ordered trace of moves, checks,
+        resets, feedback, and timestamps.
+      </p>
+
+      <p>
+        The running example is deliberately small. Its purpose is not to be an
+        interesting assessment item, but to create all of the structural cases the
+        framework needs: cards that belong in slots, a card that should remain in
+        the tray, and a slot that should remain empty.
+      </p>
+
+      <p>
+        While reading, ask whether the motivation would be clear to someone who
+        has never seen Runestone, PreTeXt, or DataShop. The chapter should make the
+        reader believe that ordinary correctness data are missing something
+        methodologically important.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-ch2">
+      <title>Chapter 2: Separate the Task From the Student</title>
+
+      <p>
+        <xref ref="ch-item-design" text="title"/> defines the designed object:
+        the cards, slots, tray, zones, key, decoys, and feedback policy. This is a
+        crucial separation. Item design features describe the response space that
+        the author created. They are not performance features, although they may
+        explain differences in performance.
+      </p>
+
+      <p>
+        The most important design idea is that decoys are explicit. A decoy card
+        is a card whose home zone is the tray. A decoy slot is a slot that should
+        remain empty. These two structures create observable boundary errors: a
+        student may place a card that should remain unplaced, or fill a slot that
+        should remain empty.
+      </p>
+
+      <p>
+        The second important design idea is that feedback policy is part of the
+        task. A student working with immediate card-level feedback is not solving
+        the same task as a student receiving only an all-or-nothing verdict, even
+        if the visible source item is otherwise identical.
+      </p>
+
+      <p>
+        While reading, ask whether the item-design covariates are sufficient for
+        later comparisons across items, semesters, or platform eras. In
+        particular, check whether the feedback policy is described concretely
+        enough to support modeling and interpretation.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-ch3">
+      <title>Chapter 3: Represent One Board State</title>
+
+      <p>
+        <xref ref="ch-state-model" text="title"/> defines what a board snapshot
+        is. A state is a function
+        <m>s:
+        \mathcal{P}\to\mathcal{Z}</m>, assigning every card to exactly one zone.
+        The same state can be stored as a vector of zone indices or as a
+        membership matrix <m>X</m> with one row per zone and one column per card.
+      </p>
+
+      <p>
+        The vector representation is compact and implementation-friendly. The
+        membership matrix representation is more algebraic: it makes agreement,
+        distance, occupancy, and cohort averages easy to express. A reader should
+        judge whether this algebraic payoff is worth the notation.
+      </p>
+
+      <p>
+        The key state <m>X^\star</m> and the initial state <m>X_0</m> are the two
+        reference states used throughout the rest of the framework. Most later
+        features compare the current state either to the key, to the initial
+        state, or to a previous state in the same trajectory.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-ch4">
+      <title>Chapter 4: Turn States Into Trajectories</title>
+
+      <p>
+        <xref ref="ch-event-trajectory-model" text="title"/> adds time and action
+        marks. A move changes the state by moving one card. A check leaves the
+        state unchanged but marks it as submitted and attaches feedback. A reset
+        jumps back to the initial state. A page event does not change the board,
+        but may help delimit a session.
+      </p>
+
+      <p>
+        The central object is the event trajectory
+        <md>
+          \Gamma=
+          \bigl((a_0,t_0,X_0),(a_1,t_1,X_1),\dots,(a_n,t_n,X_n)\bigr).
+        </md>
+        This object is the bridge between interface logs and process features.
+      </p>
+
+      <p>
+        The chapter also interprets moves as walks through a configuration graph.
+        That graph view matters because it turns distance to the key into an
+        operational quantity: how many single-card moves are needed to reach the
+        key from the current state.
+      </p>
+
+      <p>
+        While reading, ask whether the trajectory object is exactly rich enough:
+        not so minimal that it loses checks, feedback, and time, but not so
+        elaborate that it becomes difficult to reconstruct from real data.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-ch5">
+      <title>Chapter 5: Define the Core Feature Vocabulary</title>
+
+      <p>
+        <xref ref="ch-baseline-features" text="title"/> is one of the central
+        chapters. It defines the baseline features that make the data analyzable:
+        checked-state correctness, distance to the key, error profiles, movement
+        summaries, check behavior, timing, and cohort summaries.
+      </p>
+
+      <p>
+        The key methodological point is that a feature is not an interpretation.
+        A distance, a decoy-card leak, a takeback, or a long gap is a structural
+        measurement derived from the item design, reconstructed states, and event
+        log. Whether that measurement reflects guessing, confusion, strategic use
+        of feedback, or learning is a later validity question.
+      </p>
+
+      <p>
+        Read this chapter closely. Ask which features are essential for a first
+        article and which are optional. A strong publishable version may need a
+        smaller core vocabulary plus a clear argument that these features are
+        robust, computable, and useful.
+      </p>
+
+      <p>
+        In particular, examine the feature levels. State features, move features,
+        segment features, attempt features, and cohort features answer different
+        questions. A common failure mode in process-data work is to compute a
+        feature at one level and interpret it at another.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-ch6">
+      <title>Chapter 6: Use Features to Diagnose Items</title>
+
+      <p>
+        <xref ref="ch-visualization-diagnostics" text="title"/> shows what the
+        feature framework buys in practice. Placement heatmaps show where each
+        card tends to go. Distance and progress curves show movement toward or
+        away from the key. Transition displays show common moves through the
+        state space. Error-profile displays show the structure of wrong answers.
+      </p>
+
+      <p>
+        The displays are descriptive. They are meant to reveal patterns worth
+        explaining, not to prove the explanation. For example, a decoy slot that
+        attracts many cards may suggest a design issue, a misconception, or a
+        response strategy, but the display alone does not decide among these.
+      </p>
+
+      <p>
+        While reading, ask which displays would be most compelling in a methods
+        article. A small number of polished diagnostics on real data may be more
+        persuasive than a long catalog of possible plots.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-ch7">
+      <title>Chapter 7: Make the Pipeline Reproducible</title>
+
+      <p>
+        <xref ref="ch-data-processing" text="title"/> may be the most important
+        chapter for a data scientist. It explains that a raw drag-and-drop export
+        is not yet a trajectory. The pipeline must parse raw rows, order events,
+        decode positional labels using item maps, replay moves, validate check
+        anchors, flag questionable traces, define attempts and sessions, and
+        export analysis-ready tables.
+      </p>
+
+      <p>
+        The most important distinction is
+        <md>
+          \text{raw row}
+          \neq
+          \text{reconstructed state}
+          \neq
+          \text{derived feature}.
+        </md>
+        Raw rows should be retained. Reconstructed states should carry quality
+        flags. Features should be computed only after the reconstruction status is
+        known.
+      </p>
+
+      <p>
+        Check rows are especially important because they contain a full submitted
+        configuration. They can be used as anchors: the state reconstructed by
+        replaying moves should agree with the state parsed from the check record.
+        Disagreement does not always make the row useless, but it changes which
+        features can be trusted.
+      </p>
+
+      <p>
+        While reading, ask whether the pipeline is implementable by someone else.
+        The best version of this chapter should specify enough table structure,
+        flags, provenance, and inclusion rules to support a reproducible analysis
+        or reference implementation.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-ch8">
+      <title>Chapter 8: Ask Whether Exact Labels Are the Right Comparison</title>
+
+      <p>
+        <xref ref="ch-group-features" text="title"/> extends the
+        baseline comparison. The platform grades exact labeled placement: each
+        card must be in its authored home zone. But for some research questions,
+        a wrong labeled answer may still have meaningful grouping structure.
+      </p>
+
+      <p>
+        The chapter introduces label-free agreement, partition views, merge and
+        split features, pairwise grouping metrics, and weighted or semantic
+        distances. These are diagnostics, not replacements for the grader, unless
+        the research question explicitly concerns grouping rather than labeled
+        category choice.
+      </p>
+
+      <p>
+        While reading, ask whether these advanced features belong in the main
+        article. They may be important for the broader framework, but a first
+        publication might present them as extensions after the baseline pipeline
+        has been established.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-ch9">
+      <title>Chapter 9: Model Patterns Without Forgetting the Data Structure</title>
+
+      <p>
+        <xref ref="ch-statistical-modeling" text="title"/> asks how the feature
+        tables can support inference. The data are nested and crossed: events sit
+        inside attempts; attempts involve students and items; students encounter
+        many items; items are encountered by many students; and item versions or
+        feedback policies may change across semesters.
+      </p>
+
+      <p>
+        The modeling chapter therefore emphasizes student effects, item effects,
+        design covariates, process features, temporal alignment of predictors and
+        outcomes, and validation across students, items, or semesters.
+      </p>
+
+      <p>
+        The key reading discipline is to separate prediction, explanation, and
+        causal interpretation. A feature may improve prediction without explaining
+        the mechanism. A coefficient may describe an association without showing
+        that a behavior caused success. A process feature that occurs after the
+        outcome should not be used to predict that outcome.
+      </p>
+
+      <p>
+        While reading, ask what the primary modeling target should be. Possible
+        targets include first-check correctness, eventual correctness, first-check
+        distance, post-check gain, number of moves, active time, and item-level
+        error rates. A publishable article should probably choose a small number
+        of primary outcomes.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-ch10">
+      <title>Chapter 10: Keep the Interpretations Honest</title>
+
+      <p>
+        <xref ref="ch-validity-interpretation" text="title"/> states the boundary
+        of the framework. The logs directly record moves, checks, resets,
+        feedback, timestamps, and reconstructed states. They do not directly
+        record understanding, misconception, strategy, intent, attention,
+        learning, or causality.
+      </p>
+
+      <p>
+        The most important contribution of this chapter is the claim ladder:
+        observation, structural feature, response pattern, interpretation, and
+        validated claim. The framework strongly supports the first three levels.
+        The fourth requires careful language. The fifth requires additional
+        evidence such as related items, written explanations, interviews,
+        pre/post comparisons, randomized feedback conditions, or cross-semester
+        stability.
+      </p>
+
+      <p>
+        This chapter should influence the whole article, not only the conclusion.
+        If the paper uses restrained interpretive language from the beginning, the
+        framework will be more credible.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-reader-guide-core-questions">
+    <title>Brainstorming Questions</title>
+
+    <subsection xml:id="subsec-reader-guide-framework-questions">
+      <title>Framework and Notation</title>
+      <p>
+        <ul>
+          <li><p>Is the membership-matrix notation useful enough to keep central?</p></li>
+          <li><p>Would vector notation be preferred for implementation and matrix notation only for aggregation?</p></li>
+        </ul>
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-feature-questions">
+      <title>Feature Engineering</title>
+
+      <p>
+        <ul>
+          <li><p>Which features are likely redundant, unstable, or too dependent on item design?</p></li>
+          <li><p>Which features are robust to logging irregularities?</p></li>
+          <li><p>Which advanced comparison features have enough empirical payoff to justify inclusion in the main article?</p></li>
+        </ul>
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-modeling-questions">
+      <title>Statistical Modeling</title>
+
+      <p>
+        <ul>
+          <li><p>Is anything still missing in the analysis-ready table?</p></li>
+          <li><p>Are the proposed models realistic for the expected sample size and item count?</p></li>
+          <li><p>Do process features add predictive value beyond final correctness, item identity, and student identity?</p></li>
+        </ul>
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reader-guide-validity-questions">
+      <title>Validity and Interpretation</title>
+
+      <p>
+        <ul>
+          <li><p>Which claims can be supported from logs alone?</p></li>
+          <li><p>How should feedback-policy changes be handled when comparing across platform eras?</p></li>
+          <li><p>Could observed patterns reflect interface layout or item wording rather than mathematical understanding?</p></li>
+        </ul>
+      </p>
+    </subsection>
+
+    <subsection xml:id="sec-reader-guide-what-feedback-to-return">
+      <title>In General ...</title>
+
+      <p>
+        <ul>
+          <li><p>Which chapters or sections should form the core article?</p></li>
+          <li><p>Which definitions are necessary, unclear, or overly formal?</p></li>
+          <li><p>Which feature families seem most valuable for real data analysis?</p></li>
+          <li><p>What one empirical example would best demonstrate the framework?</p></li>
+          <li><p>What should be cut or moved to an appendix?</p></li>
+          <li><p>Where would the framework lose a skeptical data-science reader?</p></li>
+        </ul>
+      </p>
+    </subsection>
+  </section>
+
+</chapter>

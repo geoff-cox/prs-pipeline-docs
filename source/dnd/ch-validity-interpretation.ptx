@@ -1,0 +1,802 @@
+<chapter xml:id="ch-validity-interpretation">
+  <title>Validity and Interpretation</title>
+
+  <introduction>
+    <p>
+      The preceding chapters built a framework for representing,
+      reconstructing, summarizing, visualizing, and modeling drag-and-drop
+      interaction data. The modeling chapter ended with a restraint that belongs
+      at the center of the whole framework: a stable or predictive pattern is
+      not automatically a claim about student thinking. This final chapter makes
+      that boundary explicit. The framework measures observable structure in
+      responses and <xref ref="gt-trajectory" text="custom">trajectories</xref>.
+      Claims about reasoning, misconception, strategy, attention, or learning
+      require an additional validity argument.
+    </p>
+
+    <p>
+      The central distinction is between what the data record and what an
+      analyst infers from those records. A logged
+      <xref ref="gt-move" text="custom">move</xref> records that a
+      <xref ref="gt-card" text="custom">card</xref> changed
+      <xref ref="gt-zone" text="custom">zones</xref>. A
+      <xref ref="gt-check" text="custom">check</xref> records that a particular
+      <xref ref="gt-configuration" text="custom">configuration</xref> was
+      submitted to the grader. A <xref ref="gt-reset" text="custom">reset</xref>
+      records that the <xref ref="gt-board" text="custom">board</xref> returned
+      to the <xref ref="gt-initial-state" text="custom">initial state</xref>.
+      These are direct observations. Statements such as <q>the student guessed</q>,
+      <q>the student misunderstood the category</q>, or <q>feedback caused a
+      repair</q> are interpretations layered on top of those observations.
+    </p>
+
+    <p>
+      The purpose of this chapter is not to discourage interpretation.
+      Interpretation is the reason to build the framework. The purpose is to make
+      interpretation disciplined: structural pattern first, possible explanation
+      second, validating evidence third. The chapter first collects what the
+      framework measures directly and what it does not; then gives a claim ladder
+      for moving from structure to interpretation; then treats the two design
+      conditions that most strongly shape interpretation, the
+      <xref ref="gt-feedback-policy" text="custom">feedback policy</xref> and the
+      <xref ref="gt-item-design" text="custom">item design</xref>; then catalogs
+      validation strategies; and finally looks back across the framework.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-what-framework-measures-directly">
+    <title>What the Framework Measures Directly</title>
+
+    <introduction>
+      <p>
+        The framework directly measures properties of item designs, board states,
+        event logs, reconstructed trajectories, and derived structural features.
+        These quantities are observable or mechanically derived from observable
+        records. Each was defined earlier; this section collects them by level.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-direct-item-measures">
+      <title>Item Design</title>
+
+      <p>
+        At the design level, the framework records the task structure and the
+        covariates of <xref ref="tab-item-design-covariates"/>: the number of
+        cards <m>P</m> and <xref ref="gt-slot" text="custom">slots</xref>
+        <m>R</m>, the zone set <m>\mathcal{Z}</m> with its distinguished
+        <xref ref="gt-tray" text="custom">tray</xref>, the key configuration
+        <m>s^\star</m>, the decoy-card and decoy-slot sets, source-order labels,
+        the <xref ref="gt-item-map" text="custom">item map</xref>, and the
+        feedback policy <m>\phi</m> when known.
+      </p>
+
+      <p>
+        These are properties of the item, not the student. They describe the
+        response space and the conditions under which every trajectory in the
+        data was produced. For that reason, they must accompany any interpretation
+        of those trajectories.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-direct-state-measures">
+      <title>States and Checked Responses</title>
+
+      <p>
+        At the state level, the framework represents where the cards are by a
+        configuration and its <xref ref="gt-membership-matrix" text="custom">
+        membership matrix</xref>:
+        <md>
+          s:\mathcal{P}\to\mathcal{Z},
+          \qquad
+          X=X(s).
+        </md>
+        From a <xref ref="gt-state" text="custom">state</xref>, it computes
+        structural comparisons with the <xref ref="gt-key" text="custom">key</xref>:
+        the agreement score <m>\sigma(X)</m>, the key distance
+        <m>d^\star(X)</m>, the <xref ref="gt-occupancy" text="custom">occupancy</xref>
+        vector <m>\mathbf{o}(X)=X\mathbf{1}_P</m>, the error profile
+        <m>\boldsymbol{\varepsilon}(X)</m>, and the label-free and grouping
+        summaries of <xref ref="ch-group-features"/>.
+      </p>
+
+      <p>
+        These quantities describe the relationship between a submitted state and
+        the key. They do not, by themselves, explain why that state occurred.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-direct-trajectory-measures">
+      <title>Events and Trajectories</title>
+
+      <p>
+        At the trajectory level, the framework records or reconstructs the
+        marked, timestamped trajectory of
+        <xref ref="an-event-trajectory" text="custom">the trajectory model</xref>:
+        <md>
+          \Gamma
+          =
+          \bigl(
+          (a_0,t_0,X_0),
+          (a_1,t_1,X_1),
+          \dots,
+          (a_n,t_n,X_n)
+          \bigr).
+        </md>
+        From <m>\Gamma</m>, it computes the process features of
+        <xref ref="ch-baseline-features"/>: move, check, reset, and
+        <xref ref="gt-takeback" text="custom">takeback</xref> counts; distance
+        curves; fixing, lateral, and breaking moves; excess moves; repeated
+        states; check cadence; post-check gains; action gaps; and active time.
+      </p>
+
+      <p>
+        These are process measures. They summarize what happened in the
+        interface. In the register fixed when the distance curve was introduced,
+        they are movement descriptions, not direct evidence of a particular
+        reasoning process (<xref ref="subsec-distance-curve" text="title"/>).
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-direct-cohort-measures">
+      <title>Cohort-Level Summaries</title>
+
+      <p>
+        At the cohort level, the framework aggregates states and features. The
+        placement heatmap
+        (<xref ref="an-baseline-placement-heatmap" text="custom">the cohort
+        feature definition</xref>)
+        <md>
+          \bar{X}=\frac{1}{N}\sum_{\nu=1}^{N}X^{(\nu)}
+        </md>
+        records empirical placement proportions; the mean zone confusion matrix
+        <m>\bar{M}</m> records average source-target placement patterns; and
+        the item-level diagnostic summaries of
+        <xref ref="ch-visualization-diagnostics"/> record rates, distributions,
+        and quality-control counts.
+      </p>
+
+      <p>
+        These summaries describe observed behavior in a cohort. They should not
+        be treated as stable item properties until they have been checked across
+        cohorts, semesters, item versions, or feedback policies. That stability
+        problem is one of the reasons the modeling and validation layers are
+        needed.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-what-framework-does-not-measure-directly">
+    <title>What the Framework Does Not Measure Directly</title>
+
+    <introduction>
+      <p>
+        The framework does not observe cognition. It observes interaction traces.
+        This limitation should be stated whenever features are used to support
+        claims about student reasoning. The four subsections below name common
+        overextensions.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-not-direct-understanding">
+      <title>Understanding and Misconceptions</title>
+
+      <p>
+        A wrong placement does not directly measure a misconception. A
+        <xref ref="gt-decoy-card-leak" text="custom">decoy-card leak</xref>
+        records that a card meant to remain in the tray was placed into a slot;
+        a <xref ref="gt-decoy-slot-leak" text="custom">decoy-slot leak</xref>
+        records that a slot meant to remain empty received a card. These patterns
+        may reflect a content misconception, an interface assumption such as
+        <q>every card must be placed</q>, guessing, or strategic probing of the
+        grader. The log alone does not decide among those explanations.
+      </p>
+
+      <p>
+        Conversely, a correct placement does not prove understanding. A student
+        may place a card correctly through reasoning, memory, elimination,
+        <xref ref="gt-feedback" text="custom">feedback</xref>, guessing, or
+        copying. The framework can record that a state is correct and describe
+        the path that produced it. Understanding requires additional evidence.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-not-direct-strategy">
+      <title>Strategy and Intent</title>
+
+      <p>
+        Process features can suggest strategies, but they do not identify intent.
+        Frequent checking may indicate guessing, careful incremental use of
+        feedback, low confidence, or an efficient strategy under the item's check
+        policy. A long action gap may reflect thinking, distraction,
+        interruption, or a page left open, which is why the processing pipeline
+        flags long idle gaps rather than interpreting them. A reset may be a
+        deliberate fresh start, confusion, or an accidental click.
+      </p>
+
+      <p>
+        Labels such as <q>guessing</q>, <q>systematic reasoning</q>,
+        <q>trial and error</q>, and <q>feedback seeking</q> are interpretive
+        codes, not measurements, until additional evidence supports them.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-not-direct-learning">
+      <title>Learning</title>
+
+      <p>
+        Improvement within a trajectory is not automatically learning. A student
+        may move closer to the key after feedback because the feedback revealed
+        the error, because the student reconsidered the content, because the
+        student guessed again, or because the policy highlighted the relevant
+        card.
+      </p>
+
+      <p>
+        Learning claims require evidence beyond within-item progress: transfer to
+        later items, pre/post comparisons, retention, explanations, interviews,
+        or consistency across related tasks. The trajectory can document
+        improvement on the item. It does not, by itself, establish learning beyond
+        the item.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-not-direct-causality">
+      <title>Causality</title>
+
+      <p>
+        The framework does not by itself establish causal effects. An association
+        between checking and eventual success does not show that checking caused
+        success: students who check more may differ from students who check less,
+        and items that invite checking may differ in difficulty, feedback, or
+        design. The modeling chapter made the same point about coefficients
+        (<xref ref="subsec-random-effects-interpretation" text="title"/>).
+      </p>
+
+      <p>
+        Causal claims require a design or analysis capable of supporting them:
+        randomized feedback conditions, designed contrasts, longitudinal evidence,
+        or explicit causal assumptions. Without such support, model coefficients
+        are associations.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-structural-patterns-to-interpretations">
+    <title>From Structural Patterns to Interpretations</title>
+
+    <introduction>
+      <p>
+        The framework is most useful when it supports a disciplined movement from
+        observed structure to possible interpretation. That movement should be
+        explicit in the language of analysis and reporting.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-claim-ladder">
+      <title>A Claim Ladder</title>
+
+      <p>
+        A useful validity discipline is to organize claims by level. For the
+        running <xref ref="gt-attempt" text="custom">attempt</xref> of
+        <xref ref="tab-raw-data-trace"/>, the levels look like this:
+      </p>
+
+      <p>
+        <dl width="medium">
+          <li>
+            <title>Level 1: observation</title>
+            <p>
+              What did the log record? The student moved card <m>c_4</m>, the
+              circle, from the tray to zone <m>z_3</m>, the Pentagon slot.
+            </p>
+          </li>
+          <li>
+            <title>Level 2: structural feature</title>
+            <p>
+              What feature does the framework compute? The move created both a
+              decoy-card leak and a decoy-slot leak, so the next checked state
+              has error profile
+              <m>\boldsymbol{\varepsilon}=(0,0,1,1)</m>.
+            </p>
+          </li>
+          <li>
+            <title>Level 3: response pattern</title>
+            <p>
+              What pattern appears across states, attempts, or students? Many
+              students placed the <xref ref="gt-decoy-card" text="custom">decoy
+              card</xref> into the same <xref ref="gt-decoy-slot" text="custom">decoy
+              slot</xref>, the pattern made visible by the heatmap and decoy-pull
+              diagnostics (<xref ref="subsec-decoy-pull" text="title"/>).
+            </p>
+          </li>
+          <li>
+            <title>Level 4: interpretation</title>
+            <p>
+              What might the pattern mean? The item may invite an <q>every card
+              must be placed</q> or <q>every slot must be filled</q> assumption.
+            </p>
+          </li>
+          <li>
+            <title>Level 5: validated claim</title>
+            <p>
+              What additional evidence supports that interpretation? Possible
+              evidence includes student explanations, comparison items, stable
+              cross-semester patterns, or an experimental manipulation of the
+              decoy.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        The framework directly supports the first three levels. The fourth is an
+        interpretation. The fifth requires a validity argument, and the strategies
+        of <xref ref="sec-validation-strategies"/> are ways to assemble one.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-interpretive-language">
+      <title>Interpretive Language</title>
+
+      <p>
+        Reporting language should match the strength of the evidence. Structural
+        claims can be stated directly:
+        <ul>
+          <li>
+            <p>
+              <q>Thirty percent of final checks placed the decoy card into an
+              authored slot</q> (the decoy-card leak rate of the illustrative
+              tallies in <xref ref="tab-cheat-tallies"/>).
+            </p>
+          </li>
+          <li>
+            <p>
+              <q>The most common first-check error was a merge of the two home
+              groups.</q>
+            </p>
+          </li>
+          <li>
+            <p>
+              <q>Students who checked after each move had lower post-check gains
+              on this item.</q>
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Interpretive claims should be hedged unless validated:
+        <ul>
+          <li>
+            <p>
+              <q>This pattern is consistent with an assumption that every card
+              should be placed.</q>
+            </p>
+          </li>
+          <li>
+            <p>
+              <q>The trajectory suggests feedback-guided revision.</q>
+            </p>
+          </li>
+          <li>
+            <p>
+              <q>The repeated use of the decoy slot may indicate that the category
+              label is attracting responses.</q>
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Stronger language, such as <q>students misunderstood</q> or
+        <q>feedback caused learning</q>, should be reserved for cases where the
+        evidence goes beyond the interaction trace.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-triangulation">
+      <title>Triangulation</title>
+
+      <p>
+        Structural patterns become more interpretable when triangulated with other
+        evidence: student explanations, written work, think-aloud protocols,
+        interviews, related items measuring the same idea, pre/post or
+        delayed-transfer items, instructor knowledge of the course context, or
+        experimental variation in feedback, wording, or layout.
+      </p>
+
+      <p>
+        Triangulation does not require every study to collect every kind of
+        evidence. It requires the strength of the claim to match the strength of
+        the evidence available.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-feedback-policy-construct-validity">
+    <title>Feedback Policy and Construct Validity</title>
+
+    <introduction>
+      <p>
+        The feedback policy <m>\phi</m> was introduced as part of the item design
+        (<xref ref="sec-feedback-policy"/>). It is a rule applied at check events,
+        with possible inputs such as the checked configuration and check history,
+        and possible outputs ranging from an all-or-nothing verdict to counts,
+        card-level highlighting, or withheld feedback. It reappears here because
+        it is part of the construct being measured. The same response pattern can
+        mean different things under different policies. For example, a change from
+        always-on card-level feedback to a gated, layered policy changes the task
+        students experience, even if the source question and key are otherwise the
+        same (<xref ref="subsec-platform-feedback-policies" text="title"/>).
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-feedback-changes-task">
+      <title>Feedback Changes the Task</title>
+
+      <p>
+        A drag-and-drop item with immediate, card-level feedback is not the same
+        task as the same board with a single all-or-nothing verdict, even when
+        <m>P</m>, <m>R</m>, and the key are identical. In the first case, students
+        can revise under guidance during the attempt; in the second, each checked
+        state is closer to an unaided response at that moment. The feedback
+        covariates of <xref ref="tab-feedback-covariates"/> record which task the
+        student actually received: granularity, content, timing, check limits,
+        availability, consequence, and highlighting.
+      </p>
+
+      <p>
+        Features such as <c>num_checks</c>, <c>post_check_gain</c>, and
+        <c>responsiveness</c> must therefore be interpreted relative to
+        <m>\phi</m>. A high check count may be wasteful in one feedback
+        environment and strategically reasonable in another. This is the design
+        chapter's feedback-dependence point applied at the validity level
+        (<xref ref="subsec-feedback-dependent-features" text="title"/>).
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-feedback-sensitive-features-validity">
+      <title>Feedback-Sensitive Features</title>
+
+      <p>
+        Some features exist only under some policies. Responsiveness
+        <m>\rho_i</m> compares the highlighted set <m>\mathcal{H}_i</m> to the
+        cards moved before the next check
+        (<xref ref="an-baseline-responsiveness" text="custom">the baseline
+        definition</xref>). If the policy returns only Correct or Incorrect, then
+        <m>\mathcal{H}_i</m> is not observed and the feature is undefined, not
+        zero. Likewise, the grader counts <m>w(X)</m> and <m>u(X)</m> are exactly
+        what a count-level policy might disclose; their interpretation as
+        <em>seen information</em> depends on whether the policy disclosed them.
+      </p>
+
+      <p>
+        Feedback-sensitive features should be reported with the policy that makes
+        them meaningful. If the policy differs across items or semesters, an
+        analysis should model that difference or decline to compare the feature
+        across policies.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-feedback-and-outcome-interpretation">
+      <title>Outcome Interpretation Under Feedback</title>
+
+      <p>
+        Final correctness after multiple checks is an outcome of an interactive
+        environment. It mixes initial knowledge with feedback, persistence,
+        revision, and the item's check policy. First-check correctness is closer
+        to an initial response. The two are different constructs, and the
+        diagnostic chapter's insistence on naming the analysis point
+        (<xref ref="subsec-heatmap-definition" text="title"/>) is the display
+        version of the same validity requirement.
+      </p>
+
+      <p>
+        Studies should therefore report which checked states they use: first
+        check, final check, first correct check, all checks, or a
+        feedback-specific segment. These choices answer different validity
+        questions.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-feedback-policy-as-design-covariate">
+      <title>Feedback Policy as a Design Covariate</title>
+
+      <p>
+        When comparing items, the feedback policy belongs among the item-design
+        covariates, just as the modeling chapter includes it in the vector
+        <m>\mathbf{z}_q</m>. Two items with the same numbers of cards and slots
+        can produce systematically different trajectories if one guides revision
+        and the other only grades it.
+      </p>
+
+      <p>
+        When comparing semesters, the policy should be checked for source or
+        platform changes. A shift in trajectory features across offerings may
+        reflect a changed feedback environment rather than a changed student
+        population. That is one instance of the source-version discipline below.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-item-design-effects">
+    <title>Item Design Effects</title>
+
+    <introduction>
+      <p>
+        Item design determines which responses are possible and which errors are
+        observable. Features cannot be interpreted apart from the design that
+        produced them.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-response-space-effects">
+      <title>Response Space Effects</title>
+
+      <p>
+        The <xref ref="gt-configuration-space" text="custom">configuration
+        space</xref> grows as
+        <m>|\mathcal{C}|=(R+1)^P</m>
+        (<xref ref="an-configuration-space" text="custom">the state-space
+        definition</xref>): the four-card running question has <m>256</m> states,
+        while larger items have many more. Larger response spaces admit more
+        distinct trajectories, more wrong states, and more ways to be partially
+        correct. Raw move counts, check counts, and
+        <xref ref="gt-distance" text="custom">distances</xref> are therefore not
+        directly comparable across items of different sizes.
+      </p>
+
+      <p>
+        Baseline-corrected progress, item-design covariates, and within-item
+        comparisons reduce the problem without removing it. The design always
+        shapes the behavior.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-decoy-design-effects">
+      <title>Decoys and Observable Errors</title>
+
+      <p>
+        Decoys create observability. An item without a decoy card cannot show a
+        decoy-card leak; an item without a decoy slot cannot show a decoy-slot
+        leak. The absence of a feature may therefore reflect the absence of an
+        opportunity, not the absence of a student tendency. Rates of decoy errors
+        are comparable only across items that offered comparable opportunities.
+      </p>
+
+      <p>
+        Conversely, a high decoy-use rate may indicate a decoy doing its intended
+        diagnostic work, or it may reflect visual layout, wording, category
+        salience, or an assumption about the interface. Like the diagnostic flags
+        of the visualization chapter, such rates are prompts for review, not
+        automatic conclusions (<xref ref="subsec-diagnostic-flags" text="title"/>):
+        the display identifies the pattern; interpretation requires returning to
+        the item.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-layout-and-affordance-effects">
+      <title>Layout and Interface Affordances</title>
+
+      <p>
+        The mathematical model treats zones abstractly, but the student sees a
+        rendered board. Spatial layout, card order, slot order, screen size,
+        scrolling, drag mechanics, and visual prominence all influence behavior.
+        A card may land in a nearby wrong slot for reasons of geometry rather
+        than content; a decoy slot may attract responses by prominence; a long
+        action gap may reflect difficulty dragging rather than difficulty
+        reasoning.
+      </p>
+
+      <p>
+        Where possible, item diagnostics should be read alongside the
+        <xref ref="subsec-rendered-board" text="custom">rendered item</xref>, not
+        only the source and the logs.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-source-version-effects">
+      <title>Source Version Effects</title>
+
+      <p>
+        Small source changes have large analytic consequences. Reordering cards
+        silently renumbers the <xref ref="gt-positional-labels" text="custom">
+        positional labels</xref> that the <xref ref="gt-raw-data" text="custom">raw
+        data</xref> use (<xref ref="subsec-source-order" text="title"/>).
+        Rewording a prompt changes the task. Changing feedback changes the
+        strategic environment. Adding or removing a decoy changes the response
+        space itself.
+      </p>
+
+      <p>
+        The processing chapter's item-map versioning
+        (<xref ref="subsec-source-versioning" text="title"/>) exists for this
+        reason: comparisons across semesters must distinguish stable items from
+        revised ones, and an item version is part of every feature's identity.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-validation-strategies">
+    <title>Validation Strategies</title>
+
+    <introduction>
+      <p>
+        Validation asks whether features and interpretations behave as expected
+        under additional evidence. Different claims call for different strategies,
+        and the six below are complementary rather than interchangeable.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-internal-validation">
+      <title>Internal Validation</title>
+
+      <p>
+        Internal validation checks that the analytic objects are constructed
+        coherently: check anchors agree with replayed states
+        (<xref ref="an-check-anchor-consistency" text="custom">the trajectory
+        model's anchor condition</xref>), every reconstructed state is a valid
+        membership matrix, first-check, final-check, and all-check summaries are
+        mutually consistent, heatmaps agree with per-card correctness summaries,
+        and conclusions are examined for sensitivity to idle-time thresholds and
+        attempt-boundary rules.
+      </p>
+
+      <p>
+        Internal validation establishes no cognitive interpretation. It
+        establishes that the framework's own machinery, parsing, replay,
+        aggregation, and filtering, was applied consistently. Every later
+        argument presupposes that consistency.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-convergent-validation">
+      <title>Convergent Validation</title>
+
+      <p>
+        Convergent validation asks whether drag-and-drop features align with
+        other measures they should relate to: scores on related questions,
+        written explanations of the same classification task, instructor-coded
+        categories, later transfer items, or course-level measures of
+        preparation.
+      </p>
+
+      <p>
+        For example, if a decoy-slot pattern is interpreted as confusion between
+        two mathematical categories, then written work should show the same
+        confusion more often among students who exhibit the pattern. If it does
+        not, the interpretation, not the feature, is what fails.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-discriminant-validation">
+      <title>Discriminant Validation</title>
+
+      <p>
+        Discriminant validation asks whether features avoid measuring what they
+        should not. A grouping-structure feature should not be driven by screen
+        size, page position, or logging artifacts. A feedback-use feature should
+        not be computed as though incompatible feedback policies exposed the same
+        information; this is the undefined-versus-zero distinction of
+        <xref ref="subsec-feedback-sensitive-features-validity" text="title"/>.
+      </p>
+
+      <p>
+        This strategy matters most for process features, because process traces
+        are especially sensitive to interface and implementation details.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-known-groups-validation">
+      <title>Known-Groups and Designed-Contrast Validation</title>
+
+      <p>
+        If groups or conditions are expected to differ, the framework should
+        detect the difference. An item designed with a strong decoy should show
+        more decoy interaction than a parallel item without it. A card-level
+        feedback version of an item should show different post-check revision
+        patterns than an all-or-nothing version.
+      </p>
+
+      <p>
+        Designed contrasts are especially valuable because they connect features
+        to deliberate design choices. They test whether a feature is sensitive to
+        the construct it is being used to represent.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-cross-context-validation">
+      <title>Cross-Context Validation</title>
+
+      <p>
+        Patterns local to one cohort may not generalize. Cross-context validation
+        checks stability across semesters, sections, instructors, institutions,
+        item versions, and feedback policies, using the validation splits
+        formalized in the modeling chapter
+        (<xref ref="subsec-validation-splits" text="title"/>).
+      </p>
+
+      <p>
+        Stable patterns are stronger candidates for item-level or construct-level
+        interpretation. Patterns that vary across contexts may still matter, but
+        the context becomes part of the interpretation.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-sensitivity-analysis">
+      <title>Sensitivity Analysis</title>
+
+      <p>
+        Many features depend on processing and comparison choices made earlier in
+        the book: the idle threshold <m>\delta_{\max}</m>, first-check versus
+        final-check states, inclusion of traces with reconstruction warnings, the
+        attempt-boundary rule, the tray's treatment in grouping metrics
+        (<xref ref="subsec-tray-in-merge-split" text="title"/>), and labeled
+        versus label-free comparison. Sensitivity analysis reruns the conclusion
+        across reasonable settings of these choices.
+      </p>
+
+      <p>
+        A conclusion that survives reasonable analytic variation is robust. A
+        conclusion that depends on one fragile processing decision is a finding
+        about the decision.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-framework-retrospective">
+    <title>Looking Back Across the Framework</title>
+
+    <p>
+      This book began with a raw log and a small question about shapes, then built
+      upward one deliberate layer at a time. The anatomy chapter fixed what the
+      platform records (<xref ref="ch-dnd-anatomy"/>). The item-design layer
+      turned the authored question into index sets, a key, decoys, and a feedback
+      policy (<xref ref="ch-item-design"/>). The state model gave one board
+      snapshot a configuration and a membership matrix
+      (<xref ref="ch-state-model"/>), and the trajectory model set those states
+      in motion as marked, timestamped walks through the configuration graph
+      (<xref ref="ch-event-trajectory-model"/>). The feature layer gave states
+      and trajectories a stable descriptive vocabulary
+      (<xref ref="ch-baseline-features"/>); the processing layer made that
+      vocabulary computable from real exports, with quality flags in place of
+      silent repairs (<xref ref="ch-data-processing"/>). Diagnostics made items
+      visible (<xref ref="ch-visualization-diagnostics"/>), advanced comparisons
+      separated grouping from naming and let errors carry structure
+      (<xref ref="ch-group-features"/>), and the modeling layer
+      asked which patterns are stable, predictive, and explainable
+      (<xref ref="ch-statistical-modeling"/>).
+    </p>
+
+    <p>
+      Each layer added power on one condition: honesty about what the layer does
+      not know. The state model does not know how the board got that way; the
+      trajectory does not know why the student moved; the features are movement
+      descriptions, not direct evidence; the diagnostics are prompts for review,
+      not automatic conclusions; and the models are associations until a design
+      supports more. This chapter's claim ladder assembles those conditions into
+      a working discipline: observation, structural feature, response pattern,
+      interpretation, validated claim. The language of a report should not outrun
+      the level actually reached.
+    </p>
+
+    <p>
+      Used this way, the framework is a research instrument rather than a scoring
+      convenience. The strongest workflow it supports is layered like the book:
+      fix the design and state model; reconstruct trajectories and document their
+      quality; compute descriptive and advanced features; visualize and model the
+      patterns; and interpret only as far as the validation evidence reaches.
+    </p>
+
+    <p>
+      For reference while doing that work, the backmatter collects the notation in
+      one place (<xref ref="appendix-notation"/>) and the technical and
+      group-facing vocabulary in the glossary
+      (<xref ref="sec-glossary-terms" text="title"/>). The running four-shape
+      question was kept deliberately small so every object in the framework could
+      be verified by hand. Applying the same machinery at scale, across items,
+      cohorts, and semesters, is the research program this framework was built to
+      support.
+    </p>
+  </section>
+</chapter>

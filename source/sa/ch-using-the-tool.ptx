@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Prototype Rollout Plan — Group meeting schedule.
+  Drop into docs/source/ and xi:include from main.ptx.
+  Cross-referenced via xml:id="ch-rollout-plan".
+-->
+
+<chapter xml:id="ch-using-the-tool" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Using the Tool</title>
+
+  <introduction>
+    <warning>
+      <p>
+        WORK IN PROGRESS
+      </p>
+    </warning>
+
+    <p>
+      <term>Purpose.</term> This document describes the current state of
+      the automation tool prototype and serves as a space for learning about
+      and discussing the direction of its development. It is organized like
+      a tutorial. So feel free to refer back to it whenever you need to
+      recall the steps or understand how a particular feature works.
+      For the overall design
+      strategy, see the <xref ref="ch-automation-tool-roadmap" text="title"/>.
+    </p>
+
+    <p>
+      <term>Where this fits.</term> The tool (PROTEUS) is organized as a
+      service-agnostic core&#x2014;shared ingest and storage&#x2014;with one
+      service per question type built on top of it. This rollout covers the
+      <term>short-answer</term> service; a separate drag-and-drop service is in
+      progress over the same core. The ingest step described below belongs to
+      the shared core and feeds every service, while the screening, extraction,
+      matching, and disposition steps are short-answer-specific.
+    </p>
+
+    <p>
+      <term>Working assumptions.</term> The prototype is in an early-stage and 
+      open to change: column choices, filter behavior, the preview-then-commit 
+      workflow, and even the basic premise of what the ingest stage should do 
+      are all up for discussion. Nothing about the current implementation should 
+      be treated as final, and group feedback is the primary input determining 
+      what is kept, changed, or removed.
+    </p>
+
+    <p>
+      The prototype is made up of three main components: 
+      <dl>
+        <li>
+          <title>Command-line Tool</title>
+          <p>
+            Written in Python, the command-line tool drives the 
+            automation tool's core functionality.
+          </p>
+        </li>
+        <li>
+          <title>Dashboard</title>
+          <p>
+            Built with the Streamlit module, the dashboard provides 
+            a web-based interface for researchers to interact with, 
+            modify, and manage the data.
+          </p>
+        </li>
+        <li>
+          <title>Database</title>
+          <p>
+            The data is stored in a small <xref ref="an-sqlite" text="custom">SQLite</xref> 
+            database file.
+          </p>
+        </li>
+      </dl> 
+    </p>
+
+    <p>
+      The prototype is temporarily hosted on a public Streamlit cloud service and 
+      is accessible through a browser. This allows group members to access the tool 
+      from anywhere, but the database will be deleted once the frontend is closed. 
+      If the tool is adopted, a different hosting option will need to be arranged.
+    </p>
+  </introduction>
+
+  <!-- ============================================================ -->
+  <!-- Section: Ingesting Runestone Data                            -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-ingest-rs-data">
+    <title>Ingesting Runestone Data</title>
+
+    <introduction>
+      <p>
+        This section demonstrates the ingest stage of the tool. This stage is composed of three steps:
+        <ul>
+          <li>importing a raw data file into the frontend,</li>
+          <li>previewing the imported data, and</li>
+          <li>committing the data to the database.</li>
+        </ul>
+      </p>
+    </introduction>
+
+    <!-- ============================================================ -->
+    <!-- Subsection: Opening the Tool &amp; Homepage Overview         -->
+    <!-- ============================================================ -->
+
+    <subsection xml:id="subsec-opening-frontend">
+      <title>Opening the Frontend</title>
+      <p>
+        <ol>
+          <li>
+            <url href="https://cs-pipeline-prototype.streamlit.app/">Click here</url> 
+            to open the tool in your browser.
+          </li>
+          <li>Wait for the page to load and wake it up if it is sleeping.</li>
+          <li>
+            <p>
+              The first page is the Homepage Screen, which shows: 
+              <ul>
+                <li>A title and tool description.</li>
+                <li>A sidebar for navigation and settings. The sidebar can be hidden by pressing <kbd>&lt;&lt;</kbd> and expanded by pressing <kbd>&gt;&gt;</kbd></li>
+                <li>Some database information.</li>
+                <li>Four counts: imports, responses, runs, and screened.</li>
+              </ul>
+              The counts describe what is currently in the database. As files are ingested, 
+              the first two counts grow; the remaining two will become meaningful in later 
+              stages and can be ignored for now.
+            </p>
+          </li>
+        </ol>
+      </p>
+    </subsection>
+
+    <!-- ============================================================ -->
+    <!-- Subsection: Importing a File                                 -->
+    <!-- ============================================================ -->
+
+    <subsection xml:id="subsec-import-file">
+      <title>Importing a Runstone File</title>
+
+      <p>
+        The Ingest page accepts a single export file at a time. Two formats
+        are supported: 
+        <ul>
+          <li>
+            <xref ref="an-runestone" text="custom">Runestone</xref>
+            generated <xref ref="an-datashop" text="custom">DataShop</xref>
+            (<c>.tab</c>) files, and
+          </li>
+          <li>CSV files.</li>
+        </ul>
+        Once you have a file ready to import, proceed with the following steps.
+      </p>
+
+      <p>
+        <ol>
+          <li>Navigate to the Ingest page from the sidebar.</li>
+          <li>Select a file to ingest using the file picker.</li>
+          <li>Wait for the file to upload. A confirmation message names the file and its size.</li>
+        </ol>
+      </p>
+
+      <p>
+        The file picker only accepts the two supported formats; other
+        file types are rejected immediately so that no unsupported input
+        ever reaches the parser. <em>Uploading the file does not change the
+        database.</em>
+      </p>
+
+    </subsection>
+
+    <!-- ============================================================ -->
+    <!-- Subsection: Previewing an Import                             -->
+    <!-- ============================================================ -->
+
+    <subsection xml:id="subsec-preview-import">
+      <title>Previewing an Import</title>
+
+      <p>
+        Once a file is uploaded it can be previewed through the following steps.
+        <ol marker="1.">
+          <li>
+            <p>
+              Press the <kbd>Parse &amp; Preview</kbd> button. The four metrics appear: 
+              rows parsed, new responses, duplicates, and unique students.
+            </p>
+          </li>
+          <li>
+            <p>
+              Inspect the per-question summary that lists each <c>question_id</c> in the 
+              file and how many responses are associated with it.
+            </p>
+          </li>
+          <li>
+            <p>
+              Scroll the response table to spot-check the parsed text against the raw file 
+              if desired.
+            </p>
+          </li>
+          <li>
+            <p>
+              Toggle the <em>Hide duplicates</em> checkbox to filter the preview table down 
+              to responses that would actually be written. A file with a large number of 
+              duplicates against the existing database usually means the file overlaps an 
+              earlier export, and is worth a closer look before committing.
+            </p>
+          </li>
+        </ol>
+      </p>
+    </subsection>
+
+    <!-- ============================================================ -->
+    <!-- Subsection: Reading the Preview (warnings &amp; columns)     -->
+    <!-- ============================================================ -->
+
+    <subsection xml:id="subsec-preview-warnings-columns">
+      <title>Parser Warnings and Preview Columns</title>
+
+      <p>
+        While previewing, the parser may report that it skipped one or more
+        rows it could not read. These warnings are grouped by reason and shown
+        above the response table as short summary lines, with a
+        <em>Show all skipped rows</em> expander beneath that lists every
+        skipped row and its reason.
+      </p>
+
+      <p>
+        A rule of thumb for reading them:
+        <ul>
+          <li>Each warning corresponds to exactly one row the parser skipped.</li>
+          <li>
+            A handful of skipped rows in a large export is normal — a few
+            stray or malformed events rarely matter.
+          </li>
+          <li>
+            If <em>every</em> row is skipped — the parsed-rows count is zero —
+            the file has a format problem worth fixing before committing. A
+            common cause is a non-standard date column the timestamp parser
+            does not yet recognise, which makes every row fail the same way.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Two columns in the preview deserve a note, since the group asked what
+        they are for:
+        <ul>
+          <li>
+            <c>course_id</c> is an optional provenance field passed through
+            from the export — which course, instructor, or term a response
+            came from. When the export omits a course identifier a placeholder
+            is shown. It is not analytically central; it is kept so a response
+            can be traced back to its source.
+          </li>
+          <li>
+            <c>response_id</c> is the deterministic hash of the student,
+            question, and timestamp. It is the stable key that makes
+            re-imports idempotent and powers the duplicate detection described
+            above: the same response always produces the same
+            <c>response_id</c>, so re-importing it is recognised and skipped
+            rather than duplicated.
+          </li>
+        </ul>
+      </p>
+    </subsection>
+
+    <!-- ============================================================ -->
+    <!-- Subsection: Committing an Import                             -->
+    <!-- ============================================================ -->
+
+    <subsection xml:id="subsec-commit-import">
+      <title>Committing an Import</title>
+
+      <p>
+        Commit is the step that writes parsed responses to the database. Once committed, 
+        the imported file is recorded in the <c>raw_imports</c> table and its responses 
+        appear in the <c>responses</c> table; both are visible on the Imports page from
+        that point forward.
+        <ol marker="1.">
+          <li>
+            An optional note can be added to any import. To test this, add something to 
+            the "Notes" field for the current import.
+          </li>
+          <li>
+            Press the <em>Commit</em> button. The button is only enabled after a preview 
+            has been generated.
+          </li>
+          <li>
+            Wait for the result panel to appear. It reports the number of new responses 
+            written, the number of duplicates skipped, and a unique identifier for the 
+            import.
+          </li>
+          <li>
+            Return to the home page and confirm that the imports and responses counts 
+            have increased.The counts on the home page provide a quick sanity check: if 
+            a file with 46 new responses was just committed, the responses count should 
+            have increased by exactly that amount.
+          </li>
+        </ol>
+      </p>
+
+    </subsection>
+
+    <!-- ============================================================ -->
+    <!-- Subsection: Re-importing the same file                       -->
+    <!-- ============================================================ -->
+
+    <subsection xml:id="subsec-reimport">
+      <title>Re-importing the Same File</title>
+
+      <p>
+        The tool is designed to make re-ingestion safe both at the file level and the 
+        row level. That is, the tool blocks:
+        <ul>
+          <li>The same file from being uploaded</li>
+          <li>
+            Individual rows from being uploaded if they already exist in the database, 
+            even if they arrive in a different file
+          </li>
+        </ul>
+        This allows group members to upload, re-upload, and try variations without 
+        worrying about accidental damage.
+      </p>
+
+      <p>
+        You can see this in action through the following steps.
+        <ol marker="1.">
+          <li><p>Return to the Ingest page.</p></li>
+          <li><p>Select the same file that was just committed.</p></li>
+          <li><p>Press <em>Preview</em>. A warning appears noting that the file has already been ingested.</p></li>
+          <li><p>If preview is still attempted, the duplicates count will equal the total parsed rows and the new-responses count will be zero.</p></li>
+        </ol>
+      </p>
+    </subsection>
+
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- Section: Managing Imports                                    -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-managing-imports">
+    <title>Managing Imports</title>
+
+    <introduction>
+      <p>
+        This section demonstrates the import management stage of the tool. This stage 
+        is equipped with the following functionality:
+        <ul>
+          <li>Viewing a list of all imported files.</li>
+          <li>Deleting individual imports.</li>
+          <li>Filtering imports based on various criteria.</li>
+        </ul>
+      </p>
+    </introduction>
+
+    <!-- ============================================================ -->
+    <!-- Subsection: Browsing past imports                            -->
+    <!-- ============================================================ -->
+
+    <subsection xml:id="subsec-meeting-1-browsing-imports">
+      <title>Browsing Past Imports</title>
+
+      <p>
+        The Imports page provides a view of every file that has ever been ingested. The master 
+        list is the entry point for finding any particular file or any particular response. Here 
+        is a sample workflow:
+        <ol marker="1.">
+          <li>Navigate to the Imports page from the sidebar.</li>
+          <li>
+            Scan the master list. Each row corresponds to one ingest event and shows the file name, 
+            the number of responses, and a timestamp.
+          </li>
+          <li>
+            Click the row of the file just committed. A detail panel opens to its right (or below, 
+            depending on window width).
+          </li>
+        </ol>
+      </p>
+    </subsection>
+
+    <!-- ============================================================ -->
+    <!-- Subsection: Filtering responses                              -->
+    <!-- ============================================================ -->
+
+    <subsection xml:id="subsec-meeting-1-filtering">
+      <title>Filtering Responses Within an Import</title>
+
+      <p>
+        The detail panel of an import contains a list of all responses
+        loaded from that file, together with filters for narrowing the view
+        to a particular subset.
+        <ol marker="1.">
+          <li>With an import selected, locate the filter controls above the response list.</li>
+          <li>
+            Use the <c>question_id</c> dropdown to restrict the view to a single question. The 
+            response count updates to reflect the filtered total.
+          </li>
+          <li>
+            Optionally, use the text search box to find responses containing a particular word 
+            or phrase.
+          </li>
+        </ol>
+      </p>
+
+      <paragraphs>
+        <title>Comments</title>
+        <p>
+          The filters affect only what is displayed, not what is stored. 
+          Clearing the filter restores the full view.
+        </p>
+      </paragraphs>
+    </subsection>
+
+    <!-- ============================================================ -->
+    <!-- Subsection: Drilling into a response                         -->
+    <!-- ============================================================ -->
+
+    <subsection xml:id="subsec-meeting-1-drilling">
+      <title>Drilling Into a Single Response</title>
+
+      <p>
+        Each row in the response list expands to show the full response
+        text. Where a question previewer has been configured for the
+        question that the response answers, the rendered question is
+        displayed alongside the response so that the two can be read
+        together.
+        <ol marker="1.">
+          <li>Click the expander on any response row in the filtered list.</li>
+          <li>Read the full response text in the expanded panel.</li>
+          <li>
+            A question previewer is currently being developed. If it is in the tool, you 
+            can click on it to reveal the question that is selected.
+          </li>
+        </ol>
+      </p>
+    </subsection>
+
+    <!-- ============================================================ -->
+    <!-- Subsection: Exporting to CSV                                 -->
+    <!-- ============================================================ -->
+
+    <subsection xml:id="subsec-meeting-1-export">
+      <title>Exporting a View to CSV</title>
+
+      <p>
+        Any view of the responses can be exported as a CSV file. The export
+        respects the current filter state, so an export taken after
+        filtering by <c>question_id</c> contains only the responses for
+        that question.
+        <ol marker="1.">
+          <li>Apply any desired filters to the response list.</li>
+          <li>Press the <em>Download CSV</em> button above the list.</li>
+          <li>
+            Open the downloaded file in a spreadsheet program to confirm the export 
+            contains the expected rows.
+          </li>
+        </ol>
+      </p>
+
+      <paragraphs>
+        <title>Comments</title>
+        <p>
+          Export is a one-way operation: it produces a file for the user to keep, edit, 
+          or share, but the tool will not re-ingest exported files. Anything edited in 
+          the spreadsheet stays in the spreadsheet. The export is provided so that 
+          researchers who prefer to work with a familiar spreadsheet format are free to 
+          do so.
+        </p>
+      </paragraphs>
+    </subsection>
+
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: Screening Student Responses                         -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-screening-student-responses">
+    <title>Screening Student Responses</title>
+
+    <remark>
+      <title>Section status</title>
+      <p>
+        Placeholder. This section will be drafted after Meeting 1 has been
+        held and its outcomes recorded. The intended focus is the
+        eligibility-screening stage, which decides which responses are
+        candidates for control-structure coding and which are filtered out
+        as blank, off-topic, or otherwise non-codable. Anchor decisions for
+        this meeting will be drafted from the categories of responses the
+        group most wants to control at the screening boundary.
+      </p>
+    </remark>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: Extracting Reasoning Chains                         -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-extracting-reasoning-chains">
+    <title>Extracting Reasoning Chains</title>
+
+    <remark>
+      <title>Section status</title>
+      <p>
+        Placeholder. This section will be drafted after Meeting 2. The
+        intended focus is the chain-extraction stage and the controlled
+        vocabulary it produces output in. Anchor decisions will likely
+        include the level of granularity at which chain steps should be
+        recorded and who has authority to extend the vocabulary.
+      </p>
+    </remark>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: Matching Chains to the Codebook                     -->
+  <!-- ============================================================ -->
+  <section xml:id="sec-matching-chains-to-codebook">
+    <title>Matching Chains to the Codebook </title>
+
+    <remark>
+      <title>Section status</title>
+      <p>
+        Placeholder. This section will be drafted after Meeting 3. The
+        intended focus is the matching stage and the reconciliation of
+        codebook versions currently in use across the group's coding
+        spreadsheets.
+      </p>
+    </remark>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: Receiving and Reviewing Tasks                       -->
+  <!-- ============================================================ -->
+  <section xml:id="sec-receiving-and-reviewing-tasks">
+    <title>Receiving and Reviewing Tasks</title>
+
+    <remark>
+      <title>Section status</title>
+      <p>
+        Placeholder. This section will be drafted after Meeting 4. The
+        intended focus is the end-to-end pipeline and the reviewer-facing
+        workflow built on top of it.
+      </p>
+    </remark>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- Section: Discussion Items                                    -->
+  <!-- ============================================================ -->
+   
+  <section xml:id="subsec-discussion-items">
+    <title>Discussion Items</title>
+
+    <p>
+      This is a space for listing items for discussion. I will add more as they 
+      surface.
+      <ol marker="1.">
+        <li>
+          <p>
+            <em>Storage location.</em> Where should the database live
+            for shared group use? Candidates include a single
+            researcher's local machine, a shared institutional drive, a
+            department-managed server, and a managed third-party host.
+            Each has different implications for access, backup, and
+            IRB considerations.
+          </p>
+        </li>
+        <li>
+          <p>
+            <em>Access and operations.</em> Who in the group is permitted
+            to ingest files, run the pipeline, and edit shared documents
+            such as the codebook and the controlled vocabulary? The
+            project is small enough that informal conventions may
+            suffice, but the group should agree explicitly on whether
+            read access and write access are distinguished.
+          </p>
+        </li>
+      </ol>
+    </p>
+
+    <paragraphs>
+      <title>Between meetings</title>
+      <p>
+        Group members are invited to interact with the deployed prototype
+        on their own time and to send reactions of any kind.
+      </p>
+
+    </paragraphs>
+
+  </section>
+</chapter>

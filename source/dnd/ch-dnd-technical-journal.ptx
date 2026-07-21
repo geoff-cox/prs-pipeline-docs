@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ================================================================== -->
+<!-- Research journal: drag-and-drop (cardsort) interaction data.       -->
+<!-- ================================================================== -->
+<chapter xml:id="ch-dnd-tech-journal" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Technical Journal</title>
+
+  <introduction>
+    <p>
+      This chapter is a technical journal: a collection of notes, experiments,
+      and analyses related to the drag-and-drop framework. It is a place to
+      record work in progress and technical details.
+    </p>
+  </introduction>
+  
+  <xi:include href="./sections/sec-worked-example.ptx" />
+  <xi:include href="./sections/sec-testing-commands.ptx" />
+  <xi:include href="./sections/sec-orphans.ptx" />
+
+</chapter>

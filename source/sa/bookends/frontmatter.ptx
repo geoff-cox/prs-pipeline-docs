@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<frontmatter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="frontmatter">
+  <bibinfo>
+    <date>
+      <today />
+    </date>
+  </bibinfo>
+
+  <titlepage>
+    <titlepage-items/>
+  </titlepage>
+
+  <colophon xml:id="front-colophon">
+    <colophon-items/>
+  </colophon>
+  
+  <preface>
+    <p>
+      TO-DO: Add a preface for the PROTEUS Short Answer service journal and reference guide.
+    </p>
+  </preface>
+
+</frontmatter>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PROTEUS Documentation</title>
+  <meta name="description" content="Documentation for PROTEUS, an automation pipeline that ingests student-response data and analyses it on a per-question-type basis.">
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --card-bg: #ffffff;
+      --text: #1f2430;
+      --muted: #5c6370;
+      --accent: #2a5d8f;
+      --accent-hover: #1d4568;
+      --border: #d9dce1;
+      color-scheme: light dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14161a;
+        --card-bg: #1e2127;
+        --text: #e8eaed;
+        --muted: #9aa0aa;
+        --accent: #7fb3e0;
+        --accent-hover: #a8ccec;
+        --border: #33373f;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 3rem 1.25rem 4rem;
+    }
+    header h1 {
+      font-size: 2.25rem;
+      margin: 0 0 0.25rem;
+      letter-spacing: 0.01em;
+    }
+    header p.tagline {
+      margin: 0 0 2.5rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .card h2 {
+      margin: 0 0 0.15rem;
+      font-size: 1.35rem;
+    }
+    .card p.subtitle {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .card p { margin: 0.5rem 0; }
+    .links { margin-top: 1rem; }
+    .links a {
+      display: inline-block;
+      margin-right: 0.75rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      color: var(--accent);
+      text-decoration: none;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 0.95rem;
+    }
+    .links a:hover, .links a:focus {
+      color: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+    .status {
+      display: inline-block;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.1rem 0.6rem;
+      vertical-align: middle;
+    }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>PROTEUS Documentation</h1>
+      <p class="tagline">Research journals and reference guides for the
+        <strong>proteus-rs-pipeline</strong> — an automation pipeline that ingests
+        student-response data and analyses it on a per-question-type basis.</p>
+    </header>
+
+    <section class="card">
+      <h2>PROTEUS Drag-and-Drop</h2>
+      <p class="subtitle">A Research Journal and Reference Guide</p>
+      <p>Documentation for the Drag-and-Drop (DnD) service: the event-trajectory
+        and state models used to reconstruct drag-and-drop board state, baseline
+        and grouping features, statistical modeling, and the running technical
+        journal.</p>
+      <div class="links">
+        <a href="dnd/">Read online (HTML)</a>
+        <a href="pdf/dnd-journal.pdf">Download PDF</a>
+      </div>
+    </section>
+    
+    <section class="card">
+      <h2>PROTEUS Short Answer</h2>
+      <p class="subtitle">Control-structure service documentation</p>
+      <p>Documentation for the Short Answer (SA) service — screening student
+        short-answer responses, reconstructing reasoning chains, and proposing
+        control-structure codes for human review. The PreTeXt source lives in the
+        repository under <code>docs/source/sa/</code>.</p>
+      <div class="links">
+        <a href="sa/">Read online (HTML)</a>
+        <a href="pdf/sa-journal.pdf">Download PDF</a>
+      </div>
+    </section>
+
+    <footer>
+      <p>This is an active research journal: content evolves as the services are
+        built out, so chapters may describe work that is planned or only partially
+        landed. Source and code live in the
+        <a href="https://github.com/geoff-cox/proteus-rs-pipeline">proteus-rs-pipeline</a>
+        repository. Built with <a href="https://pretextbook.org">PreTeXt</a>.</p>
+    </footer>
+  </main>
+</body>
+</html>

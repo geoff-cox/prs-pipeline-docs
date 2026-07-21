@@ -1,0 +1,1135 @@
+<chapter xml:id="ch-statistical-modeling">
+  <title>Statistical Modeling Layer</title>
+
+  <introduction>
+    <p>
+      The framework developed so far is descriptive. The baseline and advanced
+      features of <xref ref="ch-baseline-features"/> and
+      <xref ref="ch-group-features"/> give each
+      <xref ref="gt-attempt" text="custom">attempt</xref> a stable feature
+      vocabulary. The processing pipeline of <xref ref="ch-data-processing"/>
+      produces analysis-ready tables with explicit quality-control flags. The
+      displays of <xref ref="ch-visualization-diagnostics"/> make item-level
+      patterns visible. This chapter adds the statistical modeling layer: the
+      tools used to ask whether those patterns are stable, predictive, and
+      interpretable after accounting for the structure of the data.
+    </p>
+
+    <p>
+      The chapter first explains why descriptive summaries are not enough on
+      their own. It then fixes the modeling units and the nested, crossed data
+      structure; introduces regression models with item and student effects;
+      treats process features as predictors; develops a simple distance-chain
+      process model; describes trajectory clustering; and closes with validation
+      across students, items, source versions, and semesters.
+    </p>
+
+    <p>
+      The models here extend the descriptive framework; they do not replace it.
+      A model should use the defined feature vocabulary, respect reconstruction
+      flags, include item-design covariates when relevant, and be checked
+      against held-out students, items, or semesters whenever the claim involves
+      generalization.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-why-descriptive-features-are-not-enough">
+    <title>Why Descriptive Features Are Not Enough</title>
+
+    <p>
+      Descriptive features answer questions such as: What fraction of students
+      solved the item? How far was the first checked state from the
+      <xref ref="gt-key" text="custom">key</xref>? Which
+      <xref ref="gt-card" text="custom">cards</xref> were most often misplaced?
+      How often were <xref ref="gt-decoy-card" text="custom">decoy cards</xref>
+      or <xref ref="gt-decoy-slot" text="custom">decoy slots</xref> used? How
+      many <xref ref="gt-move" text="custom">moves</xref>,
+      <xref ref="gt-check" text="custom">checks</xref>,
+      <xref ref="gt-reset" text="custom">resets</xref>, or
+      <xref ref="gt-takeback" text="custom">takebacks</xref> occurred? Such
+      summaries are necessary. They make the data legible, and the diagnostic
+      layer of <xref ref="ch-visualization-diagnostics"/> is built from them.
+    </p>
+
+    <p>
+      They are not sufficient because a difference in a descriptive feature does
+      not identify its source. Suppose one item has a lower first-check correct
+      rate than another. The difference may reflect greater conceptual
+      difficulty, but it may also reflect more cards, more
+      <xref ref="gt-slot" text="custom">slots</xref>, more decoys, a different
+      feedback policy, a different cohort, or different prior instruction;
+      <xref ref="subsec-design-versus-performance" text="title"/> made this
+      point at the design level. A descriptive comparison alone cannot separate
+      these possibilities.
+    </p>
+
+    <p>
+      Statistical models let the framework ask separation questions:
+      <ul>
+        <li>
+          <p>
+            Do process features predict eventual correctness after controlling
+            for item and student differences?
+          </p>
+        </li>
+        <li>
+          <p>
+            Are <xref ref="gt-decoy-card-leak" text="custom">decoy-card
+            leaks</xref> associated with lower final success across items, or
+            only within particular items?
+          </p>
+        </li>
+        <li>
+          <p>
+            Do students who check frequently improve more after
+            <xref ref="gt-feedback" text="custom">feedback</xref>, given the
+            feedback policy under which they worked?
+          </p>
+        </li>
+        <li>
+          <p>
+            Are trajectory patterns stable across semesters?
+          </p>
+        </li>
+        <li>
+          <p>
+            Can item-level diagnostics predict which questions will produce many
+            errors or resets in a future cohort?
+          </p>
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      Modeling does not remove the need for interpretation. A statistically
+      significant coefficient is still a coefficient on a feature produced by a
+      particular <xref ref="gt-item-design" text="custom">item design</xref>,
+      reconstruction pipeline, and feedback environment. The model can support a
+      claim only when the feature definition, processing choices, validation
+      strategy, and interpretation all support it. That chain of custody is the
+      subject of <xref ref="ch-validity-interpretation"/>.
+    </p>
+  </section>
+
+  <section xml:id="sec-nested-data-structure">
+    <title>Nested Data Structure</title>
+
+    <introduction>
+      <p>
+        A model is fit to a table, and the table commits the analysis to a unit:
+        one row per what? This section fixes the available modeling levels, the
+        nesting and crossing among them, and the table fields needed for
+        reproducible modeling.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-modeling-levels">
+      <title>Levels of Analysis</title>
+
+      <p>
+        The feature levels of <xref ref="tab-feature-levels"/> already run from
+        single states up to cohorts. Modeling uses the same ladder. A modeling
+        table may be built at any of the following levels:
+        <dl width="medium">
+          <li>
+            <title>event level</title>
+            <p>
+              One row per logged event: a move, check, reset, or
+              <xref ref="gt-page-view" text="custom">page view</xref>.
+            </p>
+          </li>
+          <li>
+            <title>state level</title>
+            <p>
+              One row per reconstructed state or checked state.
+            </p>
+          </li>
+          <li>
+            <title>segment level</title>
+            <p>
+              One row per check segment, reset-free segment,
+              <xref ref="gt-session" text="custom">session</xref>, or
+              active-work segment.
+            </p>
+          </li>
+          <li>
+            <title>attempt level</title>
+            <p>
+              One row per student-item attempt under a stated attempt-boundary
+              rule (<xref ref="subsec-attempt-boundary-options" text="title"/>).
+            </p>
+          </li>
+          <li>
+            <title>student level</title>
+            <p>
+              One row per student, aggregating behavior across items.
+            </p>
+          </li>
+          <li>
+            <title>item level</title>
+            <p>
+              One row per item version, aggregating behavior across students.
+            </p>
+          </li>
+          <li>
+            <title>course or semester level</title>
+            <p>
+              One row per offering, cohort, or instructional context.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        The unit determines the meaning of the outcome and predictors. A
+        check-level model might predict whether a checked state is correct; an
+        attempt-level model, whether the attempt eventually succeeds; an
+        item-level model, the first-check correct rate of an item in a future
+        semester. Every claim made from a model inherits the unit of the table on
+        which the model was fit.
+      </p>
+    </subsection>
+
+<subsection xml:id="subsec-nesting-and-crossing">
+  <title>Nesting and Crossing</title>
+
+  <p>
+    The levels are nested and crossed at the same time. Events sit inside
+    attempts, and attempts belong to student-item pairs inside an offering:
+    <md xml:id="an-data-nesting">
+        \text{event}
+      \subset
+        \text{attempt}
+      \subset
+      (\text{student},\text{item})
+      \subset
+      \text{course}.
+    </md>
+    Students and items, however, are crossed: each student encounters many
+    items, and each item is encountered by many students. The same item may
+    also recur across semesters, sometimes with a changed source version or
+    feedback policy.
+  </p>
+
+  <p>
+    Because of this crossing, an attempt-level model usually needs both a
+    student effect and an item effect. The student effect absorbs general
+    differences among students; the item effect absorbs general differences
+    among items. Omitting either risks a familiar confounding: attributing
+    item difficulty to the students who happened to see the item, or student
+    differences to the items they happened to attempt.
+  </p>
+</subsection>
+
+    <subsection xml:id="subsec-modeling-table">
+      <title>The Modeling Table</title>
+
+      <p>
+        A modeling table should be derived from the analysis-ready tables of
+        <xref ref="tab-analysis-ready-tables"/>, not directly from raw logs. Each
+        row should carry:
+        <ul>
+          <li>
+            <p>
+              identifiers for student, item, course, semester, and source
+              version;
+            </p>
+          </li>
+          <li>
+            <p>
+              the unit of analysis, such as attempt, check, segment, or event;
+            </p>
+          </li>
+          <li>
+            <p>
+              the outcome variable or variables;
+            </p>
+          </li>
+          <li>
+            <p>
+              the item-design covariates of
+              <xref ref="tab-item-design-covariates"/>;
+            </p>
+          </li>
+          <li>
+            <p>
+              baseline and advanced features, using the feature dictionary names
+              (<xref ref="tab-minimal-baseline-feature-dictionary"/>);
+            </p>
+          </li>
+          <li>
+            <p>
+              the reconstruction flags of <xref ref="tab-quality-control-flags"/>
+              and the readiness status (<c>ready</c>, <c>limited</c>, or
+              <c>exclude</c>) of <xref ref="subsec-feature-readiness" text="title"/>;
+            </p>
+          </li>
+          <li>
+            <p>
+              inclusion or exclusion status for the analysis being reported.
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Flags and readiness status should be retained even when the main model
+        excludes flagged rows. Keeping them makes it possible to report how much
+        data were excluded and why, and to rerun the model under different
+        inclusion rules. A conclusion that survives only one inclusion rule is a
+        conclusion about that rule as much as about the students or items.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-item-and-student-effects">
+    <title>Item and Student Effects</title>
+
+    <introduction>
+      <p>
+        Response features are produced by students working on particular items.
+        Regression models with student and item effects are the basic tool for
+        studying an outcome while respecting that structure.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-binary-outcome-model">
+      <title>Binary Outcome Models</title>
+
+      <p>
+        Let <m>Y_{\nu q}</m> be a binary outcome for student <m>\nu</m> on item
+        <m>q</m>, such as <c>first_check_correct</c> or
+        <c>eventual_correct</c> from the check-outcome features of
+        <xref ref="tab-check-outcome-features"/>.
+      </p>
+
+      <p>
+        A basic mixed-effects logistic model is
+        <md xml:id="an-binary-mixed-model">
+          \operatorname{logit}\Pr(Y_{\nu q}=1)
+          =
+          \beta_0
+          +
+          \beta^{\top}\mathbf{z}_q
+          +
+          \gamma^{\top}\mathbf{x}_{\nu q}
+          +
+          u_\nu
+          +
+          v_q,
+        </md>
+        where <m>\mathbf{z}_q</m> collects item-design covariates,
+        <m>\mathbf{x}_{\nu q}</m> collects attempt-level process features,
+        <m>u_\nu</m> is a student effect, and <m>v_q</m> is an item effect. The
+        boldface on <m>\mathbf{z}_q</m> and <m>\mathbf{x}_{\nu q}</m> emphasizes
+        that these are covariate vectors; they are not zones or states.
+      </p>
+
+      <p>
+        The design covariates <m>\mathbf{z}_q</m> come from
+        <xref ref="tab-item-design-covariates"/>: <c>num_cards</c>,
+        <c>num_slots</c>, <c>num_decoy_cards</c>, <c>num_decoy_slots</c>, and
+        the feedback policy. The source version can join them as a covariate,
+        but it is recorded as item-map provenance
+        (<xref ref="subsec-source-versioning" text="title"/>), not in the
+        covariate table. The process features
+        <m>\mathbf{x}_{\nu q}</m> come from the feature dictionary: for example
+        <c>first_check_distance</c>, <c>num_moves</c> before the first check,
+        <c>num_checks</c>, a reset indicator, and decoy-leak counts such as
+        <c>decoy_card_leak</c> and <c>decoy_slot_leak</c>.
+      </p>
+
+      <p>
+        The effects <m>u_\nu</m> and <m>v_q</m> may be modeled as random effects,
+        fixed effects, or regularized effects, depending on the size of the data
+        and the intended claim. The notation above records the adjustment; the
+        modeling choice must be reported with the results.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-continuous-or-count-outcomes">
+      <title>Continuous and Count Outcomes</title>
+
+      <p>
+        Not every outcome is binary. Useful continuous, ordinal, or count-valued
+        outcomes include:
+        <ul>
+          <li>
+            <p>
+              <c>first_check_distance</c>, the key distance
+              <m>d^\star(X_{k_1})</m> at the first check;
+            </p>
+          </li>
+          <li>
+            <p>
+              <c>corrected_progress</c>, the baseline-corrected progress score
+              <m>g(X)</m> at a chosen check;
+            </p>
+          </li>
+          <li>
+            <p>
+              <c>num_moves</c>, the number of state-changing moves in the
+              attempt or before the first check;
+            </p>
+          </li>
+          <li>
+            <p>
+              <c>num_checks</c> before success;
+            </p>
+          </li>
+          <li>
+            <p>
+              <c>active_time</c> on task;
+            </p>
+          </li>
+          <li>
+            <p>
+              reset and takeback counts.
+            </p>
+          </li>
+        </ul>
+        Wherever a move count enters a model, it should count state-changing
+        moves unless the analysis explicitly says otherwise. Rows flagged
+        <c>noop_move</c> are excluded from <c>num_moves</c> by the reconstruction
+        default of <xref ref="subsec-reconstruction-rules" text="title"/>.
+      </p>
+
+      <p>
+        The model family should match the outcome scale. A key distance is a
+        bounded count between <m>0</m> and <m>P</m>; a move count is a
+        nonnegative count and may be overdispersed; active time is positive,
+        skewed, and dependent on the idle-threshold rule that produced it. The
+        construction of the outcome, not the convenience of the software, should
+        drive the model choice.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-random-effects-interpretation">
+      <title>Interpreting Effects</title>
+
+      <p>
+        Student effects summarize stable differences among students after
+        accounting for the modeled features. Item effects summarize stable
+        differences among items after accounting for the modeled design
+        covariates. Neither should be overinterpreted. A large item effect may
+        reflect conceptual difficulty, but it may also reflect wording, layout,
+        feedback, source version, or unmeasured instructional context.
+      </p>
+
+      <p>
+        Fixed-effect coefficients are conditional associations. A positive
+        coefficient on <c>num_checks</c> does not mean that checking causes
+        success: students who are close to the answer may simply keep checking,
+        or the feedback policy may make checking strategically useful. As
+        throughout the framework, the feedback policy <m>\phi</m> is part of the
+        environment that produced the data
+        (<xref ref="subsec-feedback-dependent-features" text="title"/>), and
+        coefficients on feedback-sensitive features must be read relative to it.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-process-features-as-predictors">
+    <title>Process Features as Predictors</title>
+
+    <introduction>
+      <p>
+        Process features summarize how a student interacted with the item before
+        or between checked states. They are useful predictors because they carry
+        information that the final answer alone does not.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-process-feature-families">
+      <title>Feature Families</title>
+
+      <p>
+        The trajectory, check, and time features of
+        <xref ref="ch-baseline-features"/> organize into predictor families:
+        <dl width="medium">
+          <li>
+            <title>early-state features</title>
+            <p>
+              <c>first_check_distance</c>, the first-check error profile
+              <m>\boldsymbol{\varepsilon}(X_{k_1})</m>, first-check decoy leaks,
+              and first-check <xref ref="gt-occupancy" text="custom">occupancy</xref>
+              residuals;
+            </p>
+          </li>
+          <li>
+            <title>movement features</title>
+            <p>
+              <c>num_moves</c>, fixing, lateral, and breaking counts,
+              <c>excess_moves</c>, takebacks, and repeated states, computed
+              within reset-free segments and excluding <c>noop_move</c> rows by
+              default;
+            </p>
+          </li>
+          <li>
+            <title>feedback-use features</title>
+            <p>
+              check <c>cadence</c>, <c>post_check_gain</c>, moves after incorrect
+              checks, and <c>responsiveness</c> <m>\rho_i</m> when the feedback
+              policy highlights cards;
+            </p>
+          </li>
+          <li>
+            <title>timing features</title>
+            <p>
+              <c>time_to_first_move</c>, <c>time_to_first_check</c>,
+              <c>median_move_gap</c>, <c>active_time</c>, and long idle gaps;
+            </p>
+          </li>
+          <li>
+            <title>reset features</title>
+            <p>
+              reset count, reset timing, and post-reset improvement.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        Grouping features from <xref ref="ch-group-features"/>
+        join these families when grouping structure is part of the research
+        question. The labeling gap <m>\widetilde{\sigma}-\sigma</m>
+        distinguishes naming errors from grouping failures, and merge and split
+        counts locate structural grouping errors at the first check.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-prediction-timing">
+      <title>Temporal Alignment</title>
+
+      <p>
+        Predictors must occur before the outcome they predict. First-check
+        features may predict eventual correctness; final-check features may not,
+        because they already contain the outcome. The same discipline applies
+        within an attempt. To model improvement after feedback, use only the
+        state and feedback available at the earlier check as predictors. For
+        example, features of <m>X_{k_i}</m> and the feedback returned at check
+        <m>i</m> may be used to predict the later post-check gain
+        <md>
+          G_i=d^\star(X_{k_i})-d^\star(X_{k_{i+1}}),
+        </md>
+        as defined in <xref ref="an-baseline-post-check-gain" text="custom">the
+        baseline chapter</xref>. The gain itself is the outcome; it is not known
+        until the next checked state exists.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-predictive-versus-explanatory">
+      <title>Predictive and Explanatory Uses</title>
+
+      <p>
+        Process features serve two different goals. A predictive model asks
+        whether the features improve prediction for new students, items, or
+        semesters; it is judged on held-out data. An explanatory model asks
+        whether a feature is associated with an outcome after accounting for
+        other variables; it is judged by the justification of its covariates, the
+        temporal ordering of its predictors, and the care of its interpretation.
+      </p>
+
+      <p>
+        The two standards do not substitute for each other. A feature that
+        improves prediction is not thereby a causal explanation, and a carefully
+        argued association may still fail to predict well for the next cohort.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-process-models">
+    <title>Process Models</title>
+
+    <introduction>
+      <p>
+        The regressions above treat process features as inputs. A process model
+        treats the trajectory itself as the object being modeled. This section
+        develops a simple process model for drag-and-drop data: a Markov chain on
+        distance to the key. Its fundamental matrix turns pooled transitions into
+        an expected number of moves to solve.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-markov">
+      <title>Markov Chain</title>
+
+      <p>
+        The full <xref ref="gt-configuration-space" text="custom">configuration
+        space</xref> has <m>(R+1)^P</m> states, usually too many to model from
+        item-level data. Coarsening each state to its key distance, as in the
+        distance curve <m>d_k=d^\star(X_k)</m> of
+        <xref ref="an-baseline-distance-curve" text="custom">the baseline
+        chapter</xref>, collapses the trajectory onto the finite distance space
+        <md>
+          d\in\{0,1,\dots,P\}.
+        </md>
+        The move classification of <xref ref="subsec-move-classification"
+        text="title"/> then describes the local transition structure: a
+        <term>fix</term> steps <m>d</m> down by one, a <term>lateral</term>
+        leaves it unchanged, a <term>break</term> steps it up by one, and a reset
+        (<xref ref="an-reset-state-update" text="custom">the trajectory
+        model</xref>) returns the board to the starting state <m>X_0</m> and
+        hence to distance <m>d^\star(X_0)</m>.
+      </p>
+
+      <p>
+        Pooling a cohort's retained board-changing actions estimates the
+        one-step transition probabilities
+        <md xml:id="an-distance-transition-probability">
+          p(d\to d')
+          =
+          \Pr(d_{k+1}=d'\mid d_k=d),
+        </md>
+        where each probability is estimated as the fraction of observed
+        transitions out of a distance-<m>d</m> board that land at distance
+        <m>d'</m>. <xref ref="fig-cohort-markov"/> shows this estimation step
+        before any chain is solved: the mix of fixes, laterals, breaks, and
+        reset jumps out of each starting distance.
+      </p>
+
+      <figure xml:id="fig-cohort-markov">
+        <caption>
+          The distance chain as an action mix: for each starting distance, the
+          share of transitions that <term>fix</term> (decrease the distance by
+          one), stay <term>lateral</term>, <term>break</term> (increase the
+          distance by one), or <term>jump</term> by reset. The mix is read from
+          the data before the chain is solved; a high break or reset share is a
+          process-level signal of thrashing or starting over.
+        </caption>
+        <image source="figures/dnd-cohort-markov.png" width="60%">
+          <description>
+            <p>
+              Stacked bar chart, one bar per starting distance, partitioned into
+              the fix, lateral, break, and reset-jump shares of transitions taken
+              from that distance.
+            </p>
+          </description>
+        </image>
+      </figure>
+
+      <p>
+        Treating the next board action as depending only on the current distance
+        makes the distance sequence a Markov chain with the
+        <xref ref="gt-solved" text="custom">solved</xref> state <m>d=0</m>
+        absorbing. Let <m>Q</m> be the transient block of the estimated
+        transition matrix: the rows and columns corresponding to distances
+        <m>d&gt;0</m>. If absorption is reachable from each retained transient
+        distance, then the fundamental matrix gives the expected number of moves
+        to absorption from each transient distance:
+        <md xml:id="an-expected-moves-to-solve">
+          \mathbf{t}
+          =
+          (I-Q)^{-1}\mathbf{1}.
+        </md>
+        The entry of <m>\mathbf{t}</m> at the starting distance
+        <m>d^\star(X_0)</m> is the model's <term>expected moves to solve</term>,
+        a process-level difficulty measure. <xref ref="fig-cohort-markov-matrix"/>
+        shows the estimated transition matrix used in this computation.
+      </p>
+
+      <figure xml:id="fig-cohort-markov-matrix">
+        <caption>
+          The estimated transition matrix <m>p(d \to d')</m>, including
+          absorption at the solved state <m>d=0</m>. Each row is a starting
+          distance and each column is the next distance. The entries leading into
+          <m>d=0</m> determine how quickly the chain can reach the key.
+        </caption>
+        <image source="figures/dnd-cohort-markov_matrix.png" width="55%">
+          <description>
+            <p>
+              Heatmap of the estimated one-step transition probability from each
+              distance to each other distance.
+            </p>
+          </description>
+        </image>
+      </figure>
+
+      <p>
+        The approximation has two layers, both of which should be reported:
+        <ol>
+          <li>
+            <p>
+              the coarsening forgets <em>which</em> cards are wrong, so states
+              with the same distance but different repair paths are pooled; and
+            </p>
+          </li>
+          <li>
+            <p>
+              the memoryless assumption is too strong for a feedback-guided
+              student, whose next move may depend on the last check, the last
+              feedback, and earlier failed placements.
+            </p>
+          </li>
+        </ol>
+      </p>
+
+      <example>
+        <statement>
+          <p>
+            For the four-shape question, the starting distance is
+            <m>d^\star(X_0)=3</m>. For a compact illustrative calculation, cap
+            the reported distance states at <m>3</m>, so any excursion to a
+            larger distance is folded into the <m>d=3</m> row. With illustrative
+            one-step probabilities estimated from pooled board actions, the
+            transition matrix over <m>\{0,1,2,3\}</m> is shown in
+            <xref ref="tab-cheat-markov"/>.
+          </p>
+
+          <table xml:id="tab-cheat-markov">
+            <title>Illustrative one-step transition probabilities; row <m>d=0</m> is absorbing, and each row sums to <m>1</m>.</title>
+            <tabular halign="center" bottom="minor">
+              <col width="24%"/>
+              <col width="19%"/>
+              <col width="19%"/>
+              <col width="19%"/>
+              <col width="19%"/>
+              <row bottom="medium">
+                <cell><p>from / to</p></cell>
+                <cell><p><m>d=0</m></p></cell>
+                <cell><p><m>d=1</m></p></cell>
+                <cell><p><m>d=2</m></p></cell>
+                <cell><p><m>d=3</m></p></cell>
+              </row>
+              <row>
+                <cell><p><m>d=0</m> (solved)</p></cell>
+                <cell><p><m>1</m></p></cell>
+                <cell><p><m>0</m></p></cell>
+                <cell><p><m>0</m></p></cell>
+                <cell><p><m>0</m></p></cell>
+              </row>
+              <row>
+                <cell><p><m>d=1</m></p></cell>
+                <cell><p><m>0.7</m></p></cell>
+                <cell><p><m>0.1</m></p></cell>
+                <cell><p><m>0.1</m></p></cell>
+                <cell><p><m>0.1</m></p></cell>
+              </row>
+              <row>
+                <cell><p><m>d=2</m></p></cell>
+                <cell><p><m>0</m></p></cell>
+                <cell><p><m>0.6</m></p></cell>
+                <cell><p><m>0.2</m></p></cell>
+                <cell><p><m>0.2</m></p></cell>
+              </row>
+              <row bottom="minor">
+                <cell><p><m>d=3</m></p></cell>
+                <cell><p><m>0</m></p></cell>
+                <cell><p><m>0</m></p></cell>
+                <cell><p><m>0.6</m></p></cell>
+                <cell><p><m>0.4</m></p></cell>
+              </row>
+            </tabular>
+          </table>
+
+          <p>
+            Only <m>d=1</m> carries absorption mass in this example, since a
+            single fixing move can reach the key only from one card out of
+            place. Dropping the absorbing row and column leaves the transient
+            block <m>Q</m> and its complement:
+            <md>
+              Q=\begin{bmatrix}
+                0.1 \amp 0.1 \amp 0.1 \\
+                0.6 \amp 0.2 \amp 0.2 \\
+                0   \amp 0.6 \amp 0.4
+              \end{bmatrix},
+              \qquad
+              I-Q=\begin{bmatrix}
+                0.9  \amp -0.1 \amp -0.1 \\
+                -0.6 \amp 0.8  \amp -0.2 \\
+                0    \amp -0.6 \amp 0.6
+              \end{bmatrix}.
+            </md>
+          </p>
+
+          <p>
+            The expected number of moves to solve from each distance is
+            <m>\mathbf{t}=(I-Q)^{-1}\mathbf{1}</m>. Equivalently, with
+            <m>t_0=0</m>, the one-step recursions are
+            <md>
+              <mrow>t_1 \amp= 1 + 0.1\,t_1 + 0.1\,t_2 + 0.1\,t_3,</mrow>
+              <mrow>t_2 \amp= 1 + 0.6\,t_1 + 0.2\,t_2 + 0.2\,t_3,</mrow>
+              <mrow>t_3 \amp= 1 + 0.6\,t_2 + 0.4\,t_3.</mrow>
+            </md>
+          </p>
+
+          <p>
+            Solving from the bottom up, the <m>d=3</m> equation gives
+            <m>t_3=t_2+\tfrac{5}{3}</m>; substituting into the <m>d=2</m>
+            equation gives <m>t_2=t_1+\tfrac{20}{9}</m>; and the <m>d=1</m>
+            equation gives <m>0.7\,t_1=\tfrac{29}{18}</m>. Hence
+            <md>
+              t_1=\tfrac{145}{63}\approx2.30,\qquad
+              t_2=\tfrac{95}{21}\approx4.52,\qquad
+              t_3=\tfrac{130}{21}\approx6.19.
+            </md>
+            The headline value is <m>t_3</m>: from the empty board, this
+            illustrative cohort is expected to take about <m>6.2</m> board
+            actions to solve, compared with the theoretical floor
+            <m>d^\star(X_0)=3</m>.
+          </p>
+
+          <p>
+            The fundamental matrix itself,
+            <md>
+              (I-Q)^{-1}=\begin{bmatrix}
+                \tfrac{10}{7} \amp \tfrac{10}{21} \amp \tfrac{25}{63} \\
+                \tfrac{10}{7} \amp \tfrac{15}{7}  \amp \tfrac{20}{21} \\
+                \tfrac{10}{7} \amp \tfrac{15}{7}  \amp \tfrac{55}{21}
+              \end{bmatrix},
+            </md>
+            has an entrywise interpretation: its <m>(i,j)</m> entry is the
+            expected number of visits to transient distance <m>j</m> before
+            solving, starting from transient distance <m>i</m>. The row sums are
+            the entries of <m>\mathbf{t}</m>.
+          </p>
+        </statement>
+      </example>
+
+      <assemblage xml:id="asm-markov-why">
+        <title>Why the approximation is useful</title>
+        <p>
+          The Markov property is only an approximation, but the distance chain
+          earns its place for five reasons.
+          <ul>
+            <li>
+              <p>
+                <em>Comparable process summaries.</em> It compresses a cohort of
+                irregular trajectories into a small set of quantities, especially
+                expected moves to solve and excess over the theoretical floor.
+                These summaries can be compared across items when reported with
+                <m>P</m>, <m>R</m>, and the starting distance.
+              </p>
+            </li>
+            <li>
+              <p>
+                <em>Interpretable transition rates.</em> The fitted rates are
+                diagnostics even before the matrix is inverted: a high break rate
+                suggests instability, a high reset rate suggests starting over,
+                and a high fix rate suggests steady convergence.
+              </p>
+            </li>
+            <li>
+              <p>
+                <em>A baseline for history effects.</em> The predicted path
+                length gives a reference value. Large gaps between observed move
+                counts and model-based expectations identify attempts or items
+                where history, feedback, or strategy may matter.
+              </p>
+            </li>
+            <li>
+              <p>
+                <em>Low data demand.</em> The model is estimated from pooled
+                transition counts and needs far less data than the full
+                <m>(R+1)^P</m> configuration graph
+                (<xref ref="an-configuration-graph" text="custom">the trajectory
+                model</xref>).
+              </p>
+            </li>
+            <li>
+              <p>
+                <em>Clear refinement path.</em> Because the approximation is
+                explicit, it can be tested and refined. With enough data, the
+                macro-state can include recent feedback, the per-slot-correct
+                signature, or the error profile
+                <m>\boldsymbol{\varepsilon}(X)</m>
+                (<xref ref="an-baseline-error-profile" text="custom">the
+                baseline chapter</xref>) instead of distance alone.
+              </p>
+            </li>
+          </ul>
+        </p>
+      </assemblage>
+
+      <remark xml:id="rmk-markov-floor">
+        <title>The starting distance is not always the maximum distance</title>
+        <p>
+          For the running example, <m>d^\star(X_0)=3</m>, because the three
+          non-decoy cards begin in the tray and the decoy card is already in its
+          home zone. A student can nevertheless move the decoy card out of the
+          tray and reach distance <m>4</m>. Thus the mathematical distance range
+          is <m>\{0,1,\dots,P\}</m>, not merely
+          <m>\{0,1,\dots,d^\star(X_0)\}</m>. An analyst may include the extra
+          distance state, cap larger distances at the starting distance, or use a
+          different coarsening, but the choice is part of the model definition and
+          should be reported.
+        </p>
+      </remark>
+
+      <p>
+        Like every summary in this framework, expected moves to solve describes
+        movement under a feedback policy. It is not direct evidence of a
+        reasoning process. It should be reported with the cohort, item version,
+        feedback policy, distance coarsening, and readiness filter that produced
+        the pooled transitions.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-trajectory-clustering">
+    <title>Trajectory Clustering</title>
+
+    <introduction>
+      <p>
+        Some research questions concern patterns of interaction rather than a
+        single outcome. Trajectory clustering groups attempts with similar
+        process structure so that common response paths can be inspected
+        together.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-clustering-representations">
+      <title>Representing a Trajectory for Clustering</title>
+
+      <p>
+        A trajectory must be represented before it can be clustered. Common
+        representations, from most compressed to least compressed, include:
+        <dl width="medium">
+          <li>
+            <title>feature vector</title>
+            <p>
+              Each attempt becomes its process features: move counts, checks,
+              resets, gains, error profiles, and timing summaries.
+            </p>
+          </li>
+          <li>
+            <title>distance curve</title>
+            <p>
+              Each attempt becomes its sequence <m>d_0,d_1,\dots,d_n</m>,
+              aligned or resampled to a common length.
+            </p>
+          </li>
+          <li>
+            <title>event string</title>
+            <p>
+              Each attempt becomes a string over event types, such as fixing
+              move, lateral move, breaking move, takeback, check, and reset.
+            </p>
+          </li>
+          <li>
+            <title>state sequence</title>
+            <p>
+              Each attempt keeps its full <xref ref="gt-configuration" text="custom">configuration</xref>
+              sequence <m>X_0,X_1,\dots,X_n</m>.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        Different representations answer different questions. Feature-vector
+        clustering groups attempts with similar summaries. Distance-curve
+        clustering groups attempts with similar progress shapes. State-sequence
+        clustering groups attempts that visit similar configurations.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-trajectory-distance-functions">
+      <title>Distances Between Trajectories</title>
+
+      <p>
+        Clustering requires a distance between attempts. Possible choices include
+        Euclidean distance between standardized feature vectors, distance between
+        aligned progress curves, edit distance between
+        <xref ref="gt-event" text="custom">event</xref> strings, dynamic alignment
+        distances for trajectories of different lengths, and graph-based
+        distances between visited-state sets or transition-count vectors. When
+        grouping structure is the object of interest, the variation of
+        information of <xref ref="an-variation-of-information" text="custom">the
+        advanced comparison chapter</xref> supplies a metric between partition
+        structures of checked states.
+      </p>
+
+      <p>
+        The distance function determines the clusters. Two attempts may be close
+        under one representation and far apart under another, so the
+        representation and distance should be chosen to match the research
+        question, not to produce visually appealing clusters.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-cluster-interpretation">
+      <title>Interpreting Clusters</title>
+
+      <p>
+        Clusters are descriptive groupings, not direct evidence of cognitive
+        strategies. A cluster with many checks might reflect guessing, strategic
+        feedback use, or careful incremental revision, depending on the item and
+        its feedback policy. A cluster with few moves might reflect confidence;
+        if its checked states remain far from the key, it may instead reflect
+        disengagement or an early stop.
+      </p>
+
+      <p>
+        Interpretation should return to representative attempts, item design,
+        checked states, feedback, and timing. A useful cluster report includes
+        the number of attempts per cluster, representative trajectories, outcome
+        summaries by cluster, item and student composition by cluster, and
+        reconstruction-quality summaries by cluster. The last is essential: a
+        cluster driven by <c>check_mismatch</c> or parsing flags is a data-quality
+        finding, not a behavioral one.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-cluster-stability">
+      <title>Cluster Stability</title>
+
+      <p>
+        Clustering is sensitive to preprocessing, feature scaling, the distance
+        function, and the number of clusters. A cluster solution should be
+        checked for stability by varying these choices and asking whether the
+        same broad patterns survive.
+      </p>
+
+      <p>
+        If clusters feed later modeling or interpretation, they should also be
+        validated on held-out data or across semesters. A pattern that appears in
+        one cohort and vanishes in the next is exploratory until the difference
+        is explained.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-cross-semester-validation">
+    <title>Cross-Semester Validation</title>
+
+    <introduction>
+      <p>
+        A framework intended for research should produce features, models, and
+        patterns that are not artifacts of a single course offering.
+        Cross-semester validation asks whether item-level, process-level, and
+        model-level findings reappear when the framework is applied to new
+        cohorts.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-validation-splits">
+      <title>Validation Splits</title>
+
+      <p>
+        Useful splits mirror the nesting structure of
+        <xref ref="an-data-nesting" text="custom">the modeling table</xref>:
+        <dl width="medium">
+          <li>
+            <title>student holdout</title>
+            <p>
+              Fit on some students and evaluate on held-out students from the
+              same items and semester.
+            </p>
+          </li>
+          <li>
+            <title>item holdout</title>
+            <p>
+              Fit on some items and evaluate on held-out items. This asks
+              whether design covariates and process features generalize to new
+              questions.
+            </p>
+          </li>
+          <li>
+            <title>semester holdout</title>
+            <p>
+              Fit on one offering and evaluate on a later offering.
+            </p>
+          </li>
+          <li>
+            <title>source-version holdout</title>
+            <p>
+              Fit on one version of an item and evaluate after the source or
+              feedback policy changes.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        The split should match the claim. A model that survives student holdout
+        has not thereby generalized to new items or semesters, and item-level
+        claims require item-level validation.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-stability-of-features">
+      <title>Stability of Features</title>
+
+      <p>
+        Before validating a model, check whether the descriptive features
+        themselves are stable: first-check correct rate, mean first-check
+        distance, decoy-card leak rate, decoy-slot usage, mean checks, reset
+        rate, and reconstruction-quality rates, each by semester. These are the
+        same cross-cohort comparisons the diagnostic layer already produces
+        (<xref ref="subsec-cross-course-and-semester-stability" text="title"/>),
+        now read as a precondition for modeling.
+      </p>
+
+      <p>
+        Feature instability is not automatically a problem. It may reflect real
+        instructional differences, item wording changes, feedback-policy
+        changes, or cohort differences. But it must be documented before the
+        features are treated as stable item characteristics in a model.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-model-performance">
+      <title>Model Performance</title>
+
+      <p>
+        Predictive models should be evaluated with metrics that match the
+        outcome: calibration and discrimination measures for binary outcomes,
+        prediction error and residual structure for continuous or count outcomes,
+        in each case computed on the held-out split.
+      </p>
+
+      <p>
+        Performance should also be reported separately for relevant strata:
+        semester, item type, feedback policy, and readiness status. A model that
+        performs well overall may still fail on items with many decoys, traces
+        with long idle gaps, or the <c>limited</c> stratum of the readiness
+        classification. Averaging over those failures hides exactly the cases a
+        diagnostic framework is meant to catch.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-model-transportability">
+      <title>Transportability and Limits</title>
+
+      <p>
+        Cross-semester validation separates patterns local to one dataset from
+        patterns that may transport to future offerings. Transportable patterns
+        are valuable for item diagnostics because they suggest the feature
+        reflects something stable about the item or interaction design rather
+        than the particular students who happened to work it.
+      </p>
+
+      <p>
+        Even a model that validates across semesters remains bounded by the data
+        that built it. A model trained on one course, platform version, feedback
+        policy, or family of drag-and-drop items should not be assumed to apply
+        unchanged elsewhere.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reporting-models">
+      <title>Reporting Modeling Results</title>
+
+      <p>
+        A modeling report should state the unit of analysis; the outcome
+        definition; the predictors and their timing relative to the outcome; the
+        item-design covariates; the student, item, course, or semester effects
+        included; the exclusion rules and readiness summaries; the validation
+        split and performance metrics; and the limits on interpretation. Without
+        these details, a coefficient or prediction score cannot be interpreted,
+        reproduced, or compared across studies.
+      </p>
+
+      <p>
+        The limits on interpretation are larger than a checklist item. A
+        validated model establishes that a pattern is stable and predictive;
+        whether the pattern supports a claim about student reasoning,
+        misconceptions, feedback use, or learning is a separate argument. The
+        final chapter, <xref ref="ch-validity-interpretation"/>, takes up that
+        argument by distinguishing what the framework measures directly from
+        what must be inferred.
+      </p>
+    </subsection>
+  </section>
+</chapter>

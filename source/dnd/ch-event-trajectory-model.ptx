@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="ch-event-trajectory-model">
+  <title>Event and Trajectory Model</title>
+
+  <introduction>
+    <p>
+      The previous chapter modeled a single <xref ref="gt-board" text="custom">board</xref>
+      state. A <xref ref="gt-configuration" text="custom">configuration</xref> tells
+      where every <xref ref="gt-card" text="custom">card</xref> is at one moment,
+      and a <xref ref="gt-membership-matrix" text="custom">membership matrix</xref>
+      gives that state an algebraic representation. This chapter adds time. A
+      student <xref ref="gt-attempt" text="custom">attempt</xref> is not one
+      configuration; it is a logged sequence of events that move, mark, reset,
+      or delimit the current state.
+    </p>
+
+    <p>
+      The central object is an <term>event trajectory</term>. It records the
+      states a student passes through, the events that produced or marked those
+      states, and the times at which they occurred. Moves change the state.
+      Checks mark the current state and return
+      <xref ref="gt-feedback" text="title"/>. Resets jump back to the
+      <xref ref="gt-initial-state" text="title"/>. Page events do not change the
+      board, but they help delimit sessions and problem access. Timestamps turn
+      successive events into gaps and other timing quantities that later chapters
+      summarize.
+    </p>
+
+    <p>
+      The state model answers <q>Where are the cards?</q> The event and
+      <xref ref="gt-trajectory" text="title"/> model answers <q>How did that
+      state change over time?</q> Later feature chapters use the trajectory
+      defined here to measure progress curves, check cadence, excess moves,
+      <xref ref="gt-takeback" text="custom">takebacks</xref>,
+      <xref ref="gt-reset" text="custom">resets</xref>, and
+      feedback-sensitive summaries.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-actions-and-event-logs">
+    <title>Actions and Event Logs</title>
+
+    <p>
+      A logged drag-and-drop record is an ordered list of events. Each event has
+      a time, an <xref ref="gt-action" text="custom">action</xref> type, and an
+      action payload. The payload is what the platform recorded for that event:
+      which card was moved, which state was checked, whether the board was
+      reset, or whether the page was viewed.
+    </p>
+
+    <p>
+      Let
+      <md>
+        E_1,E_2,\dots,E_N
+      </md>
+      be the ordered raw event log for one student working on one item. We write
+      a typical raw event as
+      <md xml:id="an-event-record">
+        E_\ell=(t_\ell,\tau_\ell,p_\ell),
+      </md>
+      where <m>t_\ell</m> is the timestamp, <m>\tau_\ell</m> is the recorded
+      event type, and <m>p_\ell</m> is the recorded payload. The separate index
+      <m>\ell</m> is used here because the raw event log and the reconstructed
+      trajectory need not have exactly the same indexing after page delimiters,
+      no-op drops, or malformed rows are handled by the processing pipeline.
+    </p>
+
+    <p>
+      For <xref ref="gt-cardsort" text="custom">cardsort</xref> data, the main
+      action types are:
+    </p>
+
+    <ul>
+      <li>
+        <p>
+          <term>move</term>: one card is dropped into a destination
+          <xref ref="gt-zone" text="custom">zone</xref>;
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>check</term>: the current configuration is submitted to the
+          grader and feedback is returned;
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>reset</term>: the board is returned to the initial
+          <xref ref="gt-tray" text="custom">tray</xref> state;
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>page</term>: the student opens or views the page containing the
+          item.
+        </p>
+      </li>
+    </ul>
+
+    <p>
+      A <xref ref="gt-move" text="custom">move</xref> changes the board state. A
+      <xref ref="gt-check" text="custom">check</xref> marks the current state
+      without changing it. A reset returns the board to the initial state, unless
+      the board is already there. Page events are not board actions; they help
+      delimit <xref ref="gt-session" text="title"/> and problem access.
+    </p>
+
+    <p>
+      These action types are the row types described in <xref ref="ch-dnd-anatomy"/>:
+      the <c>Selection</c> column identifies the type, and the <c>Action</c> and
+      <c>Input</c> columns carry the payload, with <c>Input</c> the authoritative
+      copy of a checked configuration (see <xref ref="tab-datashop-columns"/>).
+    </p>
+
+    <p>
+      The goal of the trajectory model is to convert the raw event log into a
+      sequence of state records
+      <md>
+        X_0,X_1,\dots,X_n,
+      </md>
+      together with action marks and timestamps. Some events change the state,
+      some repeat the current state with a new mark, and some delimit the trace
+      without changing the board. The next sections fix these effects and then
+      assemble them into trajectories.
+    </p>
+  </section>
+
+  <section xml:id="sec-moves-as-state-transitions">
+    <title>Moves as State Transitions</title>
+
+    <p>
+      A move is the elementary state transition. It changes the zone of one card
+      and leaves every other card fixed.
+    </p>
+
+    <p>
+      Suppose that immediately before a move, card <m>j</m> is in zone <m>i</m>.
+      The student drops the card into zone <m>h</m>, where <m>h\neq i</m>. In the
+      <xref ref="gt-configuration-function" text="custom">configuration function</xref>,
+      the new state <m>s'</m> agrees with <m>s</m> except at card <m>j</m>, where
+      <m>s'(j)=h</m>. Thus a move changes exactly one coordinate of the
+      <xref ref="gt-configuration-vector" text="custom">configuration vector</xref>.
+    </p>
+
+    <p>
+      We record the move by the triple
+      <md xml:id="an-move-triple">
+        m=(j,i,h),
+        \qquad
+        j\in\mathcal{P},
+        \quad
+        i,h\in\mathcal{Z},
+        \quad
+        h\neq i.
+      </md>
+      The first entry identifies the card, the second its source zone, and the
+      third its destination zone.
+    </p>
+
+    <p>
+      In matrix form, the move replaces column <m>j</m> by <m>e_h</m> instead
+      of <m>e_i</m>. The state model already introduced
+      <m>e_0,e_1,\dots,e_R</m> as the standard basis vectors for zone rows. Let
+      <m>f_1,f_2,\dots,f_P</m> denote the standard basis vectors of
+      <m>\mathbb{R}^P</m>, indexed by cards. Then the move update is
+      <md xml:id="an-move-state-update-matrix">
+        X'
+        =
+        X+\Delta_m,
+        \qquad
+        \Delta_m
+        =
+        (e_h-e_i)f_j^{\top}.
+      </md>
+      The update matrix <m>\Delta_m</m> has a <m>-1</m> in row <m>i</m>, column
+      <m>j</m>, and a <m>+1</m> in row <m>h</m>, column <m>j</m>. Separating the
+      move <m>m</m> from its update matrix is useful when the moves of a
+      trajectory are indexed as <m>m_1,m_2,\dots</m>: for a move step,
+      <m>X_k-X_{k-1}=\Delta_{m_k}</m>.
+    </p>
+
+    <p>
+      The update preserves validity. Since
+      <md>
+        \mathbf{1}^{\top}_{R+1}(e_h-e_i)=0,
+      </md>
+      it follows that
+      <md>
+        \mathbf{1}^{\top}_{R+1}X'
+        =
+        \mathbf{1}^{\top}_{R+1}X
+        +
+        \mathbf{1}^{\top}_{R+1}(e_h-e_i)f_j^{\top}
+        =
+        \mathbf{1}^{\top}_{R+1}X.
+      </md>
+      Therefore a move carries one valid membership matrix to another.
+    </p>
+
+    <p>
+      A <term>takeback</term> is a move whose destination is the tray. If card
+      <m>j</m> currently occupies zone <m>i\neq 0</m>, then the takeback is
+      <m>m=(j,i,0)</m>, with update
+      <m>X'=X+(e_0-e_i)f_j^{\top}</m>. Algebraically, a takeback is an ordinary
+      move. Analytically, it is worth naming because returning a card to the tray
+      often marks a reversal, repair, or response to feedback, and later features
+      count takebacks separately.
+    </p>
+  </section>
+
+  <section xml:id="sec-configuration-graph">
+    <title>The Configuration Graph</title>
+
+    <p>
+      Moves give the <xref ref="gt-configuration-space" text="custom">configuration
+      space</xref> a graph structure. This structure makes the
+      <xref ref="gt-distance" text="custom">distance</xref> of
+      <xref ref="sec-distance"/> operational: a count of differing coordinates
+      becomes a count of required single-card moves.
+    </p>
+
+    <p>
+      The vertices of the <term>configuration graph</term> are the configurations
+      in
+      <md>
+        \mathcal{C}=\mathcal{Z}^{\mathcal{P}}.
+      </md>
+      Two configurations are adjacent when they differ in exactly one coordinate:
+      <md xml:id="an-configuration-graph-adjacency">
+        \#\{j\in\mathcal{P}:s(j)\neq r(j)\}=1.
+      </md>
+      Each edge corresponds to a single move.
+    </p>
+
+    <p>
+      This graph is the <term>Hamming graph</term>
+      <md xml:id="an-configuration-graph">
+        H(P,R+1).
+      </md>
+      Equivalently, one card's possible zones form a complete graph on
+      <m>R+1</m> vertices, and the full graph is the Cartesian product
+      <m>K_{R+1}^{\square P}</m>, one complete-graph factor per card. Every
+      vertex has degree <m>P\cdot R</m>, because any of the <m>P</m> cards may
+      move to any of the <m>R</m> zones it does not currently occupy.
+    </p>
+
+    <p>
+      The graph distance in <m>H(P,R+1)</m> is exactly the Hamming distance
+      <m>d_{\mathcal{C}}</m> from
+      <xref ref="an-state-distance-function" text="custom">state distance</xref>:
+      the shortest path between two configurations changes precisely the cards
+      on which they differ. In particular, <m>d_{\mathcal{C}}(s,s^\star)</m> is
+      the minimum number of single-card moves needed to solve the item from
+      state <m>s</m>.
+    </p>
+
+    <p>
+      An observed move sequence is a walk through this graph, and a walk may be
+      longer than the distance between its endpoints. The difference between the
+      number of moves made and the graph distance covered motivates the later
+      excess-move features. The graph itself describes possible transitions only;
+      it does not say which transitions are likely, meaningful, or accessible to
+      students.
+    </p>
+  </section>
+
+  <section xml:id="sec-checks-as-marked-states">
+    <title>Checks on States</title>
+
+    <p>
+      A check does not move a card. It marks the current configuration as a state
+      submitted to the grader and attaches feedback determined by the
+      <xref ref="gt-feedback-policy" text="custom">feedback policy</xref>.
+    </p>
+
+    <p>
+      Let <m>\phi</m> be the feedback policy for the item, as defined at the
+      design level. If the current state is <m>X=X(s)</m>, then pressing
+      <q>check</q> leaves the board state unchanged:
+      <md xml:id="an-check-state-update">
+        X'=X.
+      </md>
+      What changes is the event mark: the state has now been submitted, and the
+      platform records feedback such as Correct, Incorrect, a count, a refusal,
+      or highlighted cards, depending on <m>\phi</m> and the check history.
+    </p>
+
+    <p>
+      If a trajectory contains indexed states
+      <md>
+        X_0,X_1,\dots,X_n,
+      </md>
+      let
+      <md xml:id="an-check-index-set">
+        K=\{k_1,k_2,\dots,k_q\}\subseteq\{0,1,\dots,n\}
+      </md>
+      be the set of indices at which checks occurred, listed in increasing
+      order. The checked states are the marked subsequence
+      <md>
+        X_{k_1},X_{k_2},\dots,X_{k_q}.
+      </md>
+      These states provide the outcome layer of the attempt: they are the
+      configurations submitted for grading.
+    </p>
+
+    <p>
+      In the <xref ref="gt-raw-data" text="custom">raw data</xref>, a check row
+      is especially valuable because it records the full checked configuration as
+      JSON, with the tray implicit, as illustrated in <xref ref="ch-dnd-anatomy"/>.
+      The reconstruction section below states the parsing rule precisely.
+    </p>
+
+    <p>
+      Checks also affect the interpretation of later moves. If feedback is
+      detailed, then a move after a check may plausibly respond to that feedback.
+      If feedback is only Correct or Incorrect, the same move has a different
+      evidentiary status. Feedback-sensitive trajectory features should therefore
+      always be interpreted relative to <m>\phi</m>.
+    </p>
+  </section>
+
+  <section xml:id="sec-resets-as-distinguished-jumps">
+    <title>Resets as Distinguished Jumps</title>
+
+    <p>
+      A reset returns the board to the initial state <m>X_0=X(s_0)</m> of
+      <xref ref="an-initial-state-matrix" text="custom">the state model</xref>:
+      <md xml:id="an-reset-state-update">
+        X\mapsto X_0,
+        \qquad
+        s\mapsto s_0.
+      </md>
+      It can be viewed as the simultaneous takeback of every placed card.
+    </p>
+
+    <p>
+      Unless the current state differs from <m>X_0</m> in only one card, a reset
+      is not a single-card transition and is therefore not an edge of the
+      configuration graph. It is better treated as a distinguished jump back to
+      the initial vertex.
+    </p>
+
+    <p>
+      In the event log, reset rows are recorded separately from move rows, and
+      later features count resets separately from moves and takebacks. A takeback
+      returns one card to the tray; a reset returns the entire board to the tray
+      state in one logged action.
+    </p>
+  </section>
+
+  <section xml:id="sec-attempts-and-segments">
+    <title>Trajectories, Attempts, and Segments</title>
+
+    <introduction>
+      <p>
+        The preceding sections fixed the effect of each board action on the
+        state. This section assembles those effects into the object the rest of
+        the framework analyzes: the event trajectory, the attempt it represents,
+        and the segments into which an attempt may be divided.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-event-trajectories">
+      <title>Event Trajectories</title>
+
+      <p>
+        An <term>event trajectory</term> is an ordered sequence
+        <md xml:id="an-event-trajectory">
+          \Gamma
+          =
+          \bigl(
+          (a_0,t_0,X_0),
+          (a_1,t_1,X_1),
+          \dots,
+          (a_n,t_n,X_n)
+          \bigr),
+        </md>
+        where <m>X_k</m> is the board state at trajectory index <m>k</m>,
+        <m>t_k</m> is the event time, and <m>a_k</m> is the processed action mark.
+        The mark records whether the event is a start, move, check, reset, or
+        page delimiter; for a move it contains the move triple, and for a check
+        it contains the returned feedback or refusal status.
+      </p>
+
+      <p>
+        Each state follows from the previous one by the rule for its action mark:
+        a move applies <m>\Delta_{m_k}</m>, a check repeats the current state and
+        marks it, a reset returns to <m>X_0</m>, and a page event leaves the board
+        unchanged while recording a delimiter. The initial entry uses the
+        conventional mark <m>a_0=\text{start}</m>; <m>t_0</m> is the time at which
+        the initial state is first observed.
+      </p>
+
+      <p>
+        Forgetting the actions and times leaves the bare state sequence
+        <m>X_0,X_1,\dots,X_n</m>: where the board was. The marks and timestamps
+        record how the state changed, when checks occurred, what feedback was
+        returned, and where resets or page events interrupted the path.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-time-and-gaps">
+      <title>Time and Gaps</title>
+
+      <p>
+        The timestamps carry their own information. The <term>gap</term> before
+        event <m>k</m> is
+        <md xml:id="an-event-gap">
+          \delta_k=t_k-t_{k-1},
+          \qquad
+          k=1,\dots,n.
+        </md>
+        Restricting to consecutive events of one type gives named timing
+        quantities: a <term>move gap</term> is the elapsed time between
+        consecutive moves, and a <term>check gap</term> is the elapsed time
+        between consecutive checks. The time from the start of an attempt to its
+        first check is the <term>time to first check</term>.
+      </p>
+
+      <p>
+        Gaps are trajectory data, not interpretations. A long pause before a move
+        may indicate deliberation, distraction, or a session break; which reading
+        is warranted depends on the item, feedback policy, and session structure.
+        The trajectory model records the gaps. Later chapters decide how to
+        summarize and interpret them.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-attempts-and-segments">
+      <title>Attempts and Segments</title>
+
+      <p>
+        An <term>attempt</term> is the trajectory produced by one student working
+        on one item under a chosen boundary rule. In the simplest case, it begins
+        at the initial state and ends at the final checked state. In real logs,
+        an attempt may contain multiple checks, resets,
+        <xref ref="gt-page-view" text="custom">page views</xref>, or session
+        breaks, and it is often useful to divide it into segments:
+
+        <dl width="medium">
+          <li xml:id="li-check-segment">
+            <title>check segment</title>
+            <p>
+              The part of a trajectory between two consecutive checks, or between
+              the initial state and the first check; the unit for studying feedback
+              use and post-check revision.
+            </p>
+          </li>
+          <li xml:id="li-reset-segment">
+            <title>reset segment</title>
+            <p>
+              The part of a trajectory between two consecutive resets, or between
+              the initial state and the first reset; the unit for studying restarts.
+            </p>
+          </li>
+          <li xml:id="li-session-segment">
+            <title>session segment</title>
+            <p>
+              The part of a trajectory occurring within one logged session; the
+              unit for studying work abandoned and resumed later.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        For the running shapes question, one possible trajectory is
+        <md>
+          <mrow>
+            (0,0,0,0)
+            \to
+            (1,0,0,0)
+            \amp
+            \to
+            (1,1,0,0)
+            \to
+            (1,1,2,0)
+            \to
+            (1,1,2,3)
+          </mrow>
+          <mrow>
+            \amp
+            \to
+            (1,1,2,3)
+            \to
+            (1,1,2,0)
+            \to
+            (1,1,2,0).
+          </mrow>
+        </md>
+        Steps <m>1</m> through <m>4</m> are moves. Step <m>5</m> is a check, so
+        the configuration is repeated but marked as submitted to the grader and
+        graded Incorrect. Step <m>6</m> is a takeback, returning the circle to the
+        tray. Step <m>7</m> is another check, marking the current state Correct.
+        In the configuration graph, the move subsequence is a walk of five moves:
+        it starts at <m>(0,0,0,0)</m>, visits <m>(1,1,2,3)</m>, and ends at the
+        <xref ref="gt-key" text="custom">key</xref>. The repeated vertices record
+        the checks, not additional moves.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-reconstructing-trajectories-from-logs">
+    <title>Reconstructing Trajectories from Logs</title>
+
+    <p>
+      The raw log does not record the full state after every event. Move rows
+      record only the moved card and its destination zone. Check rows record the
+      full checked configuration. Reset rows record a return to the initial
+      state. Reconstructing a trajectory means combining these row types into a
+      coherent state sequence.
+    </p>
+
+    <p>
+      Reconstruction begins with the initial state <m>X_0</m> and processes the
+      log in time order, using <c>Problem View</c> or timestamp order to break
+      ties when needed. Let <m>\widehat{X}</m> denote the current reconstructed
+      state and <m>\widehat{s}</m> its corresponding configuration function.
+    </p>
+
+    <p>
+      For each move row, the payload identifies a card <m>j</m> and a destination
+      zone <m>h</m>. The source zone <m>i</m> is inferred from the current
+      reconstructed state:
+      <md>
+        i=\widehat{s}(j).
+      </md>
+      The replay update is
+      <md>
+        \widehat{X}\leftarrow \widehat{X}+(e_h-e_i)f_j^{\top}.
+      </md>
+      Real logs occasionally contain a drop whose destination equals the card's
+      current zone, so that <m>h=i</m>. The model's moves require
+      <m>h\neq i</m>, but the replay rule tolerates such rows harmlessly because
+      the update is then zero. Whether to retain, flag, or omit these no-op drops
+      is a processing decision.
+    </p>
+
+    <p>
+      For each reset row, the current state is replaced by the initial state:
+      <md>
+        \widehat{X}\leftarrow X_0.
+      </md>
+      The reset is retained as a distinguished event in the trajectory.
+    </p>
+
+    <p>
+      For each check row, replay does not change the current reconstructed state.
+      Instead, the check row is parsed into an independently observed checked
+      state, which the next section compares with the replayed state.
+    </p>
+
+    <table xml:id="tab-trajectory-reconstruction-rules">
+      <title>State reconstruction rules by event type.</title>
+      <tabular valign="top" bottom="minor">
+        <col width="25%" halign="left"/>
+        <col width="35%" halign="left"/>
+        <col width="40%" halign="left"/>
+        <row bottom="medium">
+          <cell><p>Event type</p></cell>
+          <cell><p>Payload</p></cell>
+          <cell><p>State update</p></cell>
+        </row>
+        <row>
+          <cell><p>move</p></cell>
+          <cell><p>card <m>j</m> and destination zone <m>h</m></p></cell>
+          <cell><p><m>\widehat{X}\leftarrow \widehat{X}+(e_h-e_i)f_j^{\top}</m>, where <m>i=\widehat{s}(j)</m></p></cell>
+        </row>
+        <row>
+          <cell><p>check</p></cell>
+          <cell><p>checked configuration JSON and feedback</p></cell>
+          <cell><p>No replay update; mark current state and compare it with the parsed checked state.</p></cell>
+        </row>
+        <row>
+          <cell><p>reset</p></cell>
+          <cell><p>reset marker</p></cell>
+          <cell><p><m>\widehat{X}\leftarrow X_0</m></p></cell>
+        </row>
+        <row>
+          <cell><p>page</p></cell>
+          <cell><p>page-view marker</p></cell>
+          <cell><p>No board-state update; may delimit a session.</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      The output of reconstruction is an analysis-ready trajectory: a state
+      sequence, action labels, timestamps, check marks, reset marks, and any page
+      or session delimiters needed for later feature extraction.
+    </p>
+  </section>
+
+  <section xml:id="sec-check-anchors-and-consistency-checks">
+    <title>Check Anchors</title>
+
+    <p>
+      Check rows provide an independent record of the board state at particular
+      moments, so checked states double as <term>anchors</term> for validating the
+      replayed trajectory.
+    </p>
+
+    <p>
+      Let <m>k\in K</m> be a check index. Let <m>\widehat{X}_k</m> be the state
+      reconstructed by replaying moves and resets up to that check, and let
+      <m>X_k^{\operatorname{check}}</m> be the state parsed from the check JSON.
+      The basic consistency condition is
+      <md xml:id="an-check-anchor-consistency">
+        \widehat{X}_k=X_k^{\operatorname{check}}.
+      </md>
+    </p>
+
+    <p>
+      Because the tray is implicit in the check JSON, parsing
+      <m>X_k^{\operatorname{check}}</m> requires the full card roster. If a card
+      is absent from every listed <xref ref="gt-slot" text="custom">slot</xref>,
+      it is assigned to the tray:
+      <md xml:id="an-implicit-tray-parsing">
+        s_k^{\operatorname{check}}(j)=0
+        \qquad
+        \text{if card }j\text{ does not appear in any checked slot list.}
+      </md>
+    </p>
+
+    <p>
+      When the anchor condition holds at every check, the replayed trajectory
+      agrees with the platform's own record of the board. When it fails, the
+      trajectory is unreliable between anchors and must be flagged before feature
+      extraction. Diagnosing mismatch causes and managing quality-control flags
+      belongs to the data-processing chapter; here the anchor condition itself is
+      the point. The trajectory model comes with an internal consistency test.
+    </p>
+  </section>
+
+  <section xml:id="sec-transition-to-features">
+    <title>From Trajectories to Features</title>
+
+    <p>
+      This chapter closes the loop opened by the state model. There, distance was
+      a property of pairs of configurations. Here, adjacency in the configuration
+      graph makes one unit of distance one single-card move, so an attempt becomes
+      a measurable walk through state space.
+    </p>
+
+    <p>
+      The event trajectory <m>\Gamma</m> is the object the rest of the framework
+      consumes. Outcome features look at checked states and compare them with the
+      key. Process features use the order, actions, and timing of the whole
+      trajectory. Cohort features aggregate both across students. The next chapter
+      begins with the outcome layer before returning to the trajectory for process
+      summaries.
+    </p>
+
+    <p>
+      Throughout, this chapter has avoided claims about student reasoning. A
+      trajectory records how the board changed over time; what those changes mean
+      depends on the <xref ref="gt-item-design" text="custom">item design</xref>,
+      the feedback policy, the reconstruction quality, and the validation
+      questions taken up in later chapters.
+    </p>
+  </section>
+</chapter>

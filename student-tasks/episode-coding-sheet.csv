@@ -1,0 +1,1 @@
+response_id,episode_n,criterion_verbatim,judgment_verbatim,link_stated (explicit|implicit|absent),complete (1|0),c1,c2,relation (chained(k)|independent|blank),code (CS1-CS10|NONE),oov_note,confidence (3|2|1),notes,handbook_version,codebook_version

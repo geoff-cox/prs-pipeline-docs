@@ -1,0 +1,1186 @@
+<chapter xml:id="ch-data-processing">
+  <title>Data Processing and Quality Control</title>
+
+  <introduction>
+    <p>
+      The previous chapters defined the item design, the state model, the event
+      trajectory, and the baseline features derived from those objects. This
+      chapter describes the processing layer that turns platform exports and item
+      source files into the analysis-ready tables on which those features depend.
+    </p>
+
+    <p>
+      Although the chapter follows the baseline-feature definitions in the
+      journal, its work comes first in an analysis pipeline. A raw drag-and-drop
+      export is not yet a trajectory. It is a table of logged rows: moves,
+      checks, resets, page views, timestamps, payloads, session identifiers, and
+      platform-specific fields. Some rows record only one card and one
+      destination zone. Check rows record a full submitted configuration. Page
+      rows may only delimit work. If these rows are parsed, ordered, or decoded
+      incorrectly, the reconstructed path and the features computed from it will
+      be wrong.
+    </p>
+
+    <p>
+      The guiding distinction is between <term>raw data</term>,
+      <term>reconstructed state</term>, and <term>derived feature</term>. Raw rows
+      should be retained. Reconstructed states and trajectories should carry
+      explicit quality-control flags. Features should be computed only after the
+      reconstruction status of each <xref ref="gt-attempt" text="custom">attempt</xref>
+      is known.
+    </p>
+
+    <p>
+      The sections follow the pipeline in processing order. Raw rows are parsed
+      into typed event records and ordered within each trace; item maps built
+      from the source file decode the raw positional labels; decoded events are
+      replayed into state trajectories; check anchors and state-validity tests
+      assess reconstruction quality; sessionization and attempt-boundary rules
+      divide traces into analysis units; idle-time and missingness rules handle
+      irregular logs; a running example illustrates the full pipeline; and the
+      final section specifies the analysis-ready table set.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-parsing-raw-logs">
+    <title>Parsing Raw Logs</title>
+
+    <introduction>
+      <p>
+        The raw export is an event table: one row per logged
+        <xref ref="gt-action" text="custom">action</xref>, across students,
+        items, sessions, and time, with the platform fields described in
+        <xref ref="tab-datashop-columns"/>. The first processing step is to
+        convert those rows into a consistent event-log format without discarding
+        the original rows.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-raw-versus-parsed">
+      <title>Raw Rows and Parsed Events</title>
+
+      <p>
+        A raw row should not be overwritten by its parsed version. Instead, the
+        pipeline should attach a parsed record containing the fields needed for
+        ordering, decoding, and reconstruction:
+        <md xml:id="an-parsed-event-record">
+          R_\ell=(t_\ell,u_\ell,q_\ell,v_\ell,\tau_\ell,p_\ell).
+        </md>
+        Here <m>t_\ell</m> is the timestamp, <m>u_\ell</m> is the anonymized
+        student, <m>q_\ell</m> is the item, <m>v_\ell</m> is a within-item
+        ordering field such as problem view, <m>\tau_\ell</m> is the parsed event
+        type, and <m>p_\ell</m> is the parsed payload. The symbol
+        <m>\ell</m> indexes rows in the raw or parsed event table; trajectory
+        indices are assigned later, after reconstruction.
+      </p>
+
+      <p>
+        The parsed event type should be a small controlled vocabulary. For the
+        current drag-and-drop logs, the main event types are:
+      </p>
+
+      <ul>
+        <li>
+          <p>
+            <c>move</c>, for rows whose selection is <c>dragNdrop-drop</c>;
+          </p>
+        </li>
+        <li>
+          <p>
+            <c>check</c>, for rows whose selection is <c>dragNdrop</c>;
+          </p>
+        </li>
+        <li>
+          <p>
+            <c>reset</c>, for rows whose selection is <c>dragNdrop-reset</c>;
+          </p>
+        </li>
+        <li>
+          <p>
+            <c>page</c>, for page-view rows;
+          </p>
+        </li>
+        <li>
+          <p>
+            <c>unknown</c>, for rows that cannot be classified.
+          </p>
+        </li>
+      </ul>
+
+      <p>
+        Unknown rows should be retained with a parsing flag. They may be
+        irrelevant, malformed, or evidence that the platform logging format has
+        changed; the pipeline should not decide that silently.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-event-payloads">
+      <title>Event Payloads</title>
+
+      <p>
+        Each event type has its own payload. A move payload identifies a card and
+        a destination zone. A check payload contains a submitted
+        <xref ref="gt-configuration" text="custom">configuration</xref> and
+        returned <xref ref="gt-feedback" text="custom">feedback</xref>. A reset
+        payload records that the <xref ref="gt-board" text="custom">board</xref>
+        returned to the initial state. A page payload records that the student
+        opened or viewed the page.
+      </p>
+
+      <p>
+        Two parsing rules are especially important. First, on a check row the
+        same configuration JSON may appear in both <c>Action</c> and
+        <c>Input</c>, but long text in <c>Action</c> can be truncated. The
+        <c>Input</c> field is therefore the authoritative source for checked
+        configurations. Second, payload parsing initially extracts raw positional
+        labels. Decoding labels such as <c>drag3</c>, <c>drop2</c>, and
+        <c>dragzone</c> into card and zone indices requires the item map of the
+        next section, so parsing and decoding should remain separate steps.
+      </p>
+
+      <table xml:id="tab-parsed-event-payloads">
+        <title>Parsed event types and payloads.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="20%" halign="left"/>
+          <col width="30%" halign="left"/>
+          <col width="50%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Event type</p></cell>
+            <cell><p>Raw indicator</p></cell>
+            <cell><p>Parsed payload</p></cell>
+          </row>
+          <row>
+            <cell><p><c>move</c></p></cell>
+            <cell><p><c>dragNdrop-drop</c></p></cell>
+            <cell><p>Raw card label and raw destination label; after decoding, card index <m>j</m> and destination zone <m>h</m>.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>check</c></p></cell>
+            <cell><p><c>dragNdrop</c></p></cell>
+            <cell><p>Checked-configuration JSON from <c>Input</c>, parsed checked state, feedback text, and feedback classification.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>reset</c></p></cell>
+            <cell><p><c>dragNdrop-reset</c></p></cell>
+            <cell><p>Reset marker.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>page</c></p></cell>
+            <cell><p><c>page</c></p></cell>
+            <cell><p>Page-view marker and session context.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>unknown</c></p></cell>
+            <cell><p>Anything else.</p></cell>
+            <cell><p>Raw payload retained with a parsing flag.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+
+    <subsection xml:id="subsec-row-ordering">
+      <title>Ordering Rows</title>
+
+      <p>
+        Reconstruction requires a total order within each student-item trace. The
+        timestamp is the primary ordering variable. When timestamps are tied or
+        too coarse, a within-problem field such as <c>Problem View</c> should be
+        used as an additional ordering key.
+      </p>
+
+      <p>
+        A typical sort key is:
+        <md xml:id="an-event-sort-key">
+          (\text{student},\text{item},\text{session},\text{timestamp},\text{problem view}).
+        </md>
+        If the export has a stable raw-row identifier, it may be used as a final
+        deterministic tie-breaker, but the use of that tie-breaker should be
+        recorded. Different ordering choices can change the reconstructed
+        intermediate path.
+      </p>
+
+      <p>
+        If two rows remain tied after all available ordering fields are used, the
+        trace should receive a <c>row_order_ambiguous</c> flag. Ambiguous ordering
+        is most consequential for consecutive move rows: reversing two moves can
+        change the intermediate trajectory even when the next checked state is the
+        same.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-item-maps-and-source-files">
+    <title>Item Maps and Source Files</title>
+
+    <introduction>
+      <p>
+        Parsed events still use the raw log's positional labels: <c>drag1</c>,
+        <c>drag2</c>, <c>drop1</c>, <c>drop2</c>, and <c>dragzone</c>. As
+        <xref ref="subsec-source-order" text="title"/> established, those
+        labels have meaning only relative to the item source. An item map connects
+        the raw labels to the authored cards, slots, zones, key, decoys, and
+        feedback policy.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-item-map-definition">
+      <title>Item Maps</title>
+
+      <p>
+        For each item version, the processing pipeline should construct an
+        <term>item map</term> containing:
+      </p>
+
+      <ul>
+        <li>
+          <p>
+            the ordered card set <m>\mathcal{P}=\{1,\dots,P\}</m>;
+          </p>
+        </li>
+        <li>
+          <p>
+            the ordered slot set <m>\mathcal{R}=\{1,\dots,R\}</m>;
+          </p>
+        </li>
+        <li>
+          <p>
+            the zone set <m>\mathcal{Z}=\{0,1,\dots,R\}</m>, with zone
+            <m>0</m> reserved for the <xref ref="gt-tray" text="custom">tray</xref>;
+          </p>
+        </li>
+        <li>
+          <p>
+            a map from raw card labels to card indices;
+          </p>
+        </li>
+        <li>
+          <p>
+            a map from raw zone labels to zone indices;
+          </p>
+        </li>
+        <li>
+          <p>
+            the key function <m>s^\star:\mathcal{P}\to\mathcal{Z}</m>;
+          </p>
+        </li>
+        <li>
+          <p>
+            the decoy-card and decoy-slot sets;
+          </p>
+        </li>
+        <li>
+          <p>
+            the <xref ref="gt-feedback-policy" text="custom">feedback policy</xref>, when known.
+          </p>
+        </li>
+      </ul>
+
+      <p>
+        The item map is the bridge between the platform export and the
+        mathematical model. Without it, a raw action such as
+        <cd>      *_drag3 -&gt; *_drop2</cd>
+        can be parsed as a movement of the third positional card to the second
+        positional slot, but not as a movement of a particular authored card to a
+        particular authored category. For the running shapes question,
+        <xref ref="tab-raw-data-labels"/> is the label-decoding part of the item
+        map.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-key-extraction">
+      <title>Key Extraction</title>
+
+      <p>
+        The key function <m>s^\star</m> of
+        <xref ref="subsec-home-zone-map" text="title"/> is extracted from the
+        authored match relation in the item source. If card <m>j</m> appears in
+        the same match block as slot <m>i</m>, then
+        <md>
+          s^\star(j)=i.
+        </md>
+        If card <m>j</m> appears without a corresponding response slot, then it
+        is a decoy card and
+        <md>
+          s^\star(j)=0.
+        </md>
+      </p>
+
+      <p>
+        The <xref ref="gt-decoy-card" text="title"/> and
+        <xref ref="gt-decoy-slot" text="title"/> sets should be computed during
+        item-map construction and stored with the item-design covariates of
+        <xref ref="sec-item-design-covariates"/>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-source-versioning">
+      <title>Source Versioning</title>
+
+      <p>
+        Item maps should be versioned. If the source file changes between
+        semesters, the same problem name may no longer refer to the same item.
+        Card order, slot order, wording, feedback, or the key may have changed,
+        and any of these changes alters the interpretation of raw positional
+        labels.
+      </p>
+
+      <p>
+        Each item map should carry provenance fields:
+      </p>
+
+      <ul>
+        <li>
+          <p>
+            item identifier;
+          </p>
+        </li>
+        <li>
+          <p>
+            course or book identifier;
+          </p>
+        </li>
+        <li>
+          <p>
+            source file path or source item identifier;
+          </p>
+        </li>
+        <li>
+          <p>
+            source version, commit hash, or content hash, when available;
+          </p>
+        </li>
+        <li>
+          <p>
+            processing date;
+          </p>
+        </li>
+        <li>
+          <p>
+            parser version.
+          </p>
+        </li>
+      </ul>
+
+      <p>
+        When the source cannot be found, the affected traces should receive a
+        <c>missing_source_map</c> flag. Such traces may still support limited
+        process summaries, such as counts of raw moves or checks, but they should
+        not be used for key-based or authored-label features.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-trajectory-reconstruction-processing">
+    <title>Trajectory Reconstruction</title>
+
+    <introduction>
+      <p>
+        After rows have been parsed, ordered, and decoded through the item map,
+        trajectory reconstruction replays them into a sequence of board states.
+        The replay rules are the operational version of
+        <xref ref="tab-trajectory-reconstruction-rules"/>; this section adds the
+        pipeline decisions that the abstract trajectory model leaves open.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-reconstruction-units">
+      <title>Reconstruction Units</title>
+
+      <p>
+        Reconstruction is performed within a chosen unit. The smallest common
+        unit is a student-item-session trace: one anonymized student working on
+        one item during one logged session. Depending on the research question,
+        traces may later be joined across sessions or split into check, reset,
+        session, or active-work segments.
+      </p>
+
+      <p>
+        Each reconstruction unit begins at the
+        <xref ref="gt-initial-state" text="custom">initial state</xref> of
+        <xref ref="an-initial-state-matrix" text="custom">the state model</xref>:
+        <md>
+          X_0=e_0\mathbf{1}^{\top}_P.
+        </md>
+        The decoded event rows are then replayed in order.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-reconstruction-rules">
+      <title>Replay Rules</title>
+
+      <p>
+        Let <m>\widehat{X}</m> denote the current reconstructed membership matrix,
+        and let <m>\widehat{s}</m> be its corresponding configuration function.
+        The replay rules are:
+      </p>
+
+      <ul>
+        <li>
+          <p>
+            On a move event, decode the card index <m>j</m> and destination zone
+            <m>h</m>. Infer the source zone from the current state,
+            <m>i=\widehat{s}(j)</m>, then update
+            <md>
+              \widehat{X}
+              \leftarrow
+              \widehat{X}+(e_h-e_i)f_j^{\top}.
+            </md>
+            Here <m>e_0,\dots,e_R</m> are the zone-row basis vectors and
+            <m>f_1,\dots,f_P</m> are the card-column basis vectors introduced in
+            the trajectory model. If <m>h=i</m>, the update is zero. Such no-op
+            drops occur in real logs. They should receive a <c>noop_move</c> flag
+            and be excluded from state-change counts by default, while still
+            remaining available as raw drop rows.
+          </p>
+        </li>
+        <li>
+          <p>
+            On a check event, parse the checked configuration from the JSON using
+            the implicit-tray rule of
+            <xref ref="an-implicit-tray-parsing" text="custom">the trajectory
+            model</xref>: any card absent from every listed slot is assigned to
+            the tray. This parse requires the full card roster from the item map.
+            Do not change <m>\widehat{X}</m> by replay. Instead, mark the current
+            reconstructed state as checked and compare it with the parsed checked
+            state.
+          </p>
+        </li>
+        <li>
+          <p>
+            On a reset event, replace the current state by the initial state:
+            <md>
+              \widehat{X}\leftarrow X_0.
+            </md>
+          </p>
+        </li>
+        <li>
+          <p>
+            On a page event, do not update the board state. Record the event as a
+            possible session or attempt delimiter.
+          </p>
+        </li>
+      </ul>
+    </subsection>
+
+    <subsection xml:id="subsec-reconstruction-output">
+      <title>Reconstruction Output</title>
+
+      <p>
+        Reconstruction should produce an event-indexed trajectory table. Each row
+        should retain the raw event identifier and add the state information
+        derived during replay:
+      </p>
+
+      <table xml:id="tab-reconstructed-event-fields">
+        <title>Suggested fields for the reconstructed event table.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="32%" halign="left"/>
+          <col width="68%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Field</p></cell>
+            <cell><p>Description</p></cell>
+          </row>
+          <row>
+            <cell><p><c>event_id</c></p></cell>
+            <cell><p>Stable identifier for the raw event row.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>trace_id</c></p></cell>
+            <cell><p>Identifier for the reconstruction unit.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>event_index</c></p></cell>
+            <cell><p>Order of the event within the trace.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>event_type</c></p></cell>
+            <cell><p>Parsed event type: move, check, reset, page, or unknown.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>state_before</c></p></cell>
+            <cell><p>Configuration vector before the event, when applicable.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>state_after</c></p></cell>
+            <cell><p>Configuration vector after replaying the event, when applicable.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>checked_state</c></p></cell>
+            <cell><p>Configuration parsed from the check JSON, for check events.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>feedback</c></p></cell>
+            <cell><p>Feedback text or feedback classification returned on a check.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>reconstruction_flags</c></p></cell>
+            <cell><p>Quality-control flags attached during parsing, ordering, decoding, or replay.</p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        Storing both <c>state_after</c> and <c>checked_state</c> is essential.
+        The former is reconstructed from the replayed event log. The latter is
+        parsed from the platform's full-state check record. Their comparison is
+        the basis for the consistency checks below.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-consistency-checks-processing">
+    <title>Consistency Checks</title>
+
+    <introduction>
+      <p>
+        Consistency checks identify traces whose reconstructed states are
+        unreliable or whose raw rows disagree with one another. These checks
+        should be run before features are exported.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-check-anchor-validation">
+      <title>Check Anchors</title>
+
+      <p>
+        The trajectory model showed that check rows double as anchors: they
+        record the board independently of the replayed move history. 
+        That is, if <m>\widehat{X}_k</m> is the reconstructed state after a check 
+        and <m>X_k^{\operatorname{check}}</m> is the parsed configuration
+        from the log's JSON, then
+        <md>
+          \widehat{X}_k=X_k^{\operatorname{check}}
+        </md>,
+        becomes an operational test.
+      </p>
+
+      <p>
+        If this equality fails, the replayed move history and the platform's
+        checked configuration disagree. The trace should receive a
+        <c>check_mismatch</c> flag. A mismatch does not automatically require
+        discarding the trace, but it changes what can be trusted: checked-state
+        features may still be usable from the check JSON, while intermediate
+        trajectory features require caution.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-state-validity-checks">
+      <title>State Validity Checks</title>
+
+      <p>
+        Every reconstructed or parsed state should satisfy the membership-matrix
+        validity condition of
+        <xref ref="an-valid-membership-condition" text="custom">the state
+        model</xref>:
+        <md>
+          \mathbf{1}^{\top}_{R+1}X=\mathbf{1}^{\top}_P.
+        </md>
+        Equivalently, every configuration vector should assign exactly one zone
+        to every card.
+      </p>
+
+      <p>
+        A state or event should be flagged if:
+      </p>
+
+      <ul>
+        <li>
+          <p>
+            a card is assigned to more than one zone;
+          </p>
+        </li>
+        <li>
+          <p>
+            a card is assigned to no zone;
+          </p>
+        </li>
+        <li>
+          <p>
+            a raw card label cannot be decoded by the item map;
+          </p>
+        </li>
+        <li>
+          <p>
+            a raw zone label cannot be decoded by the item map;
+          </p>
+        </li>
+        <li>
+          <p>
+            a check JSON contains a card or zone not present in the item map.
+          </p>
+        </li>
+      </ul>
+    </subsection>
+
+    <subsection xml:id="subsec-quality-flags">
+      <title>Quality-Control Flags</title>
+
+      <p>
+        Quality-control flags should be stored as data, not handled only through
+        informal notes. <xref ref="tab-quality-control-flags"/> gives a minimal
+        flag set.
+      </p>
+
+      <table xml:id="tab-quality-control-flags">
+        <title>Suggested quality-control flags.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="32%" halign="left"/>
+          <col width="68%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Flag</p></cell>
+            <cell><p>Meaning</p></cell>
+          </row>
+          <row>
+            <cell><p><c>replay_ok</c></p></cell>
+            <cell><p>All check anchors agree with the replayed state.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>check_mismatch</c></p></cell>
+            <cell><p>At least one checked state disagrees with the reconstructed state.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>parse_error</c></p></cell>
+            <cell><p>At least one event payload could not be parsed.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>unknown_event_type</c></p></cell>
+            <cell><p>At least one row has an unrecognized event type.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>missing_source_map</c></p></cell>
+            <cell><p>The item map needed to decode labels, key, or item covariates is unavailable.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>row_order_ambiguous</c></p></cell>
+            <cell><p>The row order cannot be determined uniquely from available fields.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>invalid_state</c></p></cell>
+            <cell><p>A reconstructed or parsed state violates the state model.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>noop_move</c></p></cell>
+            <cell><p>A drop row whose destination equals the card's current zone.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>duplicate_row</c></p></cell>
+            <cell><p>A row repeats another row with the same identity, timestamp, type, and payload.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>session_break</c></p></cell>
+            <cell><p>The trace contains a session or page boundary that may require segmentation.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>long_idle_gap</c></p></cell>
+            <cell><p>The trace contains an action gap exceeding the chosen idle threshold.</p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        These flags separate data quality from analysis decisions. One analysis
+        may exclude traces with <c>parse_error</c> or <c>check_mismatch</c>;
+        another may retain them for limited summaries. The important point is
+        that reconstruction status is explicit and reproducible.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-session-and-attempt-boundaries">
+    <title>Session and Attempt Boundaries</title>
+
+    <introduction>
+      <p>
+        The consistency checks above validate individual traces. The pipeline
+        must also decide where each analytic unit begins and ends. A student may
+        interact with the same item across multiple page views, sessions, checks,
+        or resets, so the abstract attempt of
+        <xref ref="subsec-attempts-and-segments" text="title"/> needs an
+        operational boundary rule.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-sessionization">
+      <title>Sessions</title>
+
+      <p>
+        A <term>session</term> is a continuous logged sitting. In the raw export,
+        session identifiers and page-view rows provide evidence for session
+        boundaries. A new session should generally begin when the session
+        identifier changes. Page rows may also mark the beginning of a new period
+        of work on the item.
+      </p>
+
+      <p>
+        Session boundaries matter because the board state may or may not persist
+        across sessions, depending on platform behavior and item settings. If
+        persistence is known, it should be documented. If it is unknown,
+        cross-session reconstruction should be treated cautiously or analyzed as
+        separate session traces.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-attempt-boundary-options">
+      <title>Attempt Boundary Options</title>
+
+      <p>
+        Different analyses require different attempt definitions. Three common
+        choices are:
+      </p>
+
+      <dl width="medium">
+        <li>
+          <title>check-based attempt</title>
+          <p>
+            The unit ends at a check. This is useful when each submitted
+            configuration is treated as a response.
+          </p>
+        </li>
+        <li>
+          <title>completion-based attempt</title>
+          <p>
+            The unit continues until the first correct check or until the student
+            stops working. This is useful for studying eventual success.
+          </p>
+        </li>
+        <li>
+          <title>session-based attempt</title>
+          <p>
+            The unit includes all work on the item within one logged session.
+            This is useful for studying pacing and within-session behavior.
+          </p>
+        </li>
+      </dl>
+
+      <p>
+        None of these definitions is universally correct. The boundary rule
+        should match the feature being computed. First-check correctness uses a
+        check-based view. Time to eventual correctness uses a completion-based
+        view. Idle-time summaries often require a session-based view.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-segment-tables">
+      <title>Segments</title>
+
+      <p>
+        Once a trace has been reconstructed, it can be split into segments. The
+        trajectory model defines <xref ref="li-check-segment" text="title"/>, 
+        <xref ref="li-reset-segment" text="title"/>, and 
+        <xref ref="li-session-segment" text="title"/>. This part of the pipeline 
+        adds the following clock-based type to the list:
+        <ul>
+          <li xml:id="li-active-work-segment">
+            <p>
+              <term>active-work segments</term>, separated by long idle gaps.
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Segment identifiers should be stored in the reconstructed event table.
+        This lets the same raw trace support multiple analyses without reparsing
+        the original log.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-idle-time-and-missingness">
+    <title>Idle Time and Missingness</title>
+
+    <introduction>
+      <p>
+        Timestamps make timing features possible, but raw elapsed time is not
+        always active work time. Students may leave the page open, switch tasks,
+        lose connection, or return later. Missing and irregular events should be
+        flagged before timing features are interpreted.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-action-gaps-processing">
+      <title>Action Gaps and Idle Thresholds</title>
+
+      <p>
+        The elementary timing quantity is the action gap
+        <m>\delta_k=t_k-t_{k-1}</m> from
+        <xref ref="an-event-gap" text="custom">the trajectory model</xref>. Large
+        gaps may represent thinking time, but they may also represent
+        interruption or idle time. The processing pipeline should compute action
+        gaps before aggregating time features.
+      </p>
+
+      <p>
+        An <term>idle threshold</term> is a chosen value <m>\delta_{\max}</m>. If
+        <md xml:id="an-processing-idle-threshold">
+          \delta_k&gt;\delta_{\max},
+        </md>
+        then the gap receives a <c>long_idle_gap</c> flag. Active time may then
+        be computed by excluding or truncating such gaps, depending on the
+        analysis plan, and long idle gaps may delimit active-work segments.
+      </p>
+
+      <p>
+        The threshold should be reported. It should not be chosen after inspecting
+        the outcome variable unless the analysis is explicitly exploratory.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-missingness">
+      <title>Missing and Irregular Data</title>
+
+      <p>
+        Missingness can occur at several levels:
+      </p>
+
+      <ul>
+        <li>
+          <p>
+            missing item source, so raw labels cannot be decoded;
+          </p>
+        </li>
+        <li>
+          <p>
+            missing or malformed move payloads;
+          </p>
+        </li>
+        <li>
+          <p>
+            missing check JSON;
+          </p>
+        </li>
+        <li>
+          <p>
+            missing feedback classification;
+          </p>
+        </li>
+        <li>
+          <p>
+            missing timestamps or duplicate timestamps;
+          </p>
+        </li>
+        <li>
+          <p>
+            missing rows inferred from check-anchor mismatches.
+          </p>
+        </li>
+      </ul>
+
+      <p>
+        These cases should be distinguished. Missing feedback may prevent
+        feedback-sensitive features, while a missing source map prevents key-based
+        features. A check-anchor mismatch may still allow checked-state features
+        to be computed from the check JSON, even if the intermediate trajectory is
+        unreliable.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-duplicate-and-impossible-events">
+      <title>Duplicate and Impossible Events</title>
+
+      <p>
+        A duplicate event is a row that appears to repeat another row with the
+        same student, item, timestamp, event type, and payload. Duplicate rows
+        should receive the <c>duplicate_row</c> flag and be retained or collapsed
+        according to a documented rule.
+      </p>
+
+      <p>
+        An impossible event violates the item map or state model. Examples include
+        a move involving an unknown card, a move to an unknown zone, or a check
+        JSON that places the same card in two slots. These events should receive
+        an <c>invalid_state</c> or <c>parse_error</c> flag, depending on whether
+        the problem appears after decoding or during parsing.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-processing-running-example">
+    <title>The Running Example</title>
+
+    <p>
+      To make the pipeline concrete, we walk the illustrative attempt of
+      <xref ref="tab-raw-data-trace"/> through each stage. The raw trace contains
+      seven rows for one student on the running shapes question: five
+      <c>dragNdrop-drop</c> rows, parsed as moves, and two <c>dragNdrop</c> rows,
+      parsed as checks. Timestamps order the rows without ties, so no
+      <c>row_order_ambiguous</c> flag is raised. The item map is built from the
+      question source of <xref ref="question-source"/>; its label-decoding
+      portion is <xref ref="tab-raw-data-labels"/>, and key extraction yields
+      <m>s^\star=(1,1,2,0)</m>, with decoy-card set <m>\{4\}</m> and
+      decoy-slot set <m>\{3\}</m>.
+    </p>
+
+    <p>
+      Replay begins at <m>X_0</m> and processes the decoded events in order.
+      <xref ref="tab-running-example-reconstruction"/> shows the resulting
+      event table in configuration-vector form, abbreviated to the fields needed
+      for illustration.
+    </p>
+
+    <table xml:id="tab-running-example-reconstruction">
+      <title>Reconstructed event table for the running example attempt.</title>
+      <tabular valign="top" bottom="minor" halign="center">
+        <col width="10%"/>
+        <col width="14%"/>
+        <col width="26%"/>
+        <col width="20%"/>
+        <col width="30%"/>
+        <row bottom="medium">
+          <cell><p>index</p></cell>
+          <cell><p>type</p></cell>
+          <cell><p>decoded payload</p></cell>
+          <cell><p>state after</p></cell>
+          <cell><p>anchor status</p></cell>
+        </row>
+        <row>
+          <cell><p><m>1</m></p></cell>
+          <cell><p>move</p></cell>
+          <cell><p><m>(j,h)=(1,1)</m></p></cell>
+          <cell><p><m>(1,0,0,0)</m></p></cell>
+          <cell><p><mdash/></p></cell>
+        </row>
+        <row>
+          <cell><p><m>2</m></p></cell>
+          <cell><p>move</p></cell>
+          <cell><p><m>(j,h)=(2,1)</m></p></cell>
+          <cell><p><m>(1,1,0,0)</m></p></cell>
+          <cell><p><mdash/></p></cell>
+        </row>
+        <row>
+          <cell><p><m>3</m></p></cell>
+          <cell><p>move</p></cell>
+          <cell><p><m>(j,h)=(3,2)</m></p></cell>
+          <cell><p><m>(1,1,2,0)</m></p></cell>
+          <cell><p><mdash/></p></cell>
+        </row>
+        <row>
+          <cell><p><m>4</m></p></cell>
+          <cell><p>move</p></cell>
+          <cell><p><m>(j,h)=(4,3)</m></p></cell>
+          <cell><p><m>(1,1,2,3)</m></p></cell>
+          <cell><p><mdash/></p></cell>
+        </row>
+        <row>
+          <cell><p><m>5</m></p></cell>
+          <cell><p>check</p></cell>
+          <cell><p>JSON, <c>Incorrect</c></p></cell>
+          <cell><p><m>(1,1,2,3)</m></p></cell>
+          <cell><p>anchor agrees</p></cell>
+        </row>
+        <row>
+          <cell><p><m>6</m></p></cell>
+          <cell><p>move</p></cell>
+          <cell><p><m>(j,h)=(4,0)</m></p></cell>
+          <cell><p><m>(1,1,2,0)</m></p></cell>
+          <cell><p><mdash/></p></cell>
+        </row>
+        <row bottom="minor">
+          <cell><p><m>7</m></p></cell>
+          <cell><p>check</p></cell>
+          <cell><p>JSON, <c>Correct</c></p></cell>
+          <cell><p><m>(1,1,2,0)</m></p></cell>
+          <cell><p>anchor agrees</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      The two check events exercise the implicit-tray rule in opposite ways. At
+      the first check, every card appears in some slot list, so the tray is
+      parsed as empty and the parsed checked state <m>(1,1,2,3)</m> matches the
+      replayed state. At the second check, card <m>4</m> is absent from every slot
+      list, so it is assigned to the tray, giving <m>(1,1,2,0)</m>, which also
+      matches. Both anchors agree, so the trace receives <c>replay_ok</c>.
+    </p>
+
+    <p>
+      The remaining stages are straightforward. The largest action gap is the
+      twenty-second hesitation before the fourth move, far below any reasonable
+      idle threshold, so no <c>long_idle_gap</c> flag is raised and the trace
+      forms a single active-work segment. Under a completion-based boundary, the
+      whole trace is one attempt ending at the correct second check; under a
+      check-based boundary, it yields two checked-response units. No payload fails
+      to parse and the item map is available, so the attempt's readiness status,
+      in the sense of the next section, is <c>ready</c>.
+    </p>
+  </section>
+
+  <section xml:id="sec-analysis-ready-tables">
+    <title>Analysis-Ready Tables</title>
+
+    <introduction>
+      <p>
+        The output of data processing should be a set of analysis-ready tables.
+        These tables retain links to the raw rows while exposing the decoded
+        states, checks, attempts, segments, flags, and provenance needed for
+        reproducible feature extraction.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-table-set">
+      <title>Recommended Table Set</title>
+
+      <p>
+        A minimal table set includes:
+      </p>
+
+      <table xml:id="tab-analysis-ready-tables">
+        <title>Recommended analysis-ready tables.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="28%" halign="left"/>
+          <col width="72%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Table</p></cell>
+            <cell><p>Purpose</p></cell>
+          </row>
+          <row>
+            <cell><p><c>items</c></p></cell>
+            <cell><p>One row per item version, including <m>P</m>, <m>R</m>, key, decoys, feedback policy, and source metadata.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>item_map_cards</c></p></cell>
+            <cell><p>One row per card, mapping raw card labels to card indices and authored text.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>item_map_zones</c></p></cell>
+            <cell><p>One row per zone, mapping raw zone labels to zone indices and authored slot text.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>events</c></p></cell>
+            <cell><p>One row per raw event, with parsed event type, payload, ordering fields, and raw-row identifiers.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>states</c></p></cell>
+            <cell><p>One row per reconstructed event-state pair, including state before, state after, checked state, and reconstruction flags.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>checks</c></p></cell>
+            <cell><p>One row per check event, including checked configuration, feedback, correctness when available, and anchor-consistency status.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>attempts</c></p></cell>
+            <cell><p>One row per attempt under the chosen boundary rule, with start/end events, segment identifiers, and quality flags.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>segments</c></p></cell>
+            <cell><p>One row per check, reset, session, or active-work segment, depending on the segmentation rule.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+
+    <subsection xml:id="subsec-provenance-and-reproducibility">
+      <title>Provenance and Reproducibility</title>
+
+      <p>
+        Each analysis-ready table should include enough provenance to reproduce
+        the processing run. The per-item provenance fields of
+        <xref ref="subsec-source-versioning" text="title"/> record where each
+        item map came from; run-level provenance records how the tables were
+        produced. At minimum, the output should record:
+      </p>
+
+      <ul>
+        <li>
+          <p>
+            <xref ref="gt-raw-data" text="custom">raw data</xref> file name or identifier;
+          </p>
+        </li>
+        <li>
+          <p>
+            item source version or hash;
+          </p>
+        </li>
+        <li>
+          <p>
+            parser version;
+          </p>
+        </li>
+        <li>
+          <p>
+            processing date;
+          </p>
+        </li>
+        <li>
+          <p>
+            idle threshold;
+          </p>
+        </li>
+        <li>
+          <p>
+            attempt-boundary rule;
+          </p>
+        </li>
+        <li>
+          <p>
+            exclusion or inclusion rules applied during export.
+          </p>
+        </li>
+      </ul>
+
+      <p>
+        A feature value is interpretable only relative to these choices. Total
+        time depends on the idle-time rule, and number of moves per attempt
+        depends on the attempt-boundary rule.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-feature-readiness">
+      <title>Feature Readiness</title>
+
+      <p>
+        Before computing features, each attempt should be assigned a readiness
+        status. A simple three-level status is:
+      </p>
+
+      <dl width="medium">
+        <li>
+          <title><c>ready</c></title>
+          <p>
+            The item map is available, parsing succeeded, and all check anchors
+            agree with replay.
+          </p>
+        </li>
+        <li>
+          <title><c>limited</c></title>
+          <p>
+            Some features can be computed, but at least one warning flag is
+            present. For example, checked-state features may be available even if
+            intermediate replay is unreliable.
+          </p>
+        </li>
+        <li>
+          <title><c>exclude</c></title>
+          <p>
+            The trace lacks the information required for the planned analysis,
+            such as an item map for key-based features or a well-formed checked
+            state for checked-response analysis.
+          </p>
+        </li>
+      </dl>
+
+      <p>
+        Readiness should be computed from reconstruction flags and the planned
+        feature set, not from the student outcome. This avoids excluding
+        difficult or unusual responses merely because they are analytically
+        inconvenient.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-transition-to-diagnostics">
+      <title>From Processed Tables to Diagnostics</title>
+
+      <p>
+        Once the analysis-ready tables have been constructed, the baseline
+        features of <xref ref="ch-baseline-features"/> and, later, the advanced
+        comparison features of <xref ref="ch-group-features"/> can
+        be computed reproducibly. The next chapter,
+        <xref ref="ch-visualization-diagnostics"/>, uses those features to
+        summarize items and cohorts through heatmaps,
+        <xref ref="gt-distance" text="custom">distance</xref> distributions,
+        transition networks, and other diagnostic displays.
+      </p>
+    </subsection>
+  </section>
+</chapter>

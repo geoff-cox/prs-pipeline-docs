@@ -1,0 +1,835 @@
+<chapter xml:id="ch-item-design" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Cardsort Item Design</title>
+
+  <introduction>
+    <p>
+      Before modeling what a student does on a drag-and-drop question, we first
+      describe what the question makes possible. A
+      <xref ref="gt-cardsort" text="custom">cardsort</xref> item is a designed
+      environment: a finite set of draggable
+      <xref ref="gt-card" text="custom">cards</xref>, a finite set of labeled
+      <xref ref="gt-slot" text="custom">slots</xref>, a
+      <xref ref="gt-tray" text="custom">tray</xref>, an answer key, and a
+      <xref ref="gt-feedback-policy" text="custom">feedback policy</xref>. These
+      choices determine the possible board arrangements before any student data
+      are observed.
+    </p>
+
+    <p>
+      This chapter separates the <term>item design</term> from the student's
+      <term>trajectory</term>. The design fixes the available cards, zones,
+      decoys, key, and feedback rules. The trajectory records how a student moves
+      through the resulting state space. Keeping these layers separate prevents
+      the representation from doing too much interpretive work: the same sequence
+      of moves may have different meaning under different item designs or
+      feedback policies.
+    </p>
+
+    <p>
+      The guiding principle is:
+      <md>
+        \text{item design} \longrightarrow \text{state model}
+        \longrightarrow \text{event trajectory}
+        \longrightarrow \text{features and models}.
+      </md>
+      This chapter fixes the design objects and their basic notation. The next
+      chapter turns those objects into a state model, where board configurations
+      are represented more fully as functions, vectors, and membership matrices.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-designed-objects">
+    <title>Designed Objects</title>
+
+    <introduction>
+      <p>
+        A drag-and-drop item begins with authored objects. Some become draggable
+        cards, some become drop areas, and one special drop area is present by
+        default: the <xref ref="gt-tray" text="custom">tray</xref>. The design
+        layer records these objects, their source order, and the labels needed
+        to decode the raw log.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-design-index-sets">
+      <title>Cards, Slots, and Zones</title>
+
+      <p>
+        Let <m>P</m> be the number of cards and <m>R</m> the number of authored
+        response slots. We index the cards in
+        <xref ref="gt-source-order" text="custom">source order</xref> by
+        <md>
+          \mathcal{P}=\{1,\dots,P\},
+        </md>
+        and the response slots, also in source order, by
+        <md>
+          \mathcal{R}=\{1,\dots,R\}.
+        </md>
+      </p>
+
+      <p>
+        A card can rest either in the tray or in one of the authored slots. The
+        full zone set is therefore
+        <md>
+          \mathcal{Z}=\{0\}\cup\mathcal{R}=\{0,1,\dots,R\},
+        </md>
+        where zone <m>0</m> is the tray. We write the zones and cards as
+        <md>
+          \{z_0,z_1,\dots,z_R\}, \qquad
+          \{c_1,c_2,\dots,c_P\}.
+        </md>
+        Thus <m>z_0</m> is the tray, and <m>z_1,\dots,z_R</m> are the slots.
+      </p>
+
+      <p>
+        A possible board arrangement assigns each card to exactly one zone. At
+        the design level, we record the set of all such assignments as
+        <md xml:id="an-item-configuration-space">
+          \mathcal{C}=\{s:\mathcal{P}\to\mathcal{Z}\}.
+        </md>
+        The next chapter treats each assignment <m>s\in\mathcal{C}</m> as a
+        board state and develops the corresponding vector and matrix
+        representations.
+      </p>
+
+      <table xml:id="tab-item-design-objects">
+        <title>Basic designed objects in a drag-and-drop item.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="22%" halign="left"/>
+          <col width="22%" halign="center"/>
+          <col width="50%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Object</p></cell>
+            <cell><p>Notation</p></cell>
+            <cell><p>Role in the model</p></cell>
+          </row>
+          <row>
+            <cell><p>cards</p></cell>
+            <cell><p><m>\mathcal{P}</m></p></cell>
+            <cell><p>The draggable objects a student sorts.</p></cell>
+          </row>
+          <row>
+            <cell><p>slots</p></cell>
+            <cell><p><m>\mathcal{R}</m></p></cell>
+            <cell><p>The authored drop areas, excluding the tray.</p></cell>
+          </row>
+          <row>
+            <cell><p>zones</p></cell>
+            <cell><p><m>\mathcal{Z}</m></p></cell>
+            <cell><p>All places a card may rest, including the tray.</p></cell>
+          </row>
+          <row>
+            <cell><p>tray</p></cell>
+            <cell><p><m>z_0</m></p></cell>
+            <cell><p>The initial zone and the home zone for any decoy card.</p></cell>
+          </row>
+          <row>
+            <cell><p>configuration space</p></cell>
+            <cell><p><m>\mathcal{C}</m></p></cell>
+            <cell><p>The set of all card-to-zone assignments allowed by the design.</p></cell>
+          </row>
+          <row>
+            <cell><p>key</p></cell>
+            <cell><p><m>s^\star</m></p></cell>
+            <cell><p>The authored correct assignment of cards to zones.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+
+    <subsection xml:id="subsec-source-order">
+      <title>Source Order and Positional Labels</title>
+
+      <p>
+        Source order matters because the <xref ref="gt-raw-data" text="custom">raw
+        data</xref> use <xref ref="gt-positional-labels" text="custom">positional
+        labels</xref> rather than the visible text of the item. The first authored
+        card becomes <c>drag1</c>, the second becomes <c>drag2</c>, and so on.
+        Likewise, the first slot becomes <c>drop1</c>, the second becomes
+        <c>drop2</c>, and so on. The tray is not an authored slot, so it is
+        represented separately as <c>dragzone</c>.
+      </p>
+
+      <p>
+        This makes the item source part of the data dictionary. Without the source,
+        a row such as
+        <cd>      *_drag3 -&gt; *_drop2</cd>
+        tells us that the third card was placed in the second slot, but not what
+        that card or slot meant to the student. Decoding positional labels back
+        into authored names is therefore required before making content-level
+        interpretations.
+      </p>
+
+      <p>
+        Each analyzed item should therefore be stored with an
+        <term>item map</term>:
+        <md>
+          j \mapsto c_j, \qquad i \mapsto z_i,
+        </md>
+        together with the visible text associated with each card and slot. The
+        mathematical indices provide stable references; the
+        <xref ref="gt-item-map" text="custom">item map</xref> gives those indices
+        their instructional meaning.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-key-configuration-design">
+    <title>The Key Configuration</title>
+
+    <introduction>
+      <p>
+        The answer key connects item design to response analysis. It identifies
+        the <xref ref="gt-homezone" text="custom">home zone</xref> of every card
+        and thereby determines which board arrangements are correct.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-home-zone-map">
+      <title>Home Zones</title>
+
+      <p>
+        The key configuration is the assignment
+        <md xml:id="an-key-home-zone-map">
+          s^\star:\mathcal{P}\to\mathcal{Z},
+        </md>
+        where <m>s^\star(j)</m> is the unique home zone of card <m>j</m>. Equivalently,
+        card <m>c_j</m> belongs in zone <m>z_{s^\star(j)}</m>. If
+        <m>s^\star(j)=0</m>, then card <m>j</m> is meant to remain in the tray.
+      </p>
+
+      <p>
+        The key is a design object, not a student response. It is fixed before
+        any attempt begins and is used later by the state, trajectory, and feature
+        layers to compare student-produced configurations with the authored
+        correct arrangement.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-occupancy-constraints">
+      <title>Key Occupancy</title>
+
+      <p>
+        The key also determines how many cards should occupy each zone. Define the
+        <term>key occupancy vector</term>
+        <md xml:id="an-key-occupancy-vector">
+          \mathbf{o}^\star=(o^\star_0,o^\star_1,\dots,o^\star_R)^\top,
+        </md>
+        where
+        <md>
+          o^\star_i=\#\{j\in\mathcal{P}:s^\star(j)=i\}.
+        </md>
+        This vector records the intended number of cards in the tray and in each
+        authored slot.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-design-complexity">
+      <title>Basic Design Quantities</title>
+
+      <p>
+        Several quantities describe the size and structure of the item before
+        student data are considered.
+      </p>
+
+      <dl width="medium">
+        <li>
+          <title>number of cards</title>
+          <p>
+            The value <m>P</m>. Larger values increase the number of card
+            coordinates that must be resolved.
+          </p>
+        </li>
+        <li>
+          <title>number of slots</title>
+          <p>
+            The value <m>R</m>. Larger values increase the number of possible
+            non-tray destinations for each card.
+          </p>
+        </li>
+        <li>
+          <title>configuration-space size</title>
+          <p>
+            Since each of the <m>P</m> cards may occupy any of the <m>R+1</m>
+            zones,
+            <md>
+              |\mathcal{C}|=(R+1)^P.
+            </md>
+          </p>
+        </li>
+        <li>
+          <title>key occupancy</title>
+          <p>
+            The vector <m>\mathbf{o}^\star</m>, whose entry <m>o^\star_i</m>
+            counts how many cards belong in zone <m>z_i</m>.
+          </p>
+        </li>
+      </dl>
+
+      <p>
+        These are design quantities, not measures of student performance. They
+        help explain why two items with the same final correctness rate may still
+        generate different response processes.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-decoys-and-constraints">
+    <title>Decoy Objects</title>
+
+    <introduction>
+      <p>
+        Drag-and-drop items can contain two decoy structures that ordinary
+        matching items often hide: cards that should not be placed and slots that
+        should remain empty.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-decoy-cards">
+      <title>Decoy Cards</title>
+
+      <p>
+        A <term>decoy card</term> is a card whose home zone is the tray. The set
+        of <xref ref="gt-decoy-card" text="custom">decoy cards</xref> is
+        <md xml:id="an-decoy-card-set">
+          \mathcal{D}_{\mathcal{P}}
+          =
+          \{j\in\mathcal{P}:s^\star(j)=0\}.
+        </md>
+        These cards are already in their home zone at the initial board. Moving
+        one into any authored slot creates a
+        <xref ref="gt-decoy-card-leak" text="custom">decoy-card leak</xref>.
+      </p>
+
+      <p>
+        Decoy cards deserve separate treatment because they affect both scoring
+        and interpretation. A per-card correctness score can reward the empty
+        initial board for each decoy card, even though the student has done no
+        sorting work. Later scoring rules should therefore distinguish raw
+        agreement with the key from progress beyond the initial tray state.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-decoy-slots">
+      <title>Decoy Slots</title>
+
+      <p>
+        A <term>decoy slot</term> is an authored slot that contains no cards in
+        the key. The set of <xref ref="gt-decoy-slot" text="custom">decoy
+        slots</xref> is
+        <md xml:id="an-decoy-slot-set">
+          \mathcal{D}_{\mathcal{R}}
+          =
+          \{i\in\mathcal{R}:\#\{j\in\mathcal{P}:s^\star(j)=i\}=0\}.
+        </md>
+      </p>
+
+      <p>
+        A card placed in a decoy slot creates a
+        <xref ref="gt-decoy-slot-leak" text="custom">decoy-slot leak</xref>. Such
+        a leak is a structural feature of the response. It should not be read as
+        a misconception without additional evidence from the item, prompt,
+        sequence of moves, and feedback received.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-feedback-policy">
+    <title>Feedback Policy</title>
+
+    <introduction>
+      <p>
+        The feedback policy is part of the item design because it changes the
+        conditions under which trajectories are produced. A student who receives
+        only an all-or-nothing verdict is solving a different task than a student
+        who is told which cards are wrong after each check.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-feedback-as-design">
+      <title>Feedback as a Design Variable</title>
+
+      <p>
+        Let <m>\phi</m> denote the feedback policy attached to the item. For an
+        auto-graded <tag>cardsort</tag>, the policy is applied when the student
+        presses <q>check</q>. Given a submitted configuration
+        <m>s\in\mathcal{C}</m> and the check history so far, the policy determines
+        what feedback is shown and whether the check is treated as graded,
+        refused, delayed, or final.
+      </p>
+
+      <p>
+        In the simplest case, <m>\phi</m> ignores the check history and returns
+        only <c>Correct</c> or <c>Incorrect</c> according to whether
+        <m>s=s^\star</m>. More informative policies may report a count of correct
+        cards, a count of misplaced or unplaced cards, identify particular wrong
+        cards, highlight zones, or withhold feedback until final submission.
+      </p>
+
+      <p>
+        Common feedback-policy dimensions include:
+      </p>
+
+      <ul>
+        <li><p>all-or-nothing versus count-level feedback;</p></li>
+        <li><p>whether specific wrong cards or zones are identified;</p></li>
+        <li><p>whether feedback is immediate, delayed, or final-only;</p></li>
+        <li><p>whether checks are unlimited, limited, penalized, or refused under some conditions.</p></li>
+      </ul>
+
+      <p>
+        Later trajectory features, such as check cadence, responsiveness, and
+        post-check improvement, must be interpreted relative to <m>\phi</m>. A
+        move made after card-level highlighting does not have the same evidentiary
+        meaning as the same move made after an all-or-nothing verdict.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-check-policy">
+      <title>Check Policy and Check Availability</title>
+
+      <p>
+        The item design should record whether checks are limited, penalized,
+        delayed, refused before a threshold is met, or freely available. These
+        choices affect the strategic value of pressing the check button.
+      </p>
+
+      <table xml:id="tab-feedback-covariates">
+        <title>Feedback covariates for item-level analysis.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="30%" halign="left"/>
+          <col width="70%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Covariate</p></cell>
+            <cell><p>Description</p></cell>
+          </row>
+          <row>
+            <cell><p><c>feedback_granularity</c></p></cell>
+            <cell><p>All-or-nothing, count-level, card-level, or zone-level.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>feedback_content</c></p></cell>
+            <cell><p>What is reported: verdict, number correct, wrong cards, cards left to place, etc.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>feedback_timing</c></p></cell>
+            <cell><p>Immediate, delayed, escalating, or final-only.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>check_limit</c></p></cell>
+            <cell><p>The maximum number of checks, if one exists.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>check_availability</c></p></cell>
+            <cell><p>When checking is allowed or refused.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>check_consequence</c></p></cell>
+            <cell><p>Whether checking affects credit, attempts, grading counters, or later feedback.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>highlight_policy</c></p></cell>
+            <cell><p>Whether specific cards or zones are visually marked.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+
+    <subsection xml:id="subsec-platform-feedback-policies">
+      <title>The Platform's Concrete Policies</title>
+
+      <p>
+        Runestone cardsorts have used two concrete feedback policies with the
+        same authored source. The policy is therefore a property of the platform
+        and data-collection era, not only of the item's markup. Exports collected
+        before the platform's mid-2026 change carry the legacy policy; later
+        exports carry the layered policy described below. Analyses that pool
+        across the change should treat <m>\phi</m> as an item- or era-level
+        covariate.
+      </p>
+
+      <p>
+        <term>The legacy policy</term> was highly disclosing. Every check was
+        graded, no matter how many cards had been placed, and the on-screen
+        feedback included grader counts together with highlights on incorrectly
+        placed cards from the first check. The raw export records only the
+        verdict, <c>Correct</c> or <c>Incorrect</c>, so the log understates what
+        the student saw. In the vocabulary of <xref ref="tab-feedback-covariates"/>,
+        the legacy policy was immediate, freely available, unlimited, and
+        card-level from the first press.
+      </p>
+
+      <p>
+        The newer <term>layered policy</term> requires students to place a minimum number of cards before a check discloses feedback. That is, for any submitted configuration, <m>s</m>, the number of placed cards must be at least the number of non-decoy cards (i.e., <m>P-\#\mathcal{D}_{\mathcal{P}}</m>). Any check before this threshold is still logged, but no feedback is given. Once the minimum is met, the grader begins revealing how many are correctly and incorrectly placed without identifying specific cards. This continues for two more checks, after which the legacy policy is applied. <xref ref="tab-layered-policy"/> provides a summary of the layered policy's three layers.
+      </p>
+
+      <table xml:id="tab-layered-policy">
+        <title>
+          Details of the layered policy. For each check on configuration <m>s</m>, let <m>\operatorname{placed}(s)</m> be the number of placed cards and <m>P-\#\mathcal{D}_{\mathcal{P}}</m> be the number of non-decoy cards.
+        </title>
+        <tabular valign="top" bottom="minor">
+          <col width="14%" halign="left"/>
+          <col width="36%" halign="left"/>
+          <col width="50%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Layer</p></cell>
+            <cell><p>Condition</p></cell>
+            <cell><p>Disclosure</p></cell>
+          </row>
+          <row>
+            <cell><p><m>\phi_1</m></p></cell>
+            <cell><p><m>\operatorname{placed}(s)\lt P-\#\mathcal{D}_{\mathcal{P}}</m></p></cell>
+            <cell><p>Refused check; reports the number of additional cards needed before grading, with no grading and no highlighting.</p></cell>
+          </row>
+          <row>
+            <cell><p><m>\phi_2</m></p></cell>
+            <cell><p><m>\operatorname{placed}(s)\geq P-\#\mathcal{D}_{\mathcal{P}}</m>, before the third graded check</p></cell>
+            <cell><p>Graded check; reports counts of correct cards, incorrectly placed cards, and non-decoy cards left in the tray.</p></cell>
+          </row>
+          <row>
+            <cell><p><m>\phi_3</m></p></cell>
+            <cell><p><m>\operatorname{placed}(s)\geq P-\#\mathcal{D}_{\mathcal{P}} </m>, third graded check or later</p></cell>
+            <cell><p>The <m>\phi_2</m> counts, plus highlighting of the incorrectly placed cards.</p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        For the running four-shape board, <m>P=4</m>,
+        <m>s^\star=(1,1,2,0)</m>, there is one decoy card and hence the number of non-decoy cards is <m>3</m>. The layered policy behaves as follows.
+      </p>
+
+      <table xml:id="tab-layered-policy-example">
+        <title>The layered policy on the running example.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="22%" halign="left"/>
+          <col width="14%" halign="center"/>
+          <col width="64%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Checked <m>s</m></p></cell>
+            <cell><p>Placed cards</p></cell>
+            <cell><p>Feedback</p></cell>
+          </row>
+          <row>
+            <cell><p><m>(0,0,0,0)</m></p></cell>
+            <cell><p><m>0</m></p></cell>
+            <cell><p>Refused: <q>3 left to place</q>.</p></cell>
+          </row>
+          <row>
+            <cell><p><m>(1,0,0,3)</m></p></cell>
+            <cell><p><m>2</m></p></cell>
+            <cell><p>Refused: <q>1 left to place</q>. The count is based on placed cards, so the placed decoy still contributes to the threshold.</p></cell>
+          </row>
+          <row>
+            <cell><p><m>(1,2,0,3)</m></p></cell>
+            <cell><p><m>3</m></p></cell>
+            <cell><p>Graded first check: 1 card correct, 2 placed cards incorrect, and 1 non-decoy card left in the tray.</p></cell>
+          </row>
+          <row>
+            <cell><p><m>(1,2,2,3)</m></p></cell>
+            <cell><p><m>4</m></p></cell>
+            <cell><p>Graded second check: 2 cards correct, 2 placed cards incorrect, and 0 non-decoy cards left in the tray.</p></cell>
+          </row>
+          <row>
+            <cell><p><m>(1,2,2,2)</m></p></cell>
+            <cell><p><m>4</m></p></cell>
+            <cell><p>Graded third check: the same count format is reported, and the incorrectly placed cards are highlighted.</p></cell>
+          </row>
+          <row>
+            <cell><p><m>(1,1,2,0)</m></p></cell>
+            <cell><p><m>3</m></p></cell>
+            <cell><p>Graded: <q>You are correct!</q></p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        Three design consequences follow. First, relative to the legacy policy,
+        the layered policy raises the cost of using the grader as an oracle:
+        card-level highlighting is no longer available from the first press.
+        Second, the refusal message leaks the number of non-decoy cards, since a
+        check on the initial board indirectly reveals the number of non-decoy cards. Third, check-based features
+        should distinguish logged checks from graded checks, because refused
+        presses are logged but do not provide the same information to the student.
+      </p>
+
+      <remark>
+        <p>
+          The layered policy was mapped by direct testing on the live platform
+          on 2026-07-03 and 2026-07-04; the raw walkthrough is kept beside this
+          book's source as <c>rs-new-feedback-policy-notes.md</c>. The legacy
+          policy's first-check highlighting behavior is also verified. A fresh
+          export collected under the new policy is still needed to confirm how
+          the new feedback appears in the DataShop columns.
+        </p>
+      </remark>
+    </subsection>
+
+    <subsection xml:id="subsec-feedback-dependent-features">
+      <title>Feedback-Dependent Features</title>
+
+      <p>
+        Some process features only make sense relative to the feedback policy.
+        For example, responsiveness after a check depends on what the check told
+        the student. If the feedback highlights wrong cards, then moving one of
+        those cards after the check differs from moving an unhighlighted card. If
+        the feedback only reports <c>Correct</c> or <c>Incorrect</c>, the same
+        move cannot be interpreted in the same way.
+      </p>
+
+      <p>
+        For this reason, feedback-sensitive features should be indexed by the
+        policy <m>\phi</m> when possible. The feature is not only a property of a
+        student trace; it is a property of a student trace under a particular
+        feedback environment.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-item-design-covariates">
+    <title>Item Design Covariates</title>
+
+    <introduction>
+      <p>
+        Once the item design has been formalized, it can be summarized by a row
+        of item-level covariates. These covariates support item comparisons,
+        explain differences in trajectory features, and give later statistical
+        models a way to separate student behavior from item structure.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-covariate-table">
+      <title>A Minimal Item-Level Data Dictionary</title>
+
+      <p>
+        The following table gives a minimal item-level data dictionary. Its goal
+        is not to record every possible design choice, but to preserve enough
+        structure that later response features can be interpreted consistently.
+      </p>
+
+      <table xml:id="tab-item-design-covariates">
+        <title>Minimal item design covariates.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="30%" halign="left"/>
+          <col width="20%" halign="center"/>
+          <col width="45%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Covariate</p></cell>
+            <cell><p>Notation</p></cell>
+            <cell><p>Description</p></cell>
+          </row>
+          <row>
+            <cell><p><c>num_cards</c></p></cell>
+            <cell><p><m>P</m></p></cell>
+            <cell><p>The number of draggable cards.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>num_slots</c></p></cell>
+            <cell><p><m>R</m></p></cell>
+            <cell><p>The number of authored response slots.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>num_zones</c></p></cell>
+            <cell><p><m>R+1</m></p></cell>
+            <cell><p>The number of possible resting places, including the tray.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>state_space_size</c></p></cell>
+            <cell><p><m>(R+1)^P</m></p></cell>
+            <cell><p>The number of possible card-to-zone assignments.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>num_decoy_cards</c></p></cell>
+            <cell><p><m>|\mathcal{D}_{\mathcal{P}}|</m></p></cell>
+            <cell><p>The number of cards whose home zone is the tray.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>num_decoy_slots</c></p></cell>
+            <cell><p><m>|\mathcal{D}_{\mathcal{R}}|</m></p></cell>
+            <cell><p>The number of authored slots that should remain empty.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>key_occupancy</c></p></cell>
+            <cell><p><m>\mathbf{o}^\star</m></p></cell>
+            <cell><p>The number of cards assigned to each zone in the key.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>feedback_policy</c></p></cell>
+            <cell><p><m>\phi</m></p></cell>
+            <cell><p>The type and amount of feedback returned on a check.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>check_cost</c></p></cell>
+            <cell><p><mdash/></p></cell>
+            <cell><p>Whether checks are free, limited, penalized, delayed, or refused under some conditions.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+
+    <subsection xml:id="subsec-design-versus-performance">
+      <title>Design Features Are Not Performance Features</title>
+
+      <p>
+        Item design covariates describe the task, not the student. For example,
+        <m>P</m>, <m>R</m>, <m>|\mathcal{D}_{\mathcal{P}}|</m>, and
+        <m>|\mathcal{D}_{\mathcal{R}}|</m> are fixed before any student opens the
+        problem. They may help explain student behavior, but they are not
+        evidence of student understanding by themselves.
+      </p>
+
+      <p>
+        To illustrate, imagine 100 students answer Questions A and B with the
+        design and correctness rates shown below.
+      </p>
+
+      <table xml:id="tab-design-performance-example">
+        <title>Same final correctness rate, different design burden.</title>
+        <tabular halign="center" bottom="minor">
+          <col width="15%"/>
+          <col width="25%"/>
+          <col width="28%"/>
+          <col width="28%"/>
+          <row bottom="medium" header="yes">
+            <cell><p>Question</p></cell>
+            <cell><p>Design</p></cell>
+            <cell><p>Final Correct</p></cell>
+            <cell><p>Final Wrong</p></cell>
+          </row>
+          <row>
+            <cell><p>A</p></cell>
+            <cell><p>8 cards, no decoys</p></cell>
+            <cell><p>70</p></cell>
+            <cell><p>30</p></cell>
+          </row>
+          <row>
+            <cell><p>B</p></cell>
+            <cell><p>8 cards, 4 decoys</p></cell>
+            <cell><p>70</p></cell>
+            <cell><p>30</p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        Both items have a <m>70\%</m> final correctness rate, but Question B gives
+        students an additional way to be wrong: they may know the main
+        classifications but assume every card must be placed. Question A does not
+        permit that error type because every card belongs in an authored slot.
+        The same outcome rate therefore need not imply the same response process.
+      </p>
+
+      <p>
+        Feedback can amplify this difference. Depending on the policy, a student
+        working on a decoy-heavy item may receive different information, at
+        different times, than a student working on a decoy-free item. Item design
+        covariates help later models account for such differences rather than
+        attributing all variation to student behavior.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-item-design-example">
+    <title>The Running Example</title>
+
+    <p>
+      For the running shapes question, there are four cards and three response
+      slots. Thus
+      <md>
+        P=4,\qquad R=3,\qquad \mathcal{Z}=\{0,1,2,3\}.
+      </md>
+      The tray is <m>z_0</m>, while the slots are <m>z_1</m>, <m>z_2</m>, and
+      <m>z_3</m>.
+    </p>
+
+    <p>
+      The key configuration is
+      <md>
+        s^\star=(1,1,2,0).
+      </md>
+      The two triangle cards belong in zone <m>z_1</m>, the square belongs in
+      zone <m>z_2</m>, and the circle belongs in the tray. Therefore the circle
+      is a decoy card. The third slot, corresponding to Pentagon, receives no
+      card in the key, so it is a decoy slot.
+    </p>
+
+    <table xml:id="tab-running-example-design">
+      <title>Item design summary for the running shapes question.</title>
+      <tabular valign="top" bottom="minor">
+        <col width="15%" halign="center"/>
+        <col width="25%" halign="center"/>
+        <col width="50%" halign="left"/>
+        <row bottom="medium" header="yes">
+          <cell><p>Feature</p></cell>
+          <cell><p>Value</p></cell>
+          <cell><p>Interpretation</p></cell>
+        </row>
+        <row>
+          <cell><p><m>P</m></p></cell>
+          <cell><p><m>4</m></p></cell>
+          <cell><p>There are four cards.</p></cell>
+        </row>
+        <row>
+          <cell><p><m>R</m></p></cell>
+          <cell><p><m>3</m></p></cell>
+          <cell><p>There are three authored slots.</p></cell>
+        </row>
+        <row>
+          <cell><p><m>|\mathcal{C}|</m></p></cell>
+          <cell><p><m>4^4=256</m></p></cell>
+          <cell><p>There are 256 possible card-to-zone assignments.</p></cell>
+        </row>
+        <row>
+          <cell><p><m>s^\star</m></p></cell>
+          <cell><p><m>(1,1,2,0)</m></p></cell>
+          <cell><p>The authored correct assignment.</p></cell>
+        </row>
+        <row>
+          <cell><p><m>\mathcal{D}_{\mathcal{P}}</m></p></cell>
+          <cell><p><m>\{4\}</m></p></cell>
+          <cell><p>The fourth card is a decoy card.</p></cell>
+        </row>
+        <row>
+          <cell><p><m>\mathcal{D}_{\mathcal{R}}</m></p></cell>
+          <cell><p><m>\{3\}</m></p></cell>
+          <cell><p>The third slot is a decoy slot.</p></cell>
+        </row>
+        <row>
+          <cell><p><m>\mathbf{o}^\star</m></p></cell>
+          <cell><p><m>(1,2,1,0)^\top</m></p></cell>
+          <cell><p>One card belongs in the tray, two in the first slot, one in the second slot, and none in the third slot.</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      This example illustrates why the item design layer is necessary. Placing the
+      circle into Pentagon is not merely one wrong coordinate. It is both a
+      decoy-card leak and a decoy-slot leak, because the design contains both a
+      card that should remain unplaced and a slot that should remain empty.
+    </p>
+  </section>
+
+  <section xml:id="sec-transition-to-state-model">
+    <title>From Item Design to State Space</title>
+
+    <p>
+      Once the item design is fixed, the configuration space
+      <m>\mathcal{C}</m> is determined. Later, a student
+      <xref ref="gt-attempt" text="custom">attempt</xref> will be modeled as a
+      sequence of events acting on this state space. Moves change configurations,
+      <xref ref="gt-reset" text="custom">resets</xref> return the board to the
+      initial tray state, and checks mark a configuration for feedback. Those
+      event types belong to the trajectory model. The present chapter only fixes
+      the design choices that make the state space possible.
+    </p>
+
+    <p>
+      The next chapter gives this state space concrete representations and the
+      algebra that goes with them. The item design supplies the index sets, key,
+      decoys, and feedback environment; the state model supplies the operations
+      used to compare and update states.
+    </p>
+  </section>
+
+</chapter>

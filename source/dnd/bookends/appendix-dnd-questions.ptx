@@ -1,0 +1,490 @@
+<appendix xml:id="appendix-dnd-questions">
+  <title>Drag-and-Drop Questions</title>
+
+  <section xml:id="sec-2-3-2-4-dnd">
+    <title>AC: Section 2.3.2 PROTEUS Exercises #4</title>
+
+    <exercise label="proteus-matching-cost-apples" xml:id="proteus-cost-apples">
+    <title>Matching Notation to Meaning</title>
+      <idx>matching derivatives</idx>
+  
+      <statement>
+        <p>
+          A small business makes apple pies. They purchase <m>N(t)</m> apples at a unit cost of <m>C(t)</m> dollars per apple.  The function <m>A(t) = N(t) \cdot C(t)</m> measures the total amount the business spends on apples on day <m>t</m>, since <m>(N(t) \text{ apples}) \cdot (C(t) \text{ dollars/apple})</m> has units of dollars.
+        </p>
+
+        <p>Each of the quantities on the left below has units that explain the quantity's meaning. For each, identify the corresponding units given on the right.  It is possible that not every set of units gets used, and also that some functions and expressions have the same units.</p>
+      </statement>
+
+      <cardsort>
+        <match>
+          <premise order="2"><m>N(t)</m></premise>
+          <response>apples</response>
+        </match>
+        <match>
+          <premise order="3"><m>N'(t)</m></premise>
+          <response>apples per day</response>
+        </match>
+        <match>
+          <premise order="4"><m>C(t)</m></premise>
+          <response>dollars / apple</response>
+        </match>
+        <match>
+          <premise order="5"><m>C'(t)</m></premise>
+          <response>(dollars per apple) / day</response>
+        </match>
+        <match>
+          <premise order="6"><m>N(t) \cdot C'(t)</m></premise>
+          <premise><m>C(t) \cdot N'(t)</m></premise>
+          <premise><m>A'(t)</m></premise>
+          <response>dollars / day</response>
+        </match>
+        <match>
+          <premise order="1"><m>A(t)</m></premise>
+          <response>dollars</response>
+        </match>
+        <match>
+          <response>(dollars per apple) per apple</response>
+        </match>
+        <match>
+          <response>apples per dollar</response>
+        </match>
+        <match>
+          <response>apples <m>\cdot</m> dollars</response>
+        </match>
+      </cardsort>
+
+      <solution>
+        <title>Solution</title>
+        <image source="figures/ac-2-3-2-4-dnd-soln.png" width="80%"/>
+      </solution>
+
+      <solution>
+        <title>Source</title>
+        <program language="xml">
+          <![CDATA[
+          <cardsort>
+            <match>
+              <premise order="2"><m>N(t)</m></premise>
+              <response>apples</response>
+            </match>
+            <match>
+              <premise order="3"><m>N'(t)</m></premise>
+              <response>apples per day</response>
+            </match>
+            <match>
+              <premise order="4"><m>C(t)</m></premise>
+              <response>dollars / apple</response>
+            </match>
+            <match>
+              <premise order="5"><m>C'(t)</m></premise>
+              <response>(dollars per apple) / day</response>
+            </match>
+            <match>
+              <premise order="6"><m>N(t) \cdot C'(t)</m></premise>
+              <premise><m>C(t) \cdot N'(t)</m></premise>
+              <premise><m>A'(t)</m></premise>
+              <response>dollars / day</response>
+            </match>
+            <match>
+              <premise order="1"><m>A(t)</m></premise>
+              <response>dollars</response>
+            </match>
+            <match>
+              <response>(dollars per apple) per apple</response>
+            </match>
+            <match>
+              <response>apples per dollar</response>
+            </match>
+            <match>
+              <response>apples <m>\cdot</m> dollars</response>
+            </match>
+          </cardsort>
+          ]]>
+        </program>
+      </solution>
+
+    </exercise>
+  </section>
+  
+  <section xml:id="sec-apex-1-1-27-dnd" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <title>APEX: Exercise 1.1.27</title>
+
+    <exercise label="APEX-PROTEUS-limit-intro-3-v2">
+      <title>Limit Existence Matching</title>
+
+      <statement>
+        <p>
+          For each limit on the left, if the limit does not exist,
+          match it with the reason on the right that explains why it does not exist.
+        </p>
+      </statement>
+      <feedback>
+        <p>
+          If you're having trouble deciding, you might try graphing some of the functions.
+        </p>
+      </feedback>
+      <cardsort>
+        <match>
+          <premise order="5"><m>\lim\limits_{x\to 1}\dfrac{x-1}{|x-1|}</m></premise>
+          <premise order="2">
+            <md>
+              <mrow>\amp\lim\limits_{x\to 2} f(x),\ \text{where}</mrow>
+              <mrow>\amp\qquad\small{f(x)=\begin{cases}x+4, \amp x\leq 2\\ 3x-2, \amp x\gt 2\end{cases}}\qquad</mrow>
+            </md>
+          </premise>
+          <response>Different values approached from left and right</response>
+        </match>
+        <match>
+          <premise order="6"><m>\lim\limits_{x\to 2^+}\ln(x-2)</m></premise>
+          <premise order="1"><m>\lim\limits_{x\to 1}\dfrac{1}{x-1}</m></premise>
+          <response>The function grows without bound</response>
+        </match>
+        <match>
+          <premise order="4"><m>\lim\limits_{x\to 0}\cos\left(\dfrac{2}{x^3}\right)</m></premise>
+          <response>The function oscillates</response>
+        </match>
+        <match>
+          <premise order="3"><m>\lim\limits_{x\to 2}\dfrac{\tan(x-2)}{x^2}</m></premise>
+          <premise order="7">
+            <md>
+              <mrow>\amp\lim\limits_{x\to 1}f(x),\ \text{where}</mrow>
+              <mrow>\amp\small{f(x)=\begin{cases}\sin(x^2-1)+2x,\amp x\lt 0\\ 4x-1,\amp x\gt 0\end{cases}}</mrow>
+            </md>
+          </premise>
+        </match>
+      </cardsort>
+      <solution>
+        <title>Solution</title>
+        <image source="figures/apex-1-1-27-dnd-soln.png" width="80%"/>
+      </solution>
+      <solution>
+        <title>Source</title>
+        <program language="xml">
+          <![CDATA[
+          <cardsort>
+            <match>
+              <premise order="5"><m>\lim\limits_{x\to 1}\dfrac{x-1}{|x-1|}</m></premise>
+              <premise order="2">
+                <md>
+                  <mrow>\amp\lim\limits_{x\to 2} f(x),\ \text{where}</mrow>
+                  <mrow>\amp\qquad\small{f(x)=\begin{cases}x+4, \amp x\leq 2\\ 3x-2, \amp x\gt 2\end{cases}}\qquad</mrow>
+                </md>
+              </premise>
+              <response>Different values approached from left and right</response>
+            </match>
+            <match>
+              <premise order="6"><m>\lim\limits_{x\to 2^+}\ln(x-2)</m></premise>
+              <premise order="1"><m>\lim\limits_{x\to 1}\dfrac{1}{x-1}</m></premise>
+              <response>The function grows without bound</response>
+            </match>
+            <match>
+              <premise order="4"><m>\lim\limits_{x\to 0}\cos\left(\dfrac{2}{x^3}\right)</m></premise>
+              <response>The function oscillates</response>
+            </match>
+            <match>
+              <premise order="3"><m>\lim\limits_{x\to 2}\dfrac{\tan(x-2)}{x^2}</m></premise>
+              <premise order="7">
+                <md>
+                  <mrow>\amp\lim\limits_{x\to 1}f(x),\ \text{where}</mrow>
+                  <mrow>\amp\small{f(x)=\begin{cases}\sin(x^2-1)+2x,\amp x\lt 0\\ 4x-1,\amp x\gt 0\end{cases}}</mrow>
+                </md>
+              </premise>
+            </match>
+          </cardsort>
+          ]]>
+        </program>
+      </solution>
+    </exercise>
+  </section>
+
+  <section xml:id="sec-fcla-ee-rq3-dnd" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <title>EE - Reading Question 3</title>
+
+    <exercise xml:id="reading-EE-8" label="reading-EE-8-v1">
+      <title>FCLA:Match eigenvectors to eigenvalues</title>
+      <statement>
+        <p>Given the matrix
+          <md>\begin{bmatrix} 5 &amp; -10 &amp; -5\\ 2 &amp; 14 &amp; 2\\ -4 &amp; -8 &amp; 6\end{bmatrix}</md>
+        determine if each vector is an eigenvector, and if so, drag it to the eigenvalue for that vector.</p>
+      </statement>
+      <cardsort>
+        <match>
+          <response><m>1</m></response>
+        </match>
+        <match>
+          <response><m>2</m></response>
+        </match>
+        <match>
+          <premise><m>\begin{bmatrix}5\\-2\\4\end{bmatrix}</m></premise>
+          <response><m>5</m></response>
+        </match>
+        <match>
+          <premise><m>\begin{bmatrix}-2\\1\\0\end{bmatrix}</m></premise>
+          <premise><m>\begin{bmatrix}1\\0\\-1\end{bmatrix}</m></premise>
+          <premise><m>\begin{bmatrix}0\\1\\-2\end{bmatrix}</m></premise>
+          <response><m>10</m></response>
+        </match>
+        <match>
+          <premise><m>\begin{bmatrix}6\\-2\\3\end{bmatrix}</m></premise>
+        </match>
+      </cardsort>
+      <solution>
+        <title>Solution</title>
+        <image source="figures/fcla-ee-rq3-dnd-soln.png" width="80%"/>
+      </solution>
+      <solution>
+        <title>Source</title>
+        <program language="xml">
+          <![CDATA[
+          <cardsort>
+            <match>
+              <response><m>1</m></response>
+            </match>
+            <match>
+              <response><m>2</m></response>
+            </match>
+            <match>
+              <premise><m>\colvector{5\\-2\\4}</m></premise>
+              <response><m>5</m></response>
+            </match>
+            <match>
+              <premise><m>\colvector{-2\\1\\0}</m></premise>
+              <premise><m>\colvector{1\\0\\-1}</m></premise>
+              <premise><m>\colvector{0\\1\\-2}</m></premise>
+              <response><m>10</m></response>
+            </match>
+            <match>
+              <premise><m>\colvector{6\\-2\\3}</m></premise>
+            </match>
+          </cardsort>
+          ]]>
+        </program>
+      </solution>
+    </exercise>
+  </section>
+
+  <section xml:id="sec-ula-ckpt-1-2-12-dnd" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <title>Checkpoint 1.2.12</title>
+
+    <exercise label="ula_proteus_1-2_Solutions_from_RREF_v1">
+      <title>ULA: Determine the number of solutions from RREF</title>
+      <statement>
+        <p>
+          Each of the following is the RREF of a linear system in
+          augmented matrix form.  
+          The symbol <m>*</m> represents an unknown real number.  
+          For each associated linear system, choose the correct response.
+        </p>
+      </statement>
+      <cardsort>
+        <match>
+          <premise>
+            <m>\left[ \begin{array}{rrr|r}
+              1 \amp 0 \amp 0 \amp * \\
+              0 \amp 1 \amp 0 \amp * \\
+              0 \amp 0 \amp 1 \amp * \\
+            \end{array}\right]
+            </m>
+          </premise>
+          <premise>
+          <m>\left[\begin{array}{rr|r}
+            1 \amp 0 \amp  * \\
+            0 \amp 1 \amp  *\\
+            0 \amp 0 \amp  0 \\
+          \end{array} \right]</m>
+          </premise>
+          <response>
+            The linear system has one and only one solution.
+          </response>
+        </match>
+        <match>
+          <premise>
+            <m>\left[\begin{array}{rrr|r}
+              1 \amp 0 \amp * \amp 0 \\
+              0 \amp 1 \amp * \amp 0\\
+              0 \amp 0 \amp 0 \amp 1 \\
+            \end{array} \right]
+            </m>
+          </premise>
+          <response>
+            The linear system has no solution.
+          </response>
+        </match>
+        <match>
+          <premise>
+            <m>\left[\begin{array}{rrr|r}
+              1 \amp * \amp 0 \amp * \\
+              0 \amp 0 \amp 1 \amp *\\
+              0 \amp 0 \amp 0 \amp 0 \\
+            \end{array} \right]
+            </m>
+          </premise>
+          <premise>
+            <m>\left[\begin{array}{rrr|r}
+              0 \amp 1 \amp 0 \amp * \\
+              0 \amp 0 \amp 1 \amp *\\
+              0 \amp 0 \amp 0 \amp 0 \\
+            \end{array} \right]
+            </m>
+          </premise>
+          <premise>
+            <m>\left[\begin{array}{rrr|r}
+              1 \amp 0 \amp * \amp 0 \\
+              0 \amp 1 \amp * \amp 1\\
+              0 \amp 0 \amp 0 \amp 0 \\
+            \end{array} \right]
+            </m>
+          </premise>
+          <response>
+            The linear system has infinitely many solutions.
+          </response>
+        </match>
+        <match>
+          <premise>
+            <m>\left[\begin{array}{rrr|r}
+              1 \amp 0 \amp * \amp * \\
+              0 \amp 1 \amp * \amp *\\
+              0 \amp 0 \amp 0 \amp * \\
+            \end{array} \right]
+            </m>
+          </premise>
+          <response>
+            More information is needed to determine the number of solutions.
+          </response>
+        </match>
+      </cardsort>
+      <solution>
+        <title>Solution</title>
+        <image source="figures/ula-ckpt-1-2-12-dnd-soln.png" width="80%"/>
+      </solution>
+      <solution>
+        <title>Source</title>
+        <program language="xml">
+          <![CDATA[
+          <cardsort>
+            <match>
+              <premise>
+                <m>\left[ \begin{array}{rrr|r}
+                  1 \amp 0 \amp 0 \amp * \\
+                  0 \amp 1 \amp 0 \amp * \\
+                  0 \amp 0 \amp 1 \amp * \\
+                \end{array}\right]
+                </m>
+              </premise>
+              <premise>
+              <m>\left[\begin{array}{rr|r}
+                1 \amp 0 \amp  * \\
+                0 \amp 1 \amp  *\\
+                0 \amp 0 \amp  0 \\
+              \end{array} \right]</m>
+              </premise>
+              <response>
+                The linear system has one and only one solution.
+              </response>
+            </match>
+            <match>
+              <premise>
+                <m>\left[\begin{array}{rrr|r}
+                  1 \amp 0 \amp * \amp 0 \\
+                  0 \amp 1 \amp * \amp 0\\
+                  0 \amp 0 \amp 0 \amp 1 \\
+                \end{array} \right]
+                </m>
+              </premise>
+              <response>
+                The linear system has no solution.
+              </response>
+            </match>
+            <match>
+              <premise>
+                <m>\left[\begin{array}{rrr|r}
+                  1 \amp * \amp 0 \amp * \\
+                  0 \amp 0 \amp 1 \amp *\\
+                  0 \amp 0 \amp 0 \amp 0 \\
+                \end{array} \right]
+                </m>
+              </premise>
+              <premise>
+                <m>\left[\begin{array}{rrr|r}
+                  0 \amp 1 \amp 0 \amp * \\
+                  0 \amp 0 \amp 1 \amp *\\
+                  0 \amp 0 \amp 0 \amp 0 \\
+                \end{array} \right]
+                </m>
+              </premise>
+              <premise>
+                <m>\left[\begin{array}{rrr|r}
+                  1 \amp 0 \amp * \amp 0 \\
+                  0 \amp 1 \amp * \amp 1\\
+                  0 \amp 0 \amp 0 \amp 0 \\
+                \end{array} \right]
+                </m>
+              </premise>
+              <response>
+                The linear system has infinitely many solutions.
+              </response>
+            </match>
+            <match>
+              <premise>
+                <m>\left[\begin{array}{rrr|r}
+                  1 \amp 0 \amp * \amp * \\
+                  0 \amp 1 \amp * \amp *\\
+                  0 \amp 0 \amp 0 \amp * \\
+                \end{array} \right]
+                </m>
+              </premise>
+              <response>
+                More information is needed to determine the number of solutions.
+              </response>
+            </match>
+          </cardsort>
+          ]]>
+        </program>
+      </solution>
+    </exercise>
+  </section>
+
+  <section>
+    <title>Generous Feedback Experiment</title>
+
+    <exercise label="proteus-test" xml:id="proteus-feedback-test">
+    <title>Generous Feedback Test</title>
+  
+      <statement>
+        <p>
+          Solve the following drag-and-drop matching exercise.
+        </p>
+
+        <p>
+          <em>Note: There are <m>5^6 = 15625</m> possible configurations!</em>
+        </p>
+      </statement>
+
+      <cardsort>
+        <match>
+          <premise>A</premise>
+          <response>A</response>
+        </match>
+        <match>
+          <premise>A</premise>
+        </match>
+        <match>
+          <premise>A</premise>
+          <premise>A</premise>
+          <premise>A</premise>
+          <response>A</response>
+        </match>
+        <match>
+          <premise>A</premise>
+          <response>A</response>
+        </match>
+        <match>
+          <response>A</response>
+        </match>
+      </cardsort>
+
+    </exercise>
+  </section>
+
+</appendix>

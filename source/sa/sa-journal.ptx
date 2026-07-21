@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<pretext xml:lang="en-US" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <xi:include href="./bookends/docinfo.ptx" />
+
+  <book xml:id="proteus-short-answer-journal">
+    <title>PROTEUS Short-Answer</title>
+    <subtitle>A Research Journal and Reference Guide</subtitle>
+
+    <xi:include href="./bookends/frontmatter.ptx" />
+
+    <xi:include href="./ch-automation-roadmap-report.ptx" />
+    <xi:include href="./ch-using-the-tool.ptx" />
+    <xi:include href="./ch-framing-models.ptx" />
+    <xi:include href="./ch-pipeline-demo.ptx" />
+
+    <xi:include href="./bookends/backmatter.ptx" />
+
+  </book>
+
+</pretext>

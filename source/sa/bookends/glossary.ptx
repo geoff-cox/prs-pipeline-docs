@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Glossary for the PROTEUS automation tool documentation.
+  Place inside <backmatter> or use as a standalone division.
+
+  Reference any entry from running text via <xref ref="an-..." text="title"/>.
+  In HTML output, this produces a clickable knowl that reveals the entry
+  inline.
+
+  Entries are grouped thematically in this source file for ease of
+  maintenance. PreTeXt will render them in source order; if you want
+  alphabetical rendering, re-order or rely on the publisher's
+  alphabetize option.
+-->
+
+<glossary xml:id="glossary-main">
+  <title>Glossary</title>
+
+  <!-- ============================================================ -->
+  <!-- Project-specific names                                       -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-proteus">
+    <title>PROTEUS</title>
+    <p>
+      The collaborative research project this tool is built for. PROTEUS
+      analyzes student interaction data from interactive open-source
+      mathematics textbooks, with a focus on understanding how students
+      reason through linear-algebra and calculus problems.
+    </p>
+  </gi>
+
+  <gi xml:id="an-runestone">
+    <title>Runestone</title>
+    <p>
+      The hosting platform that delivers PROTEUS's interactive textbooks
+      to students and records their interactions with embedded questions.
+      Runestone is the primary source of the short-answer responses this
+      tool processes.
+    </p>
+  </gi>
+
+  <gi xml:id="an-pretext">
+    <title>PreTeXt</title>
+    <p>
+      The authoring framework used to write PROTEUS's textbooks. PreTeXt
+      source compiles to HTML, PDF, and other formats and is the source
+      format of this report.
+    </p>
+  </gi>
+
+  <gi xml:id="an-datashop">
+    <title>DataShop</title>
+    <p>
+      A learning-data repository format and platform. PROTEUS exports
+      Runestone interaction logs in DataShop's tab-separated format
+      (extension <c>.tab</c>) so that the data can be analyzed alongside
+      datasets from other learning platforms. The pipeline's
+      <xref ref="an-stage-1" text="title"/> stage reads this format directly.
+    </p>
+  </gi>
+
+  <gi xml:id="an-ckc">
+    <title>cK¢ model</title>
+    <p>
+      Balacheff's <em>conception, knowing, concept</em> model: a
+      theoretical framework for describing student conceptions as a
+      four-component tuple (problems, operators, representation systems,
+      <xref ref="an-control-structure" text="title"/>s). Used in PROTEUS
+      to organize how student responses are coded.
+    </p>
+  </gi>
+
+  <gi xml:id="an-control-structure">
+    <title>Control structure (CS)</title>
+    <p>
+      One component of the <xref ref="an-ckc" text="title"/>. A control structure
+      describes the criterion or rule a student uses to recognize that
+      they have reached a settled answer. In the pivot-question
+      <xref ref="an-codebook" text="title"/> these are coded <c>CS1</c> through
+      <c>CS10</c>; the names and definitions of the codes are subject to
+      group revision.
+    </p>
+  </gi>
+
+  <gi xml:id="an-codebook">
+    <title>Codebook</title>
+    <p>
+      The reference document that defines the
+      <xref ref="an-control-structure" text="title"/>s used to code
+      student responses. Each codebook entry lists a name, a description,
+      and a set of keywords that signal its presence in a response. In
+      the pipeline, the codebook lives in the database with version
+      tracking, so historical codes remain interpretable when the
+      codebook evolves.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Episode Model terms                                          -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-episode">
+    <title>Episode</title>
+    <p>
+      The primary analytic object of the Episode Model: one local trace
+      of justification read from a response, written
+      <m>e_k = (C_k, I_k, J_k)</m> &#8212;
+      <xref ref="an-criterion" text="title"/>,
+      <xref ref="an-inferential-link" text="title"/>,
+      <xref ref="an-judgment" text="title"/>, in that order. An episode
+      is a visible trace of justification, not a claim that a conception
+      has been observed. In the database an episode is carried by a
+      <xref ref="an-chain-step" text="title"/>.
+    </p>
+  </gi>
+
+  <gi xml:id="an-inferential-link">
+    <title>Inferential link</title>
+    <p>
+      The <m>I</m> of an <xref ref="an-episode" text="title"/>: the
+      inference connecting the cited
+      <xref ref="an-criterion" text="title"/> to the
+      <xref ref="an-judgment" text="title"/> drawn from it. The
+      per-question set of valid links backs the second correctness digit
+      and is stored in <c>question_controls.normative_link</c>. An
+      episode whose link or judgment is missing is incomplete; it is
+      flagged <q>link not satisfied</q> and routed to a human rather
+      than scored.
+    </p>
+  </gi>
+
+  <gi xml:id="an-judgment">
+    <title>Judgment</title>
+    <p>
+      The <m>J</m> of an <xref ref="an-episode" text="title"/>: the
+      verdict the student draws from the cited criterion (e.g.,
+      <q>one variable is free</q>, <q>the solution is not unique</q>).
+      Carried by the <em>conclusion</em> of a
+      <xref ref="an-chain-step" text="title"/>.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Pipeline stages                                              -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-pipeline">
+    <title>Pipeline</title>
+    <p>
+      The end-to-end automated tool that converts raw student responses
+      into reviewable candidate codes. Composed of five sequential
+      stages: 
+      <ul marker="square">
+        <li><xref ref="an-stage-1" text="title"/></li>
+        <li><xref ref="an-stage-2" text="title"/></li>
+        <li><xref ref="an-stage-3" text="title"/></li>
+        <li><xref ref="an-stage-4" text="title"/></li>
+        <li><xref ref="an-stage-5" text="title"/></li>
+      </ul>
+      A response can exit the pipeline early
+      via several escalation routes; the final disposition is recorded
+      in the database regardless.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stage-1">
+    <title>Stage 1: Ingest</title>
+    <p>
+      The first pipeline stage. Reads a raw export
+      (<xref ref="an-datashop" text="title"/> <c>.tab</c> file or
+      <xref ref="an-runestone" text="title"/> <c>useinfo</c> CSV), filters to the
+      short-answer events for the target question, and produces a clean
+      response table. Idempotent: re-importing the same file does not
+      duplicate rows.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stage-2">
+    <title>Stage 2: Eligibility Screening</title>
+    <p>
+      Decides whether each response is a candidate for control-structure
+      coding. Outputs a label (<xref ref="an-include" text="title"/>,
+      <xref ref="an-exclude" text="title"/>) along with a
+      <xref ref="an-confidence" text="title"/> and a one-sentence
+      <xref ref="an-rationale" text="title"/>.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stage-3">
+    <title>Stage 3: Reasoning Chain Extraction</title>
+    <p>
+      Converts a free-text response into a numbered sequence of
+      inferential steps written in the <xref ref="an-controlled-vocab" text="title"/>.
+      Each step has the shape <em>premise</em> <m>\rightarrow</m>
+      <em>conclusion</em>. Steps containing terms not present in the
+      vocabulary are flagged as <xref ref="an-oov" text="title"/>.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stage-4">
+    <title>Stage 4: Pattern Matching</title>
+    <p>
+      For each step in the chain, finds every codebook entry whose
+      pattern fires on that step. Reports all matches; performs no
+      preference selection. Deterministic given a chain and a codebook
+      version.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stage-5">
+    <title>Stage 5: Disposition</title>
+    <p>
+      Decides what to do with the candidate codes from
+      <xref ref="an-stage-4" text="title"/>. Routes each response to one of six
+      <xref ref="an-disposition" text="title"/>s, which determine how
+      and whether the response reaches the human review queue. Human
+      review itself is the standing layer above the pipeline, not a
+      stage of it.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Eligibility / screening terms                                -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-include">
+    <title>INCLUDE</title>
+    <p>
+      The <xref ref="an-stage-2" text="title"/> label assigned to responses that are
+      candidates for control-structure coding. A response is INCLUDEd if
+      it contains an explicit answer (yes / no / equivalent) and a
+      verbal element that names a <xref ref="an-criterion" text="title"/>.
+    </p>
+  </gi>
+
+  <gi xml:id="an-exclude">
+    <title>EXCLUDE</title>
+    <p>
+      The <xref ref="an-stage-2" text="title"/> label assigned to responses that are
+      not candidates for coding. Triggered by any of five conditions:
+      blank, illegible, bare yes/no, work-only with no verbal connector,
+      or off-topic. EXCLUDEd responses exit the pipeline at Stage 2 and
+      receive an <xref ref="an-escalate" text="title"/> disposition at Stage 5.
+    </p>
+  </gi>
+
+  <gi xml:id="an-confidence">
+    <title>Confidence</title>
+    <p>
+      A real number in <m>[0, 1]</m> emitted alongside a screener label,
+      reporting how certain the model was in the decision. Logged but
+      not used for evaluation in the first pipeline version. A future
+      version may use a confidence threshold to introduce a
+      <q>flag-for-review</q> class without retraining the screener.
+    </p>
+  </gi>
+
+  <gi xml:id="an-rationale">
+    <title>Rationale</title>
+    <p>
+      A short natural-language sentence emitted by a stage of the
+      pipeline, naming the decisive feature behind a decision. Stored
+      alongside the structured output so that human reviewers can audit
+      the pipeline's reasoning at every stage.
+    </p>
+  </gi>
+
+  <gi xml:id="an-criterion">
+    <title>Criterion</title>
+    <p>
+      A property of a matrix, system, or solution set that a student
+      cites to justify their answer (e.g., <q>two pivot columns</q>,
+      <q>a free variable</q>, <q>more variables than equations</q>).
+      The <m>C</m> of an <xref ref="an-episode" text="title"/>
+      <m>e_k = (C_k, I_k, J_k)</m>, carried by the <em>premise</em> slot
+      of a <xref ref="an-chain-step" text="title"/>. The presence of a
+      named criterion is what distinguishes an
+      <xref ref="an-include" text="title"/>-eligible response from a bare answer.
+    </p>
+  </gi>
+
+  <gi xml:id="an-connector">
+    <title>Connector</title>
+    <p>
+      A word or symbol linking work or observation to a conclusion:
+      <q>because</q>, <q>since</q>, <q>therefore</q>, <q>so</q>,
+      <m>\rightarrow</m>, <m>\Rightarrow</m>. The eligibility screener
+      uses connectors as one diagnostic for the presence of a
+      <xref ref="an-criterion" text="title"/>.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Chain / vocabulary terms                                     -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-chain">
+    <title>Reasoning chain</title>
+    <p>
+      The output of <xref ref="an-stage-3" text="title"/>: a numbered sequence of
+      inferential steps that reconstruct the structure of a student
+      response. Each step has a (possibly null) premise and a conclusion,
+      both drawn from the <xref ref="an-controlled-vocab" text="title"/> wherever
+      possible. The chain is the implementation carrier of the response's
+      <xref ref="an-episode" text="title"/> sequence.
+    </p>
+  </gi>
+
+  <gi xml:id="an-chain-step">
+    <title>Chain step</title>
+    <p>
+      One element of a <xref ref="an-chain" text="title"/>, of the shape <em>premise</em>
+      <m>\rightarrow</m> <em>conclusion</em>. A step may be either a
+      bare assertion (premise null) or a derivation. Each step is stored
+      as one row of the <c>chain_steps</c> table and is the stored
+      carrier of an <xref ref="an-episode" text="title"/>: the premise
+      slot carries the <xref ref="an-criterion" text="title"/> <m>C</m>
+      and the conclusion carries the
+      <xref ref="an-judgment" text="title"/> <m>J</m>.
+    </p>
+  </gi>
+
+  <gi xml:id="an-controlled-vocab">
+    <title>Controlled vocabulary</title>
+    <p>
+      The fixed set of canonical propositions in which
+      <xref ref="an-stage-3" text="title"/> output is written. Examples:
+      <c>free_var_exists</c>, <c>more_vars_than_pivots</c>,
+      <c>system_consistent</c>. The vocabulary is versioned, so a term
+      that was <xref ref="an-oov" text="title"/> under one version may be canonical
+      under a later one.
+    </p>
+  </gi>
+
+  <gi xml:id="an-canonical-form">
+    <title>Canonical form</title>
+    <p>
+      The standardized expression of a proposition. The
+      <xref ref="an-controlled-vocab" text="title"/> defines one canonical form per
+      idea so that paraphrases (e.g., <q>infinite solutions</q>,
+      <q>infinitely many solutions</q>, <q>not unique</q>) collapse to a
+      single matchable string.
+    </p>
+  </gi>
+
+  <gi xml:id="an-oov">
+    <title>OOV (out-of-vocabulary)</title>
+    <p>
+      A flag set on a <xref ref="an-chain-step" text="title"/> when the step contains
+      a term that is not in the active <xref ref="an-controlled-vocab" text="title"/>.
+      The flag propagates downstream: OOV steps cannot match codebook
+      patterns, and Stage 5 routes the response to a
+      <xref ref="an-terminology-flag" text="title"/> disposition. Recurring OOV terms
+      are candidates for promotion into the next vocabulary version.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Matching / disposition terms                                 -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-codebook-pattern">
+    <title>Codebook pattern</title>
+    <p>
+      A machine-readable rule, written in the
+      <xref ref="an-controlled-vocab" text="title"/>, that fires on any
+      <xref ref="an-chain-step" text="title"/> matching a particular codebook entry.
+      Patterns are written by the research group, not the tool, and live
+      in the <c>codebook_patterns</c> table.
+    </p>
+  </gi>
+
+  <gi xml:id="an-disposition">
+    <title>Disposition</title>
+    <p>
+      The decision <xref ref="an-stage-5" text="title"/> makes about what to do with
+      a response. One of six values:
+      <xref ref="an-auto-accept" text="title"/>, <xref ref="an-standard-review" text="title"/>,
+      <xref ref="an-problem-type-flag" text="title"/>, <xref ref="an-terminology-flag" text="title"/>,
+      <xref ref="an-no-match" text="title"/>, or <xref ref="an-escalate" text="title"/>.
+    </p>
+  </gi>
+
+  <gi xml:id="an-auto-accept">
+    <title>auto_accept</title>
+    <p>
+      The disposition for responses with a single clean codebook match
+      and no flags. The reviewer's role for these is confirmation only.
+    </p>
+  </gi>
+
+  <gi xml:id="an-standard-review">
+    <title>standard_review</title>
+    <p>
+      The disposition for responses with multiple matches or overlapping
+      pattern hits. The reviewer is expected to confirm or edit each
+      candidate code.
+    </p>
+  </gi>
+
+  <gi xml:id="an-problem-type-flag">
+    <title>problem_type_flag</title>
+    <p>
+      The disposition for responses whose candidate matches seem
+      inappropriate for the question type (e.g., a consistency-related
+      code firing on a question that does not concern consistency). The
+      reviewer is expected to scrutinize and likely remove the match.
+    </p>
+  </gi>
+
+  <gi xml:id="an-terminology-flag">
+    <title>terminology_flag</title>
+    <p>
+      The disposition triggered when a chain contains an
+      <xref ref="an-oov" text="title"/> term. Indicates a possible
+      <xref ref="an-controlled-vocab" text="title"/> gap rather than a coding error.
+    </p>
+  </gi>
+
+  <gi xml:id="an-no-match">
+    <title>no_match</title>
+    <p>
+      The disposition for responses whose chain extracts cleanly but
+      where no <xref ref="an-codebook-pattern" text="title"/> fires on any step.
+      Suggests either a codebook gap or a response whose reasoning lies
+      outside the codebook's scope.
+    </p>
+  </gi>
+
+  <gi xml:id="an-escalate">
+    <title>escalate</title>
+    <p>
+      The disposition for responses that need full manual coding from
+      scratch: anything <xref ref="an-exclude" text="title"/>'d at Stage 2, plus any
+      response on which <xref ref="an-stage-3" text="title"/> chain extraction fails.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Reviewer / workflow terms                                    -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-reviewer">
+    <title>Reviewer</title>
+    <p>
+      A person on the coding team who reads pipeline output and assigns
+      final codes to responses. The pipeline does not change who the
+      reviewers are; it changes what they see when they sit down to work.
+    </p>
+  </gi>
+
+  <gi xml:id="an-candidate-packet">
+    <title>Candidate packet</title>
+    <p>
+      The structured bundle a reviewer sees for one response. Contains
+      the original response text, the eligibility decision, the
+      <xref ref="an-chain" text="title"/>, the candidate codes, and the
+      <xref ref="an-rationale" text="title"/> at each stage. The packet is the
+      pipeline's final output for one response on the happy path.
+    </p>
+  </gi>
+
+  <gi xml:id="an-override">
+    <title>Override</title>
+    <p>
+      A reviewer's edit to a candidate code: confirming, adding,
+      removing, or replacing one of the pipeline's suggestions. Every
+      override is logged.
+    </p>
+  </gi>
+
+  <gi xml:id="an-override-log">
+    <title>Override log</title>
+    <p>
+      The append-only record of every reviewer
+      <xref ref="an-override" text="title"/>, captured automatically as part of the
+      review workflow. The log is the primary feedback signal driving
+      revisions to prompts and <xref ref="an-codebook-pattern" text="title"/>s.
+    </p>
+  </gi>
+
+  <gi xml:id="an-soft-lock">
+    <title>Soft-lock</title>
+    <p>
+      A non-enforced reservation: when a reviewer opens a response, the
+      tool marks it as <q>checked out</q> for a short window so that no
+      other reviewer opens the same response simultaneously. The lock is
+      a UI convention rather than a database constraint; an expired lock
+      releases automatically.
+    </p>
+  </gi>
+
+  <gi xml:id="an-calibration-loop">
+    <title>Calibration loop</title>
+    <p>
+      The ongoing process of using the
+      <xref ref="an-override-log" text="title"/> to refine the pipeline's prompts and
+      <xref ref="an-codebook-pattern" text="title"/>s. Phase 3 of the
+      project roadmap.
+    </p>
+  </gi>
+
+  <gi xml:id="an-inter-rater">
+    <title>Inter-rater agreement</title>
+    <p>
+      A statistical measure of how often two coders, working
+      independently, assign the same codes to the same responses.
+      Commonly reported using <xref ref="an-kappa" text="title"/>.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Database / architecture terms                                -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-sqlite">
+    <title>SQLite</title>
+    <p>
+      A serverless relational database engine that stores its entire
+      contents in a single file. The pipeline's source of truth lives
+      in a SQLite database (<c>proteus.db</c>) sitting alongside the
+      application code. No server administration is required.
+    </p>
+  </gi>
+
+  <gi xml:id="an-schema">
+    <title>Schema</title>
+    <p>
+      The set of table definitions, column types, and constraints that
+      define the shape of the database. The pipeline's schema is
+      versioned via the <c>schema_version</c> table and evolved through
+      <xref ref="an-migration" text="title"/>s.
+    </p>
+  </gi>
+
+  <gi xml:id="an-migration">
+    <title>Migration</title>
+    <p>
+      A versioned, recorded change to the database
+      <xref ref="an-schema" text="title"/>. Migrations are applied in order, never
+      undone in place, and never bypassed: this preserves the ability
+      to reproduce earlier states of the database for analysis.
+    </p>
+  </gi>
+
+  <gi xml:id="an-pk">
+    <title>Primary key (PK)</title>
+    <p>
+      The column or columns that uniquely identify each row of a table.
+      Most pipeline tables use a single auto-incrementing integer PK;
+      the <c>codebook</c> table uses a composite PK
+      <m>(\textit{code\_id}, \textit{version\_id})</m> so that multiple
+      versions of a codebook can coexist.
+    </p>
+  </gi>
+
+  <gi xml:id="an-fk">
+    <title>Foreign key (FK)</title>
+    <p>
+      A column or columns in one table that reference the
+      <xref ref="an-pk" text="title"/> of another, enforcing referential integrity.
+      When the referenced PK is composite, the referencing FK must also
+      be composite &#x2014; a constraint that surfaced as a real bug
+      during early prototyping of the schema.
+    </p>
+  </gi>
+
+  <gi xml:id="an-idempotent">
+    <title>Idempotent</title>
+    <p>
+      In the pipeline context: a stage or operation whose output is the
+      same whether it runs once or many times on the same input.
+      Idempotent ingestion means re-importing the same export file does
+      not duplicate rows.
+    </p>
+  </gi>
+
+  <gi xml:id="an-provenance">
+    <title>Provenance</title>
+    <p>
+      The recorded origin and history of a piece of data: which file it
+      came from, when it was imported, which pipeline run produced its
+      derived rows, and which prompt and codebook versions were active
+      at the time. Provenance is preserved by the <c>raw_imports</c>
+      and <c>pipeline_runs</c> tables.
+    </p>
+  </gi>
+
+  <gi xml:id="an-acid">
+    <title>ACID</title>
+    <p>
+      A set of four properties (Atomicity, Consistency, Isolation,
+      Durability) that database transactions must satisfy. ACID
+      guarantees mean that an interrupted pipeline run leaves the
+      database in a consistent state rather than half-updated.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- NLP / ML / methodology terms                                 -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-llm">
+    <title>LLM (large language model)</title>
+    <p>
+      A statistical model trained on large quantities of text that can
+      produce, classify, or transform natural-language input. The
+      pipeline uses an LLM in 
+      <ul>
+        <li><xref ref="an-stage-2" text="title"/></li>
+        <li><xref ref="an-stage-3" text="title"/></li>
+      </ul>
+      Whereas, the following stages use no LLM:
+      <ul>
+        <li><xref ref="an-stage-4" text="title"/></li>
+        <li><xref ref="an-stage-5" text="title"/></li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="an-prompt">
+    <title>Prompt</title>
+    <p>
+      The text instruction given to an <xref ref="an-llm" text="title"/> to elicit a
+      specific kind of output. The pipeline maintains versioned prompts
+      so that a change in pipeline behavior can be traced to the prompt
+      version that produced it.
+    </p>
+  </gi>
+
+  <gi xml:id="an-zero-shot">
+    <title>Zero-shot</title>
+    <p>
+      A prompting strategy in which the model is given the task
+      definition and asked to perform it with no worked examples.
+      Cheapest to write; usually the lowest-quality baseline.
+    </p>
+  </gi>
+
+  <gi xml:id="an-few-shot">
+    <title>Few-shot exemplar</title>
+    <p>
+      A worked example included in a prompt to demonstrate the desired
+      input&#x2013;output behavior. A few-shot prompt typically contains
+      between three and ten exemplars chosen to span the range of cases
+      the model is expected to handle.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stratified-split">
+    <title>Stratified split</title>
+    <p>
+      A partition of a labeled dataset into training, development, and
+      test subsets that preserves the class proportions of the original.
+      Used so that evaluation metrics on a small held-out set remain
+      representative.
+    </p>
+  </gi>
+
+  <gi xml:id="an-kappa">
+    <title>Cohen's <m>\kappa</m></title>
+    <p>
+      A statistical measure of agreement between two raters on
+      categorical assignments, corrected for the agreement that would
+      occur by chance. The mathematics-education research community
+      reports <m>\kappa</m> as the standard
+      <xref ref="an-inter-rater" text="title"/> statistic.
+    </p>
+  </gi>
+
+  <gi xml:id="an-token">
+    <title>Token</title>
+    <p>
+      The unit in which an <xref ref="an-llm" text="title"/> reads and produces text.
+      Roughly corresponds to a short word or word-fragment; LLM costs
+      and length limits are usually denominated in tokens rather than
+      characters.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Mathematics terminology used in examples                     -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-rref">
+    <title>RREF (reduced row echelon form)</title>
+    <p>
+      A canonical form for a matrix in which each leading entry is 1,
+      each leading 1 is the only nonzero entry in its column, and each
+      leading 1 lies strictly to the right of the one above. Many
+      student responses to the pivot question reference RREF directly
+      or implicitly.
+    </p>
+  </gi>
+
+  <gi xml:id="an-pivot">
+    <title>Pivot</title>
+    <p>
+      A leading nonzero entry in a row of a matrix in echelon or reduced
+      echelon form. The number and location of pivots determine the
+      consistency and solution-set cardinality of a linear system &#x2014;
+      a fact several pipeline codebook entries are organized around.
+    </p>
+  </gi>
+
+  <gi xml:id="an-free-variable">
+    <title>Free variable</title>
+    <p>
+      A variable in a linear system whose corresponding column in
+      <xref ref="an-rref" text="title"/> contains no <xref ref="an-pivot" text="title"/>. The
+      existence of a free variable in a consistent system implies
+      infinitely many solutions; the absence of a free variable rules
+      out non-uniqueness.
+    </p>
+  </gi>
+</glossary>

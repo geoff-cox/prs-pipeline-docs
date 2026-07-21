@@ -1,0 +1,193 @@
+<!-- ================================================================ -->
+<!-- REFERENCES AND APPENDICES                                        -->
+<!-- ================================================================ -->
+<backmatter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="backmatter">
+	<title>Supplementary Structure</title>
+
+	<appendix xml:id="app-notation">
+		<title>Notation Summary</title>
+
+		<table xml:id="tab-notation">
+			<title>Notation used in the framework.</title>
+			<tabular halign="center">
+				<col width="20%" />
+				<col width="70%" halign="left"/>
+				<row header="yes">
+						<cell>Symbol</cell>
+						<cell>Meaning</cell>
+				</row>
+				<row>
+						<cell><m>P</m></cell>
+						<cell>Number of cards in an item</cell>
+				</row>
+				<row>
+						<cell><m>R</m></cell>
+						<cell>Number of destination zones, excluding the tray</cell>
+				</row>
+				<row>
+						<cell><m>\cardset</m></cell>
+						<cell>Card set</cell>
+				</row>
+				<row>
+						<cell><m>\zoneset</m></cell>
+						<cell>Tray and destination-zone set</cell>
+				</row>
+				<row>
+						<cell><m>\statespace</m></cell>
+						<cell>Admissible state space</cell>
+				</row>
+				<row>
+						<cell><m>X</m></cell>
+						<cell>Response state</cell>
+				</row>
+				<row>
+						<cell><m>X^\star</m></cell>
+						<cell>Unique correct state, when applicable</cell>
+				</row>
+				<row>
+						<cell><m>e_k</m></cell>
+						<cell>Event at ordinal position <m>k</m></cell>
+				</row>
+				<row>
+						<cell><m>t_k</m></cell>
+						<cell>Timestamp associated with event <m>e_k</m></cell>
+				</row>
+				<row>
+						<cell><m>\trajectory</m></cell>
+						<cell>Marked timestamped state trajectory</cell>
+				</row>
+			</tabular>
+		</table>
+
+		<remark xml:id="todo-notation-appendix">
+			<title>Author To-Do</title>
+
+			<p>
+				<ul>
+						<li><p>[ ] Add all final distance, outcome, and model notation.</p></li>
+						<li><p>[ ] Remove symbols not used in the final manuscript.</p></li>
+						<li><p>[ ] Check consistency with the research journal chapters.</p></li>
+				</ul>
+			</p>
+		</remark>
+	</appendix>
+
+	<appendix xml:id="app-event-order">
+		<title>Event Ordering and Replay Specification</title>
+
+		<p>
+				[STUB: Provide the complete ordering precedence, replay pseudocode, initialization
+				rules, reset semantics, no-op treatment, and malformed-event behavior.]
+		</p>
+
+		<p>
+				[STUB: Include a small worked example that starts from the initial state and
+				shows every event, replayed state, check anchor, and derived feature.]
+		</p>
+	</appendix>
+
+	<appendix xml:id="app-qc-rules">
+		<title>Quality-Control Rulebook</title>
+
+		<p>
+			[STUB: List every QC flag, its trigger, severity, readiness consequence, and
+			analyses permitted under that flag.]
+		</p>
+
+		<table xml:id="tab-qc-rulebook">
+			<title>Template for the complete QC rulebook.</title>
+			<tabular halign="center">
+				<col width="20%" />
+				<col width="20%" />
+				<col width="20%" />
+				<col width="20%" />
+				<col width="20%" />
+				<row header="yes">
+						<cell>Flag</cell>
+						<cell>Trigger</cell>
+						<cell>Severity</cell>
+						<cell>Readiness effect</cell>
+						<cell>Permitted analyses</cell>
+				</row>
+				<row>
+						<cell>[Flag]</cell>
+						<cell>[Rule]</cell>
+						<cell>[Level]</cell>
+						<cell>[Ready, limited, exclude]</cell>
+						<cell>[List]</cell>
+				</row>
+			</tabular>
+		</table>
+	</appendix>
+
+	<appendix xml:id="app-feature-specification">
+		<title>Complete Feature Specification</title>
+
+		<p>
+				[STUB: Supply formulas, units, eligible event/state windows, missing-value rules,
+				and implementation field names for every feature used in the paper.]
+		</p>
+	</appendix>
+
+	<appendix xml:id="app-sensitivity">
+		<title>Sensitivity Configurations</title>
+
+		<p>
+				[STUB: Record every configuration value and justify the selected alternatives.
+				Include a machine-readable configuration excerpt or reference to the archived
+				analysis manifest.]
+		</p>
+	</appendix>
+
+	<appendix xml:id="app-author-master-checklist">
+		<title>Master Completion Checklist</title>
+
+		<p>
+			<term>Data and Governance</term>
+			<ul>
+					<li><p>[ ] Confirm IRB or institutional authorization.</p></li>
+					<li><p>[ ] Confirm redistribution status separately from analysis status.</p></li>
+					<li><p>[ ] Complete corpus and item-version inventory.</p></li>
+					<li><p>[ ] Resolve all logged-item to source-version mappings.</p></li>
+			</ul>
+		</p>
+
+		<p>
+			<term>Implementation</term>
+			<ul>
+					<li><p>[ ] Complete F10 attempt outcomes.</p></li>
+					<li><p>[ ] Complete F12 flat error-profile exports.</p></li>
+					<li><p>[ ] Complete F18 item covariates and feedback-policy metadata.</p></li>
+					<li><p>[ ] Complete F20 unified modeling and diagnostic tables.</p></li>
+					<li><p>[ ] Resolve F11 entropy inclusion or removal.</p></li>
+					<li><p>[ ] Freeze tests, fixtures, and software release.</p></li>
+			</ul>
+		</p>
+
+		<p>
+			<term>Analysis</term>
+			<ul>
+					<li><p>[ ] Freeze attempt unit and inclusion rules.</p></li>
+					<li><p>[ ] Complete anchor-validation analysis.</p></li>
+					<li><p>[ ] Complete manual audit and synthetic fault tests.</p></li>
+					<li><p>[ ] Complete prespecified sensitivity analyses.</p></li>
+					<li><p>[ ] Select the smallest sufficient baseline feature set.</p></li>
+					<li><p>[ ] Generate all tables and figures programmatically.</p></li>
+			</ul>
+		</p>
+
+		<p>
+			<term>Writing and Submission</term>
+			<ul>
+					<li><p>[ ] Complete systematic related-work search.</p></li>
+					<li><p>[ ] Replace every bracketed stub and placeholder.</p></li>
+					<li><p>[ ] Remove all author to-do remarks before submission.</p></li>
+					<li><p>[ ] Audit claim boundaries and causal language.</p></li>
+					<li><p>[ ] Adapt length, abstract, and supplementary materials to the target journal.</p></li>
+					<li><p>[ ] Prepare data, code, software, and AI-use statements.</p></li>
+			</ul>
+		</p>
+	</appendix>
+
+	<xi:include href="references.ptx" />
+</backmatter>

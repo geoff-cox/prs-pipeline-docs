@@ -1,0 +1,1522 @@
+<chapter xml:id="ch-baseline-features">
+  <title>Baseline Features</title>
+
+  <introduction>
+    <p>
+      The previous chapters defined the designed item, the state space, and the
+      event trajectory. This chapter turns those objects into <term>baseline
+      features</term>: measurable summaries of checked answers, state errors,
+      movement through the configuration graph, use of checks, timing, and
+      cohort-level response patterns.
+    </p>
+
+    <p>
+      A baseline feature is not, by itself, a claim about student thinking. It is
+      a quantity computed from the item design, the key configuration, the
+      reconstructed state sequence, and the logged actions. Later chapters use
+      these features for diagnostics, statistical models, and validity arguments.
+      Here the goal is only to define a stable feature vocabulary.
+    </p>
+
+    <p>
+      The chapter is organized into six feature families:
+      <ol>
+        <li>
+          <p>
+            <term>checked-state features</term>, which compare a submitted
+            <xref ref="gt-state" text="custom">state</xref> to the
+            <xref ref="gt-key" text="custom">key</xref>;
+          </p>
+        </li>
+        <li>
+          <p>
+            <term>state error features</term>, which describe how a checked
+            state differs from the key;
+          </p>
+        </li>
+        <li>
+          <p>
+            <term>movement features</term>, which summarize ordinary moves
+            through the configuration graph;
+          </p>
+        </li>
+        <li>
+          <p>
+            <term>segment features</term>, which describe check cadence and
+            changes between checked states;
+          </p>
+        </li>
+        <li>
+          <p>
+            <term>time features</term>, which use event timestamps;
+          </p>
+        </li>
+        <li>
+          <p>
+            <term>cohort features</term>, which aggregate states and
+            trajectories across students.
+          </p>
+        </li>
+      </ol>
+      A preliminary section first fixes what a feature is and at what level of
+      analysis it lives.
+    </p>
+
+    <p>
+      All definitions in this chapter assume an analysis-ready trajectory: events
+      have been ordered, <xref ref="gt-positional-labels" text="custom">positional
+      labels</xref> have been decoded, states have been reconstructed, and the
+      check anchors of <xref ref="sec-check-anchors-and-consistency-checks"/> have
+      been compared with the replayed state. Building those tables from raw logs,
+      and deciding how to handle reconstruction flags, is the work of
+      <xref ref="ch-data-processing"/>. When those flags are raised, the features
+      below should be interpreted with caution or excluded according to the
+      analysis plan.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-feature-maps">
+    <title>Feature Maps</title>
+
+    <introduction>
+      <p>
+        A feature is a function that takes one of the framework objects already
+        defined and returns a number, vector, table, or label. Some features are
+        defined on a single configuration. Others are defined on a trajectory, a
+        check segment, or a collection of attempts.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-feature-map-definition">
+      <title>Configurations, Trajectories, and Cohorts</title>
+
+      <p>
+        Let <m>X\in\mathcal{X}</m> be a valid
+        <xref ref="gt-membership-matrix" text="custom">membership matrix</xref>
+        and let <m>X^\star</m> be the key membership matrix. A
+        <term>state feature</term> is a function of the form
+        <md>
+          f(X;X^\star).
+        </md>
+        State features compare one board state to the key. Examples include the
+        agreement score, the key distance, and decoy-leak counts.
+      </p>
+
+      <p>
+        Let <m>\Gamma</m> be an event trajectory and let <m>\phi</m> be the
+        feedback policy. A <term>trajectory feature</term> is a function of the
+        form
+        <md>
+          f(\Gamma;X^\star,\phi).
+        </md>
+        Trajectory features, such as cadence and excess moves, use action marks,
+        timestamps, feedback, and the reconstructed state sequence.
+      </p>
+
+      <p>
+        Finally, if a cohort contains trajectories
+        <md>
+          \Gamma_1,\Gamma_2,\dots,\Gamma_N,
+        </md>
+        then a <term>cohort feature</term> aggregates across students, attempts,
+        or checked states. Examples include a placement heatmap, a distribution
+        of first-check distances, and an exact-correct rate.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-feature-levels">
+      <title>Levels of Analysis</title>
+
+      <p>
+        The same raw log supports several levels of analysis. Keeping those levels
+        separate prevents a feature computed at one level from being interpreted as
+        if it belonged to another.
+      </p>
+
+      <table xml:id="tab-feature-levels">
+        <title>Common feature levels.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="20%" halign="left"/>
+          <col width="35%" halign="left"/>
+          <col width="40%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Level</p></cell>
+            <cell><p>Object</p></cell>
+            <cell><p>Typical features</p></cell>
+          </row>
+          <row>
+            <cell><p>state</p></cell>
+            <cell><p>one configuration <m>X</m></p></cell>
+            <cell><p>agreement, distance, occupancy, decoy leaks</p></cell>
+          </row>
+          <row>
+            <cell><p>checked state</p></cell>
+            <cell><p>a state submitted to the grader</p></cell>
+            <cell><p>correctness, first-check distance, grader counts</p></cell>
+          </row>
+          <row>
+            <cell><p>move</p></cell>
+            <cell><p>a transition <m>X_{k-1}\to X_k</m></p></cell>
+            <cell><p>fixing, lateral, breaking, takeback</p></cell>
+          </row>
+          <row>
+            <cell><p>segment</p></cell>
+            <cell><p>states between checks or resets</p></cell>
+            <cell><p>cadence, post-check gain, responsiveness</p></cell>
+          </row>
+          <row>
+            <cell><p>attempt</p></cell>
+            <cell><p>one student's work on one item</p></cell>
+            <cell><p>number of checks, excess moves, time to success</p></cell>
+          </row>
+          <row>
+            <cell><p>cohort</p></cell>
+            <cell><p>many attempts on one item</p></cell>
+            <cell><p>heatmaps, exact-correct rate, transition counts</p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        A state feature describes a board state. A trajectory feature describes a
+        path. A cohort feature describes a distribution. These levels are related,
+        but they answer different questions. The sections below move from checked
+        states, to the structure of their errors, to the paths that produced them,
+        to checks and feedback, to time, and finally to the cohort.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-checked-state-features">
+    <title>State Features</title>
+
+    <introduction>
+      <p>
+        Checked-state features compare a configuration to the key. They are the
+        closest analogues of ordinary autograded response data: they say whether
+        a submitted state was correct and, if not, how far it was from the key.
+        The agreement score and key distance are the basic quantities on which the
+        later feature families build.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-agreement-vector-baseline">
+      <title>Per-Card Agreement</title>
+
+      <p>
+        Let <m>X=X(s)</m> be the membership matrix of a configuration <m>s</m>.
+        Column <m>j</m> of <m>X</m> is the zone basis vector <m>e_{s(j)}</m>, and
+        column <m>j</m> of <m>X^\star</m> is <m>e_{s^\star(j)}</m>. Their dot
+        product is <m>1</m> exactly when card <m>j</m> is in its home zone.
+        Collecting these dot products gives the <term>per-card agreement
+        vector</term>
+        <md xml:id="an-baseline-agreement-vector">
+          \mathbf{a}(X)
+          =
+          \operatorname{diag}\bigl(X^{\top}X^\star\bigr)
+          \in \{0,1\}^{P},
+          \qquad
+          a_j
+          =
+          \begin{cases}
+            1, \amp s(j)=s^\star(j),\\
+            0, \amp s(j)\neq s^\star(j).
+          \end{cases}
+        </md>
+      </p>
+
+      <p>
+        This vector records which individual cards agree with the key. It does not
+        yet compress the response into a single score.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-agreement-score-baseline">
+      <title>Agreement Score</title>
+
+      <p>
+        Summing the per-card agreements gives a single number. To express that sum
+        in matrix form, use the <term>Frobenius inner product</term>
+        <md xml:id="an-frobenius-inner-product">
+          \langle A,B\rangle_F
+          =
+          \sum_{i,j}A_{ij}B_{ij}
+          =
+          \operatorname{tr}\bigl(A^{\top}B\bigr),
+        </md>
+        with norm <m>\lVert A\rVert_F^2=\langle A,A\rangle_F</m>. Since each
+        valid membership matrix has exactly one <m>1</m> in each of its <m>P</m>
+        columns,
+        <md xml:id="an-membership-frobenius-norm">
+          \lVert X\rVert_F^2=P
+        </md>
+        for every <m>X\in\mathcal{X}</m>.
+      </p>
+
+      <p>
+        The <term>agreement score</term> is the number of cards in their home
+        zones:
+        <md xml:id="an-baseline-agreement-score">
+          \sigma(X)
+          =
+          \sum_{j=1}^{P} a_j
+          =
+          \operatorname{tr}\bigl(X^{\top}X^\star\bigr)
+          =
+          \langle X,X^\star\rangle_F.
+        </md>
+        It is an integer between <m>0</m> and <m>P</m>.
+      </p>
+
+      <p>
+        A correctly placed card and a correctly trayed
+        <xref ref="gt-decoy-card" text="custom">decoy card</xref> both contribute
+        <m>1</m> to <m>\sigma(X)</m>. Thus the agreement score can be positive in
+        the initial state whenever the key contains decoy cards. The
+        partial-credit variants below account for that baseline.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-key-distance-baseline">
+      <title>Distance to the Key</title>
+
+      <p>
+        The <term>key distance</term> fixes one argument of the state-space
+        distance from <xref ref="sec-distance"/> at the key:
+        <md xml:id="an-baseline-key-distance">
+          d^\star(X)
+          =
+          d_{\mathcal X}(X,X^\star)
+          =
+          \frac{1}{2}\|X-X^\star\|_F^2.
+        </md>
+      </p>
+
+      <p>
+        Agreement and key distance are two readings of the same comparison.
+        Expanding the norm and using
+        <m>\lVert X\rVert_F^2=\lVert X^\star\rVert_F^2=P</m> gives
+        <md xml:id="an-key-distance-identity">
+          d^\star(X)
+          =
+          \tfrac{1}{2}\bigl(
+          \lVert X\rVert_F^2
+          +\lVert X^\star\rVert_F^2
+          -2\langle X,X^\star\rangle_F
+          \bigr)
+          =
+          P-\sigma(X).
+        </md>
+        The score counts the cards that agree with the key; the distance counts
+        the cards that do not. By the configuration graph of
+        <xref ref="sec-configuration-graph"/>, <m>d^\star(X)</m> is also the
+        minimum number of ordinary moves needed to reach the key from <m>X</m>.
+      </p>
+
+      <p>
+        Exact correctness is the common condition
+        <md>
+          d^\star(X)=0
+          \iff
+          \sigma(X)=P
+          \iff
+          X=X^\star.
+        </md>
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-grader-counts-baseline">
+      <title>Grader Counts</title>
+
+      <p>
+        The key distance counts misplaced cards without saying where they sit. Two
+        additional counts split that distance by current location. Define
+        <md xml:id="an-baseline-wrong-slot-count">
+          w(X)
+          =
+          \#\{j:s(j)\neq 0,\ s(j)\neq s^\star(j)\},
+        </md>
+        the number of cards currently in a non-tray wrong zone, and
+        <md xml:id="an-baseline-left-to-place-count">
+          u(X)
+          =
+          \#\{j:s(j)=0,\ s^\star(j)\neq 0\},
+        </md>
+        the number of non-decoy cards still left in the tray.
+      </p>
+
+      <p>
+        Every card is either in its home zone, in a wrong non-tray zone, or
+        wrongly in the tray. Hence
+        <md xml:id="an-baseline-grader-count-identity">
+          \sigma(X)+w(X)+u(X)=P,
+        </md>
+        and therefore
+        <md>
+          d^\star(X)=w(X)+u(X).
+        </md>
+      </p>
+
+      <p>
+        The count <m>w(X)</m> includes non-decoy cards placed in the wrong
+        authored slot and decoy cards placed into any authored slot. The count
+        <m>u(X)</m> includes only cards that should be placed somewhere but remain
+        in the tray. We call <m>w</m> and <m>u</m> <term>grader counts</term>
+        because count-level feedback policies can disclose exactly this
+        partition: how many cards are wrongly placed, and how many remain to
+        place. The state error features of the next section refine this split by
+        asking not only where the misplaced cards sit, but where they belong.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-partial-credit-baseline">
+      <title>Partial-Credit Variants</title>
+
+      <p>
+        Several simple scores are derived from <m>\sigma(X)</m> and
+        <m>d^\star(X)</m>. The most basic is the all-or-nothing score
+        <md xml:id="an-baseline-all-or-nothing" component="html">
+          A(X)
+          =
+          \mathbb{1}_{[d^\star(X)=0]}
+          =
+          \begin{cases}
+            1, \amp d^\star(X)=0,\\
+            0, \amp d^\star(X)\neq 0.
+          \end{cases}
+        </md>
+        <md xml:id="an-baseline-all-or-nothing" component="pdf">
+          A(X)
+          =
+          \mathds{1}_{[d^\star(X)=0]}
+          =
+          \begin{cases}
+            1, \amp d^\star(X)=0,\\
+            0, \amp d^\star(X)\neq 0.
+          \end{cases}
+        </md>
+      </p>
+
+      <p>
+        A finer score is the <term>per-card fraction</term>
+        <md xml:id="an-baseline-per-card-score">
+          p(X)=\frac{\sigma(X)}{P}.
+        </md>
+        This is the fraction of cards in their home zones, but it rewards the
+        initial state for every decoy card whose home zone is the tray.
+      </p>
+
+      <p>
+        To remove that initial-state baseline, define the
+        <term>baseline-corrected progress score</term>
+        <md xml:id="an-baseline-corrected-progress">
+          g(X)
+          =
+          \frac{\sigma(X)-\sigma(X_0)}{P-\sigma(X_0)}
+          =
+          1-\frac{d^\star(X)}{d^\star(X_0)},
+        </md>
+        whenever <m>d^\star(X_0)\neq 0</m>. This score sets the initial state to
+        zero progress and the key to full progress.
+      </p>
+
+      <p>
+        Unlike a percentage score, <m>g(X)</m> may be negative if the current
+        state is farther from the key than the initial state. That sign is useful:
+        it records movement away from the starting baseline.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-check-outcome-features">
+      <title>Attempt-Level Outcome Features</title>
+
+      <p>
+        If an attempt contains checked states
+        <md>
+          X_{k_1},X_{k_2},\dots,X_{k_q},
+        </md>
+        then state features can be summarized across check ordinals
+        <m>1,\dots,q</m>. When no checked state is correct, the first-success
+        ordinal is undefined.
+      </p>
+
+      <table xml:id="tab-check-outcome-features">
+        <title>Basic outcome features for one attempt.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="32%" halign="left"/>
+          <col width="28%" halign="center"/>
+          <col width="40%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Feature</p></cell>
+            <cell><p>Notation</p></cell>
+            <cell><p>Description</p></cell>
+          </row>
+          <row>
+            <cell><p><c>num_checks</c></p></cell>
+            <cell><p><m>q</m></p></cell>
+            <cell><p>The number of checked states in the attempt.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>first_check_distance</c></p></cell>
+            <cell><p><m>d^\star(X_{k_1})</m></p></cell>
+            <cell><p>The distance to the key at the first check.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>final_check_distance</c></p></cell>
+            <cell><p><m>d^\star(X_{k_q})</m></p></cell>
+            <cell><p>The distance to the key at the last retained check.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>first_check_correct</c></p></cell>
+            <cell>
+              <p component="html"><m>\mathbb{1}_{[d^\star(X_{k_1})=0]}</m></p>
+              <p component="pdf" ><m>\mathds{1}_{[d^\star(X_{k_1})=0]}</m></p>
+            </cell>
+            <cell><p>Whether the first checked state was correct.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>eventual_correct</c></p></cell>
+            <cell>
+              <p component="html"><m>\max_i \mathbb{1}_{[d^\star(X_{k_i})=0]}</m></p>
+              <p component="pdf" ><m>\max_i \mathds{1}_{[d^\star(X_{k_i})=0]}</m></p>
+            </cell>
+            <cell><p>Whether any retained checked state was correct.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>correct_check_ordinal</c></p></cell>
+            <cell><p><m>\min\{i:d^\star(X_{k_i})=0\}</m></p></cell>
+            <cell><p>The first check number on which the response was correct, when it exists.</p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        These outcome features say how many cards were wrong at each check, but
+        not what kind of wrong. The next section describes the structure of the
+        errors.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-state-error-features">
+    <title>State Error Features</title>
+
+    <introduction>
+      <p>
+        Distance tells how many cards are wrong. State error features describe how
+        they are wrong: left in the tray, placed into a wrong authored slot, or
+        involved in a decoy error. These are still descriptions of response
+        structure, not explanations of why the response occurred.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-zone-confusion-matrix">
+      <title>Zone Confusion Matrix</title>
+
+      <p>
+        A useful summary of a checked state is the <term>zone confusion
+        matrix</term>
+        <md xml:id="an-baseline-zone-confusion-matrix">
+          M(X)
+          =
+          XX^{\star\top}.
+        </md>
+        This is a square matrix of nonnegative integers, with one row and one
+        column per zone, indexed from <m>0</m> to <m>R</m>. Its entry
+        <m>M_{ih}</m> counts the number of cards currently in zone <m>i</m> whose
+        home zone is <m>h</m>:
+        <md>
+          M_{ih}
+          =
+          \#\{j:s(j)=i,\ s^\star(j)=h\}.
+        </md>
+      </p>
+
+      <p>
+        The diagonal entries count cards in their home zones, so
+        <md>
+          \operatorname{tr}(M)=\sigma(X).
+        </md>
+        Off-diagonal entries identify the source and destination of errors: a card
+        counted in <m>M_{ih}</m> currently sits in zone <m>z_i</m> but belongs in
+        zone <m>z_h</m>.
+      </p>
+
+      <p>
+        Let <m>\mathbf{1}_{R+1}</m> be the all-ones vector indexed by zones.
+        Summing across rows gives the current occupancy vector, while summing down
+        columns gives the key occupancy vector:
+        <md xml:id="an-baseline-confusion-margins">
+          M\mathbf{1}_{R+1}=\mathbf{o}(X),
+          \qquad
+          M^{\top}\mathbf{1}_{R+1}=\mathbf{o}^\star,
+          \qquad
+          \mathbf{1}^{\top}_{R+1}M\mathbf{1}_{R+1}=P.
+        </md>
+      </p>
+
+      <p>
+        The zone confusion matrix separates several structurally different errors
+        that all add one unit to <m>d^\star(X)</m>. The next subsections read those
+        error types from particular blocks of <m>M</m>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-omissions-and-misplacements">
+      <title>Omissions and Wrong-Zone Placements</title>
+
+      <aside>
+        <title><m>0</m>-indexing</title>
+        <p>
+          Rows and columns of <m>M</m> are indexed by zones <m>0,1,\dots,R</m>.
+          Thus the slot-only block used below has row and column indices
+          <m>1,\dots,R</m>.
+        </p>
+      </aside>
+
+      <p>
+        An <term>omission</term> is a card left in the tray even though its home
+        zone is an authored slot. The total omission count is the sum of the
+        non-tray columns in the tray row:
+        <md xml:id="an-baseline-omission-count">
+          O(X)
+          =
+          \sum_{h=1}^{R} M_{0h}.
+        </md>
+        Comparing with the grader counts, <m>O(X)=u(X)</m>.
+      </p>
+
+      <p>
+        A <term>wrong-zone placement</term> is a non-decoy card placed in the
+        wrong authored slot. This is the sum of the off-diagonal entries in the
+        slot-by-slot block:
+        <md xml:id="an-baseline-wrong-zone-count">
+          W_{\operatorname{slot}}(X)
+          =
+          \sum_{i=1}^{R}
+          \sum_{\substack{h=1\\h\neq i}}^{R}
+          M_{ih}.
+        </md>
+      </p>
+
+      <p>
+        Omissions and wrong-zone placements describe errors involving cards whose
+        home zones are authored slots. The remaining distance-contributing errors
+        involve decoy cards.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-decoy-leak-features">
+      <title>Decoy Leaks</title>
+
+      <p>
+        Decoy-card and decoy-slot errors record boundary decisions: whether a card
+        should be placed at all, and whether an authored slot should receive any
+        card.
+      </p>
+
+      <p>
+        A <term>decoy-card leak</term> occurs when a card whose home zone is the
+        tray is placed into an authored slot. These leaks occupy the tray-home
+        column of the confusion matrix:
+        <md xml:id="an-baseline-decoy-card-leak">
+          L_{\mathcal{P}}(X)
+          =
+          \sum_{i=1}^{R} M_{i0}.
+        </md>
+      </p>
+
+      <p>
+        A <term>decoy-slot leak</term> occurs when any card is placed into an
+        authored slot that is empty in the key. For the decoy-slot set
+        <m>\mathcal{D}_{\mathcal{R}}</m> defined at the design level, the count is
+        <md xml:id="an-baseline-decoy-slot-leak">
+          L_{\mathcal{R}}(X)
+          =
+          \sum_{i\in\mathcal{D}_{\mathcal{R}}}
+          \sum_{h=0}^{R} M_{ih}.
+        </md>
+      </p>
+
+      <p>
+        In an item with both decoy cards and decoy slots, one misplaced card can
+        contribute to both counts. Placing a decoy card into a decoy slot is both
+        a decoy-card leak and a decoy-slot leak. This overlap is intentional: the
+        two features describe different aspects of the same placement.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-error-profile">
+      <title>Error Decomposition and Error Profile</title>
+
+      <p>
+        The first three error counts partition the misplaced cards. A misplaced
+        card either sits in the tray while belonging in a slot, sits in a slot
+        while belonging in a different slot, or sits in a slot while belonging in
+        the tray. Therefore
+        <md xml:id="an-baseline-additive-error-decomposition">
+          d^\star(X)
+          =
+          O(X)
+          +
+          W_{\operatorname{slot}}(X)
+          +
+          L_{\mathcal{P}}(X).
+        </md>
+        The decoy-slot count <m>L_{\mathcal{R}}(X)</m> is excluded from this
+        decomposition because it overlaps the wrong-zone and decoy-card counts.
+      </p>
+
+      <p>
+        For a checked state, the basic <term>error profile</term> collects all
+        four counts:
+        <md xml:id="an-baseline-error-profile">
+          \boldsymbol{\varepsilon}(X)
+          =
+          \bigl(
+            O(X),
+            W_{\operatorname{slot}}(X),
+            L_{\mathcal{P}}(X),
+            L_{\mathcal{R}}(X)
+          \bigr).
+        </md>
+        The first three coordinates sum to <m>d^\star(X)</m>. The fourth is an
+        overlapping decoy-slot-use indicator, so the profile should be read as a
+        decomposition plus one structural flag, not as a four-way partition.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-occupancy-residual">
+      <title>Occupancy Residuals</title>
+
+      <p>
+        The error profile tracks individual cards. A coarser zone-level summary
+        compares only how full each zone is. The current occupancy is
+        <m>\mathbf{o}(X)=X\mathbf{1}_P</m>, and the key occupancy is
+        <m>\mathbf{o}^\star=X^\star\mathbf{1}_P</m>. Their difference
+        <md xml:id="an-baseline-occupancy-residual">
+          r(X)
+          =
+          X\mathbf{1}_P-X^\star\mathbf{1}_P
+          =
+          M\mathbf{1}_{R+1}-M^{\top}\mathbf{1}_{R+1}
+        </md>
+        is the <term>occupancy residual</term>. Because both occupancy vectors sum
+        to <m>P</m>, the entries of <m>r(X)</m> sum to zero.
+      </p>
+
+      <p>
+        A positive entry <m>r_i(X)&gt;0</m> means zone <m>z_i</m> currently contains
+        more cards than it should. A negative entry <m>r_i(X)&lt;0</m> means the
+        zone contains fewer cards than it should.
+      </p>
+
+      <p>
+        Occupancy residuals ignore which cards caused the imbalance. They are
+        coarse features, but they are useful for detecting overfilled and
+        underfilled zones and can be computed from zone counts alone.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-trajectory-features">
+    <title>Movement Features</title>
+
+    <introduction>
+      <p>
+        State features summarize submitted configurations. Movement features use
+        the path of states that led to them. They describe movement through the
+        configuration graph of <xref ref="sec-configuration-graph"/>; like the
+        graph itself, they record what happened on the board, not why it happened.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-distance-curve">
+      <title>Distance Curve</title>
+
+      <p>
+        Given a reconstructed state sequence
+        <md>
+          X_0,X_1,\dots,X_n,
+        </md>
+        the <term>distance curve</term> is
+        <md xml:id="an-baseline-distance-curve">
+          d_0,d_1,\dots,d_n,
+          \qquad
+          d_k=d^\star(X_k).
+        </md>
+        It records the board's distance from the key after each retained state.
+      </p>
+
+      <p>
+        A monotone decreasing distance curve shows steady movement toward the key.
+        Increases and flat steps record regressions and lateral movement in the
+        state space. These are movement descriptions, not direct evidence of a
+        particular reasoning process.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-move-classification">
+      <title>Fixing, Lateral, and Breaking Moves</title>
+
+      <p>
+        For an ordinary move from <m>X_{k-1}</m> to <m>X_k</m>, define
+        <md xml:id="an-baseline-distance-change">
+          \Delta d_k=d^\star(X_k)-d^\star(X_{k-1}).
+        </md>
+        One ordinary move changes the agreement status of only one card, so
+        <md>
+          \Delta d_k\in\{-1,0,+1\}.
+        </md>
+      </p>
+
+      <p>
+        We classify the move accordingly:
+      </p>
+
+      <p>
+        <dl width="medium">
+          <li>
+            <title>fixing move</title>
+            <p>
+              <m>\Delta d_k=-1</m>. The move sends a wrong card to its home zone.
+            </p>
+          </li>
+          <li>
+            <title>lateral move</title>
+            <p>
+              <m>\Delta d_k=0</m>. The move changes the board but not its distance
+              from the key.
+            </p>
+          </li>
+          <li>
+            <title>breaking move</title>
+            <p>
+              <m>\Delta d_k=+1</m>. The move sends a correct card away from its
+              home zone.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        Let <m>F</m>, <m>L</m>, and <m>B</m> be the numbers of fixing, lateral,
+        and breaking moves in a reset-free segment of <m>n</m> ordinary moves.
+        Then
+        <md xml:id="an-baseline-flb-counts">
+          F+L+B=n,
+        </md>
+        and the distance changes telescope to
+        <md>
+          d^\star(X_{\operatorname{start}})-d^\star(X_{\operatorname{end}})
+          =
+          F-B.
+        </md>
+        A reset breaks this telescoping by returning the board to <m>X_0</m> in a
+        single action that is not an ordinary move. The counts <m>F</m>, <m>L</m>,
+        and <m>B</m> are therefore computed within reset-free segments. Logged
+        drops that leave the board unchanged should be flagged as no-op moves and
+        excluded from these counts by default.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-excess-moves">
+      <title>Excess Moves</title>
+
+      <p>
+        The net progress toward the key over a reset-free segment is <m>F-B</m>.
+        The <term>excess-move count</term> records the part of the movement that
+        does not contribute to that net progress:
+        <md xml:id="an-baseline-excess-moves">
+          E_{\operatorname{move}}
+          =
+          n-(F-B)
+          =
+          2B+L.
+        </md>
+        A lateral move contributes one excess move. A breaking move contributes
+        two: one move to create the regression and one later fixing move to undo
+        it. Equivalently,
+        <m>E_{\operatorname{move}}
+        =n-\bigl(d^\star(X_{\operatorname{start}})-d^\star(X_{\operatorname{end}})\bigr)</m>.
+      </p>
+
+      <p>
+        A stricter comparison measures the walk against its own endpoints rather
+        than against the key. The <term>path excess</term> is
+        <md xml:id="an-baseline-path-excess">
+          E_{\operatorname{path}}
+          =
+          n-d_{\mathcal{X}}(X_{\operatorname{start}},X_{\operatorname{end}}),
+        </md>
+        the number of moves beyond the shortest path between the observed start
+        and end states. Since a walk is at least as long as the graph distance
+        between its endpoints, <m>E_{\operatorname{path}}\geq 0</m>. The triangle
+        inequality gives
+        <md>
+          0
+          \leq
+          E_{\operatorname{path}}
+          \leq
+          E_{\operatorname{move}}.
+        </md>
+        The gap between them is motion that shortened the distance to neither the
+        key nor the segment's own destination.
+      </p>
+
+      <p>
+        For a reset-free attempt that starts at the initial state and ends at the
+        key, <m>d_{\mathcal{X}}(X_0,X^\star)=d^\star(X_0)</m>, so the two measures
+        coincide:
+        <md>
+          E_{\operatorname{move}}
+          =
+          E_{\operatorname{path}}
+          =
+          n-d^\star(X_0).
+        </md>
+        For partial trajectories, check segments, and exploratory paths, they may
+        differ.
+      </p>
+
+      <p>
+        Excess moves are baseline inefficiency measures. They should be read
+        alongside item design and feedback policy, since informative feedback can
+        change the movement pattern a student has reason to follow.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-takeback-and-reset-features">
+      <title>Takebacks and Resets</title>
+
+      <p>
+        A <term>takeback</term> is an ordinary move whose destination is the tray.
+        Its count is
+        <md xml:id="an-baseline-takeback-count">
+          T
+          =
+          \#\{k:\text{ordinary move }a_k\text{ sends a card to }z_0\}.
+        </md>
+      </p>
+
+      <p>
+        A takeback can be fixing, lateral, or breaking, depending on
+        <m>\Delta d_k</m>. Returning a decoy card to the tray is fixing.
+        Returning a correctly placed non-decoy card to the tray is breaking.
+        Returning a wrong card from one wrong location to the tray may be lateral
+        or fixing, depending on the card's home zone.
+      </p>
+
+      <p>
+        A <term>reset</term> is not an ordinary move. It returns the board to
+        <m>X_0</m> in one logged action. The reset count is
+        <md xml:id="an-baseline-reset-count">
+          R_{\operatorname{reset}}
+          =
+          \#\{k:a_k\text{ is a reset}\}.
+        </md>
+        Resets should be counted separately from ordinary moves and takebacks, and
+        they delimit the segments within which <m>F</m>, <m>L</m>, <m>B</m>, and
+        the excess-move features are computed.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-repeat-and-cycle-features">
+      <title>Repeated States and Cycles</title>
+
+      <p>
+        Since a trajectory is a walk through the configuration graph, it may
+        revisit states. The number of distinct states visited is
+        <md xml:id="an-baseline-distinct-states">
+          V(\Gamma)
+          =
+          \#\{X_k:0\leq k\leq n\}.
+        </md>
+        The number of repeated state visits is
+        <md xml:id="an-baseline-repeated-states">
+          R_{\operatorname{state}}(\Gamma)
+          =
+          (n+1)-V(\Gamma).
+        </md>
+      </p>
+
+      <p>
+        Repeated states show that the board returned to a previously seen
+        configuration. This can occur through deliberate revision, feedback use,
+        accidental movement, or exploration. The feature records the repetition;
+        it does not identify the reason.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-check-and-feedback-features">
+    <title>Segment Features</title>
+
+    <introduction>
+      <p>
+        Movement features treat ordinary moves as a single path. Checks add
+        structure: they mark states, divide the trace into segments, and return
+        feedback determined by <m>\phi</m>. The features in this section describe
+        when checks occur and how checked states change afterward. They should be
+        interpreted in light of what the feedback policy actually disclosed.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-check-cadence">
+      <title>Check Cadence</title>
+
+      <p>
+        Let
+        <md>
+          k_1&lt;k_2&lt;\cdots&lt;k_q
+        </md>
+        be the indices of the checked states in a trajectory, as in the check
+        index set of the trajectory model. Write <m>n_i</m> for the number of
+        ordinary moves between check <m>i</m> and check <m>i+1</m>, and write
+        <m>n_0</m> for the number of ordinary moves before the first check. The
+        <term>check cadence</term> is the sequence of move counts
+        <md xml:id="an-baseline-check-cadence">
+          \operatorname{cadence}_i=n_i,
+          \qquad
+          i=0,1,\dots,q-1.
+        </md>
+        The leading term <m>n_0</m>, the <term>first-check cadence</term>, is
+        defined even when a student checks only once.
+      </p>
+
+      <p>
+        Cadence is a trace feature under a feedback policy. Short cadence may
+        indicate frequent use of feedback, but its interpretation depends on what
+        the check returns and whether checks are limited or penalized.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-post-check-gain">
+      <title>Post-Check Gain</title>
+
+      <p>
+        If two consecutive checked states are <m>X_{k_i}</m> and
+        <m>X_{k_{i+1}}</m>, the <term>post-check gain</term> from check <m>i</m>
+        to check <m>i+1</m> is
+        <md xml:id="an-baseline-post-check-gain">
+          G_i
+          =
+          d^\star(X_{k_i})-d^\star(X_{k_{i+1}}).
+        </md>
+        A positive value means the next checked state is closer to the key. A zero
+        value means no net checked-state progress. A negative value means the next
+        checked state is farther from the key.
+      </p>
+
+      <p>
+        This feature ignores what happened between the two checks. A student may
+        make many moves, including regressions and repairs, while ending at the
+        same distance. The movement features above record that intermediate work;
+        in particular, segment-level excess moves measure motion that the gain
+        does not see.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-responsiveness-baseline">
+      <title>Responsiveness to Feedback</title>
+
+      <p>
+        Some feedback policies identify specific cards that are wrong at a check.
+        Suppose check <m>i</m> marks a set <m>\mathcal{H}_i\subseteq\mathcal{P}</m>
+        of highlighted cards, and let <m>\mathcal{M}_i\subseteq\mathcal{P}</m> be
+        the set of cards moved before the next check. Define the
+        <term>responsiveness</term>
+        <md xml:id="an-baseline-responsiveness">
+          \rho_i
+          =
+          \frac{|\mathcal{H}_i\cap \mathcal{M}_i|}{|\mathcal{H}_i|},
+        </md>
+        when <m>|\mathcal{H}_i|&gt;0</m>.
+      </p>
+
+      <p>
+        The value <m>\rho_i</m> measures how much of the highlighted set was acted
+        on before the next check. It is defined only when the feedback policy
+        identifies cards. If the policy returns only Correct or Incorrect, then
+        <m>\mathcal{H}_i</m> is not observed and responsiveness is not defined.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-time-features">
+    <title>Time Features</title>
+
+    <introduction>
+      <p>
+        The features so far use event order but not the clock. Each logged action
+        also carries a timestamp, and time features use differences between
+        timestamps to summarize pauses, pacing, and time to key events.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-action-gaps">
+      <title>Action Gaps</title>
+
+      <p>
+        The elementary timing quantity is the gap
+        <m>\delta_k=t_k-t_{k-1}</m> before event <m>k</m>, introduced in the
+        trajectory model. Gaps can be computed for all consecutive logged actions
+        or restricted to particular action types. Restricting to consecutive moves
+        gives move gaps; restricting to consecutive checks gives check gaps.
+      </p>
+
+      <p>
+        Large gaps may reflect thinking time, interruption, distraction, page
+        idling, or technical issues. Time features should therefore be cleaned and
+        interpreted cautiously. The next chapter defines rules for trimming or
+        flagging extreme idle periods.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-basic-time-features">
+      <title>Basic Timing Summaries</title>
+
+      <p>
+        Let <m>m_1</m> be the index of the first ordinary move, when one exists,
+        and let <m>k_1</m> be the index of the first check, when one exists. The
+        basic timing summaries are:
+      </p>
+
+      <table xml:id="tab-basic-time-features">
+        <title>Basic time features for one attempt.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="32%" halign="left"/>
+          <col width="28%" halign="center"/>
+          <col width="40%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Feature</p></cell>
+            <cell><p>Notation</p></cell>
+            <cell><p>Description</p></cell>
+          </row>
+          <row>
+            <cell><p><c>total_time</c></p></cell>
+            <cell><p><m>t_n-t_0</m></p></cell>
+            <cell><p>Elapsed time from first to last retained event in the attempt.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>time_to_first_move</c></p></cell>
+            <cell><p><m>t_{m_1}-t_0</m></p></cell>
+            <cell><p>Time from opening or initial state to the first ordinary move.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>time_to_first_check</c></p></cell>
+            <cell><p><m>t_{k_1}-t_0</m></p></cell>
+            <cell><p>Time from opening or initial state to the first check.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>median_move_gap</c></p></cell>
+            <cell><p><mdash/></p></cell>
+            <cell><p>The median time between consecutive move actions.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>max_action_gap</c></p></cell>
+            <cell><p><m>\max_k \delta_k</m></p></cell>
+            <cell><p>The largest observed gap between consecutive logged actions.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>active_time</c></p></cell>
+            <cell><p><mdash/></p></cell>
+            <cell><p>Total time after excluding gaps larger than a chosen idle threshold.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-cohort-features">
+    <title>Cohort Features</title>
+
+    <introduction>
+      <p>
+        The previous feature families describe one student's work. Cohort features
+        aggregate many students' states or trajectories on the same item. They are
+        useful for item diagnostics because they show which cards, zones, states,
+        and transitions are common.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-placement-heatmap">
+      <title>Placement Heatmap</title>
+
+      <p>
+        Suppose <m>N</m> students produce checked states
+        <md>
+          X^{(1)},X^{(2)},\dots,X^{(N)}
+        </md>
+        for the same item at the same analysis point. The <term>placement
+        heatmap</term> is the average membership matrix
+        <md xml:id="an-baseline-placement-heatmap">
+          \bar{X}
+          =
+          \frac{1}{N}\sum_{\nu=1}^{N}X^{(\nu)}.
+        </md>
+      </p>
+
+      <p>
+        The entry <m>\bar{X}_{ij}</m> is the empirical fraction of students who
+        placed card <m>j</m> in zone <m>z_i</m> at the chosen analysis point. Each
+        column of <m>\bar{X}</m> sums to one, but its entries are proportions
+        rather than zeros and ones.
+      </p>
+
+      <p>
+        Heatmaps can be computed at different analysis points: first check, final
+        check, first correct check, incorrect checks only, or a fixed point in a
+        reconstructed trajectory. The aggregation rule should be reported because
+        different choices answer different questions.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-card-placement-entropy">
+      <title>Card Placement Entropy</title>
+
+      <p>
+        The placement distribution for card <m>j</m> is the <m>j</m>-th column of
+        <m>\bar{X}</m>. Its entropy is
+        <md xml:id="an-baseline-card-entropy">
+          H_j
+          =
+          -\sum_{i=0}^{R}
+          \bar{X}_{ij}\log(\bar{X}_{ij}),
+        </md>
+        using the natural logarithm and the convention <m>0\log(0)=0</m>.
+      </p>
+
+      <p>
+        Low entropy means most students placed the card in the same zone. High
+        entropy means placements were spread across several zones. Entropy measures
+        dispersion; it does not say whether the common placement is correct.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-cohort-correctness-rates">
+      <title>Correctness Rates and Distance Distributions</title>
+
+      <p>
+        The all-or-nothing score of the checked-state section aggregates to the
+        <term>exact-correct rate</term> at a chosen analysis point:
+        <md xml:id="an-baseline-exact-correct-rate" component="html">
+          \bar{A}
+          =
+          \frac{1}{N}\sum_{\nu=1}^{N}
+          A\bigl(X^{(\nu)}\bigr)
+          =
+          \frac{1}{N}\sum_{\nu=1}^{N}
+          \mathbb{1}_{[d^\star(X^{(\nu)})=0]}.
+        </md>
+        <md xml:id="an-baseline-exact-correct-rate" component="pdf">
+          \bar{A}
+          =
+          \frac{1}{N}\sum_{\nu=1}^{N}
+          A\bigl(X^{(\nu)}\bigr)
+          =
+          \frac{1}{N}\sum_{\nu=1}^{N}
+          \mathds{1}_{[d^\star(X^{(\nu)})=0]}.
+        </md>
+      </p>
+
+      <p>
+        The mean distance is
+        <md xml:id="an-baseline-mean-distance">
+          \bar{d}^\star
+          =
+          \frac{1}{N}\sum_{\nu=1}^{N}
+          d^\star(X^{(\nu)}).
+        </md>
+        The full distance distribution should also be retained, since two cohorts
+        can have the same mean distance but different error patterns.
+      </p>
+
+      <p>
+        These aggregates differ in what they require. The mean agreement score,
+        and hence the mean distance, is linear in the states and can be recovered
+        from the heatmap alone:
+        <m>P-\bar{d}^\star=\langle\bar{X},X^\star\rangle_F</m>. The exact-correct
+        rate cannot. Exact correctness depends on each student's whole
+        configuration, not only on the marginal placement frequencies recorded in
+        <m>\bar{X}</m>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-transition-counts">
+      <title>Transition Counts</title>
+
+      <p>
+        A cohort of trajectories also gives a transition table on the
+        configuration graph. For configurations <m>X</m> and <m>Y</m>, define
+        <md xml:id="an-baseline-transition-count">
+          C_{XY}
+          =
+          \#\{\text{observed ordinary moves }X\to Y\}.
+        </md>
+      </p>
+
+      <p>
+        These counts identify common moves, common wrong states, and common paths
+        through the item. They are descriptive network summaries, not stochastic
+        models. Later analyses may normalize them into transition probabilities or
+        compare transition networks across items, courses, or semesters.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-running-example-features">
+    <title>The Running Example</title>
+
+    <p>
+      We now compute baseline features for the running shapes question, using the
+      attempt assembled in the previous chapter. The key is
+      <md>
+        s^\star=(1,1,2,0),
+      </md>
+      so the initial state <m>s_0=(0,0,0,0)</m> has one card already correct: the
+      circle, whose home zone is the tray. Therefore
+      <md>
+        \sigma(X_0)=1,
+        \qquad
+        d^\star(X_0)=3.
+      </md>
+    </p>
+
+    <p>
+      Considering only ordinary moves, the student follows the trajectory
+      <md>
+        (0,0,0,0)
+        \to
+        (1,0,0,0)
+        \to
+        (1,1,0,0)
+        \to
+        (1,1,2,0)
+        \to
+        (1,1,2,3)
+        \to
+        (1,1,2,0),
+      </md>
+      with checks after the fourth and fifth moves. The distance curve is
+      <md>
+        3\to2\to1\to0\to1\to0.
+      </md>
+    </p>
+
+    <p>
+      The first checked state is <m>s=(1,1,2,3)</m>: the two triangles and the
+      square are correct, while the circle sits in the Pentagon slot. Its
+      checked-state features are
+      <md>
+        \sigma(X)=3,
+        \qquad
+        d^\star(X)=1,
+        \qquad
+        w(X)=1,
+        \qquad
+        u(X)=0,
+      </md>
+      and its baseline-corrected progress is
+      <m>g(X)=1-\tfrac{1}{3}=\tfrac{2}{3}</m>. The single misplaced card is placed
+      rather than left in the tray, so the grader counts assign it to <m>w</m>
+      rather than <m>u</m>.
+    </p>
+
+    <p>
+      The zone confusion matrix of the first checked state, with rows and columns
+      indexed by zones <m>0</m> through <m>3</m>, is
+      <md>
+        M(X)
+        =
+        XX^{\star\top}
+        =
+        \begin{bmatrix}
+          0 \amp 0 \amp 0 \amp 0 \\
+          0 \amp 2 \amp 0 \amp 0 \\
+          0 \amp 0 \amp 1 \amp 0 \\
+          1 \amp 0 \amp 0 \amp 0
+        \end{bmatrix}.
+      </md>
+      The diagonal confirms <m>\operatorname{tr}(M)=3=\sigma(X)</m>. The single
+      off-diagonal entry <m>M_{30}=1</m> is a card currently in zone <m>z_3</m>
+      whose home zone is <m>z_0</m>. Reading off the error counts gives
+      <md>
+        \boldsymbol{\varepsilon}(X)
+        =
+        \bigl(O,W_{\operatorname{slot}},L_{\mathcal{P}},L_{\mathcal{R}}\bigr)
+        =
+        (0,0,1,1).
+      </md>
+      The first three coordinates sum to <m>d^\star(X)=1</m>: the misplaced card
+      is a decoy-card leak. Because it landed in the empty Pentagon slot, it is
+      also a decoy-slot leak. The occupancy residual is
+      <m>r(X)=(-1,0,0,1)^\top</m>: the tray is one card short and the Pentagon slot
+      is one card over.
+    </p>
+
+    <table xml:id="tab-running-example-baseline-features">
+      <title>Baseline features for the running example trajectory.</title>
+      <tabular valign="top" bottom="minor">
+        <col width="34%" halign="left"/>
+        <col width="26%" halign="center"/>
+        <col width="40%" halign="left"/>
+        <row bottom="medium">
+          <cell><p>Feature</p></cell>
+          <cell><p>Value</p></cell>
+          <cell><p>Comment</p></cell>
+        </row>
+        <row>
+          <cell><p><m>\sigma(X_0)</m></p></cell>
+          <cell><p><m>1</m></p></cell>
+          <cell><p>The decoy card is already correctly in the tray.</p></cell>
+        </row>
+        <row>
+          <cell><p><m>d^\star(X_0)</m></p></cell>
+          <cell><p><m>3</m></p></cell>
+          <cell><p>Three non-decoy cards still need to be placed.</p></cell>
+        </row>
+        <row>
+          <cell><p>first checked state</p></cell>
+          <cell><p><m>(1,1,2,3)</m></p></cell>
+          <cell><p>The circle has been placed into the Pentagon slot.</p></cell>
+        </row>
+        <row>
+          <cell><p>first-check distance</p></cell>
+          <cell><p><m>1</m></p></cell>
+          <cell><p>Only the circle is wrong.</p></cell>
+        </row>
+        <row>
+          <cell><p>grader counts <m>(w,u)</m></p></cell>
+          <cell><p><m>(1,0)</m></p></cell>
+          <cell><p>One card wrongly placed; none left to place.</p></cell>
+        </row>
+        <row>
+          <cell><p>error profile <m>\boldsymbol{\varepsilon}</m></p></cell>
+          <cell><p><m>(0,0,1,1)</m></p></cell>
+          <cell><p>No omissions or wrong-slot placements; one decoy-card leak that is also a decoy-slot leak.</p></cell>
+        </row>
+        <row>
+          <cell><p>first-check cadence <m>n_0</m></p></cell>
+          <cell><p><m>4</m></p></cell>
+          <cell><p>Four moves before the first check.</p></cell>
+        </row>
+        <row>
+          <cell><p>post-check gain <m>G_1</m></p></cell>
+          <cell><p><m>1</m></p></cell>
+          <cell><p>The second checked state is one move closer to the key.</p></cell>
+        </row>
+        <row>
+          <cell><p>eventual correct</p></cell>
+          <cell><p><m>1</m></p></cell>
+          <cell><p>The second checked state is the key.</p></cell>
+        </row>
+        <row>
+          <cell><p><m>F,L,B</m></p></cell>
+          <cell><p><m>4,0,1</m></p></cell>
+          <cell><p>Four fixing moves, no lateral moves, and one breaking move.</p></cell>
+        </row>
+        <row>
+          <cell><p>takebacks <m>T</m></p></cell>
+          <cell><p><m>1</m></p></cell>
+          <cell><p>The circle is returned to the tray after the incorrect check.</p></cell>
+        </row>
+        <row>
+          <cell><p>excess moves <m>E_{\operatorname{move}}</m></p></cell>
+          <cell><p><m>2</m></p></cell>
+          <cell><p>The breaking move away from the key must be undone.</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      Since this attempt is reset-free, starts at the initial state, and ends at
+      the key, the two excess measures coincide:
+      <m>E_{\operatorname{move}}=E_{\operatorname{path}}=n-d^\star(X_0)=5-3=2</m>.
+    </p>
+
+    <p>
+      The example shows why baseline features are useful. The first checked state
+      is only one move from the key, but the error is structurally specific: a
+      decoy card has been placed into a decoy slot. The distance, error profile,
+      and movement features describe different parts of the response, while the
+      takeback after the incorrect check connects the feedback event to a repair.
+    </p>
+  </section>
+
+  <section xml:id="sec-feature-dictionary-summary">
+    <title>Minimal Feature Dictionary</title>
+
+    <p>
+      The following table summarizes a minimal baseline feature set for export.
+      Additional features may be added for particular research questions, but this
+      set is enough to describe basic outcomes, state errors, movement, checks,
+      timing, and cohort summaries.
+    </p>
+
+    <table xml:id="tab-minimal-baseline-feature-dictionary">
+      <title>Minimal baseline feature dictionary.</title>
+      <tabular valign="top" bottom="minor">
+        <col width="22%" halign="left"/>
+        <col width="30%" halign="left"/>
+        <col width="48%" halign="left"/>
+        <row bottom="medium">
+          <cell><p>Family</p></cell>
+          <cell><p>Features</p></cell>
+          <cell><p>Purpose</p></cell>
+        </row>
+        <row>
+          <cell><p>checked state</p></cell>
+          <cell><p><c>sigma</c>, <c>distance</c>, <c>per_card_score</c>, <c>corrected_progress</c></p></cell>
+          <cell><p>Compare a submitted configuration to the key.</p></cell>
+        </row>
+        <row>
+          <cell><p>outcome</p></cell>
+          <cell><p><c>first_check_correct</c>, <c>eventual_correct</c>, <c>correct_check_ordinal</c></p></cell>
+          <cell><p>Summarize correctness across checks.</p></cell>
+        </row>
+        <row>
+          <cell><p>state errors</p></cell>
+          <cell><p><c>omissions</c>, <c>wrong_slot</c>, <c>decoy_card_leak</c>, <c>decoy_slot_leak</c></p></cell>
+          <cell><p>Describe the type of mismatch with the key.</p></cell>
+        </row>
+        <row>
+          <cell><p>trajectory</p></cell>
+          <cell><p><c>num_moves</c>, <c>fixing</c>, <c>lateral</c>, <c>breaking</c>, <c>excess_moves</c></p></cell>
+          <cell><p>Summarize movement through the configuration graph.</p></cell>
+        </row>
+        <row>
+          <cell><p>checks</p></cell>
+          <cell><p><c>num_checks</c>, <c>cadence</c>, <c>post_check_gain</c>, <c>responsiveness</c></p></cell>
+          <cell><p>Describe use of the check button and response to feedback.</p></cell>
+        </row>
+        <row>
+          <cell><p>time</p></cell>
+          <cell><p><c>total_time</c>, <c>active_time</c>, <c>time_to_first_move</c>, <c>time_to_first_check</c></p></cell>
+          <cell><p>Summarize pacing and elapsed time.</p></cell>
+        </row>
+        <row>
+          <cell><p>cohort</p></cell>
+          <cell><p><c>placement_heatmap</c>, <c>card_entropy</c>, <c>exact_correct_rate</c>, <c>transition_counts</c></p></cell>
+          <cell><p>Aggregate responses across students or attempts.</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      Two remarks close the chapter. First, all definitions above assume
+      analysis-ready trajectories. The next chapter describes how those tables are
+      built from raw logs and how reconstruction problems are flagged; the
+      visualization chapter then turns the features defined here into item-level
+      diagnostic displays.
+    </p>
+
+    <p>
+      Second, these baseline features keep the original card and slot labels
+      fixed: a card is correct only in its exact home zone.
+      <xref ref="ch-group-features"/> relaxes that requirement by
+      considering label-free agreement, grouping structure, merge and split
+      features, and partition-based comparison metrics.
+    </p>
+  </section>
+</chapter>

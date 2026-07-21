@@ -1,0 +1,499 @@
+<chapter xml:id="ch-state-model">
+  <title>State Model</title>
+
+  <introduction>
+    <p>
+      The previous chapter fixed the <xref ref="gt-item-design" text="custom">item design</xref>:
+      the <xref ref="gt-card" text="custom">cards</xref>,
+      <xref ref="gt-slot" text="custom">slots</xref>,
+      <xref ref="gt-tray" text="custom">tray</xref>,
+      <xref ref="gt-key" text="custom">key</xref>, decoys, and
+      <xref ref="gt-feedback-policy" text="custom">feedback policy</xref> chosen by
+      the author. This chapter defines the corresponding <term>state model</term>.
+      A <xref ref="gt-state" text="custom">state</xref> is a snapshot of the
+      <xref ref="gt-board" text="custom">board</xref> at one moment. It records
+      where every card is, but not how the student arrived there, what
+      <xref ref="gt-feedback" text="custom">feedback</xref> the student has seen,
+      or how much time passed between <xref ref="gt-action" text="custom">actions</xref>.
+      Those process questions belong to the trajectory layer.
+    </p>
+
+    <p>
+      A state is first a <xref ref="gt-configuration-function" text="custom">configuration
+      function</xref> <m>s:
+      \mathcal{P}\to\mathcal{Z}</m>, assigning each card to exactly one
+      <xref ref="gt-zone" text="custom">zone</xref>. The same
+      <xref ref="gt-configuration" text="custom">configuration</xref> can also be
+      written as a vector, one zone index per card, or as a
+      <xref ref="gt-membership-matrix" text="custom">membership matrix</xref>, a
+      zero-one table with one row per zone and one column per card. The sections
+      below introduce these representations in order, then define the initial
+      and key states, the valid matrix state space, occupancy summaries,
+      occupied-zone rank, and the distance between two states.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-configuration-state">
+    <title>States and Configurations</title>
+
+    <p>
+      A <term>configuration</term> is the card-to-zone content of a board state.
+      We keep the notation from the item design: cards are indexed by
+      <m>\mathcal{P}=\{1,\dots,P\}</m>, zones by
+      <m>\mathcal{Z}=\{0,1,\dots,R\}</m>, zone <m>0</m> is the tray, and zones
+      <m>1,\dots,R</m> are the authored slots.
+    </p>
+
+    <p>
+      Formally, a configuration is a function
+      <md>
+        s:\mathcal{P}\to\mathcal{Z},
+      </md>
+      where <m>s(j)</m> is the zone occupied by card <m>j</m>. Equivalently, if
+      <m>s(j)=i</m>, then card <m>c_j</m> sits in zone <m>z_i</m>. The key
+      configuration <m>s^\star</m> is the particular configuration fixed by the
+      author.
+    </p>
+
+    <p>
+      The terms <term>state</term> and <term>configuration</term> refer to the
+      same board snapshot. We use <term>configuration</term> when emphasizing the
+      card-to-zone assignment and <term>state</term> when emphasizing that the
+      assignment is one possible moment in a student's work.
+    </p>
+  </section>
+
+  <section xml:id="sec-configuration-vector">
+    <title>Vector Representation</title>
+
+    <p>
+      Because the domain <m>\mathcal{P}=\{1,\dots,P\}</m> is finite and ordered,
+      a configuration function can be recorded as the vector
+      <md xml:id="an-configuration-vector">
+        \mathbf{s}=\bigl(s(1),s(2),\dots,s(P)\bigr)
+        \in \{0,1,\dots,R\}^P.
+      </md>
+      This is the most compact representation used here: one zone index per
+      card. When no ambiguity is likely, we use the same symbol <m>s</m> for the
+      function and for its vector form.
+    </p>
+
+    <example>
+      <title>Configuration</title>
+      <statement>
+        <p>
+          For the running example, the key configuration is
+          <md>
+            s^\star=(1,1,2,0).
+          </md>
+          Thus
+          <ul>
+            <li><p><m>c_1</m>, the equilateral triangle, belongs in <m>z_1</m>, the Triangle slot;</p></li>
+            <li><p><m>c_2</m>, the right triangle, also belongs in <m>z_1</m>;</p></li>
+            <li><p><m>c_3</m>, the square, belongs in <m>z_2</m>, the Quadrilateral slot; and</p></li>
+            <li><p><m>c_4</m>, the circle, belongs in <m>z_0</m>, the tray.</p></li>
+          </ul>
+        </p>
+
+        <p>
+          If the circle is placed in the Pentagon zone <m>z_3</m> while the other
+          cards remain in their key zones, the resulting configuration is
+          <md>
+            s=(1,1,2,3).
+          </md>
+        </p>
+      </statement>
+    </example>
+
+    <p>
+      The vector form is especially useful for storage and replay because changing
+      the position of one card changes exactly one coordinate.
+    </p>
+  </section>
+
+  <section xml:id="sec-membership-matrix">
+    <title>Membership-Matrix Representation</title>
+
+    <p>
+      A <xref ref="gt-configuration-vector" text="custom">configuration vector</xref>
+      records the zone index of each card. A membership matrix records the same
+      information as a table of zeros and ones, with rows indexed by zones and
+      columns indexed by cards.
+    </p>
+
+    <p>
+      Given a configuration <m>s:\mathcal{P}\to\mathcal{Z}</m>, define the
+      <term>membership matrix</term> <m>X=X(s)</m> by
+      <md xml:id="an-membership-matrix">
+        X\in\{0,1\}^{(R+1)\times P},
+        \qquad
+        X_{ij}
+        =
+        \begin{cases}
+          1, \amp \text{if } s(j)=i,\\
+          0, \amp \text{otherwise.}
+        \end{cases}
+      </md>
+      The row index <m>i</m> runs through the zone labels
+      <m>0,1,\dots,R</m>, while the column index <m>j</m> runs through the card
+      labels <m>1,\dots,P</m>. Thus each row corresponds to a zone and each
+      column to a card.
+    </p>
+
+    <p>
+      Reading down column <m>j</m>, the single <m>1</m> marks the zone occupied
+      by card <m>j</m>. In particular, every valid membership matrix has exactly
+      one <m>1</m> in each column and is therefore a zero-one column-stochastic
+      matrix.
+    </p>
+
+    <p>
+      Let <m>e_0,e_1,\dots,e_R</m> denote the standard basis vectors of
+      <m>\mathbb{R}^{R+1}</m>, indexed by zone labels rather than by the usual
+      <m>1,\dots,R+1</m>. Then the <m>j</m>-th column of <m>X(s)</m> is
+      <m>e_{s(j)}</m>, and the whole matrix may be written as
+      <md>
+        X(s)
+        =
+        \begin{bmatrix}
+          e_{s(1)} \amp e_{s(2)} \amp \cdots \amp e_{s(P)}
+        \end{bmatrix}.
+      </md>
+    </p>
+
+    <example>
+      <title>Membership Matrix</title>
+      <statement>
+        <p>
+          Suppose the current state is <m>s=(1,0,3,2)</m>. Then
+          <md>
+            X(s)
+            =
+            \begin{bmatrix}
+              e_{1} \amp e_{0} \amp e_{3} \amp e_{2}
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+              0 \amp 1 \amp 0 \amp 0 \\
+              1 \amp 0 \amp 0 \amp 0 \\
+              0 \amp 0 \amp 0 \amp 1 \\
+              0 \amp 0 \amp 1 \amp 0
+            \end{bmatrix}.
+          </md>
+          Reading by rows, the tray contains card <m>2</m>, the Triangle slot
+          contains card <m>1</m>, the Quadrilateral slot contains card <m>4</m>,
+          and the Pentagon slot contains card <m>3</m>.
+        </p>
+      </statement>
+    </example>
+  </section>
+
+  <section xml:id="sec-initial-and-key-states">
+    <title>Initial and Key States</title>
+
+    <p>
+      Two states are distinguished before a student acts. The <term>initial
+      state</term> is the state in which every card is in the tray. In function
+      form,
+      <md xml:id="an-initial-state-function">
+        s_0(j)=0
+        \qquad
+        \text{for every } j\in\mathcal{P}.
+      </md>
+      In vector form,
+      <md>
+        \mathbf{s}_0=(0,0,\dots,0).
+      </md>
+    </p>
+
+    <p>
+      To write the initial state in matrix form, let <m>\mathbf{1}_P</m> denote
+      the all-ones vector of length <m>P</m>. Since <m>e_0</m> is the tray basis
+      vector, the initial membership matrix is
+      <md xml:id="an-initial-state-matrix">
+        X_0=X(s_0)=e_0\mathbf{1}^{\top}_P.
+      </md>
+    </p>
+
+    <p>
+      The <term>key state</term> is the correct state determined by the answer
+      key. In function form, it is
+      <md xml:id="an-key-state-function">
+        s^\star:\mathcal{P}\to\mathcal{Z},
+      </md>
+      where <m>s^\star(j)</m> is the <xref ref="gt-homezone" text="custom">home
+      zone</xref> of card <m>j</m>. In matrix form, the
+      <xref ref="gt-key-state" text="custom">key state</xref> is
+      <md>
+        X^\star=X(s^\star).
+      </md>
+    </p>
+
+    <example>
+      <title>Initial and Key States</title>
+      <p>
+        The <xref ref="gt-initial-state" text="custom">initial state</xref> for
+        the running example is
+        <md>
+          s_0=(0,0,0,0),
+        </md>
+        so all four cards are in the tray. The corresponding membership matrix is
+        <md xml:id="an-running-initial-matrix">
+          X_0
+          =
+          e_0\mathbf{1}^{\top}_P
+          =
+          \begin{bmatrix}
+            1\\0\\0\\0
+          \end{bmatrix}
+          \begin{bmatrix}
+            1 \amp 1 \amp 1 \amp 1
+          \end{bmatrix}
+          =
+          \begin{bmatrix}
+            1 \amp 1 \amp 1 \amp 1 \\
+            0 \amp 0 \amp 0 \amp 0 \\
+            0 \amp 0 \amp 0 \amp 0 \\
+            0 \amp 0 \amp 0 \amp 0
+          \end{bmatrix}.
+        </md>
+      </p>
+
+      <p>
+        The key configuration is
+        <md>
+          s^\star=(1,1,2,0),
+        </md>
+        which corresponds to
+        <md xml:id="an-running-key-matrix">
+          X^\star =
+          \begin{bmatrix}
+            0 \amp 0 \amp 0 \amp 1 \\
+            1 \amp 1 \amp 0 \amp 0 \\
+            0 \amp 0 \amp 1 \amp 0 \\
+            0 \amp 0 \amp 0 \amp 0
+          \end{bmatrix}.
+        </md>
+      </p>
+
+      <p>
+        The decoy structure is visible in <m>X^\star</m>. A decoy card has its
+        <m>1</m> in the tray row of the key matrix, and a decoy slot appears as
+        a zero row.
+      </p>
+    </example>
+  </section>
+
+  <section xml:id="sec-valid-states-configuration-space">
+    <title>Valid State Spaces and Bijection</title>
+
+    <p>
+      A configuration is valid when every card occupies exactly one zone. In
+      function form, validity is built into the definition
+      <md>
+        s:\mathcal{P}\to\mathcal{Z}.
+      </md>
+      The set of valid configurations is the configuration space
+      <md xml:id="an-configuration-space">
+        \mathcal{C}
+        =
+        \{s:\mathcal{P}\to\mathcal{Z}\}
+        =
+        \mathcal{Z}^{\mathcal{P}},
+        \qquad
+        |\mathcal{C}|=(R+1)^P.
+      </md>
+    </p>
+
+    <p>
+      In matrix form, validity means that each column of the membership matrix
+      has exactly one <m>1</m>. Let <m>\mathbf{1}_{R+1}</m> denote the all-ones
+      vector of length <m>R+1</m>. Then validity is equivalently
+      <md xml:id="an-valid-membership-condition">
+        \mathbf{1}^{\top}_{R+1}X=\mathbf{1}^{\top}_P.
+      </md>
+    </p>
+
+    <p>
+      The corresponding matrix state space is
+      <md xml:id="an-valid-membership-space">
+        \mathcal{X}
+        =
+        \{X\in\{0,1\}^{(R+1)\times P}:
+        \mathbf{1}^{\top}_{R+1}X=\mathbf{1}^{\top}_P\}.
+      </md>
+    </p>
+
+    <p>
+      The spaces <m>\mathcal{C}</m> and <m>\mathcal{X}</m> contain the same
+      information in different forms. Given <m>s\in\mathcal{C}</m>, the matrix
+      <m>X(s)</m> places a single <m>1</m> in row <m>s(j)</m> of column <m>j</m>.
+      Conversely, given <m>X\in\mathcal{X}</m>, the row containing the unique
+      <m>1</m> in column <m>j</m> determines <m>s(j)</m>. Therefore
+      <md>
+        X:\mathcal{C}\to\mathcal{X},
+        \qquad
+        s\mapsto X(s),
+      </md>
+      is a bijection.
+    </p>
+
+    <p>
+      We move between these representations according to the task. The vector
+      form is compact. The matrix form is convenient for row sums, occupancy,
+      distance calculations, and later cohort averages. Both describe the same
+      board state.
+    </p>
+  </section>
+
+  <section xml:id="sec-occupancy-and-rank">
+    <title>Occupancy and Occupied Zones</title>
+
+    <introduction>
+      <p>
+        The membership matrix also gives simple summaries of how cards are
+        distributed across zones. These summaries describe the shape of a board
+        state; they are not, by themselves, correctness scores.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-occupancy-vector-rewrite">
+      <title>Occupancy</title>
+
+      <p>
+        The <term>occupancy vector</term> of a configuration is the vector of row
+        sums
+        <md xml:id="an-occupancy-vector">
+          \mathbf{o}(X)=X\mathbf{1}_P.
+        </md>
+        Its <m>i</m>-th entry, denoted <m>o_i(X)</m>, counts how many cards are
+        currently in zone <m>z_i</m>.
+      </p>
+
+      <p>
+        The total number of cards is fixed:
+        <md>
+          \mathbf{1}^{\top}_{R+1}X\mathbf{1}_P=P.
+        </md>
+        Column sums are always equal to one, because each card occupies exactly
+        one zone. Row sums vary with the configuration, because zones may contain
+        any number of cards, including none.
+      </p>
+
+      <p>
+        The key occupancy vector <m>\mathbf{o}^\star</m> was defined at the
+        design level from <m>s^\star</m>. In the matrix representation it is
+        simply the row-sum vector of the key matrix:
+        <md>
+          \mathbf{o}^\star=X^\star\mathbf{1}_P.
+        </md>
+        Comparing <m>\mathbf{o}(X)</m> with <m>\mathbf{o}^\star</m> gives a
+        coarse structural summary of a response: it tells how many cards are in
+        each zone, but not which particular cards are there.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-occupied-zones-rank">
+      <title>Occupied Zones and Rank</title>
+
+      <p>
+        The occupancy vector identifies which zones are occupied. Define the
+        number of <xref ref="gt-occupied-zone" text="custom">occupied zones</xref> by
+        <md>
+          q(X)=\#\{i\in\mathcal{Z}:o_i(X)>0\}.
+        </md>
+        This quantity measures how spread out the cards are across the board. It
+        is not a correctness measure: two configurations can occupy the same
+        number of zones while differing completely in their relationship to the
+        key.
+      </p>
+
+      <p>
+        For a valid membership matrix, the occupied-zone count has a simple
+        algebraic interpretation. Each column of <m>X</m> is a standard basis
+        vector, so the nonzero row directions are exactly the occupied zones.
+        Therefore
+        <md>
+          \operatorname{rank}(X)=q(X).
+        </md>
+      </p>
+
+      <example>
+        <title>Rank and Occupied Zones</title>
+        <statement>
+          <p>
+            The <xref ref="an-running-initial-matrix" text="custom">initial
+            state</xref> has rank <m>1</m> because only the tray is occupied.
+            The <xref ref="an-running-key-matrix" text="custom">key state</xref>
+            has rank <m>3</m>, because the tray, Triangle slot, and
+            Quadrilateral slot are occupied. The incorrect state
+            <m>s=(1,1,2,3)</m> also has rank <m>3</m>, but it occupies
+            Triangle, Quadrilateral, and Pentagon instead.
+          </p>
+        </statement>
+      </example>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-distance">
+    <title>Distance</title>
+
+    <p>
+      The configuration space has a natural distance. Given two configurations
+      <m>s,r\in\mathcal{C}</m>, define
+      <md xml:id="an-state-distance-function">
+        d_{\mathcal{C}}(s,r)
+        =
+        \#\{j\in\mathcal{P}:s(j)\neq r(j)\}.
+      </md>
+      This is the number of cards assigned to different zones in the two states,
+      namely the Hamming distance on <m>\mathcal{Z}^{\mathcal{P}}</m>.
+    </p>
+
+    <p>
+      The same distance can be written in matrix form. If <m>X=X(s)</m> and
+      <m>Y=X(r)</m>, define
+      <md xml:id="an-state-distance-matrix">
+        d_{\mathcal{X}}(X,Y)
+        =
+        \frac{1}{2}\|X-Y\|_F^2.
+      </md>
+      The factor of <m>1/2</m> appears because moving one card from one zone to
+      another changes two entries in that card's column: one entry changes from
+      <m>1</m> to <m>0</m>, and another changes from <m>0</m> to <m>1</m>.
+    </p>
+
+    <p>
+      The two distance functions agree under the bijection between
+      <m>\mathcal{C}</m> and <m>\mathcal{X}</m>. If <m>X=X(s)</m> and
+      <m>Y=X(r)</m>, then
+      <md>
+        d_{\mathcal{C}}(s,r)=d_{\mathcal{X}}(X,Y).
+      </md>
+    </p>
+
+    <example>
+      <title>State Distance</title>
+      <statement>
+        <p>
+          The state <m>s=(1,1,2,3)</m> differs from the key
+          <m>s^\star=(1,1,2,0)</m> only in the fourth coordinate. Therefore, with
+          <m>X=X(s)</m>,
+          <md>
+            d_{\mathcal{C}}(s,s^\star)
+            =
+            d_{\mathcal{X}}(X,X^\star)
+            =1.
+          </md>
+          The circle is the only card not in its home zone.
+        </p>
+      </statement>
+    </example>
+
+    <p>
+      In this chapter, distance is only a property of pairs of states. The next
+      chapter uses it to describe how states change over time, and the later
+      feature chapter specializes it to comparisons with the key.
+    </p>
+  </section>
+</chapter>

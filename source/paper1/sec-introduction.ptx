@@ -1,0 +1,278 @@
+<!-- ================================================================ -->
+<!-- 1. INTRODUCTION ≈ 1200-1500 words.                               -->
+<!-- ================================================================ -->
+
+<section xml:id="sec-introduction">
+  <title>Introduction</title>
+
+  <introduction>
+    <p>
+      Conventional autograded questions usually retain an endpoint: the option
+      selected, the number entered, or the final correctness verdict.  A fully
+      logged card-to-zone drag-and-drop item retains substantially more of the
+      act of responding.  A learner may place individual cards, revise earlier
+      placements, return cards to the tray, check the current arrangement,
+      respond to feedback, reset the board, leave the page, and resume later.
+      These records create an outcome layer about submitted answers and a
+      process layer about the paths that produced them.
+    </p>
+
+    <p>
+      The process layer is not immediately observable as a sequence of complete
+      responses.  In the Runestone export studied here, a move row records one
+      card and its destination, whereas a check row records the complete
+      submitted configuration.  The logs identify cards and zones using
+      positional labels rather than authored content, and the answer key is
+      defined in the PreTeXt source rather than repeated in every event row.
+      Consequently, a valid trajectory must be constructed by aligning the
+      source and log, ordering and decoding the events, and replaying the
+      incremental changes.
+    </p>
+
+    <p>
+      This preprocessing is part of measurement rather than a neutral clerical
+      step.  A missing move, ambiguous ordering, stale item source, malformed
+      checked state, or inappropriate attempt boundary can alter the derived
+      trajectory and every feature computed from it.  Analyses that treat the
+      raw rows as an already valid action sequence risk attributing processing
+      artifacts to learners.
+    </p>
+  </introduction>
+
+<!-- ================================================================== -->
+<!-- DRAFT: Related Work and Methodological Gap                         -->
+<!-- Replaces the [STUB] in sec-introduction.ptx, subsec-literature-gap -->
+<!--                                                                    -->
+<!-- Body word count: ~760 words excluding citation markup (target      -->
+<!-- 600-800 per Literature Synthesis Checklist item 8).                -->
+<!--                                                                    -->
+<!-- NOTE: Claims about Kroehne & Goldhammer (2018), Jiang et           -->
+<!-- al. (2021), Gong et al. (2022), and Goldhammer et al. (2021) were  -->
+<!-- verified against the full texts on 2026-07-16. All other claims    -->
+<!-- remain abstract-level. Before submission:                          -->
+<!--   1. Verify remaining claims against full texts (especially        -->
+<!--      Helminen et al. 2012, the last unverified close comparator).  -->
+<!--   2. Confirm all [verify]-flagged bibliography details.            -->
+<!--   3. Run the systematic ERIC/Scopus/ACM DL pass (checklist item 1) -->
+<!--      and add any missed 2024-2026 comparators.                     -->
+<!-- ================================================================== -->
+
+  <subsection xml:id="subsec-literature-gap">
+    <title>Related Work and Methodological Gap</title>
+
+    <!-- Issue 1: the field's raw analytical material is sequences, not states -->
+    <p>
+      Process data from digital assessments have moved from curiosity to
+      infrastructure.  Large-scale programs such as PISA, TIMSS, and NAEP now
+      release log files routinely, and recent reviews document a literature
+      spanning international assessments, games, simulations, and
+      course platforms (<xref ref="bib-anghel-2024"/>;
+      <xref ref="bib-log-review-2025"/>).  Bergner and von Davier order its
+      uses in a five-level hierarchy, from ignoring the process entirely to
+      modeling the process itself as the outcome
+      (<xref ref="bib-bergner-vondavier-2019"/>).
+      Across all levels, however, the raw analytical material is almost always
+      the recorded action sequence or indicators computed from it.  The complete
+      state of a response between submissions is seldom an explicit analytic
+      object, and even the definition of process data remains unsettled
+      (<xref ref="bib-anghel-2024"/>).
+    </p>
+
+    <!-- Issue 2: sequence and feature methods presuppose defined objects -->
+    <p>
+      The methodological traditions that analyze these records generally begin
+      after the analytical objects have been defined.  Educational process
+      mining discovers workflow models from event logs and validates them by
+      conformance checking, agreement between a discovered model and the log,
+      while inheriting the log's case and activity definitions
+      (<xref ref="bib-trcka-2010"/>; <xref ref="bib-van-der-aalst-2016"/>;
+      <xref ref="bib-bogarin-2018"/>).  Psychometric feature extraction
+      compresses given action sequences into n-gram patterns associated with success and failure
+      (<xref ref="bib-he-vondavier-2016"/>), event-history representations
+      (<xref ref="bib-chen-2019"/>), and generic embeddings whose
+      quality is judged by reconstruction and prediction accuracy (<xref ref="bib-tang-mds-2020"/>;
+      <xref ref="bib-tang-ae-2021"/>).  In both traditions, the mapping from
+      platform rows to well-formed events, states, and analysis units is a
+      precondition of the method, not an object of study.
+    </p>
+
+    <!-- Issue 3: reconstruction frameworks, the closest precedents -->
+    <p>
+      A smaller body of work treats that mapping itself as the methodological
+      problem.  Kroehne and Goldhammer propose finite state machines whose
+      states are theoretically defined phases of the response process,
+      identified from platform-specific log events, separating event decoding
+      from indicator definitions; they also define completeness conditions and
+      observe that, when all answer changes are logged, the response can be
+      re-derived and compared with the independently stored
+      response as a verification device
+      (<xref ref="bib-kroehne-goldhammer-2018"/>).  Keystroke-logging research
+      offers a cross-domain parallel: logging programs register every input
+      event so that the evolving text can be reconstructed and replayed
+      (<xref ref="bib-leijten-vanwaes-2013"/>).  These frameworks establish the
+      feasibility of reconstruction and articulate verification in principle.
+      Their states, however, are coarse process phases rather than complete
+      item configurations; the verification idea is stated as a data-quality
+      condition rather than implemented as a quantified validation study; and
+      neither aligns reconstructed states with authored item semantics or
+      attaches an explicit readiness policy to the result.
+    </p>
+
+    <!-- Issue 4: validity requirements and preprocessing sensitivity -->
+    <p>
+      Two further strands sharpen the requirements such a transformation must
+      meet.  Assessment validity theory names response processes among the
+      recognized sources of validity evidence (<xref ref="bib-aera-2014"/>), and
+      recent treatments argue that inferences from log-derived indicators
+      require explicit theoretical and empirical justification
+      (<xref ref="bib-ercikan-pellegrino-2017"/>;
+      <xref ref="bib-zumbo-hubley-2017"/>;
+      <xref ref="bib-goldhammer-zehner-2017"/>).  This program concentrates on
+      the explanation inference, whether indicators reflect the intended
+      construct; the prior scoring inference, that the identification rules
+      extract the targeted behavior correctly, remains an assumption
+      (<xref ref="bib-goldhammer-2021"/>).  At the same time, studies of
+      preprocessing sensitivity show that justification cannot stop at the
+      indicator: defensible alternative time-on-task estimation rules change
+      downstream findings (<xref ref="bib-kovanovic-2015"/>), and reasonable
+      alternative cleanings of the same course logs produce materially different
+      results (<xref ref="bib-knobbout-2019"/>).  Multiverse analysis
+      generalizes the remedy, reporting results across the datasets that
+      reasonable processing choices generate and identifying the choices
+      conclusions hinge on (<xref ref="bib-steegen-2016"/>).  Read together,
+      these strands imply that reconstruction and segmentation belong to the
+      measurement model and should be validated and systematically varied, not
+      merely performed.
+    </p>
+
+    <!-- Issue 5: the interaction family has moved close to, but not onto, that ground -->
+    <p>
+      Studies of the relevant interaction family have moved close to, but not
+      onto, that ground.  Analyses of NAEP drag-and-drop items derive strategy
+      classifications, answer-change patterns, and time measures from action
+      sequences, with cleaning rules (winsorization, first-action filtering)
+      that are reported but neither varied nor validated
+      (<xref ref="bib-jiang-2021"/>).  Gong and colleagues go furthest: they
+      transcribe action sequences into sequences of complete target
+      configurations to visualize answer formulation step by step, yet describe
+      the transcription as heuristic, prune infrequent transitions for display,
+      and check the result against no independent record
+      (<xref ref="bib-gong-2022"/>).  Experimental work examines how
+      drag-and-drop design features shape performance and response behavior
+      (<xref ref="bib-arslan-emip"/>; <xref ref="bib-ponce-2021"/>).
+      Sorting-based assessments score final sorts only
+      (<xref ref="bib-smith-2013"/>; <xref ref="bib-tpl-kats"/>).  For Parsons
+      problems, the nearest construction-task sibling, interaction traces
+      reveal wide variation in solution paths
+      (<xref ref="bib-helminen-2012"/>), and large-scale log analyses evaluate
+      adaptation with outcome and count features
+      (<xref ref="bib-ericson-2018"/>).  Across this family, reconstructed
+      intermediate states are absent, implicit, or heuristic, and never
+      validated against independently recorded configurations.
+    </p>
+
+    <!-- Two-sentence gap statement (checklist item 9) -->
+    <p>
+      In sum, sequence, process-mining, and feature-extraction methods
+      presuppose that event types, response states, and analysis units have
+      already been correctly derived; the closest reconstruction frameworks
+      articulate completeness and verification in principle without
+      implementing them as validation studies; and drag-and-drop, sorting, and
+      Parsons-problem studies analyze action sequences, heuristically
+      transcribed states, or final configurations that are never checked
+      against independent records.  Source-dependent card-to-zone logs, in
+      which moves arrive incrementally, complete configurations are recorded
+      only at checks, and item semantics reside in the authored source,
+      therefore require what this article supplies: an explicit,
+      source-aligned, empirically validated, and sensitivity-tested
+      transformation from platform rows to complete response trajectories.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-contribution-scope">
+    <title>Contribution and Scope</title>
+
+    <p>
+      This article contributes a formal representation of card-to-zone
+      response states and event trajectories; a source-informed procedure for
+      mapping PreTeXt item specifications and Runestone event rows into
+      canonical analytic objects; a deterministic replay algorithm; validation
+      against independently recorded checked configurations; and an explicit
+      quality-control policy that determines which derived features are ready,
+      limited, or unavailable.
+    </p>
+
+    <p>
+      The mathematical and analytic core is not tied to XML or to a particular
+      tabular export once two input contracts have been satisfied: a canonical
+      item specification must identify the cards, zones, initial state, scoring
+      key, and item version, and a canonical event stream must identify ordered
+      moves, checks, resets, page delimiters, and provenance.  The present
+      adapters and empirical validation are nevertheless specific to
+      PreTeXt-authored <c>cardsort</c> items and Runestone-generated,
+      DataShop-formatted <c>.tab</c> files.  Cross-platform portability is
+      therefore an architectural claim, not an empirical result of this study.
+    </p>
+
+    <p>
+      The paper does not estimate a causal effect of feedback policy, infer
+      cognitive states directly from behavioral traces, or claim that
+      associations across the observed items generalize to all drag-and-drop
+      designs.  Grouping-aware partition metrics, Markov and network models,
+      advanced prediction, and cross-widget extensions are outside the primary
+      scope.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-research-questions">
+    <title>Research Questions</title>
+
+    <p>
+      <dl width="narrow">
+        <li>
+          <title>RQ1</title>
+          <p>
+            <em>Representation and Reconstruction</em>. How can source-defined 
+            card-to-zone items and incremental event logs be transformed into 
+            complete, provenance-preserving response trajectories?
+          </p>
+        </li>
+        <li>
+          <title>RQ2</title>
+          <p>
+            <em>Reconstruction Validity</em>. How reliably do replayed states
+            agree with the full configurations independently recorded at checks,
+            and what accounts for observed disagreements or unavailable comparisons?
+          </p>
+        </li>
+        <li>
+          <title>RQ3</title>
+          <p>
+            <em>Process Information</em>. What response-process variation is 
+            revealed among attempts that are equivalent under first-check or final 
+            correctness?
+          </p>
+        </li>
+        <li>
+          <title>RQ4</title>
+          <p>
+            <em>Processing Sensitivity</em>. How sensitive are analytic sample
+            sizes and baseline process features to defensible choices about 
+            segmentation, event ordering, idle time, no-operation (no-op) actions,
+            and readiness inclusion?
+          </p>
+        </li>
+      </dl>
+    </p>
+
+    <!--
+    RESEARCH-QUESTION FREEZE CHECKLIST
+    1. Verify that each question can be answered with authorized data.
+    2. Mark RQ1 and RQ2 as the primary methodological questions.
+    3. Decide whether RQ3 remains descriptive or includes one inferential model.
+    4. Define the exact processing alternatives included under RQ4.
+    5. Map each planned table and figure to one research question.
+    6. Remove any analysis that does not answer one of these questions.
+    -->
+  </subsection>
+</section>

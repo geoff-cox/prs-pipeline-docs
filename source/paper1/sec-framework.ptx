@@ -1,0 +1,172 @@
+<!-- ================================================================ -->
+<!-- 3. STATE AND TRAJECTORY FRAMEWORK ≈ 900-1100 words.              -->
+<!-- ================================================================ -->
+
+<section xml:id="sec-framework">
+  <title>State and Trajectory Framework</title>
+
+  <introduction>
+    <p>
+      The framework models a response first as a complete card-to-zone
+      configuration and then as a marked, timestamped trajectory through the
+      configuration space.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec-configurations">
+    <title>Configurations and State Space</title>
+
+    <p>
+      For one item, let <m>\cardset=\{1,\ldots,P\}</m> index the cards and let
+      <m>\zoneset=\{0,1,\ldots,R\}</m> index the tray and destination slots.  A
+      configuration is a function
+      <md xml:id="eq-configuration">
+        s:\cardset\rightarrow\zoneset,
+      </md>
+      where <m>s(j)</m> is the zone occupied by card <m>j</m>.  The initial
+      configuration is <m>s_0=(0,\ldots,0)</m>, and the key configuration
+      <m>s^\star</m> is determined by the authored item source.
+    </p>
+
+    <p>
+      The same configuration can be represented as a column-stochastic
+      zero-one membership matrix
+      <md xml:id="eq-membership-space">
+        X(s)\in\Xspace
+        =
+        \left\{
+          X\in\{0,1\}^{(R+1)\times P}:
+          \mathbf{1}_{R+1}^{\mathsf T}X
+          =
+          \mathbf{1}_{P}^{\mathsf T}
+        \right\}.
+      </md>
+      Column <m>j</m> contains a single one in row <m>s(j)</m>.  The function,
+      vector, and matrix forms encode the same state; the vector form is
+      compact, while the matrix form makes validity, occupancy, and agreement
+      calculations explicit.
+    </p>
+
+    <p>
+      The natural distance between configurations, <m>s_1</m> and <m>s_2</m>, is the number of cards
+      occupying different zones:
+      <md xml:id="eq-state-distance">
+        d_{\cardset}(s_1,s_2)
+        =
+        \#\{j\in\cardset:s_1(j)\neq s_2(j)\}.
+      </md>
+      In matrix form,
+      <md xml:id="eq-state-distance-matrix">
+        d_{\Xspace}(X,Y)
+        =
+        \frac{1}{2}\lVert X-Y\rVert_F^2.
+      </md>
+      The key distance
+      <m>d^\star(X)=d_{\Xspace}(X,X^\star)</m> is both the number of cards not
+      in their home zones and the minimum number of ordinary single-card moves
+      required to reach the key.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-event-transitions">
+    <title>Events as State Transitions and Marks</title>
+
+    <p>
+      A move is represented by <m>m=(j,i,h)</m>, where card <m>j</m> moves
+      from zone <m>i</m> to zone <m>h</m>.  In the configuration vector, the
+      move replaces coordinate <m>s(j)=i</m> with <m>s'(j)=h</m>.  In matrix
+      form,
+      <md xml:id="eq-move-update">
+        X'
+        =
+        X+(e_h-e_i)f_j^{\mathsf T},
+      </md>
+      where <m>e_i</m> and <m>f_j</m> are standard basis vectors for zones
+      and cards.  A move to zone <m>0</m> is a takeback.  A drop whose
+      destination is the card's current zone is retained as a no-op event but
+      does not change the state.
+    </p>
+
+    <p>
+      A check leaves the current state unchanged but marks it as submitted to
+      the grader and attaches the recorded result and feedback.  A reset is a
+      distinguished jump back to <m>X_0</m>.  A page event does not change the
+      board; it contributes evidence about access and attempt boundaries.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-trajectories">
+    <title>Marked Timestamped Trajectories</title>
+
+    <p>
+      After processing and segmentation, an attempt is represented as
+      <md xml:id="eq-event-trajectory">
+        \Gamma
+        =
+        \bigl(
+          (a_0,t_0,X_0),
+          (a_1,t_1,X_1),
+          \ldots,
+          (a_n,t_n,X_n)
+        \bigr),
+      </md>
+      where <m>a_k</m> is the processed action mark, <m>t_k</m> is the event
+      time, and <m>X_k</m> is the state after the event.  The trajectory is
+      marked because each time carries an event type and payload.  Two
+      attempts can therefore visit the same states while differing in move
+      order, checks, feedback exposure, resets, or elapsed time.
+    </p>
+
+    <p>
+      Events are nested in attempts, attempts belong to student-item pairs,
+      and student and item are crossed factors: students encounter multiple
+      items, and items are encountered by multiple students.  Descriptive
+      uncertainty and inferential models must account for dependence at these
+      levels when the numbers of students and items support it.
+    </p>
+
+    <figure xml:id="fig-running-trajectory">
+      <caption>
+        Running example of an incremental log, reconstructed states, and check
+        anchors.  Left: the shapes item as authored; dashes show the key
+        <m>s^\star=(1,1,2,0)</m>, the circle is a decoy card, and Pentagon is a
+        decoy slot.  Right, top to bottom: raw export rows (raw positional
+        labels shown once, at <m>t_1</m>); the states reconstructed by replay;
+        and the key distance <m>d^\star</m>.  The checks at <m>t_5</m> and
+        <m>t_7</m> leave the state unchanged; their <c>Input</c> payloads are
+        decoded independently of replay into checked configurations, and their
+        agreement with the replayed states is the anchor comparison.
+      </caption>
+      <image source="figures/fig-running-trajectory.png" width="100%">
+        <description>
+          <p>
+            A three-band diagram beside an item panel. The item panel shows a
+            tray holding an equilateral triangle, a right triangle, a square, and
+            a circle, above three slots labeled Triangle, Quadrilateral, and
+            Pentagon; dashed outlines mark the key placement and Pentagon is
+            empty in the key.  The top band shows seven raw log rows: four
+            dragNdrop-drop moves, a check, a takeback move, and a second check.
+            The middle band shows the replayed configuration vectors from
+            (0,0,0,0) through (1,1,2,3) at the incorrect check to (1,1,2,0) at
+            the correct check, with each check's independently decoded anchor
+            configuration matching the replayed state.  The bottom band plots the
+            key distance falling 3, 2, 1, 0, rising to 1 when the circle enters
+            Pentagon, and returning to 0 after the takeback.
+          </p>
+        </description>
+      </image>
+    </figure>
+
+    <!--
+    RUNNING-EXAMPLE CHECKLIST
+    1. Select an item that can be legally reproduced and understood without course context.
+    2. Verify its source-order card and zone indices.
+    3. Construct or select one short trace containing moves, an incorrect check,
+        a revision, and a correct check.
+    4. Confirm every displayed state against the pipeline output.
+    5. Show the raw positional labels once, then use authored labels or indices.
+    6. Annotate check anchors as independently decoded observations.
+    7. Keep the figure legible in a single journal column or full-width page.
+    -->
+  </subsection>
+</section>

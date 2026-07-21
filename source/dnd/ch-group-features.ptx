@@ -1,0 +1,1151 @@
+<chapter xml:id="ch-group-features">
+  <title>Grouping Features</title>
+
+  <introduction>
+    <p>
+      The previous chapter used baseline features to make item-level patterns
+      visible. Several of its displays also pointed beyond the baseline
+      comparison. A placement heatmap is marginal, so it cannot show which
+      <xref ref="gt-card" text="custom">cards</xref> a student grouped together
+      (<xref ref="subsec-heatmap-interpretation" text="title"/>). The error-profile
+      display can include grouping bars only after those grouping features have
+      been defined (<xref ref="subsec-error-profile-bars" text="title"/>). The
+      label-free preview raised the question of whether a wrong labeled answer
+      may nevertheless have the right grouping structure
+      (<xref ref="subsec-mislabel-gap-preview" text="title"/>). This chapter
+      supplies those definitions.
+    </p>
+
+    <p>
+      The stance remains the same as in the baseline chapter. The platform grades a
+      <xref ref="gt-check" text="custom">check</xref> by comparing the submitted
+      <xref ref="gt-configuration" text="custom">configuration</xref> to the
+      <xref ref="gt-key" text="custom">key</xref> exactly
+      (<xref ref="sec-feedback-policy"/>): a card is correct only in its home
+      zone. Thus the grader, and the outcome layer of the log, is
+      <term>label-aware</term>. The baseline agreement score
+      <m>\sigma(X)=\langle X,X^\star\rangle_F</m> remains the standard correctness
+      feature. The features developed here are diagnostics. They ask questions the
+      labeled comparison cannot answer, such as whether a wrong response has the
+      right groups under the wrong names, or whether two equally distant responses
+      differ in grouping structure.
+    </p>
+
+    <p>
+      The chapter develops five families of comparison features:
+      <ul>
+        <li>
+          <p>
+            <term>label-free agreement</term>, which asks whether a response becomes
+            correct after renaming the authored slots;
+          </p>
+        </li>
+        <li>
+          <p>
+            <term>partition views</term>, which read a configuration as a grouping
+            of cards, with or without zone labels;
+          </p>
+        </li>
+        <li>
+          <p>
+            <term>merge and split features</term>, which identify key groups that
+            have been combined or divided;
+          </p>
+        </li>
+        <li>
+          <p>
+            <term>pairwise agreement metrics</term>, which summarize grouping
+            agreement over card pairs; and
+          </p>
+        </li>
+        <li>
+          <p>
+            <term>weighted and semantic distances</term>, which keep the labeled
+            comparison but allow errors to carry unequal costs.
+          </p>
+        </li>
+      </ul>
+      A motivating section first separates labeled accuracy from grouping
+      structure. The closing section then collects the feature families and their
+      intended uses.
+    </p>
+
+    <p>
+      These features should be used deliberately. Each changes what
+      <q>close to the key</q> means. Label-free and partition-based features are
+      appropriate when the item design or research question concerns grouping
+      structure, not when exact labeled placement is the only intended outcome.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-why-labeled-accuracy-is-not-enough">
+    <title>Why Labeled Accuracy Is Not Enough</title>
+
+    <p>
+      The baseline key distance
+      <m>d^\star(X)=d_{\mathcal{X}}(X,X^\star)=P-\sigma(X)</m> counts the cards
+      not in their home zones. It is a labeled comparison: card <m>j</m> is correct
+      only when it occupies the exact zone <m>s^\star(j)</m> specified by the key.
+    </p>
+
+    <p>
+      Labeled accuracy is often exactly the right comparison. If an item asks
+      students to sort statements into named mathematical categories, then a card
+      placed under the wrong category name should count as wrong. The label is part
+      of the answer. This is also the comparison the student experiences: every
+      Correct or Incorrect returned by the grader is a verdict about labeled
+      placement.
+    </p>
+
+    <p>
+      But labeled accuracy can collapse structurally different answers to the same
+      number. For the running shapes question, whose key is
+      <m>s^\star=(1,1,2,0)</m>, consider the checked response
+      <md>
+        s=(2,2,1,0).
+      </md>
+      The student has placed the two triangles together, the square alone, and the
+      circle in the <xref ref="gt-tray" text="custom">tray</xref>. As a grouping of
+      cards, this response matches the key. As a labeled placement, it is almost
+      entirely wrong because the two occupied slot names have been swapped: only
+      the circle is correct, so <m>\sigma(X)=1</m> and <m>d^\star(X)=3</m>.
+    </p>
+
+    <p>
+      The example separates three notions of comparison:
+      <dl width="medium">
+        <li>
+          <title>labeled placement</title>
+          <p>
+            Does each card occupy its exact home zone? This is the baseline
+            comparison and the grader's comparison.
+          </p>
+        </li>
+        <li>
+          <title>label-free placement</title>
+          <p>
+            Could the authored slots be renamed so that the response matches the
+            key?
+          </p>
+        </li>
+        <li>
+          <title>grouping structure</title>
+          <p>
+            Which cards are grouped together, regardless of what those groups are
+            called?
+          </p>
+        </li>
+      </dl>
+    </p>
+
+    <p>
+      The next section quantifies label-free placement. The two sections after that
+      define grouping structure and its merge, split, and pairwise summaries.
+      Throughout, <m>\sigma</m> remains the standard label-aware score; the
+      label-free score <m>\widetilde{\sigma}</m> is a diagnostic; and the gap
+      <m>\widetilde{\sigma}-\sigma</m> measures how much of the labeled error can
+      be repaired by renaming slots. The final comparison family keeps the labeled
+      comparison but changes the cost attached to different errors.
+    </p>
+  </section>
+
+  <section xml:id="sec-label-free-agreement">
+    <title>Label-Free Agreement</title>
+
+    <introduction>
+      <p>
+        Label-free agreement compares a response to the key after allowing the
+        authored slot labels to be renamed. The tray is not renamed: being unplaced
+        is a status of a card, not a name attached to a group. Thus the comparison
+        preserves the distinction between placed and unplaced cards while ignoring
+        the names of the authored slots.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-slot-permutations">
+      <title>Slot Permutations and the Label-Free Score</title>
+
+      <p>
+        Let <m>S_R</m> be the set of permutations of the authored slots
+        <m>\{1,\dots,R\}</m>. In this section, a permutation
+        <m>\pi\in S_R</m> is read as a matching from key slots to response slots:
+        <m>\pi(b)=a</m> means that response slot <m>z_a</m> is being treated as the
+        candidate for key slot <m>z_b</m>. The tray is fixed. Equivalently,
+        <m>\pi</m> extends to the full zone set by <m>\pi(0)=0</m>.
+      </p>
+
+      <p>
+        This matching can also be written as a row permutation. Let
+        <m>Q_\pi</m> be the permutation matrix satisfying
+        <md>
+          Q_\pi e_0=e_0,
+          \qquad
+          Q_\pi e_{\pi(b)}=e_b
+          \quad (1\leq b\leq R),
+        </md>
+        where <m>e_0,\dots,e_R</m> are the zone-row basis vectors. Multiplying
+        <m>X</m> by <m>Q_\pi</m> moves the matched response rows into the key-row
+        positions while leaving the tray row fixed.
+      </p>
+
+      <p>
+        The <term>label-free agreement score</term> is the best agreement with the
+        key obtainable by such a slot matching:
+        <md xml:id="an-label-free-agreement">
+          \widetilde{\sigma}(X)
+          =
+          \max_{\pi\in S_R}
+          \left\langle Q_\pi X, X^\star\right\rangle_F.
+        </md>
+        The identity permutation is allowed, so
+        <m>\widetilde{\sigma}(X)\geq\sigma(X)</m> for every state.
+      </p>
+
+      <p>
+        The corresponding <term>label-free key distance</term> is
+        <md xml:id="an-label-free-distance">
+          \widetilde{d}^{\star}(X)
+          =
+          P-\widetilde{\sigma}(X).
+        </md>
+        It counts the cards that remain wrong even after the most favorable
+        renaming of the slots. Thus
+        <m>\widetilde{d}^{\star}(X)\leq d^\star(X)</m> always.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-label-free-example">
+      <title>The Running Example</title>
+
+      <p>
+        For the swapped-slots response
+        <m>s=(2,2,1,0)</m> against the key <m>s^\star=(1,1,2,0)</m>, exchanging
+        the roles of slots <m>z_1</m> and <m>z_2</m> turns the response into the
+        key. Therefore
+        <md>
+          \sigma(X)=1,
+          \qquad
+          \widetilde{\sigma}(X)=4,
+          \qquad
+          \widetilde{d}^{\star}(X)=0.
+        </md>
+        The response is label-free correct even though it is labeled almost
+        entirely wrong.
+      </p>
+
+      <p>
+        Renaming slots cannot repair every error. The first checked state of the
+        running <xref ref="gt-attempt" text="custom">attempt</xref>,
+        <m>s=(1,1,2,3)</m>, places the circle, a
+        <xref ref="gt-decoy-card" text="custom">decoy card</xref>, in the Pentagon
+        slot. No permutation of slot labels returns a placed card to the tray, so
+        here
+        <md>
+          \widetilde{\sigma}(X)=\sigma(X)=3.
+        </md>
+        Label-free agreement forgives naming errors among authored slots. It does
+        not forgive omissions, <xref ref="gt-decoy-card-leak" text="custom">decoy-card leaks</xref>,
+        or any error that crosses the tray boundary.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-computing-label-free-agreement">
+      <title>Computing Label-Free Agreement</title>
+
+      <p>
+        The maximum in <xref ref="an-label-free-agreement" text="custom">
+        <m>\widetilde{\sigma}</m></xref> can be computed from the zone confusion
+        matrix <m>M(X)=XX^{\star\top}</m>. Its entry <m>M_{ih}(X)</m> counts the
+        cards currently in zone <m>z_i</m> whose home zone is <m>z_h</m>. Under a
+        slot matching <m>\pi</m>, the credited cards are the tray-to-tray cards
+        plus, for each key slot <m>b</m>, the cards in the matched response slot
+        <m>\pi(b)</m>. Hence
+        <md xml:id="an-label-free-assignment">
+          \widetilde{\sigma}(X)
+          =
+          M_{00}(X)
+          +
+          \max_{\pi\in S_R}
+          \sum_{b=1}^{R} M_{\pi(b)b}(X).
+        </md>
+      </p>
+
+      <p>
+        For small items, the maximum can be found by checking all <m>R!</m>
+        permutations. For larger items, it is a maximum-weight assignment problem,
+        solvable exactly by standard assignment algorithms. The computation uses
+        the slot-by-slot part of <m>M</m>, which the next section names and uses as
+        the common input for grouping diagnostics.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-when-label-free-is-appropriate">
+      <title>The Labeling Gap</title>
+
+      <p>
+        Reporting the labeled and label-free distances together is more informative
+        than reporting either alone. Their difference, the <term>labeling gap</term>,
+        is
+        <md xml:id="an-labeling-gap">
+          d^\star(X)-\widetilde{d}^{\star}(X)
+          =
+          \widetilde{\sigma}(X)-\sigma(X).
+        </md>
+        It is the number of labeled errors repaired by the best slot renaming. The
+        swapped-slots response has gap <m>3</m>, all of its labeled error. The
+        decoy-leak response above has gap <m>0</m>, because renaming explains none
+        of the error.
+      </p>
+
+      <figure xml:id="fig-cohort-mislabel-gap">
+        <caption>
+          The relabel gain <m>\widetilde{\sigma} - \sigma</m>, the amount a
+          best&#8209;case renaming of the slots would add to the score. Bars at a
+          positive gap whose cards are <em>grouped</em> correctly (highlighted)
+          are pure labeling errors: the student sorted the cards into the right
+          piles but attached the wrong names. The figure is drawn from the same
+          example cohort as the displays of <xref ref="ch-visualization-diagnostics"/>.
+        </caption>
+        <image source="figures/dnd-cohort-mislabel_gap.png" width="70%">
+          <description>
+            <p>
+              Histogram of the label&#8209;free minus label&#8209;exact score, with
+              bars split by whether the grouping is already perfect.
+            </p>
+          </description>
+        </image>
+      </figure>
+
+      <p>
+        At cohort scale, the gap produces the display previewed in the previous
+        chapter: a histogram of <m>\widetilde{\sigma}-\sigma</m> over checked
+        states, optionally split by whether the grouping is already perfect. A
+        cohort with many positive gaps and perfect groupings is misnaming
+        categories it has formed. That is different from a cohort that has not
+        formed the categories at all.
+      </p>
+
+      <p>
+        Whether label-free agreement should be reported as an outcome, rather than
+        only as a diagnostic, depends on the item. When visible slot labels carry
+        mathematical content, the labeled score is the appropriate correctness
+        feature, and <m>\widetilde{\sigma}</m> would hide real errors. Label-free
+        agreement should stand in for correctness only when the research question
+        concerns grouping alone and that decision is stated explicitly.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-grouping-and-partition-views">
+    <title>Grouping and Partition Views</title>
+
+    <introduction>
+      <p>
+        Label-free agreement still matches slots to slots. A further step drops
+        slot names entirely and keeps only the grouping they induce: two cards are
+        together when they occupy the same zone. This partition view is the common
+        foundation for the merge and split features and the pairwise metrics of the
+        next two sections.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-state-induced-partition">
+      <title>The Partition Induced by a State</title>
+
+      <p>
+        Let <m>s:\mathcal{P}\to\mathcal{Z}</m> be the configuration represented by
+        the membership matrix <m>X=X(s)</m>. The state defines an equivalence
+        relation on cards by
+        <md xml:id="an-state-induced-equivalence">
+          j\sim_X \ell
+          \quad\Longleftrightarrow\quad
+          s(j)=s(\ell).
+        </md>
+        The induced partition of <m>\mathcal{P}</m> is denoted <m>\Pi_X</m>. Its
+        nonempty blocks are
+        <md xml:id="an-state-induced-blocks">
+          B_i(X)=\{j\in\mathcal{P}:s(j)=i\},
+          \qquad
+          i\in\mathcal{Z}.
+        </md>
+        The key induces the key partition <m>\Pi^\star=\Pi_{X^\star}</m>. Comparing
+        <m>\Pi_X</m> with <m>\Pi^\star</m> asks whether the response grouped the
+        cards as the key does, regardless of where the groups sit.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-marked-and-unmarked-partitions">
+      <title>Marked and Unmarked Partitions, and the Tray</title>
+
+      <p>
+        Two partition views are useful. A <term>marked partition</term> remembers
+        which block belongs to which zone. It therefore retains the labeled content
+        of the configuration. An <term>unmarked partition</term> remembers only
+        which cards are together. The marked view is appropriate when slot labels
+        are part of the answer. The unmarked view is appropriate when the question
+        is whether students formed the right groups.
+      </p>
+
+      <p>
+        The tray requires special treatment in either view. It does not usually
+        represent a group the student formed; it holds cards the student has not
+        placed. A decoy card and a not-yet-placed required card may both sit in the
+        tray, but for different reasons. Therefore the grouping comparisons below
+        treat the tray boundary as distinguished even when authored slot labels are
+        treated as interchangeable. By default, the grouping features compare only
+        cards that the response and the key both place in authored slots. Omissions
+        and decoy-card leaks are boundary errors and are already counted card by
+        card by the baseline error profile.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-partition-confusion-table">
+      <title>The Zone Confusion Matrix and Its Slot Block Submatrix</title>
+
+      <p>
+        The zone confusion matrix <m>M(X)=XX^{\star\top}</m> is the contingency
+        table of the response and key partitions. Its entry <m>M_{ih}(X)</m>
+        counts the cards in response block <m>B_i(X)</m> and key block
+        <m>B_h(X^\star)</m>. Its margins are the current and key occupancy vectors.
+      </p>
+
+      <p>
+        The grouping comparisons use the <term>slot block</term>, the submatrix
+        obtained by dropping the tray row and tray column:
+        <md xml:id="an-slot-confusion-submatrix">
+          N(X)=\bigl(M_{ab}(X)\bigr)_{1\leq a,b\leq R},
+          \qquad
+          N_{ab}(X)
+          =
+          \#\{j: s(j)=a,\ s^\star(j)=b\}.
+        </md>
+        The entry <m>N_{ab}(X)</m> counts cards the student placed in slot
+        <m>z_a</m> whose home slot is <m>z_b</m>.
+      </p>
+
+      <p>
+        The cards counted by <m>N(X)</m> are the <term>co-placed cards</term>,
+        <md xml:id="an-co-placed-cards">
+          \mathcal{P}_{\operatorname{slot}}(X)
+          =
+          \{j\in\mathcal{P}:s(j)>0\text{ and }s^\star(j)>0\}.
+        </md>
+        We write
+        <md xml:id="an-co-placed-count">
+          n(X)=\#\mathcal{P}_{\operatorname{slot}}(X)
+          =
+          \sum_{a=1}^{R}\sum_{b=1}^{R}N_{ab}(X).
+        </md>
+        Cards in the tray row of <m>M</m> are omissions. Cards in the tray column
+        are decoy cards. They are excluded from <m>N</m> because they are boundary
+        errors, not slot-grouping structure.
+      </p>
+
+      <p>
+        The slot block is the input shared by the rest of the chapter. The label-free 
+        assignment of <xref ref="an-label-free-assignment" text="custom">the previous
+        section</xref> maximizes over its entries, merge and split features look for 
+        non-zero values in its rows and columns, and the Rand family and variation of 
+        information use its entries and margins.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-merge-and-split-features">
+    <title>Merge and Split Features</title>
+
+    <introduction>
+      <p>
+        Merge and split features name two structural ways a student response grouping 
+        can disagree with the key grouping. A merge combines cards from different key
+        groups. A split divides cards from one key group. These are descriptions of 
+        student response structure; they do not by themselves explain why the student
+        produced that structure.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-merge-features">
+      <title>Merges</title>
+
+      <p>
+        A <term>merge</term> occurs when a student response slot contains at least two 
+        cards from different key slots. A response slot, <m>z_a</m>, is called a <term>merge 
+        slot</term> when it contains at least two cards from different key slots. 
+        This amounts to counting the number of non-zero entries in the <m>a</m>-th row 
+        of the slot block
+        <md xml:id="an-row-support-size">
+          \#\{b : N_{ab}(X)>0\}
+        </md>.
+      </p>
+
+      <p>
+        Two summaries are useful. The number of merge slots is
+        <md xml:id="an-merge-zone-count">
+          N_{\operatorname{merge}}(X)
+          =
+          \#\bigl\{a : \#\{b:N_{ab}(X)>0\}\geq 2\bigr\},
+        </md>
+        and the <term>merge excess</term> is
+        <md xml:id="an-merge-excess">
+          E_{\operatorname{merge}}(X)
+          =
+          \sum_{a=1}^{R} \max\bigl\{0,\ \#\{b:N_{ab}(X)>0\}-1\bigr\}
+        </md>.
+        The excess counts how many extra key cards, beyond the first, are in the set 
+        of student slots. For example, a student slot containing three key cards from 
+        three different key groups has an excess of <m>2</m>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-split-features">
+      <title>Splits</title>
+
+      <p>
+        A <term>split</term> accounts for cards from one key slot that are
+        distributed across several response slots. A key slot, <m>z_b</m>, is said to 
+        be <term>split</term> when at least two of its cards lie in different response 
+        slots. In this case we count the non-zero entries in the <m>b</m>-th column of 
+        the slot block
+        <md xml:id="an-column-support-size">
+          \#\{a : N_{ab}(X)>0\}.
+        </md>
+      </p>
+
+      <p>
+        The corresponding summaries are the number of split key slots,
+        <md xml:id="an-split-key-block-count">
+          N_{\operatorname{split}}(X)
+          =
+          \#\bigl\{b : \#\{a:N_{ab}(X)>0\}\geq 2\bigr\},
+        </md>
+        and the <term>split excess</term>,
+        <md xml:id="an-split-excess">
+          E_{\operatorname{split}}(X)
+          =
+          \sum_{b=1}^{R} \max\bigl\{0,\ \#\{a:N_{ab}(X)>0\}-1\bigr\}.
+        </md>
+        The excess counts how many additional response slots were used beyond the
+        first response slot for each key group.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-merge-split-example">
+      <title>The Running Example</title>
+
+      <p>
+        For the key <m>s^\star=(1,1,2,0)</m>, the response
+        <md>
+          s=(1,1,1,0)
+        </md>
+        piles the square in with the two triangles. The first row of its slot block
+        is <m>(2,1,0)</m>: response slot <m>z_1</m> draws on two key slots. Hence
+        <m>N_{\operatorname{merge}}=E_{\operatorname{merge}}=1</m>, while no key
+        group is split.
+      </p>
+
+      <p>
+        The response
+        <md>
+          s=(1,2,2,0)
+        </md>
+        leaves one triangle in <m>z_1</m> and moves the other in with the square.
+        The triangle key group is split across <m>z_1</m> and <m>z_2</m>. At the
+        same time, response slot <m>z_2</m> merges the stray triangle with the
+        square, so
+        <m>E_{\operatorname{merge}}=E_{\operatorname{split}}=1</m>. With a two-card
+        key group, this pairing is forced: splitting the pair sends one card
+        elsewhere, and if that destination is occupied, a merge appears with the
+        split. The larger example of <xref ref="subsec-five-card-variant" text="title"/>
+        shows the two errors more clearly.
+      </p>
+
+      <p>
+        Finally, the first checked state of the running attempt,
+        <m>s=(1,1,2,3)</m>, has no merges or splits. Its slot block is diagonal.
+        Its errors occur at the tray boundary, which is the point of the next
+        subsection.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-grouping-versus-baseline-profile">
+      <title>Merge and Split Counts Are Not the Error Profile</title>
+
+      <p>
+        The baseline error profile
+        <md>
+          \boldsymbol{\varepsilon}(X)
+          =
+          (O,W_{\operatorname{slot}},L_{\mathcal{P}},L_{\mathcal{R}})
+        </md>
+        and the merge and split counts describe wrong answers along different
+        axes. The baseline profile classifies misplaced cards by boundary type:
+        left in the tray, placed in the wrong authored slot, or involved in a
+        decoy error. Its first three components partition the misplaced cards and
+        sum to <m>d^\star(X)</m>. Merge and split counts instead describe relations
+        among co-placed cards. They ignore the tray, disregard slot names, and do
+        not decompose the key distance.
+      </p>
+
+      <p>
+        The running example separates the axes. The decoy-leak state <m>(1,1,2,3)</m> 
+        has 
+        <md>
+          \boldsymbol{\varepsilon}=(0,0,1,1)
+        </md>
+        but no merges or splits: it is wrong at the tray boundary, with perfect grouping 
+        among the co-placed cards. The split state <m>(1,2,2,0)</m> has 
+        <md>
+          \boldsymbol{\varepsilon}=(0,1,0,0)
+        </md>,
+        a single wrong-slot placement, but both a merge and a split. One moved card has 
+        created two grouping relations that disagree with the key. Neither summary 
+        determines the other, so displays should label their units.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-tray-in-merge-split">
+      <title>Treating the Tray</title>
+
+      <p>
+        Reading merges and splits from the slot block <m>N(X)</m> excludes the tray
+        by construction. This is the right default: the baseline profile already
+        counts omissions and decoy-card leaks card by card, and counting the tray as
+        another group would let a single omission masquerade as a split of its key
+        group.
+      </p>
+
+      <p>
+        Some analyses may intentionally treat unplaced cards as a response
+        category. For example, an item prompt might make <q>leave it out</q> one of
+        the classifications. In that setting, the same non-zero entry counts can be
+        computed from the full confusion matrix <m>M(X)</m>, including the tray
+        row and column. That choice turns omissions and decoy-card leaks into
+        grouping structure, so it should be stated explicitly rather than adopted
+        silently.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-pairwise-agreement-metrics">
+    <title>Pairwise Agreement Metrics</title>
+
+    <introduction>
+      <p>
+        Merge and split counts locate grouping errors but do not measure their size. 
+        A slot that merges two singletons and a slot that merges two four-card groups 
+        both count once. Pairwise metrics supply magnitudes by comparing the response 
+        and key groupings over unordered pairs of co-placed cards, then compressing 
+        the comparison into one index.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-pair-counts">
+      <title>Pair Counts</title>
+
+      <p>
+        Fix a state <m>X</m> and let <m>n=n(X)</m> be the number of co-placed cards.
+        Each unordered pair of distinct co-placed cards falls into one of four
+        categories, according to whether the response groups the pair together and
+        whether the key groups the pair together.
+      </p>
+
+      <table xml:id="tab-pair-counts">
+        <title>Pair categories for comparing the response and key groupings.</title>
+        <tabular valign="top" bottom="minor">
+          <col width="22%" halign="left"/>
+          <col width="36%" halign="left"/>
+          <col width="42%" halign="left"/>
+          <row bottom="medium">
+            <cell><p>Category</p></cell>
+            <cell><p>Condition</p></cell>
+            <cell><p>Interpretation</p></cell>
+          </row>
+          <row>
+            <cell><p>grouped pair</p></cell>
+            <cell><p>together in response, together in key</p></cell>
+            <cell><p>A pair that belongs together has been kept together.</p></cell>
+          </row>
+          <row>
+            <cell><p>merge pair</p></cell>
+            <cell><p>together in response, apart in key</p></cell>
+            <cell><p>A pair from different key groups has been merged.</p></cell>
+          </row>
+          <row>
+            <cell><p>split pair</p></cell>
+            <cell><p>apart in response, together in key</p></cell>
+            <cell><p>A pair from one key group has been separated.</p></cell>
+          </row>
+          <row>
+            <cell><p>separated pair</p></cell>
+            <cell><p>apart in response, apart in key</p></cell>
+            <cell><p>A pair that belongs apart has been kept apart.</p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        Grouped and separated pairs are in pairwise-agreement; merge and split pairs 
+        are in key-disagreement. The four counts sum to <m>\binom{n}{2}</m>.
+      </p>
+
+      <p>
+        The counts are computed from the slot block. Write <m>N_{a\ \cdot}</m> and
+        <m>N_{\cdot\ b}</m> for the row and column sums of <m>N(X)</m>. The numbers
+        of pairs together in the response, together in the key, and together in
+        both are
+        <md xml:id="an-pair-together-counts">
+          T_X=\sum_{a=1}^{R}\binom{N_{a\ \cdot}}{2},
+          \qquad
+          T_\star=\sum_{b=1}^{R}\binom{N_{\cdot\ b}}{2},
+          \qquad
+          T_{X\star}=\sum_{a,b=1}^{R}\binom{N_{ab}}{2}.
+        </md>
+        Hence
+        <md>
+          \#\{\text{merge pairs}\}=T_X-T_{X\star},
+          \qquad
+          \#\{\text{split pairs}\}=T_\star-T_{X\star},
+        </md>
+        and the pairwise-agreement count is
+        <m>\binom{n}{2}-T_X-T_\star+2T_{X\star}</m>.
+      </p>
+
+      <p>
+        Pairwise metrics are undefined or uninformative when <m>n&lt;2</m>, because
+        there are no co-placed pairs to compare. In that case they should be
+        reported as missing rather than as zero.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-rand-index">
+      <title>Rand Index</title>
+
+      <p>
+        For <m>n\geq 2</m>, the <term>Rand index</term> is the pairwise-agreement fraction:
+        <md xml:id="rand-index">
+          RI(X)
+          =
+          \frac{\binom{n}{2}-T_X-T_\star+2T_{X\star}}{\binom{n}{2}}.
+        </md>
+        A value of <m>1</m> means the response and key groupings agree on every
+        co-placed pair. Smaller values mean fewer pairwise agreements.
+      </p>
+
+      <p>
+        The Rand index is simple but can be inflated by separated pairs. When an
+        item has many small key groups, most pairs belong apart, and many responses
+        keep most of those pairs apart. The adjusted Rand index removes this block
+        size baseline.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-adjusted-rand-index">
+      <title>Adjusted Rand Index</title>
+
+      <p>
+        The <term>adjusted Rand index</term> corrects for the agreement expected
+        from random groupings with the same block sizes. In terms of the
+        <xref ref="an-pair-together-counts" text="custom">together-counts</xref>,
+        the expected value of <m>T_{X\star}</m> under random matching is
+        <m>T_XT_\star/\binom{n}{2}</m>, and
+        <md xml:id="an-adjusted-rand-index">
+          ARI(X)
+          =
+          \frac{T_{X\star}-\dfrac{T_XT_\star}{\binom{n}{2}}}
+          {\dfrac{1}{2}\bigl(T_X+T_\star\bigr)-\dfrac{T_XT_\star}{\binom{n}{2}}}.
+        </md>
+      </p>
+
+      <p>
+        The adjusted index equals <m>1</m> when the groupings agree exactly, is near
+        <m>0</m> at the chance baseline, and can be negative when agreement falls
+        below that baseline. If the denominator is zero, the index is degenerate;
+        the analysis should report that case rather than forcing a numeric value.
+        Because the correction depends on block sizes, the adjusted index is
+        preferable to the Rand index when comparing items or cohorts with different
+        group-size profiles.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-variation-of-information">
+      <title>Variation of Information</title>
+
+      <p>
+        Information theory gives a distance-like comparison between groupings. Let
+        <m>\Pi</m> and <m>\Pi^\star</m> be the response and key partitions of the
+        co-placed cards, with block sizes given by the margins of <m>N(X)</m>. For
+        <m>n>0</m>, define
+        <md>
+          p_{ab}=\frac{N_{ab}}{n},
+          \qquad
+          p_{a\ \cdot}=\frac{N_{a\ \cdot}}{n},
+          \qquad
+          p_{\cdot\ b}=\frac{N_{\cdot\ b}}{n}.
+        </md>
+        The <term>variation of information</term> is
+        <md xml:id="an-variation-of-information">
+          VI(\Pi,\Pi^\star)
+          =
+          H(\Pi)+H(\Pi^\star)-2I(\Pi;\Pi^\star),
+        </md>
+        where
+        <md>
+          H(\Pi)=-\sum_{a} p_{a\ \cdot}\log(p_{a\ \cdot}),
+          \qquad
+          H(\Pi^\star)=-\sum_{b} p_{\cdot\ b}\log(p_{\cdot\ b}),
+        </md>
+        and
+        <md>
+          I(\Pi;\Pi^\star)
+          =
+          \sum_{a,b}
+          p_{ab}\log\left(\frac{p_{ab}}{p_{a\ \cdot}\,p_{\cdot\ b}}\right).
+        </md>
+        Terms with zero probability are omitted, equivalently using the convention
+        <m>0\log(0)=0</m>. Any logarithm base may be used if reported; the examples
+        below use base <m>2</m>, so the units are bits.
+      </p>
+
+      <p>
+        Unlike the Rand family, variation of information is zero exactly when the
+        two partitions coincide and increases as the groupings diverge. On the
+        space of partitions it satisfies the triangle inequality. When <m>n=0</m>,
+        there is no co-placed set on which to compare groupings, so <m>VI</m>
+        should be treated as missing.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-five-card-variant">
+      <title>A Larger Worked Example</title>
+
+      <p>
+        The four-card running question is deliberately too small for stable
+        pairwise indices: its largest key group is a pair, and a single moved card
+        can swing every index. To make the calculations visible, this subsection
+        enlarges the Triangle category by one card. The example is a hypothetical
+        snapshot on a variant question, not pilot data, and it does not change the
+        four-card running example used elsewhere.
+      </p>
+
+      <p>
+        Add an isosceles triangle to the shapes question, listed with the other
+        triangles. In source order the cards are <m>c_1</m> (equilateral triangle),
+        <m>c_2</m> (right triangle), <m>c_3</m> (isosceles triangle), <m>c_4</m>
+        (square), and <m>c_5</m> (circle), giving <m>P=5</m>. The zones are
+        unchanged: <m>R=3</m>, with Pentagon <m>z_3</m> still a
+        <xref ref="gt-decoy-slot" text="custom">decoy slot</xref> and the circle
+        still a decoy card. The key sends all three triangles to <m>z_1</m>:
+        <md xml:id="an-five-card-key">
+          s^\star = (1,1,1,2,0),
+          \qquad
+          X^\star =
+          \begin{bmatrix}
+            0 \amp 0 \amp 0 \amp 0 \amp 1 \\
+            1 \amp 1 \amp 1 \amp 0 \amp 0 \\
+            0 \amp 0 \amp 0 \amp 1 \amp 0 \\
+            0 \amp 0 \amp 0 \amp 0 \amp 0
+          \end{bmatrix}.
+        </md>
+      </p>
+
+      <p>
+        Consider the hypothetical checked configuration
+        <md>
+          s = (1,1,2,2,3).
+        </md>
+        The student keeps two triangles in Triangle, drops the isosceles triangle
+        in with the square, and parks the circle in the empty Pentagon. Three of
+        the five cards sit in their home zones, so <m>\sigma(X)=3</m> and
+        <m>d^\star(X)=2</m>. The confusion matrix and its slot block submatrix are
+        <md xml:id="an-five-card-confusion">
+          M(X) =
+          \begin{bmatrix}
+            0 \amp 0 \amp 0 \amp 0 \\
+            0 \amp 2 \amp 0 \amp 0 \\
+            0 \amp 1 \amp 1 \amp 0 \\
+            1 \amp 0 \amp 0 \amp 0
+          \end{bmatrix},
+          \qquad
+          N(X) =
+          \begin{bmatrix}
+            2 \amp 0 \amp 0 \\
+            1 \amp 1 \amp 0 \\
+            0 \amp 0 \amp 0
+          \end{bmatrix}.
+        </md>
+        The table shows no omissions and one decoy-card leak, <m>M_{30}=1</m>,
+        the circle in the decoy slot. In the slot block, the second row has 
+        non-zero entries on two columns, so there is one merge. The first column 
+        has non-zero entries on two rows, so there is one split. Thus
+        <m>E_{\operatorname{merge}}=E_{\operatorname{split}}=1</m>. Relabeling the
+        slots gains nothing: <m>\widetilde{\sigma}(X)=\sigma(X)=3</m>, so the
+        labeling gap is zero. This response is wrong in its grouping, not in its
+        names.
+      </p>
+
+      <p>
+        The co-placed cards are <m>\{c_1,c_2,c_3,c_4\}</m>, since the key leaves
+        the circle in the tray. Thus <m>n=4</m> and <m>\binom{4}{2}=6</m>. The
+        <xref ref="an-pair-together-counts" text="custom">together-counts</xref> are
+        <md>
+          T_X=\binom{2}{2}+\binom{2}{2}=2,
+          \qquad
+          T_\star=\binom{3}{2}+\binom{1}{2}=3,
+          \qquad
+          T_{X\star}=\binom{2}{2}=1.
+        </md>
+        There is one merge pair, two split pairs, and three agreement pairs. The
+        Rand index is therefore
+        <md>
+          RI(X)=\frac{3}{6}=\frac{1}{2}.
+        </md>
+      </p>
+
+      <p>
+        Taken alone, <m>RI=\tfrac12</m> sounds like moderate agreement. But with
+        these block sizes, the expected together-in-both count is
+        <m>T_XT_\star/\binom{n}{2}=2\cdot 3/6=1</m>, exactly what was observed.
+        Hence
+        <md>
+          ARI(X)
+          =
+          \frac{1-1}{\tfrac{1}{2}(2+3)-1}
+          =
+          0.
+        </md>
+        On the entropy scale, the response blocks have sizes <m>(2,2)</m> and the
+        key blocks have sizes <m>(3,1)</m>. In bits,
+        <md>
+          H(\Pi)=1,
+          \qquad
+          H(\Pi^\star)\approx 0.811,
+          \qquad
+          I(\Pi;\Pi^\star)\approx 0.311,
+        </md>
+        so
+        <md>
+          VI(\Pi,\Pi^\star)
+          \approx
+          1.189
+          \text{ bits}.
+        </md>
+      </p>
+
+      <p>
+        This example shows why the advanced diagnostics are not redundant with the
+        baseline score. The response has a per-card score of <m>3/5</m>, but its
+        adjusted grouping agreement is at the chance baseline. The swapped-slots
+        response of <xref ref="subsec-label-free-example" text="title"/> fails in
+        the opposite direction: a poor labeled score hides a perfect grouping. The
+        two diagnostics reveal different structure.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-pairwise-metric-choice">
+      <title>Choosing and Trusting a Pairwise Metric</title>
+
+      <p>
+        Among the three indices, the Rand index is easiest to explain but can be
+        inflated by separated pairs. The adjusted Rand index is the default choice
+        for comparing items or cohorts with different group sizes. Variation of
+        information is preferable when a true distance between groupings is needed,
+        for instance in clustering response patterns.
+      </p>
+
+      <p>
+        All three are unstable on a single small answer. The worked example above
+        rests on four co-placed cards and six pairs; one moved card changes every
+        index. These metrics are most useful at cohort scale, pooled or compared
+        across many students and items. They must be computed from per-student
+        configurations, not from the placement heatmap
+        (<xref ref="subsec-linear-summaries-from-heatmaps" text="title"/>). As with
+        label-free agreement, they should be reported only when grouping structure
+        is part of the intended analysis; they do not replace labeled accuracy when
+        the category names are essential.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-weighted-and-semantic-distances">
+    <title>Weighted and Semantic Distances</title>
+
+    <introduction>
+      <p>
+        The features so far relaxed which comparisons count as agreement. The final
+        family keeps the labeled comparison but changes how much each error costs.
+        The baseline distance treats every misplaced card as one unit wrong.
+        Weighted distances let some wrong placements cost more than others.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-zone-weighted-distance">
+      <title>Zone-Weighted Distance</title>
+
+      <p>
+        Let <m>C=(C_{ih})_{0\leq i,h\leq R}</m> be a nonnegative cost matrix on
+        zones. The entry <m>C_{ih}</m> is the cost of a card sitting in zone
+        <m>z_i</m> when its home zone is <m>z_h</m>. Correct placements have zero
+        cost:
+        <md>
+          C_{hh}=0
+          \qquad
+          \text{for every } h\in\mathcal{Z}.
+        </md>
+        Because <m>M_{ih}(X)</m> counts exactly how many cards are in that
+        current-home relation, the <term>zone-weighted distance</term> is
+        <md xml:id="an-zone-weighted-distance">
+          L_C(X,X^\star)
+          =
+          \sum_{i=0}^{R}\sum_{h=0}^{R} C_{ih}M_{ih}(X).
+        </md>
+        Taking <m>C_{ih}=1</m> for <m>i\neq h</m> and <m>C_{hh}=0</m> recovers
+        the ordinary key distance <m>d^\star(X)</m>. Thus the baseline distance is
+        the unit-cost special case.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-card-weighted-distance">
+      <title>Card-Weighted Distance</title>
+
+      <p>
+        Sometimes the cost of an error depends on the card, not only on the zone.
+        Let <m>A=(A_{ij})</m> be a nonnegative card-zone cost matrix, where
+        <m>A_{ij}</m> is the cost of placing card <m>j</m> in zone <m>z_i</m>. The
+        home placement of each card has zero cost:
+        <md>
+          A_{s^\star(j),j}=0
+          \qquad
+          \text{for every } j\in\mathcal{P}.
+        </md>
+        The <term>card-weighted distance</term> is
+        <md xml:id="an-card-weighted-distance">
+          L_A^{\operatorname{card}}(X,X^\star)
+          =
+          \sum_{j=1}^{P}\sum_{i=0}^{R} A_{ij}X_{ij}.
+        </md>
+        This allows the same wrong zone to carry different penalties for different
+        cards.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-semantic-distance">
+      <title>Semantic Distance</title>
+
+      <p>
+        A weighted distance becomes a <term>semantic distance</term> when the costs
+        encode content relationships among categories or cards. A rubric might
+        charge less for confusing two closely related mathematical categories than
+        for confusing unrelated ones. In the shapes example, a triangle placed in
+        Quadrilateral might receive a smaller cost than a circle placed in an
+        authored polygon slot, if the analysis treats polygon confusions as closer
+        than non-polygon confusions.
+      </p>
+
+      <p>
+        Semantic costs may come from expert judgment, a rubric, a concept map,
+        prior item analysis, or a stated research hypothesis. They are modeling
+        choices, not direct measurements. They should not be treated as objective
+        facts unless justified separately.
+      </p>
+
+      <p>
+        A useful normalized version anchors the scale at the
+        <xref ref="gt-initial-state" text="custom">initial state</xref>:
+        <md xml:id="an-normalized-weighted-score">
+          S_C(X)
+          =
+          1-\frac{L_C(X,X^\star)}{L_C(X_0,X^\star)},
+          \qquad
+          L_C(X_0,X^\star)\neq 0.
+        </md>
+        It puts the initial state at <m>0</m> and the key at <m>1</m>, but the
+        meaning of intermediate values is determined entirely by the chosen costs.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-weight-choice-warning">
+      <title>Interpreting Weights</title>
+
+      <p>
+        Weighted distances are powerful because they encode domain knowledge, and
+        risky for the same reason. Different cost matrices can rank the same pair
+        of student responses in opposite orders. The cost matrix is part of the
+        result and must be reported with it.
+      </p>
+
+      <p>
+        In a methods study, the unweighted distance should remain the baseline.
+        Weighted and semantic distances are extensions whose interpretation stands
+        or falls with the stated weighting scheme.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-advanced-feature-summary">
+    <title>Summary</title>
+
+    <p>
+      The features of this chapter extend the baseline comparison in three
+      directions. Label-free agreement preserves the tray boundary but ignores slot
+      names. Partition views, merge and split counts, and pairwise indices compare
+      grouping structure. Weighted and semantic distances keep the labeled
+      comparison but let errors carry unequal costs.
+    </p>
+
+    <table xml:id="tab-advanced-feature-summary">
+      <title>Summary of advanced comparison features.</title>
+      <tabular valign="top" bottom="minor">
+        <col width="28%" halign="left"/>
+        <col width="34%" halign="left"/>
+        <col width="38%" halign="left"/>
+        <row bottom="medium">
+          <cell><p>Feature family</p></cell>
+          <cell><p>Question answered</p></cell>
+          <cell><p>Use when</p></cell>
+        </row>
+        <row>
+          <cell><p>label-free agreement <m>\widetilde{\sigma}</m>, gap <m>\widetilde{\sigma}-\sigma</m></p></cell>
+          <cell><p>Would renaming the slots make the response correct?</p></cell>
+          <cell><p>The analysis needs to separate naming errors from grouping failures.</p></cell>
+        </row>
+        <row>
+          <cell><p>partition views, slot block <m>N(X)</m></p></cell>
+          <cell><p>Which cards are grouped together?</p></cell>
+          <cell><p>The item or research question concerns grouping structure.</p></cell>
+        </row>
+        <row>
+          <cell><p>merge and split counts</p></cell>
+          <cell><p>Were key groups combined or divided, and where?</p></cell>
+          <cell><p>The analysis needs named structural grouping errors.</p></cell>
+        </row>
+        <row>
+          <cell><p>pairwise indices <m>RI</m>, <m>ARI</m>, <m>VI</m></p></cell>
+          <cell><p>How similar are two groupings as a single number?</p></cell>
+          <cell><p>Grouping agreement is being summarized at cohort scale.</p></cell>
+        </row>
+        <row>
+          <cell><p>weighted distances <m>L_C</m>, <m>L_A^{\operatorname{card}}</m></p></cell>
+          <cell><p>How costly is the response under a chosen rubric?</p></cell>
+          <cell><p>Errors are deliberately weighted unequally.</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      All of these features are optional additions to the framework. The labeled
+      baseline features remain the default description of correctness because they
+      match what the grader evaluated and what the student saw. The features here
+      should be introduced only when the <xref ref="gt-item-design" text="custom">item design</xref>
+      or research question calls for a more flexible comparison, and each use
+      should state which comparison was made.
+    </p>
+
+    <p>
+      With the feature vocabulary now complete, the framework turns from
+      description to inference. The next chapter, <xref ref="ch-statistical-modeling"/>,
+      treats these features as covariates and outcomes in a statistical modeling
+      layer and asks whether the patterns they describe are stable across students,
+      items, and semesters.
+    </p>
+  </section>
+</chapter>

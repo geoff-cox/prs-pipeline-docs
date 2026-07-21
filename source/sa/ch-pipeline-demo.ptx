@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Pipeline-in-action chapter for the PROTEUS automation tool.
+  Drop-in PreTeXt source. Cross-referenced via xml:id="ch-pipeline-demo".
+  Uses five real responses from ula_shortanswers_MERGED.csv to illustrate
+  the database state evolving through each pipeline stage.
+
+  All codebook codes shown are synthetic placeholders (CODE_A, CODE_B,
+  CODE_C), deliberately distinct from the canonical CS1-CS10 IDs; the
+  demo is fixture data, not the codebook.
+-->
+
+<chapter xml:id="ch-pipeline-demo">
+  <title>The Pipeline in Action</title>
+
+  <introduction>
+    <p>
+      The previous chapter described the pipeline at the level of design
+      and intent. This chapter shows it running. We pick five real student
+      responses from the pivot question on sheet <c>1.4.8</c> and walk
+      each one through every stage, showing exactly what data the pipeline
+      writes to the database after each step. By the end of the walkthrough
+      the database contains rows in fourteen tables, the five responses
+      have arrived at five different dispositions, and a reviewer can see
+      the state of every response at every stage in a single query.
+    </p>
+
+    <p>
+      The five responses were picked deliberately, one per disposition, so
+      that the demo exercises every branch of the pipeline:
+    </p>
+
+    <table xml:id="tab-demo-cast">
+      <title>The five demo responses and the disposition each is built to
+      illustrate.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <row header="yes" bottom="medium">
+          <cell>Tag</cell>
+          <cell>Student</cell>
+          <cell>What it illustrates</cell>
+        </row>
+        <row>
+          <cell><c>R1</c></cell>
+          <cell><c>212I-003-09</c></cell>
+          <cell>Clean single-criterion justification: <c>auto_accept</c></cell>
+        </row>
+        <row>
+          <cell><c>R2</c></cell>
+          <cell><c>212l-003-11</c></cell>
+          <cell>Blank response: <c>EXCLUDE</c> at Stage 2, then <c>escalate</c></cell>
+        </row>
+        <row>
+          <cell><c>R3</c></cell>
+          <cell><c>212I-003-22</c></cell>
+          <cell>Multi-criterion justification: <c>standard_review</c></cell>
+        </row>
+        <row>
+          <cell><c>R4</c></cell>
+          <cell><c>212I-002-10</c></cell>
+          <cell>Out-of-vocabulary phrasing: <c>terminology_flag</c></cell>
+        </row>
+        <row>
+          <cell><c>R5</c></cell>
+          <cell><c>212I-001-07</c></cell>
+          <cell>Chain extracted but nothing in the codebook fits: <c>no_match</c></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      The full text of each response appears at the relevant stage below.
+      Codebook codes shown throughout this chapter are synthetic
+      placeholders (<c>CODE_A</c>, <c>CODE_B</c>, <c>CODE_C</c>),
+      deliberately distinct from the canonical codebook IDs
+      <c>CS1</c>&#8211;<c>CS10</c>: the demo is fixture data illustrating
+      the pipeline mechanics, not the codebook, and those mechanics do
+      not depend on which IDs are in play.
+    </p>
+
+    <remark>
+      <title>About the data shown</title>
+      <p>
+        The response texts in this chapter are verbatim from
+        <c>ula_shortanswers_MERGED.csv</c>. The screening labels, chain
+        steps, and pattern matches are illustrative: this chapter shows
+        what the pipeline <em>would</em> write to the database, not the
+        output of an actual prompt against a live model. The schema and
+        the data shapes, however, are exactly what a working
+        implementation produces.
+      </p>
+    </remark>
+  </introduction>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: Bootstrap                                           -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-demo-bootstrap">
+    <title>Before the Pipeline Runs: Bootstrap Tables</title>
+
+    <p>
+      A few tables are populated before any response data is ingested.
+      They establish the codebook version, the controlled vocabulary, and
+      the registered reviewers. These tables exist mainly so that every
+      downstream row knows which version of the codebook and vocabulary
+      it was produced against.
+    </p>
+
+    <p>
+      The codebook table (placeholder content):
+    </p>
+
+    <table xml:id="tab-demo-codebook">
+      <title>Initial state of the <c>codebook</c> table.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <row header="yes" bottom="medium">
+          <cell><c>code_id</c></cell>
+          <cell><c>version_id</c></cell>
+          <cell><c>name</c></cell>
+          <cell><c>description</c></cell>
+        </row>
+        <row>
+          <cell><c>CODE_A</c></cell>
+          <cell>1</cell>
+          <cell>Free variables (placeholder)</cell>
+          <cell>Uses presence of free variables to classify the solution set.</cell>
+        </row>
+        <row>
+          <cell><c>CODE_B</c></cell>
+          <cell>1</cell>
+          <cell>Pivot structures (placeholder)</cell>
+          <cell>Uses count or existence of pivots to classify the solution set.</cell>
+        </row>
+        <row>
+          <cell><c>CODE_C</c></cell>
+          <cell>1</cell>
+          <cell>Relating two countables (placeholder)</cell>
+          <cell>Compares two countable features (e.g. <m>\#\text{vars}</m> vs. <m>\#\text{pivots}</m>).</cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      And the controlled vocabulary the chain extractor will produce its
+      output in:
+    </p>
+
+    <table xml:id="tab-demo-vocab">
+      <title>Initial state of the <c>vocabulary</c> table.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <row header="yes" bottom="medium">
+          <cell><c>term_id</c></cell>
+          <cell><c>canonical_form</c></cell>
+        </row>
+        <row><cell>1</cell><cell><c>free_var_exists</c></cell></row>
+        <row><cell>2</cell><cell><c>more_vars_than_pivots</c></cell></row>
+        <row><cell>3</cell><cell><c>no_unique_solution</c></cell></row>
+        <row><cell>4</cell><cell><c>system_consistent</c></cell></row>
+        <row><cell>5</cell><cell><c>infinite_solutions</c></cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      Two reviewers are registered (<c>geoff</c> and <c>ayla</c>). A new
+      pipeline run is then started, which writes a single row to the
+      <c>pipeline_runs</c> table tagged with the codebook version, the
+      vocabulary version, the prompt version, and the model identifier.
+      Every row the pipeline writes from this point forward references
+      this run's ID, so the entire output of one run is recoverable from
+      a single key.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: Stage 1                                             -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-demo-stage-1">
+    <title>Stage 1: Ingest</title>
+
+    <p>
+      The DataShop <c>.tab</c> file is read, short-answer events for the
+      target question are extracted, and one row per response is written
+      to the <c>responses</c> table. The full raw file is recorded in
+      <c>raw_imports</c>, with its SHA-256 hash for de-duplication.
+    </p>
+
+    <p>
+      Each <c>response_id</c> is a deterministic hash of
+      <m>(\textit{student\_id}, \textit{question\_id}, \textit{timestamp})</m>,
+      truncated to sixteen characters. The hash means re-importing the
+      same file produces the same row IDs, so re-imports are idempotent
+      rather than destructive.
+    </p>
+
+    <table xml:id="tab-demo-stage-1">
+      <title>State of the <c>responses</c> table after Stage 1.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <row header="yes" bottom="medium">
+          <cell><c>response_id</c></cell>
+          <cell><c>student_id</c></cell>
+          <cell><c>response_text</c> (truncated)</cell>
+        </row>
+        <row>
+          <cell><c>a1f3...c2e9</c></cell>
+          <cell><c>212I-003-09</c></cell>
+          <cell>There is free variable so it is not possible to have unique solution.</cell>
+        </row>
+        <row>
+          <cell><c>b88e...4071</c></cell>
+          <cell><c>212l-003-11</c></cell>
+          <cell><em>(blank)</em></cell>
+        </row>
+        <row>
+          <cell><c>3d22...90a4</c></cell>
+          <cell><c>212I-003-22</c></cell>
+          <cell>One and only one solution is not possible because there will be a free variable since there are more variables than rows. We can only have 4 pivot positions at max.</cell>
+        </row>
+        <row>
+          <cell><c>7f01...88bc</c></cell>
+          <cell><c>212I-002-10</c></cell>
+          <cell>It depends what is in the augmented matrix</cell>
+        </row>
+        <row>
+          <cell><c>5cd9...e417</c></cell>
+          <cell><c>212I-001-07</c></cell>
+          <cell>Its the same because as we've discussed in class only 4 pivot points would be available.</cell>
+        </row>
+      </tabular>
+    </table>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: Stage 2                                             -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-demo-stage-2">
+    <title>Stage 2: Eligibility Screening</title>
+
+    <p>
+      Each response is sent to the screener, which returns a label, a
+      confidence, and a one-sentence rationale. The result is written to
+      the <c>screenings</c> table. The original responses are not modified.
+    </p>
+
+    <table xml:id="tab-demo-stage-2">
+      <title>State of the <c>screenings</c> table after Stage 2.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <row header="yes" bottom="medium">
+          <cell><c>student_id</c></cell>
+          <cell><c>label</c></cell>
+          <cell><c>confidence</c></cell>
+          <cell><c>rationale</c></cell>
+        </row>
+        <row>
+          <cell><c>212I-003-09</c></cell>
+          <cell><c>INCLUDE</c></cell>
+          <cell>0.96</cell>
+          <cell>Connector ("so") + named criterion ("free variable").</cell>
+        </row>
+        <row>
+          <cell><c>212l-003-11</c></cell>
+          <cell><c>EXCLUDE</c></cell>
+          <cell>0.99</cell>
+          <cell>Empty response.</cell>
+        </row>
+        <row>
+          <cell><c>212I-003-22</c></cell>
+          <cell><c>INCLUDE</c></cell>
+          <cell>0.95</cell>
+          <cell>Multiple connectors and multiple named criteria.</cell>
+        </row>
+        <row>
+          <cell><c>212I-002-10</c></cell>
+          <cell><c>INCLUDE</c></cell>
+          <cell>0.71</cell>
+          <cell>Hedging response with conditional reasoning; criterion is meta-level.</cell>
+        </row>
+        <row>
+          <cell><c>212I-001-07</c></cell>
+          <cell><c>INCLUDE</c></cell>
+          <cell>0.83</cell>
+          <cell>Connector ("because") + numerical reference ("4 pivot points").</cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      <c>R2</c> exits the pipeline here. Its row in <c>responses</c> is
+      preserved; no further processing is attempted on it. Stage 5 will
+      eventually write a <c>disposition</c> row of <c>escalate</c> for it,
+      so that it appears in the human review queue with a clear note that
+      the screener excluded it. The other four responses move on to
+      Stage 3.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: Stage 3                                             -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-demo-stage-3">
+    <title>Stage 3: Reasoning Chain Extraction</title>
+
+    <p>
+      For each <c>INCLUDE</c>'d response, the chain extractor produces a
+      numbered list of inferential steps in the controlled vocabulary.
+      Each step has the form <em>premise &#x2192; conclusion</em>; the
+      premise is null for steps that introduce an observation rather than
+      derive one. Steps that contain a term not present in the controlled
+      vocabulary are flagged with <c>oov_flag = 1</c>.
+    </p>
+
+    <p>
+      Each chain produces one row in <c>chains</c> and several rows in
+      <c>chain_steps</c>. After Stage 3, the chain-related tables look
+      like the following.
+    </p>
+
+    <table xml:id="tab-demo-stage-3">
+      <title>State of the <c>chain_steps</c> table after Stage 3, joined
+      with <c>chains</c> and <c>responses</c> for readability.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <row header="yes" bottom="medium">
+          <cell><c>student</c></cell>
+          <cell><c>step</c></cell>
+          <cell><c>premise</c></cell>
+          <cell><c>conclusion</c></cell>
+          <cell><c>oov</c></cell>
+        </row>
+        <row><cell><c>212I-003-09</c></cell><cell>1</cell><cell>&#x2014;</cell><cell><c>free_var_exists</c></cell><cell>0</cell></row>
+        <row><cell><c>212I-003-09</c></cell><cell>2</cell><cell><c>free_var_exists</c></cell><cell><c>no_unique_solution</c></cell><cell>0</cell></row>
+        <row><cell><c>212I-003-22</c></cell><cell>1</cell><cell>&#x2014;</cell><cell><c>free_var_exists</c></cell><cell>0</cell></row>
+        <row><cell><c>212I-003-22</c></cell><cell>2</cell><cell>&#x2014;</cell><cell><c>more_vars_than_pivots</c></cell><cell>0</cell></row>
+        <row><cell><c>212I-003-22</c></cell><cell>3</cell><cell><c>more_vars_than_pivots</c></cell><cell><c>free_var_exists</c></cell><cell>0</cell></row>
+        <row><cell><c>212I-003-22</c></cell><cell>4</cell><cell><c>free_var_exists</c></cell><cell><c>no_unique_solution</c></cell><cell>0</cell></row>
+        <row><cell><c>212I-002-10</c></cell><cell>1</cell><cell>&#x2014;</cell><cell><c>solution_depends_on_b</c></cell><cell>1</cell></row>
+        <row><cell><c>212I-001-07</c></cell><cell>1</cell><cell>&#x2014;</cell><cell><c>only_4_pivots_available</c></cell><cell>0</cell></row>
+        <row><cell><c>212I-001-07</c></cell><cell>2</cell><cell><c>only_4_pivots_available</c></cell><cell><c>same_solution_set</c></cell><cell>0</cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      Two things are worth flagging in this output.
+    </p>
+
+    <p>
+      <c>R3</c>'s chain has four steps because the student's response
+      contains two parallel arguments: a count-comparison argument
+      (<q>more variables than rows</q>) and a free-variable argument
+      (<q>there will be a free variable</q>). The chain extractor
+      represents these as a sequence rather than as parallel branches; the
+      matching stage will pick up patterns at any step.
+    </p>
+
+    <p>
+      <c>R4</c> produces a single OOV-flagged step. The student's response
+      (<q>It depends what is in the augmented matrix</q>) is not making a
+      claim about pivots, free variables, or solution set cardinality &#x2014;
+      it is hedging the entire question on the contents of <m>b</m>. The
+      controlled vocabulary has no proposition for <q>solution depends on
+      <m>b</m></q>, so the extractor invents one and flags it as out of
+      vocabulary. This is the signal that Stage 5 will later use to route
+      the response for terminology review.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: Stage 4                                             -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-demo-stage-4">
+    <title>Stage 4: Pattern Matching</title>
+
+    <p>
+      For each chain step, the matcher iterates over every codebook entry
+      and reports each pattern that fires. There is no preference rule and
+      no winner-take-all logic: every match is recorded. Matches are
+      written to the <c>matches</c> table, keyed by step.
+    </p>
+
+    <table xml:id="tab-demo-stage-4">
+      <title>State of the <c>matches</c> table after Stage 4.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <row header="yes" bottom="medium">
+          <cell><c>student</c></cell>
+          <cell><c>step</c></cell>
+          <cell><c>code</c></cell>
+          <cell><c>rationale</c></cell>
+        </row>
+        <row>
+          <cell><c>212I-003-09</c></cell>
+          <cell>2</cell>
+          <cell><c>CODE_A</c></cell>
+          <cell>Free variable used to constrain solution set.</cell>
+        </row>
+        <row>
+          <cell><c>212I-003-22</c></cell>
+          <cell>2</cell>
+          <cell><c>CODE_C</c></cell>
+          <cell>Compares <m>\#\text{vars}</m> and <m>\#\text{rows}</m>.</cell>
+        </row>
+        <row>
+          <cell><c>212I-003-22</c></cell>
+          <cell>4</cell>
+          <cell><c>CODE_A</c></cell>
+          <cell>Free variable rules out unique.</cell>
+        </row>
+        <row>
+          <cell><c>212I-003-22</c></cell>
+          <cell>4</cell>
+          <cell><c>CODE_B</c></cell>
+          <cell>Pivot count classifies solution set.</cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      <c>R4</c> and <c>R5</c> have no rows in the <c>matches</c> table.
+      For <c>R4</c>, the chain's only step is OOV, and OOV terms cannot
+      match codebook patterns by construction. For <c>R5</c>, the steps
+      are in vocabulary but no codebook pattern fires: the student's
+      reasoning relies on a partial pivot-count observation that does not
+      reach a control-structure-grade conclusion. Both situations are
+      handled at Stage 5.
+    </p>
+
+    <p>
+      <c>R3</c> produces three matches across two steps. Step 4 in
+      particular fires two different codes (<c>CODE_A</c> and <c>CODE_B</c>)
+      because the same proposition can be read through two lenses: as a
+      free-variable argument or as a pivot-count argument. The matcher
+      reports both and lets Stage 5 raise the situation for human review
+      rather than guessing which the student meant.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: Stage 5                                             -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-demo-stage-5">
+    <title>Stage 5: Disposition</title>
+
+    <p>
+      For each response, Stage 5 looks at what the previous stages produced
+      and decides where the response should go: directly accepted, sent
+      for ordinary review, flagged for a specific reason, or escalated to
+      full manual coding. The decision is written to the <c>dispositions</c>
+      table. Stage 5 introduces no new analysis; it is a small set of
+      rules over the structured outputs of Stages 2&#x2013;4.
+    </p>
+
+    <table xml:id="tab-demo-stage-5">
+      <title>State of the <c>dispositions</c> table after Stage 5.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <row header="yes" bottom="medium">
+          <cell><c>student</c></cell>
+          <cell><c>screening</c></cell>
+          <cell><c>disposition</c></cell>
+          <cell><c>trigger_note</c></cell>
+        </row>
+        <row>
+          <cell><c>212I-003-09</c></cell>
+          <cell><c>INCLUDE</c></cell>
+          <cell><c>auto_accept</c></cell>
+          <cell>Single clean match.</cell>
+        </row>
+        <row>
+          <cell><c>212l-003-11</c></cell>
+          <cell><c>EXCLUDE</c></cell>
+          <cell><c>escalate</c></cell>
+          <cell>Excluded at Stage 2.</cell>
+        </row>
+        <row>
+          <cell><c>212I-003-22</c></cell>
+          <cell><c>INCLUDE</c></cell>
+          <cell><c>standard_review</c></cell>
+          <cell>3 distinct codes matched across 4 chain steps.</cell>
+        </row>
+        <row>
+          <cell><c>212I-002-10</c></cell>
+          <cell><c>INCLUDE</c></cell>
+          <cell><c>terminology_flag</c></cell>
+          <cell>OOV term, no matches.</cell>
+        </row>
+        <row>
+          <cell><c>212I-001-07</c></cell>
+          <cell><c>INCLUDE</c></cell>
+          <cell><c>no_match</c></cell>
+          <cell>Chain extracted but no codes matched.</cell>
+        </row>
+      </tabular>
+    </table>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION: End-to-end summary                                  -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-demo-summary">
+    <title>End-to-end Trace</title>
+
+    <p>
+      The five responses now occupy rows in seven different tables (more if
+      you count the bootstrap and provenance tables): <c>responses</c>,
+      <c>screenings</c>, <c>chains</c>, <c>chain_steps</c>, <c>matches</c>,
+      <c>dispositions</c>, and the join to <c>pipeline_runs</c>.
+      A reviewer who wants the state of every response at every stage in
+      one place can write a single SQL query that joins these tables.
+      <xref ref="tab-demo-end-to-end"/> shows what such a query returns.
+    </p>
+
+    <table xml:id="tab-demo-end-to-end">
+      <title>End-to-end trace, one row per response.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <row header="yes" bottom="medium">
+          <cell><c>student</c></cell>
+          <cell><c>screening</c></cell>
+          <cell><c>steps</c></cell>
+          <cell><c>matches</c></cell>
+          <cell><c>disposition</c></cell>
+        </row>
+        <row><cell><c>212I-003-09</c></cell><cell><c>INCLUDE</c></cell><cell>2</cell><cell>1</cell><cell><c>auto_accept</c></cell></row>
+        <row><cell><c>212l-003-11</c></cell><cell><c>EXCLUDE</c></cell><cell>0</cell><cell>0</cell><cell><c>escalate</c></cell></row>
+        <row><cell><c>212I-003-22</c></cell><cell><c>INCLUDE</c></cell><cell>4</cell><cell>3</cell><cell><c>standard_review</c></cell></row>
+        <row><cell><c>212I-002-10</c></cell><cell><c>INCLUDE</c></cell><cell>1</cell><cell>0</cell><cell><c>terminology_flag</c></cell></row>
+        <row><cell><c>212I-001-07</c></cell><cell><c>INCLUDE</c></cell><cell>2</cell><cell>0</cell><cell><c>no_match</c></cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      This is the row a reviewer's dashboard would render. Clicking any
+      row would expand it to show the full chain, the full set of matches,
+      and the rationale at each stage. Every cell in this table is
+      derivable from one query against the schema; nothing is computed at
+      display time.
+    </p>
+
+    <aside xml:id="aside-demo-q">
+      <title>What this exercise revealed</title>
+      <p>
+        <em>The schema needs composite foreign keys for any reference to
+        the codebook.</em> Because <c>codebook</c> uses a composite primary
+        key <m>(\textit{code\_id}, \textit{version\_id})</m>, any table
+        that references it (<c>matches</c>, <c>review_codes</c>) must
+        carry both columns. This was caught the first time the demo
+        attempted to insert a <c>matches</c> row.
+      </p>
+      <p>
+        <em>The pipeline writes more rows than one might expect.</em> Five
+        responses produced one row in <c>raw_imports</c>, one in
+        <c>pipeline_runs</c>, five in <c>responses</c>, five in
+        <c>screenings</c>, four in <c>chains</c>, nine in <c>chain_steps</c>,
+        four in <c>matches</c>, and five in <c>dispositions</c> &#x2014;
+        thirty-four rows total, in addition to the twelve bootstrap rows.
+        For a real run of two hundred responses this scales to roughly
+        fifteen hundred rows, which is comfortably within SQLite's
+        capabilities.
+      </p>
+      <p>
+        <em>The dispositions cleanly separate.</em> Five responses, five
+        different terminal dispositions. The pipeline does not collapse
+        cases that need different reviewer attention into a single bucket.
+      </p>
+      <p>
+        <em>Re-running the pipeline does not destroy old runs.</em> Every
+        row produced by the pipeline references a <c>run_id</c>. A second
+        run on the same responses would produce a parallel set of rows in
+        <c>screenings</c>, <c>chains</c>, <c>chain_steps</c>,
+        <c>matches</c>, and <c>dispositions</c>, leaving the first run's
+        output intact. This is what allows prompt-version A and prompt-
+        version B to be compared on the same corpus.
+      </p>
+    </aside>
+  </section>
+</chapter>

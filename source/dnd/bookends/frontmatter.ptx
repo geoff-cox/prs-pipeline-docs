@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<frontmatter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="frontmatter">
+  <bibinfo>
+    <date>
+      <today />
+    </date>
+  </bibinfo>
+
+  <titlepage>
+    <titlepage-items/>
+  </titlepage>
+
+  <preface>
+    <p>
+      A conventional autograded question keeps a verdict and discards the
+      work. A drag-and-drop cardsort, fully logged, keeps the work: every
+      placement of a card, every answer check together with its feedback,
+      every reset, each stamped to the microsecond. Such a log carries two
+      layers of information: an outcome layer about the answer a student 
+      settled on, and a process layer about the path that produced it. What 
+      the platform exports, however, is a flat table with one row per action. 
+      The complete board appears only when the student checks; between checks 
+      the state must be reconstructed; correctness is entangled with the 
+      item's grading and feedback policy; and nothing in the table itself 
+      says which inferences the data can support.
+    </p>
+
+    <p>
+      This document builds the bridge from that export to defensible
+      measurement, one layer at a time. A state model represents a single
+      board snapshot exactly, as a configuration and a membership matrix. An
+      event model gives each logged action a precise effect on the state, so
+      that a working session becomes a timestamped trajectory through a
+      configuration space. A processing pipeline replays raw rows into
+      reconstructed trajectories, validates the replay against the
+      platform's own check records, and attaches quality-control flags so
+      that problems are marked rather than silently repaired. A feature
+      layer then measures the outcome features for the submitted answer, 
+      process features for the path, and cohort features for variation 
+      across students. Next, a modeling layer places those measures in the 
+      nested reality of students, items, and semesters. Throughout, raw data, 
+      reconstructed state, and derived features are kept strictly separate, 
+      and a single small sorting question about shapes anchors every 
+      abstraction with worked numbers. The closing chapter draws the boundary 
+      the framework depends on: what these measurements support directly, and 
+      what they do not.
+    </p>
+
+    <p>
+      The intended reader works with course interaction data and wants
+      features that can be defended rather than merely computed. The
+      mathematics asks only for comfort with vectors and matrices; no prior
+      acquaintance with Runestone or its DataShop exports is assumed. The
+      chapters run from the concrete to the formal to the operational to the
+      inferential, and the notation appendix and glossary in the backmatter
+      support reading them out of order.
+    </p>
+  </preface>
+
+</frontmatter>

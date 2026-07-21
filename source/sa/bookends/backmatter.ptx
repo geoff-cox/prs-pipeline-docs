@@ -1,0 +1,14 @@
+<backmatter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="backmatter">
+	<title>Backmatter</title>
+
+	<xi:include href="glossary.ptx" />
+
+	<references>
+		<biblio type="raw" xml:id="bib-balacheff-gaudin-2010">
+			Balacheff, N., &amp; Gaudin, N. (2010). Modeling students' conceptions:
+			The case of function. <em>Research in Collegiate Mathematics Education,
+			16</em>, 183&#x2013;211.
+			<url href="https://doi.org/10.1090/cbmath/016/08"/>
+		</biblio>
+	</references>
+</backmatter>

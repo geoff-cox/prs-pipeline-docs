@@ -1,0 +1,82 @@
+<references>
+  <biblio type="raw" xml:id="bib-aera-apa-ncme-2014">
+    American Educational Research Association, American Psychological Association,
+    &amp; National Council on Measurement in Education. (2014).
+    <em>Standards for educational and psychological testing</em>.
+    American Educational Research Association.
+    <url href="https://www.aera.net/publications/books/standards-for-educational-psychological-testing-2014-edition"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-jiang-et-al-2021">
+    Jiang, Y., Gong, T., Saldivia, L. E., Cayton-Hodges, G., &amp; Agard, C. (2021).
+    Using process data to understand problem-solving strategies and processes for
+    drag-and-drop items in a large-scale mathematics assessment.
+    <em>Large-scale Assessments in Education, 9</em>, Article 2.
+    <url href="https://doi.org/10.1186/s40536-021-00095-4"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-ponce-mayer-loyola-2021">
+    Ponce, H. R., Mayer, R. E., &amp; Loyola, M. S. (2021).
+    Effects on test performance and efficiency of technology-enhanced items:
+    An analysis of drag-and-drop response interactions.
+    <em>Journal of Educational Computing Research, 59</em>(4), 713&#x2013;739.
+    <url href="https://doi.org/10.1177/0735633120969666"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-padilla-benitez-2014">
+    Padilla, J.-L., &amp; Benítez, I. (2014).
+    Validity evidence based on response processes.
+    <em>Psicothema, 26</em>(1), 136&#x2013;144.
+    <url href="https://doi.org/10.7334/psicothema2013.259"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-kane-2013">
+    Kane, M. T. (2013).
+    Validating the interpretations and uses of test scores.
+    <em>Journal of Educational Measurement, 50</em>(1), 1&#x2013;73.
+    <url href="https://doi.org/10.1111/jedm.12000"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-messick-1995">
+    Messick, S. (1995).
+    Validity of psychological assessment: Validation of inferences from persons'
+    responses and performances as scientific inquiry into score meaning.
+    <em>American Psychologist, 50</em>(9), 741&#x2013;749.
+    <url href="https://doi.org/10.1037/0003-066X.50.9.741"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-rand-1971">
+    Rand, W. M. (1971).
+    Objective criteria for the evaluation of clustering methods.
+    <em>Journal of the American Statistical Association, 66</em>(336), 846&#x2013;850.
+    <url href="https://doi.org/10.1080/01621459.1971.10482356"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-hubert-arabie-1985">
+    Hubert, L., &amp; Arabie, P. (1985).
+    Comparing partitions.
+    <em>Journal of Classification, 2</em>, 193&#x2013;218.
+    <url href="https://doi.org/10.1007/BF01908075"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-meila-2007">
+    Meilă, M. (2007).
+    Comparing clusterings&#x2014;An information based distance.
+    <em>Journal of Multivariate Analysis, 98</em>(5), 873&#x2013;895.
+    <url href="https://doi.org/10.1016/j.jmva.2006.11.013"/>
+  </biblio>
+
+  <!-- <biblio type="raw" xml:id="bi-van-der-aalst-2016">
+    van der Aalst, W. M. P. (2016).
+    <em>Process mining: Data science in action</em> (2nd ed.).
+    Springer.
+    <url href="https://doi.org/10.1007/978-3-662-49851-4"/>
+  </biblio> -->
+
+  <biblio type="raw" xml:id="bib-siemens-long-2011">
+    Siemens, G., &amp; Long, P. (2011).
+    Penetrating the fog: Analytics in learning and education.
+    <em>EDUCAUSE Review, 46</em>(5), 30&#x2013;40.
+    <url href="https://er.educause.edu/articles/2011/9/penetrating-the-fog-analytics-in-learning-and-education"/>
+  </biblio>
+</references>

@@ -1,0 +1,60 @@
+<frontmatter xml:id="frontmatter">
+  <bibinfo>
+    <author corresponding="yes">
+      <personname>Geoffrey Cox</personname>
+      <institution>Virginia Military Institute</institution>
+      <email>coxgeoff@vmi.edu</email>
+    </author>
+
+    <date><today /></date>
+
+    <keywords>
+      <keyword primary="yes">educational process data</keyword>
+      <keyword primary="yes">drag-and-drop assessment</keyword>
+      <keyword>event-log reconstruction</keyword>
+      <keyword>response-process validity</keyword>
+      <keyword>learning analytics</keyword>
+      <keyword>educational data mining</keyword>
+    </keywords>
+  </bibinfo>
+
+  <titlepage>
+    <titlepage-items/>
+  </titlepage>
+
+  <abstract xml:id="abstract">
+      <p>
+          Drag-and-drop assessment systems typically retain event logs that are richer
+          than the final submitted answer but are not immediately suitable for analysis.
+          This article introduces a state-space framework for representing drag-and-drop
+          responses as timestamped trajectories and a source-informed pipeline for
+          reconstructing those trajectories from incremental interaction logs.
+      </p>
+
+      <p>
+          The framework combines explicit item-source alignment, deterministic event
+          replay, check-anchor validation, attempt segmentation, provenance tracking,
+          and quality-control classifications.  It also defines a restrained family of
+          baseline process features describing response distance, movement efficiency,
+          checking behavior, error profiles, and timing.
+      </p>
+
+      <p>
+          We evaluate the framework using [NUMBER] students, [NUMBER] drag-and-drop
+          items, [NUMBER] attempts, and [NUMBER] logged events from [COURSE OR SETTING].
+          Reconstructed states agree with authoritative check records in [PERCENT] of
+          eligible cases, and [PERCENT] of attempts satisfy the prespecified criteria
+          for full analysis readiness.  Sensitivity analyses show that [MAIN ROBUSTNESS
+          RESULT].
+      </p>
+
+      <p>
+          The reconstructed trajectories reveal [ONE-SENTENCE EMPIRICAL RESULT SHOWING
+          INFORMATION BEYOND FINAL CORRECTNESS].  These results establish a reproducible
+          method for transforming low-level drag-and-drop logs into validated educational
+          process data while making reconstruction uncertainty and analytic eligibility
+          explicit.
+      </p>
+  </abstract>
+
+</frontmatter>

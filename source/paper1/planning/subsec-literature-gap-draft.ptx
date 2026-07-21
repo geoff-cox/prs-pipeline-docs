@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ================================================================== -->
+<!-- DRAFT: Related Work and Methodological Gap                         -->
+<!-- Replaces the [STUB] in sec-introduction.ptx, subsec-literature-gap -->
+<!--                                                                    -->
+<!-- Body word count: ~760 words excluding citation markup (target     -->
+<!-- 600-800 per Literature Synthesis Checklist item 8).                -->
+<!--                                                                    -->
+<!-- PROVENANCE: Claims about Kroehne & Goldhammer (2018), Jiang et     -->
+<!-- al. (2021), Gong et al. (2022), and Goldhammer et al. (2021) were  -->
+<!-- verified against the full texts on 2026-07-16. All other claims    -->
+<!-- remain abstract-level. Before submission:                          -->
+<!--   1. Verify remaining claims against full texts (especially        -->
+<!--      Helminen et al. 2012, the last unverified close comparator).  -->
+<!--   2. Confirm all [verify]-flagged bibliography details.            -->
+<!--   3. Run the systematic ERIC/Scopus/ACM DL pass (checklist item 1) -->
+<!--      and add any missed 2024-2026 comparators.                     -->
+<!-- ================================================================== -->
+
+<subsection xml:id="subsec-literature-gap">
+  <title>Related Work and Methodological Gap</title>
+
+  <!-- Issue 1: the field's raw analytical material is sequences, not states -->
+  <p>
+    Process data from digital assessments have moved from curiosity to
+    infrastructure.  Large-scale programs such as PISA, TIMSS, and NAEP now
+    release log files routinely, and recent reviews document a literature
+    spanning international assessments, games, simulations, and
+    course platforms (<xref ref="bib-anghel-2024"/>;
+    <xref ref="bib-log-review-2025"/>).  Bergner and von Davier order its
+    uses in a five-level hierarchy, from ignoring the process entirely to
+    modeling the process itself as the outcome
+    (<xref ref="bib-bergner-vondavier-2019"/>).
+    Across all levels, however, the raw analytical material is almost always
+    the recorded action sequence or indicators computed from it.  The complete
+    state of a response between submissions is seldom an explicit analytic
+    object, and even the definition of process data remains unsettled
+    (<xref ref="bib-anghel-2024"/>).
+  </p>
+
+  <!-- Issue 2: sequence and feature methods presuppose defined objects -->
+  <p>
+    The methodological traditions that analyze these records generally begin
+    after the analytical objects have been defined.  Educational process
+    mining discovers workflow models from event logs and validates them by
+    conformance checking, agreement between a discovered model and the log,
+    while inheriting the log's case and activity definitions
+    (<xref ref="bib-trcka-2010"/>; <xref ref="bib-van-der-aalst-2016"/>;
+    <xref ref="bib-bogarin-2018"/>).  Psychometric feature extraction
+    compresses given action sequences into n-gram patterns associated with success and failure
+    (<xref ref="bib-he-vondavier-2016"/>), event-history representations
+    (<xref ref="bib-chen-2019"/>), and generic embeddings whose
+    quality is judged by reconstruction and prediction accuracy (<xref ref="bib-tang-mds-2020"/>;
+    <xref ref="bib-tang-ae-2021"/>).  In both traditions, the mapping from
+    platform rows to well-formed events, states, and analysis units is a
+    precondition of the method, not an object of study.
+  </p>
+
+  <!-- Issue 3: reconstruction frameworks, the closest precedents -->
+  <p>
+    A smaller body of work treats that mapping itself as the methodological
+    problem.  Kroehne and Goldhammer propose finite state machines whose
+    states are theoretically defined phases of the response process,
+    identified from platform-specific log events, separating event decoding
+    from indicator definitions; they also define completeness conditions and
+    observe that, when all answer changes are logged, the response can be
+    re-derived and compared with the independently stored
+    response as a verification device
+    (<xref ref="bib-kroehne-goldhammer-2018"/>).  Keystroke-logging research
+    offers a cross-domain parallel: logging programs register every input
+    event so that the evolving text can be reconstructed and replayed
+    (<xref ref="bib-leijten-vanwaes-2013"/>).  These frameworks establish the
+    feasibility of reconstruction and articulate verification in principle.
+    Their states, however, are coarse process phases rather than complete
+    item configurations; the verification idea is stated as a data-quality
+    condition rather than implemented as a quantified validation study; and
+    neither aligns reconstructed states with authored item semantics or
+    attaches an explicit readiness policy to the result.
+  </p>
+
+  <!-- Issue 4: validity requirements and preprocessing sensitivity -->
+  <p>
+    Two further strands sharpen the requirements such a transformation must
+    meet.  Assessment validity theory names response processes among the
+    recognized sources of validity evidence (<xref ref="bib-aera-2014"/>), and
+    recent treatments argue that inferences from log-derived indicators
+    require explicit theoretical and empirical justification
+    (<xref ref="bib-ercikan-pellegrino-2017"/>;
+    <xref ref="bib-zumbo-hubley-2017"/>;
+    <xref ref="bib-goldhammer-zehner-2017"/>).  This program concentrates on
+    the explanation inference, whether indicators reflect the intended
+    construct; the prior scoring inference, that the identification rules
+    extract the targeted behavior correctly, remains an assumption
+    (<xref ref="bib-goldhammer-2021"/>).  At the same time, studies of
+    preprocessing sensitivity show that justification cannot stop at the
+    indicator: defensible alternative time-on-task estimation rules change
+    downstream findings (<xref ref="bib-kovanovic-2015"/>), and reasonable
+    alternative cleanings of the same course logs produce materially different
+    results (<xref ref="bib-knobbout-2019"/>).  Multiverse analysis
+    generalizes the remedy, reporting results across the datasets that
+    reasonable processing choices generate and identifying the choices
+    conclusions hinge on (<xref ref="bib-steegen-2016"/>).  Read together,
+    these strands imply that reconstruction and segmentation belong to the
+    measurement model and should be validated and systematically varied, not
+    merely performed.
+  </p>
+
+  <!-- Issue 5: the interaction family has moved close to, but not onto, that ground -->
+  <p>
+    Studies of the relevant interaction family have moved close to, but not
+    onto, that ground.  Analyses of NAEP drag-and-drop items derive strategy
+    classifications, answer-change patterns, and time measures from action
+    sequences, with cleaning rules (winsorization, first-action filtering)
+    that are reported but neither varied nor validated
+    (<xref ref="bib-jiang-2021"/>).  Gong and colleagues go furthest: they
+    transcribe action sequences into sequences of complete target
+    configurations to visualize answer formulation step by step, yet describe
+    the transcription as heuristic, prune infrequent transitions for display,
+    and check the result against no independent record
+    (<xref ref="bib-gong-2022"/>).  Experimental work examines how
+    drag-and-drop design features shape performance and response behavior
+    (<xref ref="bib-arslan-emip"/>; <xref ref="bib-ponce-2021"/>).
+    Sorting-based assessments score final sorts only
+    (<xref ref="bib-smith-2013"/>; <xref ref="bib-tpl-kats"/>).  For Parsons
+    problems, the nearest construction-task sibling, interaction traces
+    reveal wide variation in solution paths
+    (<xref ref="bib-helminen-2012"/>), and large-scale log analyses evaluate
+    adaptation with outcome and count features
+    (<xref ref="bib-ericson-2018"/>).  Across this family, reconstructed
+    intermediate states are absent, implicit, or heuristic, and never
+    validated against independently recorded configurations.
+  </p>
+
+  <!-- Two-sentence gap statement (checklist item 9) -->
+  <p>
+    In sum, sequence, process-mining, and feature-extraction methods
+    presuppose that event types, response states, and analysis units have
+    already been correctly derived; the closest reconstruction frameworks
+    articulate completeness and verification in principle without
+    implementing them as validation studies; and drag-and-drop, sorting, and
+    Parsons-problem studies analyze action sequences, heuristically
+    transcribed states, or final configurations that are never checked
+    against independent records.  Source-dependent card-to-zone logs, in
+    which moves arrive incrementally, complete configurations are recorded
+    only at checks, and item semantics reside in the authored source,
+    therefore require what this article supplies: an explicit,
+    source-aligned, empirically validated, and sensitivity-tested
+    transformation from platform rows to complete response trajectories.
+  </p>
+</subsection>
+
+<!-- ================================================================== -->
+<!-- BIBLIOGRAPHY ENTRIES                                               -->
+<!-- Replace the four [TODO] placeholders in bookends/backmatter.ptx    -->
+<!-- with the entries below.  Mapping to the existing placeholder ids:  -->
+<!--   bib-process-mining            -> bib-bogarin-2018 (or trcka)     -->
+<!--   bib-sequence-analysis         -> bib-he-vondavier-2016 (or tang) -->
+<!--   bib-response-process-validity -> bib-ercikan-pellegrino-2017     -->
+<!--   bib-interactive-assessment    -> bib-jiang-2021                  -->
+<!-- Either rename the xml:ids below to match, or (recommended) adopt   -->
+<!-- these descriptive ids and update the stub ids everywhere.          -->
+<!-- Entries marked [verify] need author lists, pages, or DOIs checked. -->
+<!-- ================================================================== -->
+
+<references xml:id="references-draft-do-not-include-directly">
+
+  <biblio type="raw" xml:id="bib-anghel-2024">
+    Anghel, E., Khorramdel, L., &amp; von Davier, M. (2024).
+    The use of process data in large-scale assessments: A literature review.
+    <em>Large-scale Assessments in Education, 12</em>.
+    [verify article number and pages]
+    <url href="https://doi.org/10.1186/s40536-024-00202-1"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-log-review-2025">
+    [verify authors] (2025).
+    A systematic review of the use of log-based process data in computer-based
+    assessments. <em>Computers &amp; Education</em>.
+    <url href="https://doi.org/10.1016/j.compedu.2025.105245"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-bergner-vondavier-2019">
+    Bergner, Y., &amp; von Davier, A. A. (2019).
+    Process data in NAEP: Past, present, and future.
+    <em>Journal of Educational and Behavioral Statistics, 44</em>(6).
+    [verify pages]
+    <url href="https://doi.org/10.3102/1076998618784700"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-trcka-2010">
+    Trcka, N., Pechenizkiy, M., &amp; van der Aalst, W. M. P. (2010).
+    Process mining from educational data.
+    In C. Romero, S. Ventura, M. Pechenizkiy, &amp; R. S. J. d. Baker (Eds.),
+    <em>Handbook of Educational Data Mining</em> (pp. 123&#x2013;142).
+    CRC Press.
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-bogarin-2018">
+    Bogar&#xED;n, A., Cerezo, R., &amp; Romero, C. (2018).
+    A survey on educational process mining.
+    <em>WIREs Data Mining and Knowledge Discovery, 8</em>(1), e1230.
+    <url href="https://doi.org/10.1002/widm.1230"/>
+  </biblio>
+
+  <!-- bib-van-der-aalst-2016 already exists in the dnd journal references;
+       reuse that entry verbatim in the paper's backmatter. -->
+
+  <biblio type="raw" xml:id="bib-he-vondavier-2016">
+    He, Q., &amp; von Davier, M. (2016).
+    Analyzing process data from problem-solving items with n-grams: Insights
+    from a computer-based large-scale assessment.
+    In Y. Rosen, S. Ferrara, &amp; M. Mosharraf (Eds.),
+    <em>Handbook of Research on Technology Tools for Real-World Skill
+    Development</em> (pp. 749&#x2013;776). IGI Global.
+    [verify page range: 749-776 vs 750-777 appears in different sources]
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-chen-2019">
+    Chen, Y., Li, X., Liu, J., &amp; Ying, Z. (2019).
+    Statistical analysis of complex problem-solving process data: An event
+    history analysis approach. [verify title and venue]
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-tang-mds-2020">
+    Tang, X., Wang, Z., He, Q., Liu, J., &amp; Ying, Z. (2020).
+    Latent feature extraction for process data via multidimensional scaling.
+    <em>Psychometrika, 85</em>(2), 378&#x2013;397.
+    <url href="https://doi.org/10.1007/s11336-020-09708-3"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-tang-ae-2021">
+    Tang, X., Wang, Z., Liu, J., &amp; Ying, Z. (2021).
+    An exploratory analysis of the latent structure of process data via action
+    sequence autoencoders.
+    <em>British Journal of Mathematical and Statistical Psychology, 74</em>(1),
+    1&#x2013;33.
+    <url href="https://doi.org/10.1111/bmsp.12203"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-kroehne-goldhammer-2018">
+    Kroehne, U., &amp; Goldhammer, F. (2018).
+    How to conceptualize, represent, and analyze log data from
+    technology-based assessments? A generic framework and an application to
+    questionnaire items.
+    <em>Behaviormetrika, 45</em>(2), 527&#x2013;563.
+    <url href="https://doi.org/10.1007/s41237-018-0063-y"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-leijten-vanwaes-2013">
+    Leijten, M., &amp; Van Waes, L. (2013).
+    Keystroke logging in writing research: Using Inputlog to analyze and
+    visualize writing processes.
+    <em>Written Communication, 30</em>(3), 358&#x2013;392.
+    <url href="https://doi.org/10.1177/0741088313491692"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-aera-2014">
+    American Educational Research Association, American Psychological
+    Association, &amp; National Council on Measurement in Education. (2014).
+    <em>Standards for Educational and Psychological Testing</em>.
+    American Educational Research Association.
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-ercikan-pellegrino-2017">
+    Ercikan, K., &amp; Pellegrino, J. W. (Eds.). (2017).
+    <em>Validation of Score Meaning for the Next Generation of Assessments:
+    The Use of Response Processes</em>. Routledge.
+    <url href="https://doi.org/10.4324/9781315708591"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-zumbo-hubley-2017">
+    Zumbo, B. D., &amp; Hubley, A. M. (Eds.). (2017).
+    <em>Understanding and Investigating Response Processes in Validation
+    Research</em>. Springer. [verify series/volume details]
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-goldhammer-zehner-2017">
+    Goldhammer, F., &amp; Zehner, F. (2017).
+    What to make of and how to interpret process data.
+    <em>Measurement: Interdisciplinary Research and Perspectives, 15</em>(3&#x2013;4),
+    128&#x2013;132.
+    [verify DOI]
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-goldhammer-2021">
+    Goldhammer, F., Hahnel, C., Kroehne, U., &amp; Zehner, F. (2021).
+    From byproduct to design factor: On validating the interpretation of
+    process indicators based on log data.
+    <em>Large-scale Assessments in Education, 9</em>, Article 20.
+    <url href="https://doi.org/10.1186/s40536-021-00113-5"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-kovanovic-2015">
+    Kovanovi&#x107;, V., Ga&#x161;evi&#x107;, D., Dawson, S., Joksimovi&#x107;,
+    S., Baker, R. S., &amp; Hatala, M. (2015).
+    Does time-on-task estimation matter? Implications for the validity of
+    learning analytics findings.
+    <em>Journal of Learning Analytics, 2</em>(3), 81&#x2013;110.
+    <url href="https://doi.org/10.18608/jla.2015.23.6"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-knobbout-2019">
+    Knobbout, J., Everaert, H., &amp; van der Stappen, E. (2019).
+    From dirty data to multiple versions of truth: How different choices in
+    data cleaning lead to different learning analytics outcomes.
+    In <em>Proceedings of the 32nd Bled eConference</em>. [verify pages]
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-steegen-2016">
+    Steegen, S., Tuerlinckx, F., Gelman, A., &amp; Vanpaemel, W. (2016).
+    Increasing transparency through a multiverse analysis.
+    <em>Perspectives on Psychological Science, 11</em>(5), 702&#x2013;712.
+    <url href="https://doi.org/10.1177/1745691616658637"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-jiang-2021">
+    Jiang, Y., Gong, T., Saldivia, L. E., Cayton-Hodges, G., &amp; Agard, C.
+    (2021).
+    Using process data to understand problem-solving strategies and processes
+    for drag-and-drop items in a large-scale mathematics assessment.
+    <em>Large-scale Assessments in Education, 9</em>, Article 2.
+    <url href="https://doi.org/10.1186/s40536-021-00095-4"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-gong-2022">
+    Gong, T., Jiang, Y., Saldivia, L. E., &amp; Agard, C. (2022).
+    Using Sankey diagrams to visualize drag and drop action sequences in
+    technology-enhanced items.
+    <em>Behavior Research Methods, 54</em>(1), 117&#x2013;132.
+    <url href="https://doi.org/10.3758/s13428-021-01615-4"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-arslan-emip">
+    Arslan, B., et al. [verify full citation; ~2020].
+    The effect of drag-and-drop item features on test-taker performance and
+    response strategies.
+    <em>Educational Measurement: Issues and Practice</em>.
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-ponce-2021">
+    Ponce, H. R., Mayer, R. E., &amp; Loyola, M. S. (2021).
+    Effects on test performance and efficiency of technology-enhanced items:
+    An analysis of drag-and-drop response interactions.
+    <em>Journal of Educational Computing Research</em>. [verify volume/pages]
+    <url href="https://doi.org/10.1177/0735633120969666"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-smith-2013">
+    Smith, J. I., Combs, E. D., Nagami, P. H., Alto, V. M., Goh, H. G.,
+    Gourdet, M. A. A., et al. (2013). [verify trailing authors]
+    Development of the Biology Card Sorting Task to measure conceptual
+    expertise in biology.
+    <em>CBE&#x2014;Life Sciences Education, 12</em>(4), 628&#x2013;644.
+    <url href="https://doi.org/10.1187/cbe.13-05-0096"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-tpl-kats">
+    [verify authors and year].
+    TPL&#x2014;KATS card sort: A tool for assessing structural knowledge.
+    <em>Behavior Research Methods</em>.
+    <url href="https://doi.org/10.3758/BF03195536"/>
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-helminen-2012">
+    Helminen, J., Ihantola, P., Karavirta, V., &amp; Malmi, L. (2012).
+    How do students solve Parsons programming problems? An analysis of
+    interaction traces.
+    In <em>Proceedings of the 12th Koli Calling International Conference on
+    Computing Education Research</em>. [verify pages]
+  </biblio>
+
+  <biblio type="raw" xml:id="bib-ericson-2018">
+    Ericson, B. J., Foley, J. D., &amp; Rick, J. (2018).
+    Evaluating the efficiency and effectiveness of adaptive Parsons problems.
+    In <em>Proceedings of the 2018 ACM Conference on International Computing
+    Education Research (ICER '18)</em> (pp. 60&#x2013;68). ACM. [verify pages]
+  </biblio>
+
+</references>

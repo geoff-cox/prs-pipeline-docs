@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<pretext xml:lang="en-US" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <xi:include href="./bookends/docinfo.ptx" />
+
+  <book xml:id="proteus-drag-n-drop-journal">
+    <title>PROTEUS Drag-and-Drop</title>
+    <subtitle>A Research Journal and Reference Guide</subtitle>
+
+    <xi:include href="./bookends/frontmatter.ptx" />
+
+    <xi:include href="./ch-dnd-quick-start-guide.ptx" />
+    <xi:include href="./ch-dnd-anatomy.ptx" />
+    <xi:include href="./ch-item-design.ptx" />
+    <xi:include href="./ch-state-model.ptx" />
+    <xi:include href="./ch-event-trajectory-model.ptx" />
+    <xi:include href="./ch-baseline-features.ptx" />
+    <xi:include href="./ch-group-features.ptx" />
+    <xi:include href="./ch-data-processing.ptx" />
+    <xi:include href="./ch-visualization-diagnostics.ptx" />
+    <xi:include href="./ch-statistical-modeling.ptx" />
+    <xi:include href="./ch-validity-interpretation.ptx" />
+    <!-- <xi:include href="./ch-dnd-framework.ptx" /> -->
+    <!-- <xi:include href="./ch-metrics.ptx" /> -->
+    <!-- <xi:include href="./ch-analysis.ptx" /> -->
+    <!-- <xi:include href="./ch-ideas.ptx" /> -->
+    <!-- <xi:include href="./ch-dnd-technical-journal.ptx" /> -->
+    
+    <xi:include href="./bookends/backmatter.ptx" />
+
+  </book>
+
+</pretext>

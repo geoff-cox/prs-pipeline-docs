@@ -1,0 +1,1210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-automation-tool-roadmap" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Automation Tool Roadmap</title>
+
+  <introduction>
+    <p>
+      <term>Purpose</term>. The aim of this tool is to support the analysis of open-ended student responses using 
+      Balacheff's conception framework, with particular attention to the control structures students appear to use 
+      when justifying mathematical claims.
+    </p>
+
+    <p>
+      <term>Background</term>. A <term>control structure</term>, in the sense used here, is the criterion or rule a 
+      student appears to use to recognize that they have reached a settled answer to a problem 
+      <xref ref="bib-balacheff-gaudin-2010"/>. In the linear-algebra question set this tool targets, control structures
+      include criteria such as <q>there is a free variable</q>, <q>the number of pivots equals the number of rows</q>, 
+      and <q>the system is consistent</q>. The codebook used by the group names ten such control structures 
+      (<c>CS1</c>&#x2013;<c>CS10</c>). Surfacing <em>which</em> control structure a student appears to be using, and 
+      whether more than one is in play, is the central interpretive task this tool is intended to support.
+    </p>
+
+    <p>
+      <term>Motivation</term>. The tool should provide one or more of the following benefits: 
+      <ul marker="square">
+        <li>
+          Make the coding process more consistent, transparent, and scalable while preserving the interpretive role 
+          of human researchers.
+        </li>
+        <li>
+          Help organize student data, identify codable reasoning, surface possible control structures, and flag 
+          ambiguities/patterns in the coding or data.
+        </li>
+        <li>
+          Provide a platform for researchers to visualize, audit, and calibrate the coding process.
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      <term>Design</term>. This report describes the <term>Short Answer</term> service, the question type the tool was
+      first built around. The tool as a whole (PROTEUS) is now organized as a service-agnostic core&#x2014;shared ingest
+      and storage&#x2014;with one service per question type; the short-answer service is the one organized as the five
+      small stages described here, and other question types (such as drag-and-drop) are handled by their own services
+      over the same core. Each stage reads a simple table and writes a slightly richer one. To make the design concrete,
+      the same four sample responses are traced from beginning to end below, so the effect of each stage on the data is
+      visible at a glance. The new columns that each stage adds are called out under every output table, since those are
+      the columns the research team will spend the most time looking at.
+    </p>
+
+    <table xml:id="tab-roadmap-cast">
+      <title>The four sample responses traced in this report.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="8%"/>
+        <col width="49%" />
+        <col width="43%" />
+        <row header="yes" bottom="medium" halign="center">
+          <cell><p>Tag</p></cell>
+          <cell><p>What the student wrote</p></cell>
+          <cell><p>What it illustrates</p></cell>
+        </row>
+        <row>
+          <cell><p>R001</p></cell>
+          <cell><p>There is a free variable so it is not possible to have a unique solution.</p></cell>
+          <cell><p>A clean, single-criterion justification.</p></cell>
+        </row>
+        <row>
+          <cell><p>R002</p></cell>
+          <cell><p><em>(blank)</em></p></cell>
+          <cell><p>An uncodable response that should be excluded.</p></cell>
+        </row>
+        <row>
+          <cell><p>R003</p></cell>
+          <cell>
+            <p>
+              One and only one solution is not possible because there will be a free variable since there are more 
+              variables than rows.
+            </p>
+          </cell>
+          <cell><p>A response that combines different criteria and may match multiple control structures.</p></cell>
+        </row>
+        <row bottom="minor">
+          <cell><p>R004</p></cell>
+          <cell><p>It depends what is in the augmented matrix.</p></cell>
+          <cell><p>A response with reasoning outside the current codebook.</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p xml:id="p-roadmap-source">
+      <term>Source</term>. The source for this report, together with the code
+      for the pipeline it describes, is maintained as a public repository at
+      <url href="https://github.com/geoff-cox/proteus-rs-pipeline"/>.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-roadmap-stage-1">
+    <title>Stage 1: Ingestor</title>
+
+    <p>
+      The <q>ingestor</q> takes student responses from Runestone data files and converts them into a consistent table. 
+      This stage does not interpret the response or assign any codes. It only prepares the data for analysis.
+    </p>
+
+    <assemblage>
+      <title>Stage 1: Ingestor - Input &amp; Output</title>
+      <sidebyside valign="middle" widths="15% 5% 15% 5% 25%" margins="17% 17%">
+        <p>Raw export rows</p>
+        <p><m>\longrightarrow</m></p>
+        <image xml:id="stage-1-diagram">
+          <mermaid>
+            flowchart
+              A(Ingestion)
+          </mermaid>
+        </image>
+        <p><m>\longrightarrow</m></p>
+        <image xml:id="stage-1-table">
+          <mermaid>
+            erDiagram
+              RESPONSE
+              RESPONSE {
+                response_id *
+                student_id *
+                question_id *
+                response_text *
+                ⋮ *
+              }
+          </mermaid>
+        </image>
+      </sidebyside>
+    </assemblage>
+
+    <paragraphs>
+      <title>Input: DataShop (TAB, <delete>CSV</delete>)</title>
+
+      <p>
+        The input to Stage 1 is the export from Runestone. A typical raw export contains many columns whose names and 
+        meanings differ from one export format to the next, and several rows that are not student responses at all 
+        (system events, retries, drafts).
+      </p>
+
+      <table xml:id="tab-roadmap-stage-1-input">
+        <title>Stage 1 input: an excerpt of a raw export, before ingest.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="4%"/>
+          <col width="18%" />
+          <col width="22%" />
+          <col width="56%"/>
+          <row header="yes" bottom="medium">
+            <cell><p>...</p></cell>
+            <cell><p>source_file</p></cell>
+            <cell><p>question_tag</p></cell>
+            <cell><p>typed_answer</p></cell>
+          </row>
+          <row>
+            <cell><p>...</p></cell>
+            <cell><p>ula_s...rs.csv</p></cell>
+            <cell><p>1.4.8-pivots-q3</p></cell>
+            <cell><p>There is a free variable so it is not possible to have a unique solution.</p></cell>
+          </row>
+          <row>
+            <cell><p>...</p></cell>
+            <cell><p>ula_s...rs.csv</p></cell>
+            <cell><p>1.4.8-pivots-q3</p></cell>
+            <cell><p><em>(blank)</em></p></cell>
+          </row>
+          <row>
+            <cell><p>...</p></cell>
+            <cell><p>ula_s...rs.csv</p></cell>
+            <cell><p>1.4.8-pivots-q3</p></cell>
+            <cell>
+              <p>
+                One and only one solution is not possible because there will be a free variable since there are more 
+                variables than rows.
+              </p>
+            </cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>...</p></cell>
+            <cell><p>ula_s...rs.csv</p></cell>
+            <cell><p>1.4.8-pivots-q3</p></cell>
+            <cell><p>It depends what is in the augmented matrix.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <paragraphs>
+      <title>Output: Clean RESPONSE Table</title>
+
+      <p>
+        The output is a single table where every row is one student response with standardized column names. The 
+        columns that did not exist (or had inconsistent names) in the raw export are marked in italics in the header 
+        row.
+      </p>
+
+      <table xml:id="tab-roadmap-stage-1-output">
+        <title>Stage 1 output: the same four responses after ingest.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="18%"/>
+          <col width="16%" />
+          <col width="24%" />
+          <col width="40%"/>
+          <row header="yes" bottom="medium">
+            <cell><p><em>response_id</em></p></cell>
+            <cell><p><em>student_id</em></p></cell>
+            <cell><p>question_id</p></cell>
+            <cell><p>response_text</p></cell>
+          </row>
+          <row>
+            <cell><p>R001</p></cell>
+            <cell><p>S-21</p></cell>
+            <cell><p>1.4.8-pivots-q3</p></cell>
+            <cell><p><em>same as input</em></p></cell>
+          </row>
+          <row>
+            <cell><p>R002</p></cell>
+            <cell><p>S-22</p></cell>
+            <cell><p>1.4.8-pivots-q3</p></cell>
+            <cell><p><em>same as input</em></p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>S-23</p></cell>
+            <cell><p>1.4.8-pivots-q3</p></cell>
+            <cell><p><em>same as input</em></p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>R004</p></cell>
+            <cell><p>S-24</p></cell>
+            <cell><p>1.4.8-pivots-q3</p></cell>
+            <cell><p><em>same as input</em></p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <p>
+      <term>Primary new columns.</term> 
+      <dl width="medium">
+        <li>
+          <title><c>response_id</c></title>
+          <p>
+            A stable, short identifier that lets every later stage refer back to this exact response without ambiguity.
+          </p>
+        </li>
+        <li>
+          <title><c>student_id</c></title>
+          <p>
+            The identifier already assigned to the student in the source data (e.g., the ID issued at enrollment in the 
+            study). The tool preserves the identifier as given, so that the same student can be recognized across 
+            responses, questions, and data files. This identifier also encodes textbook and instructor, which makes 
+            later analyses by instructor or textbook section possible without adding separate columns.
+          </p>
+        </li>
+      </dl>
+    </p>
+
+    <p>
+      <term>Design considerations.</term> The main decision for this stage is how much context should travel with each 
+      response. At minimum, the cleaned table includes the response text, the student identifier, and a question 
+      identifier. The following additional fields are carried through because each one supports a later analysis or 
+      audit the group is likely to want:
+      <ul marker="square">
+        <li>
+          <term>Original row number</term> from the source export, so that any row in the cleaned table can be traced 
+          back to its exact line in the raw file when a question comes up later.
+        </li>
+        <li>
+          <term>Source file path and hash</term>, recorded once per import, so that re-imports of the same file are 
+          recognized as duplicates and skipped rather than producing parallel copies.
+        </li>
+        <li>
+          <term>Submission timestamp</term>, normalized to UTC, for any analysis that depends on when a response was 
+          submitted.
+        </li>
+        <li>
+          <term>Course or section identifier</term>, when present in the source, so that responses can later be grouped 
+          by instructor or section without re-deriving these from the student identifier.
+        </li>
+      </ul>
+      A secondary consideration is whether to add a student table to the schema. This could be helpful if student-level 
+      metadata (e.g., demographics, course section) is ever used in the analysis.
+    </p>
+  </section>
+
+  <section xml:id="sec-roadmap-stage-2">
+    <title>Stage 2: Screener</title>
+
+    <p>
+      The <q>screener</q> decides whether a response contains enough interpretable reasoning to continue through the 
+      pipeline. This stage does not assign a control structure. It only separates responses that appear codable from 
+      responses that are blank, too brief, off-topic, or too ambiguous to analyze without discussion.
+    </p>
+
+    <p>
+      A response is labeled <c>EXCLUDE</c> when it meets any of the following conditions:
+      <ul marker="square">
+        <li><term>Blank.</term> No response text was submitted.</li>
+        <li>
+          <term>Illegible.</term> The response cannot be read as a coherent attempt at the question (for example, 
+          random characters or text unrelated to the prompt).
+        </li>
+        <li>
+          <term>Bare yes/no.</term> The response is only an answer (<q>yes</q>, <q>no</q>, <q>not possible</q>) with no 
+          reasoning or justification.
+        </li>
+        <li>
+          <term>Work-only with no verbal connector.</term> The response contains computation or symbols but no word 
+          that links the work to a conclusion (<q>because</q>, <q>since</q>, <q>so</q>, <q>therefore</q>).
+        </li>
+        <li>
+          <term>Off-topic.</term> The response addresses a different question or concept than the prompt asks about.
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      Responses that do not meet any exclusion condition are labeled <c>INCLUDE</c>. Responses that are borderline are 
+      labeled <c>FLAG</c> rather  than excluded, so a human reviewer makes the final call. The convention is 
+      conservative on purpose: it is cheaper for the group to review a <c>FLAG</c> that should have been <c>INCLUDE</c> 
+      than to discover later that a codable response was silently dropped.
+    </p>
+
+    <p>
+      The screener does not decide whether a response is correct, whether it uses material from the textbook, or 
+      whether it uses a control structure the codebook recognizes. Those are reviewer judgments and are addressed in 
+      later stages.
+    </p>
+
+    <assemblage>
+      <title>Stage 2: Screener - Input &amp; Output</title>
+      <sidebyside valign="middle" widths="25% 5% 15% 5% 22%" margins="14% 14%">
+        <image xml:id="stage-2-in-table">
+          <mermaid>
+            erDiagram
+              RESPONSE
+              RESPONSE {
+                response_id *
+                student_id *
+                question_id *
+                response_text *
+              }
+          </mermaid>
+        </image>
+        <p><m>\longrightarrow</m></p>
+        <image xml:id="stage-2-diagram">
+          <mermaid>
+            flowchart
+              A(Screening)
+          </mermaid>
+        </image>
+        <p><m>\longrightarrow</m></p>
+        <image xml:id="stage-2-out-table">
+          <mermaid>
+            erDiagram
+              RESPONSE
+              RESPONSE {
+                ⋮ *
+                label *
+                confidence *
+                rationale *
+              }
+          </mermaid>
+        </image>
+      </sidebyside>
+    </assemblage>
+
+    <paragraphs>
+      <title>Input: Clean RESPONSE Table</title>
+
+      <table xml:id="tab-roadmap-stage-2-input">
+        <title>Stage 2 input: cleaned responses from Stage 1.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="20%"/>
+          <col width="18%" />
+          <col width="62%" />
+          <row header="yes" bottom="medium">
+            <cell><p>response_id</p></cell>
+            <cell><p>student_id</p></cell>
+            <cell><p>response_text</p></cell>
+          </row>
+          <row>
+            <cell><p>R001</p></cell>
+            <cell><p>S-21</p></cell>
+            <cell><p>There is a free variable so it is not possible to have a unique solution.</p></cell>
+          </row>
+          <row>
+            <cell><p>R002</p></cell>
+            <cell><p>S-22</p></cell>
+            <cell><p><em>(blank)</em></p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>S-23</p></cell>
+            <cell>
+              <p>
+                One and only one solution is not possible because there will be a free variable since there are more 
+                variables than rows.
+              </p>
+            </cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>R004</p></cell>
+            <cell><p>S-24</p></cell>
+            <cell><p>It depends what is in the augmented matrix.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <paragraphs>
+      <title>Output: Updated RESPONSE Table</title>
+
+      <p>
+        The output adds three columns: a screening status, a confidence number, and a one-sentence rationale that the 
+        group can read alongside the response.
+      </p>
+
+      <table xml:id="tab-roadmap-stage-2-output">
+        <title>Stage 2 output: each response with a screening decision.</title>
+        <tabular halign="center" top="major" bottom="minor">
+          <col width="16%"/>
+          <col width="16%" />
+          <col width="16%" />
+          <col width="52%" halign="left"/>
+          <row header="yes" bottom="medium">
+            <cell><p>response_id</p></cell>
+            <cell><p><em>label</em></p></cell>
+            <cell><p><em>confidence</em></p></cell>
+            <cell><p><em>rationale</em></p></cell>
+          </row>
+          <row>
+            <cell><p>R001</p></cell>
+            <cell><p>INCLUDE</p></cell>
+            <cell><p>0.96</p></cell>
+            <cell><p>Connector ("so") and a named criterion ("free variable").</p></cell>
+          </row>
+          <row>
+            <cell><p>R002</p></cell>
+            <cell><p>EXCLUDE</p></cell>
+            <cell><p>0.99</p></cell>
+            <cell><p>Blank response.</p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>INCLUDE</p></cell>
+            <cell><p>0.95</p></cell>
+            <cell><p>Multiple connectors and multiple named criteria.</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>R004</p></cell>
+            <cell><p>FLAG</p></cell>
+            <cell><p>0.78</p></cell>
+            <cell><p>Potentially relevant, but criterion is meta-level ("depends on the matrix").</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <p>
+      <term>Primary new columns.</term> 
+      <dl width="narrow">
+        <li>
+          <title><c>label</c></title>
+          <p>
+            Decides whether a response continues through the pipeline (currently <c>INCLUDE</c>, <c>EXCLUDE</c>, or 
+            <c>FLAG</c>). The <c>FLAG</c> status indicates that a response is ambiguous enough to require human review.
+          </p>
+        </li>
+        <li>
+          <title><c>confidence</c></title>
+          <p>
+            A number between 0 and 1 that records how certain the tool is about the label that was produced. The 
+            decision about what happens to a response is carried entirely by the <c>label</c> column. The 
+            <c>confidence</c> column has two potential uses: it lets reviewers sort borderline cases to the top of the 
+            queue when auditing the tool's output, and it provides the raw material for a future threshold-based 
+            <c>FLAG</c> rule, should the group decide one is useful, without changing how the tool itself runs.
+          </p>
+        </li>
+        <li>
+          <title><c>rationale</c></title>
+          <p>
+            A short explanation of why the response received its label, which the group can read alongside the response 
+            when calibrating the screener.
+          </p>
+        </li>
+      </dl>
+    </p>
+
+    <p>
+      <term>Design considerations.</term> The main decision for this stage is how conservative the screening should be. 
+      A conservative screener keeps borderline responses in the pipeline or flags them for human review rather than 
+      excluding them too early.
+    </p>
+
+    <p>
+      <term>Possible directions for expansion.</term> This stage can grow along several independent paths, each of 
+      which the same <c>(label, confidence, rationale)</c> output supports.
+      <ul marker="square">
+        <li>
+          <term>Calibrate against a validated sample.</term> Run the screener against a small set of responses the 
+          group has already labeled by hand, then adjust the criteria where the two disagree.
+        </li>
+        <li>
+          <term>Hybrid first/second pass.</term> Use a fast rule-based screener for the easy cases and call on a 
+          language model only for the responses where the rules are uncertain.
+        </li>
+        <li>
+          <term>Per-question screeners.</term> Tune a screener to the kinds of answers a particular question elicits, 
+          since the patterns in responses to a pivot question differ from those in responses to, say, a span question.
+        </li>
+        <li>
+          <term>Mine the rationales.</term> The one-sentence rationales themselves are data. Clustering them surfaces 
+          recurring reasons for exclusion, which can in turn refine the exclusion criteria above.
+        </li>
+      </ul>
+    </p>
+
+  </section>
+
+  <section xml:id="sec-roadmap-stage-3">
+    <title>Stage 3: Extractor</title>
+
+    <p>
+      The <q>extractor</q> converts a student response into a short sequence of reasoning steps. This stage does not 
+      assign control-structure codes yet. It attempts to make explicit what mathematical claims or criteria the student 
+      appears to use, in a small controlled vocabulary the tool can match.
+    </p>
+
+    <assemblage>
+      <title>Stage 3: Extractor - Input &amp; Output</title>
+      <sidebyside valign="middle" widths="22% 5% 18% 5% 22%" margins="12% 12%">
+        <image xml:id="stage-3-in-table">
+          <mermaid>
+            erDiagram
+              RESPONSE
+              RESPONSE {
+                response_id *
+                label *
+                response_text *
+              }
+          </mermaid>
+        </image>
+        <p><m>\longrightarrow</m></p>
+        <image xml:id="stage-3-diagram">
+          <mermaid>
+            flowchart
+              A(Extraction)
+          </mermaid>
+        </image>
+        <p><m>\longrightarrow</m></p>
+        <image xml:id="stage-3-out-table">
+          <mermaid>
+            erDiagram
+              CHAIN_STEP
+              CHAIN_STEP {
+                response_id *
+                step_index *
+                premise *
+                conclusion *
+                oov_flag *
+              }
+          </mermaid>
+        </image>
+      </sidebyside>
+    </assemblage>
+
+    <paragraphs>
+      <title>Input: Filtered RESPONSE Table</title>
+
+      <p>
+        The input is a subtable of the <xref ref="tab-roadmap-stage-2-output" text="custom">RESPONSE</xref> where rows 
+        (like R002) with <c>label == EXCLUDE</c> are filtered out until Stage 5.
+      </p>
+
+      <table xml:id="tab-roadmap-stage-3-input">
+        <title>Stage 3 input: included/flagged responses from Stage 2.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="20%"/>
+          <col width="15%" />
+          <col width="65%" />
+          <row header="yes" bottom="medium">
+            <cell><p>response_id</p></cell>
+            <cell><p>label</p></cell>
+            <cell><p>response_text</p></cell>
+          </row>
+          <row>
+            <cell><p>R001</p></cell>
+            <cell><p>INCLUDE</p></cell>
+            <cell><p>There is a free variable so it is not possible to have a unique solution.</p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>INCLUDE</p></cell>
+            <cell>
+              <p> 
+                One and only one solution is not possible because there will be a free variable since there are more 
+                variables than rows.
+              </p>
+            </cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>R004</p></cell>
+            <cell><p>FLAG</p></cell>
+            <cell><p>It depends what is in the augmented matrix.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <paragraphs>
+      <title>Output: CHAIN_STEP Table</title>
+
+      <p>
+        The output is one row per reasoning step, not one row per response. Each step is an abbreviated <em>(premise
+        &#x2192; conclusion)</em> pair, expressed in the controlled vocabulary that the group can compare, count, and
+        code. In Episode Model terms a step is the stored carrier of an episode <m>e_k = (C_k, I_k, J_k)</m>: the
+        premise carries the criterion the student cites and the conclusion carries the judgment they draw from it.
+        Steps whose premise or conclusion is not in the vocabulary are flagged with a <c>1</c> in the <c>oov_flag</c>
+        column (<q>out of vocabulary</q>).
+      </p>
+
+      <table xml:id="tab-roadmap-stage-3-output">
+        <title>Stage 3 output: each response as a reasoning chain.</title>
+        <tabular halign="center" top="major" bottom="minor">
+          <col width="8%"/>
+          <col width="5%" />
+          <col width="30%" halign="left" />
+          <col width="30%" halign="left" />
+          <col width="17%" />
+          <row header="yes" bottom="medium">
+            <cell><p>r..id</p></cell>
+            <cell><p><em>step</em></p></cell>
+            <cell><p><em>premise</em></p></cell>
+            <cell><p><em>conclusion</em></p></cell>
+            <cell><p><em>oov_flag</em></p></cell>
+          </row>
+          <row>
+            <cell><p>R001</p></cell>
+            <cell><p>1</p></cell>
+            <cell><p>&#x2014;</p></cell>
+            <cell><p>free_var_exists</p></cell>
+            <cell><p>0</p></cell>
+          </row>
+          <row>
+            <cell><p>R001</p></cell>
+            <cell><p>2</p></cell>
+            <cell><p>free_var_exists</p></cell>
+            <cell><p>no_unique_solution</p></cell>
+            <cell><p>0</p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>1</p></cell>
+            <cell><p>&#x2014;</p></cell>
+            <cell><p>more_vars_than_rows</p></cell>
+            <cell><p>0</p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>2</p></cell>
+            <cell><p>more_vars_than_rows</p></cell>
+            <cell><p>free_var_exists</p></cell>
+            <cell><p>0</p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>3</p></cell>
+            <cell><p>free_var_exists</p></cell>
+            <cell><p>no_unique_solution</p></cell>
+            <cell><p>0</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>R004</p></cell>
+            <cell><p>1</p></cell>
+            <cell><p>&#x2014;</p></cell>
+            <cell><p>solution_depends_on_b</p></cell>
+            <cell><p>1</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <p>
+      <term>Primary new columns.</term> 
+      <dl width="narrow">
+        <li>
+          <title><c>premise</c></title>
+          <p>
+            The claim or criterion the student appears to use as a reason for something else &#8212; the episode's
+            criterion <m>C</m>.
+          </p>
+        </li>
+        <li>
+          <title><c>conclusion</c></title>
+          <p>
+            The claim the student appears to draw as a consequence of the premise &#8212; the episode's
+            judgment <m>J</m>.
+          </p>
+        </li>
+        <li>
+          <title><c>oov_flag</c></title>
+          <p>
+            A flag indicating whether the student is reasoning about something the codebook does not currently have a 
+            word for, flagging a potential new control structure that should be added to the codebook.
+          </p>
+        </li>
+      </dl>
+    </p>
+
+    <p>
+      <term>Design considerations.</term> The main decision for this stage is how much interpretation the tool should 
+      be allowed to do. A cautious version only extracts reasoning that is clearly present in the student's words. A 
+      more interpretive version fills in implicit links, but that increases the risk of attributing reasoning to the 
+      student that they did not actually express. A second decision is the level of granularity for the splitting. For 
+      example should the chain split the response:
+    </p>
+
+    <blockquote>
+      <p>
+        <q>more variables than rows, therefore a free variable, therefore no unique solution</q>
+      </p>
+    </blockquote>
+
+    <p>
+      into three, two, or one step? Smaller steps are easier to match against the codebook, but larger steps may be 
+      closer to how the student actually wrote.
+    </p>
+
+    <p>
+      The working convention is to err on the side of smaller steps, since smaller steps make it easier to see when a 
+      student is combining several criteria into a pattern that prior coding work has found to be both common and 
+      consequential. The same convention can be revisited once enough chains have been produced to see whether finer 
+      splitting changes downstream matching in practice.
+    </p>
+
+    <remark>
+      <title>Possible directions for expansion</title>
+      <p>
+        The controlled vocabulary itself is the natural place to grow. Each OOV term that recurs is a candidate for 
+        inclusion, with the group deciding whether it represents a control structure that should be added to the 
+        codebook or content from a supplementary source that should be flagged as outside the textbook rather than 
+        assigned a code. The same chain shape can also be used to record alternate readings of the same response side 
+        by side (each as its own chain), so that disagreement among reviewers becomes a feature in the data rather 
+        than a side note. A natural early experiment is to run the same responses through a literal extractor (which 
+        encodes only what the student explicitly wrote) and a more interpretive extractor (which fills in implicit 
+        links) and compare what each one keeps and loses.
+      </p>
+    </remark>
+  </section>
+
+  <section xml:id="sec-roadmap-stage-4">
+    <title>Stage 4: Matcher</title>
+
+    <p>
+      The <q>matcher</q> compares each reasoning step against the group's codebook. This stage does not make the final 
+      coding decision. It records which control structures appear to fit the reasoning extracted in Stage 3, and 
+      preserves every plausible match rather than deciding on a single winner.
+    </p>
+
+    <assemblage>
+      <title>Stage 4: Matcher - Input &amp; Output</title>
+      <sidebyside valign="middle" widths="22% 5% 18% 5% 22%" margins="12% 12%">
+        <image xml:id="stage-4-in-table">
+          <mermaid>
+            erDiagram
+              CHAIN_STEP
+              CHAIN_STEP {
+                response_id *
+                step_index *
+                premise *
+                conclusion *
+                oov_flag *
+              }
+          </mermaid>
+        </image>
+        <p><m>\longrightarrow</m></p>
+        <image xml:id="stage-4-diagram">
+          <mermaid>
+            flowchart
+              A(Matching)
+          </mermaid>
+        </image>
+        <p><m>\longrightarrow</m></p>
+        <image xml:id="stage-4-out-table">
+          <mermaid>
+            erDiagram
+              MATCH
+              MATCH {
+                response_id *
+                step_index *
+                code_id *
+                rationale *
+              }
+          </mermaid>
+        </image>
+      </sidebyside>
+    </assemblage>
+
+    <paragraphs>
+      <title>Input: CHAIN_STEP Table</title>
+      <p>
+        The input is the <xref ref="tab-roadmap-stage-3-output" text="custom">CHAIN_STEP</xref> table from Stage 3.
+      </p>
+    </paragraphs>
+
+    <paragraphs>
+      <title>Output: MATCH Table</title>
+
+      <p>
+        The output is one row per <em>match</em> between a chain step and a codebook entry. A step can produce zero, 
+        one, or several rows: the tool does not pick a winner, and it does not emit a row for steps that match nothing. 
+        Each row has a short rationale so the group can see <em>why</em> a code was suggested. Steps that produce no 
+        matches (R004's OOV) are bumped to Stage 5.
+      </p>
+
+      <table xml:id="tab-roadmap-stage-4-output">
+        <title>Stage 4 output: chains linked to control structures.</title>
+        <tabular halign="center" top="major" bottom="minor">
+          <col width="10%" />
+          <col width="10%" />
+          <col width="14%" />
+          <col width="66%" halign="left" />
+          <row header="yes" bottom="medium">
+            <cell><p>r..id</p></cell>
+            <cell><p>step</p></cell>
+            <cell><p><em>code_id</em></p></cell>
+            <cell><p><em>rationale</em></p></cell>
+          </row>
+          <row>
+            <cell><p>R001</p></cell>
+            <cell><p>2</p></cell>
+            <cell><p>CS2_3</p></cell>
+            <cell><p>A free variable is used to rule out a unique solution.</p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>1</p></cell>
+            <cell><p>CS6_3</p></cell>
+            <cell><p>Compares variable count to row count.</p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>1</p></cell>
+            <cell><p>CS7_3</p></cell>
+            <cell><p>Alternate reading: compares unknowns to equations.</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>R003</p></cell>
+            <cell><p>3</p></cell>
+            <cell><p>CS2_3</p></cell>
+            <cell><p>A free variable is used to rule out a unique solution.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <p>
+      <term>Primary new columns.</term> 
+      <dl width="narrow">
+        <li>
+          <title><c>code_id</c></title>
+          <p>
+            The ID of the codebook entry that matches the chain step.
+          </p>
+        </li>
+        <li>
+          <title><c>rationale</c></title>
+          <p>
+            A brief explanation of why the code was suggested. A reviewer can decide whether the tool's reading is 
+            fair, generous, or stretched.
+          </p>
+        </li>
+      </dl>
+    </p>
+
+    <p>
+      <term>Design considerations.</term> The main decision for this stage is whether to return only the strongest 
+      match or to preserve multiple plausible matches. For research coding, preserving multiple plausible matches is 
+      safer because ambiguity is often exactly what the group needs to discuss; multiple matches also signal that a 
+      student may be applying more than one way of thinking about the problem, which is itself data. The matcher 
+      therefore reports every match the codebook patterns permit and leaves the disambiguation to human review.
+    </p>
+
+    <p>
+      <term>Open naming question.</term> The column is currently named <c>code_id</c> for compatibility with the 
+      database schema. A more framework-aligned name would be <c>control_structure_id</c>, which matches the language 
+      used in the codebook and in Balacheff &amp; Gaudin (2010). The trade-off is that <c>code_id</c> is more generic 
+      and would accommodate other kinds of codes (for instance, the criterion-correctness codes used in Deng et&#xA0;
+      al. (2026)) without further renaming.
+    </p>
+
+  </section>
+
+  <section xml:id="sec-roadmap-stage-5">
+    <title>Stage 5: Disposer</title>
+
+    <p>
+      The <q>Disposer</q> decides what should happen next with each response. This stage organizes responses for human 
+      review by identifying whether a response has a clear match, multiple possible matches, no match, or a prior 
+      eligibility issue. It is the only stage that looks across all of the earlier stages at once.
+    </p>
+
+    <assemblage>
+      <title>Stage 5: Disposer - Input &amp; Output</title>
+      <sidebyside valign="middle" widths="25% 5% 15% 5% 23%" margins="12% 12%">
+        <image xml:id="stage-5-in-table">
+          <mermaid>
+            erDiagram
+              COMBINED_VIEW
+              COMBINED_VIEW {
+                response_id *
+                label *
+                code_ids *
+                has_oov_step *
+              }
+          </mermaid>
+        </image>
+        <p><m>\longrightarrow</m></p>
+        <image xml:id="stage-5-diagram">
+          <mermaid>
+            flowchart
+              A(Disposition)
+          </mermaid>
+        </image>
+        <p><m>\longrightarrow</m></p>
+        <image xml:id="stage-5-out-table">
+          <mermaid>
+            erDiagram
+              DISPOSITION
+              DISPOSITION {
+                response_id *
+                disposition *
+                trigger_note *
+              }
+          </mermaid>
+        </image>
+      </sidebyside>
+    </assemblage>
+
+    <paragraphs>
+      <title>Input: COMBINED_VIEW Table</title>
+
+      <p>
+        The input is a combined view that gathers the <c>label</c> from Stage 2, the matched <c>code_id</c>s from Stage 
+        4, and the OOV flags from Stage 3.
+      </p>
+
+      <table xml:id="tab-roadmap-stage-5-input">
+        <title>Stage 5 input: combined view across Stages 2, 3, and 4.</title>
+        <tabular halign="center" top="major" bottom="minor">
+          <col width="10%"/>
+          <col width="15%" />
+          <col width="50%" />
+          <col width="25%"/>
+          <row header="yes" bottom="medium">
+            <cell><p>r..id</p></cell>
+            <cell><p>label</p></cell>
+            <cell><p>code_id (aggregated)</p></cell>
+            <cell><p>has_oov_step</p></cell>
+          </row>
+          <row>
+            <cell><p>R001</p></cell>
+            <cell><p>INCLUDE</p></cell>
+            <cell><p>CS2_3</p></cell>
+            <cell><p>no</p></cell>
+          </row>
+          <row>
+            <cell><p>R002</p></cell>
+            <cell><p>EXCLUDE</p></cell>
+            <cell><p>&#x2014;</p></cell>
+            <cell><p>no</p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>INCLUDE</p></cell>
+            <cell><p>CS2_3, CS6_3, CS7_3</p></cell>
+            <cell><p>no</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>R004</p></cell>
+            <cell><p>FLAG</p></cell>
+            <cell><p>&#x2014;</p></cell>
+            <cell><p>yes</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <paragraphs>
+      <title>Output: DISPOSITION Table</title>
+      <p>
+        The output is one row per response, with a disposition that tells the reviewer how this case should be handled 
+        and a short reason that says why.
+      </p>
+
+      <table xml:id="tab-roadmap-stage-5-output">
+        <title>Stage 5 output: each response ready for review.</title>
+        <tabular halign="center" top="major" bottom="minor">
+          <col width="10%"/>
+          <col width="25%" />
+          <col width="65%" halign="left" />
+          <row header="yes" bottom="medium">
+            <cell><p>r..id</p></cell>
+            <cell><p><em>disposition</em></p></cell>
+            <cell><p><em>note</em></p></cell>
+          </row>
+          <row>
+            <cell><p>R001</p></cell>
+            <cell><p>auto_accept</p></cell>
+            <cell><p>Clear single control-structure match.</p></cell>
+          </row>
+          <row>
+            <cell><p>R002</p></cell>
+            <cell><p>escalate</p></cell>
+            <cell><p>Blank response excluded at Stage 2.</p></cell>
+          </row>
+          <row>
+            <cell><p>R003</p></cell>
+            <cell><p>standard_review</p></cell>
+            <cell><p>Multiple possible control structures.</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>R004</p></cell>
+            <cell><p>terminology_flag</p></cell>
+            <cell><p>Relevant wording, but reasoning uses a term outside the codebook.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <p>
+      <term>Primary new columns.</term> 
+      <dl width="medium">
+        <li>
+          <title><c>disposition</c></title>
+          <p>
+            This column turns the response table into a review queue by grouping responses into buckets that the group 
+            can sort and filter. The current set of values are: <c>auto_accept</c>, <c>standard_review</c>, 
+            <c>problem_type_flag</c>, <c>terminology_flag</c>, <c>no_match</c>, <c>escalate</c>.
+          </p>
+        </li>
+        <li>
+          <title><c>note</c></title>
+          <p>
+            A brief explanation of why the response received its disposition.
+          </p>
+        </li>
+      </dl>
+    </p>
+
+    <p>
+      <term>Design considerations.</term> One decision for this stage is how to sort the review queue. The 
+      <c>disposition</c> values are deliberately coarse so that the group can rename or split them later without losing 
+      data. A separate decision is whether <c>auto_accept</c> cases should genuinely skip review or whether every 
+      response must pass at least one human eye.
+    </p>
+
+    <p>
+      <term>Possible directions for expansion.</term> Dispositions can be paired with a small priority score so the 
+      highest-value cases sort to the top. Reviewer assignment can be layered on top, with the same response visible to 
+      two reviewers when the group wants double-coding. As the pipeline accumulates history, the <c>disposition</c> 
+      column itself becomes the easiest way to measure how the codebook and the controlled vocabulary are evolving. For 
+      example, a decreasing rate of <c>terminology_flag</c>s could indicate that the vocabulary is catching up to what 
+      students actually write.
+    </p>
+
+    <p>
+      <term>Open methodological question.</term> When one control structure appears as a sub-step of another within a 
+      single reasoning chain (for example, a free-variable argument that is itself reached via a pivot-counting 
+      argument), the group has not yet settled whether both should be coded, only the parent, or only the child. Stage 
+      5 currently records every match Stage 4 produced, so that the data needed to apply any of these conventions later 
+      is preserved. The convention itself is a coding decision rather than a pipeline decision and is tracked as an 
+      open item for group resolution.
+    </p>
+  </section>
+
+  <section xml:id="sec-roadmap-end-to-end">
+    <title>End-to-end Trace</title>
+
+    <p>
+      Putting the five stages together, each of the four sample responses arrives at a different disposition. The 
+      single table below collapses everything the pipeline produced into one row per response, which is the view a 
+      reviewer's dashboard would render.
+    </p>
+
+    <table xml:id="tab-roadmap-end-to-end">
+      <title>End-to-end trace: one row per response across five stages.</title>
+      <tabular halign="center" top="major" bottom="minor">
+        <col width="10%"/>
+        <col width="12%" />
+        <col width="20%" />
+        <col width="36%"/>
+        <col width="22%" />
+        <row header="yes" bottom="medium">
+          <cell><p>r..id</p></cell>
+          <cell><p>label</p></cell>
+          <cell><p>chain steps</p></cell>
+          <cell><p>code_ids</p></cell>
+          <cell><p>disposition</p></cell>
+        </row>
+        <row>
+          <cell><p>R001</p></cell>
+          <cell><p>INCLUDE</p></cell>
+          <cell><p>2</p></cell>
+          <cell><p>CS2_3</p></cell>
+          <cell><p>auto_accept</p></cell>
+        </row>
+        <row>
+          <cell><p>R002</p></cell>
+          <cell><p>EXCLUDE</p></cell>
+          <cell><p>0</p></cell>
+          <cell><p>&#x2014;</p></cell>
+          <cell><p>escalate</p></cell>
+        </row>
+        <row>
+          <cell><p>R003</p></cell>
+          <cell><p>INCLUDE</p></cell>
+          <cell><p>3</p></cell>
+          <cell><p>CS2_3, CS6_3, CS7_3</p></cell>
+          <cell><p>standard_review</p></cell>
+        </row>
+        <row bottom="minor">
+          <cell><p>R004</p></cell>
+          <cell><p>FLAG</p></cell>
+          <cell><p>1 (OOV)</p></cell>
+          <cell><p>&#x2014;</p></cell>
+          <cell><p>terminology_flag</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      Every cell in every table is a single query away. Clicking any row in the eventual reviewer interface would 
+      expand it to show the full chain, the full set of matches, and the rationale recorded at each stage.
+    </p>
+  </section>
+
+  <section xml:id="sec-roadmap-overview">
+    <title>Overview</title>
+    <image xml:id="my-mermaid-diagram2">
+      <description>
+        <p>
+          End-to-end flow of the pipeline: ingest, eligibility, reasoning extraction, codebook matching, disposition, 
+          then human review.
+        </p>
+      </description>
+      <mermaid>
+        flowchart
+            A[1: Ingestion] --&gt; B[2:Screening]
+            B --&gt; C[3: Extraction]
+            C --&gt; D[4: Matching]
+            D --&gt; E[5: Disposition]
+            E --&gt; F[Human review]
+
+            B -. unclear / excluded .-&gt; F
+            C -. extraction problem .-&gt; F
+            D -. no match or multiple matches .-&gt; F
+      </mermaid>
+    </image>
+  </section>
+  
+  <section xml:id="sec-roadmap-scope">
+    <title>Scope of the Tool</title>
+
+    <p>
+      The tool now supports more than one <term>question type</term>. A service-agnostic core ingests and stores student
+      response data, and one <term>service</term> per question type sits on top of it. This report describes the
+      <term>short-answer</term> (control-structure) service; a separate drag-and-drop service is being built over the same
+      core as the proof of concept that the design is expandable. Of the five stages below, the first&#x2014;<term>ingest</term>&#x2014;belongs
+      to the shared core and serves every question type; the remaining four (screen, extract, match, dispose) are
+      <em>specific to the short-answer service</em>. Another question type reuses that shared ingest and storage while
+      supplying its own analysis stages.
+    </p>
+
+    <p>
+      Within the short-answer service, the architecture is intended to be reusable across textbooks: the same five
+      stages, the same database schema, and the same kinds of human-in-the-loop checkpoints apply regardless of which
+      textbook is the source of the responses.
+    </p>
+
+    <p>
+      Three components of the short-answer service, however, are inherently textbook-specific and would need to be redone
+      for any new textbook the group wants to analyze:
+      <ul marker="square">
+        <li>
+          <term>The codebook</term>, since the set of control structures that students might plausibly use depends on
+          what the textbook teaches and how.
+        </li>
+        <li>
+          <term>The controlled vocabulary</term> used by Stage 3, since the canonical propositions ("free variable
+          exists", "more variables than pivots", and so on) reflect the vocabulary the textbook uses to talk about the
+          topic.
+        </li>
+        <li>
+          <term>The validation data</term> for the LLM-integration work, since the human-coded set the service is
+          calibrated against is a set of responses to questions from a specific textbook.
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      The short-answer service is built to handle multiple textbooks at a time, with the framework (control
+      structures, criteria, cK¢ machinery) providing the cross-textbook continuity.
+    </p>
+
+  </section>
+
+</chapter>

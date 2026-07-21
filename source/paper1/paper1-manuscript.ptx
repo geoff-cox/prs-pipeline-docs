@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pretext xml:lang="en-US" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <xi:include href="./bookends/docinfo.ptx" />
+
+  <article xml:id="article-dnd-trajectory-framework">
+    <title>Reconstructing and Validating Drag-and-Drop Response Trajectories</title>
+    <subtitle>A State-Space Framework for Educational Process Data</subtitle>
+
+    <xi:include href="./bookends/frontmatter.ptx" />
+
+    <xi:include href="./sec-introduction.ptx" />
+    <xi:include href="./sec-data-canonical.ptx" />
+    <xi:include href="./sec-framework.ptx" />
+    <xi:include href="./sec-reconstruction.ptx" />
+    <xi:include href="./sec-empirical-study.ptx" />
+    <xi:include href="./sec-results.ptx" />
+    <xi:include href="./sec-discussion.ptx" />
+    <xi:include href="./sec-reproducibility.ptx" />
+    <xi:include href="./sec-conclusion.ptx" />
+    <xi:include href="./sec-declarations.ptx" />
+    
+    <xi:include href="./bookends/backmatter.ptx" />
+
+    <!--
+    FINAL MANUSCRIPT COMPLETION GATES
+    1. Data use and sharing are formally authorized.
+    2. Item-source inventory and version alignment are complete.
+    3. Primary segmentation and readiness policies are frozen.
+    4. Required outcome, error-profile, item-covariate, and unified exports are implemented.
+    5. Automated anchor validation, manual audit, synthetic faults, and regression fixtures are complete.
+    6. RQ3 primary contrast and RQ4 alternatives are frozen before headline interpretation.
+    7. Every table and figure is generated from versioned outputs.
+    8. Main text meets the target word limit; detailed schemas and rulebooks are moved to the supplement.
+    9. All visible STUB markers and bracketed placeholders are resolved.
+    10. All authors approve the final claims, declarations, and release package.
+    -->
+
+  </article>
+</pretext>
