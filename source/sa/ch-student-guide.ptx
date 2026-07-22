@@ -6,16 +6,14 @@
 
   <introduction>
     <p>
-      Students often give short written explanations of their mathematical
-      reasoning. These explanations may be only one or two sentences long, but
-      they can still show what information a student noticed, how the student
-      connected that information to a mathematical idea, and what conclusion
-      the student reached.
+      Students responses to short-answer questions may be only one or two 
+      sentences in length, but they can still show what information a student 
+      noticed, how the student connected that information to a mathematical 
+      idea, and what conclusion the student reached.
     </p>
 
     <p>
-      This project studies those short explanations. Our goal is not simply to
-      mark each response as correct or incorrect. Instead, we examine the
+      This project studies those short explanations. Our goal is to examine the
       mathematical justification contained in the response. In particular, we
       ask:
       <ul>
@@ -26,10 +24,7 @@
     </p>
 
     <p>
-      This guide introduces the theoretical ideas, coding language, and
-      computational workflow used by the project. It is written for new student
-      researchers and assumes no previous experience with mathematics education
-      research, qualitative coding, or the Balacheff framework.
+      This guide outlines the basic ideas of our approach.
     </p>
   </introduction>
 
@@ -64,9 +59,9 @@
     <introduction>
       <p>
         This project is motivated by the cK&#162; framework developed by
-        Balacheff and his collaborators. The framework provides a language for
-        describing mathematical knowing as it appears when a person works on a
-        particular kind of problem.
+        Balacheff and his collaborators (Balacheff &amp; Gaudin, 2009). The
+        framework provides a language for describing mathematical knowing as it
+        appears when a person works on a particular kind of problem.
       </p>
 
       <p>
@@ -91,7 +86,7 @@
       <title>The Model of a Conception</title>
 
       <p>
-        Following Balacheff and Gaudin, a conception is modeled by the
+        According to Balacheff and Gaudin, a conception is modeled by the
         quadruplet
         <md>
           (P,R,L,\Sigma),
@@ -148,7 +143,7 @@
     </subsection>
 
     <subsection xml:id="subsec-student-guide-control-structures">
-      <title>Why This Project Focuses on Control Structures</title>
+      <title>Control Structures</title>
 
       <p>
         Our project is especially interested in the evidence for control
@@ -230,10 +225,10 @@
 
     <introduction>
       <p>
-        Our goal is to develop a framework and computational tool for
-        analyzing short written responses to mathematical questions. The
-        project uses authentic student responses collected from interactive
-        textbooks and other course materials.
+        Our goal is to develop a computational tool for analyzing short-answer 
+        responses to mathematical questions. The project uses real student
+        responses collected from interactive textbooks hosted on the Runestone
+        platform.
       </p>
 
       <p>
@@ -285,33 +280,21 @@
 
       <p>
         The basic unit of data is a student's written response to a specific
-        mathematical question. To interpret a response responsibly, researchers
-        consider the response together with:
+        mathematical question. To interpret a response responsibly, we consider:
         <ul>
           <li>the exact question the student was answering;</li>
           <li>the mathematical information supplied in the question;</li>
           <li>the conclusion or explanation the question requested; and</li>
-          <li>
-            the definitions, theorems, examples, and representations available
-            to the student.
-          </li>
+          <li> the definitions, theorems, examples, etc. available to the student.</li>
         </ul>
       </p>
 
       <p>
-        A response is therefore not analyzed as an isolated piece of text. The
-        meaning and correctness of a statement often depend on the problem in
+        The meaning and correctness of a statement often depend on the problem in
         which it appears. For example, the existence of a free variable may
         justify one conclusion when a system is known to be consistent, but it
         may not justify the same conclusion when consistency has not been
         established.
-      </p>
-
-      <p>
-        The project may analyze responses from several questions, topics,
-        textbook sections, courses, or semesters. Each question is treated as
-        its own mathematical context before results are compared across larger
-        collections of data.
       </p>
     </subsection>
 
@@ -353,6 +336,21 @@
         The codebook does not remove the need for interpretation. It gives
         researchers a common language and a shared set of rules so that their
         interpretations can be compared, discussed, and revised.
+      </p>
+
+      <p>
+        Two structural facts about the codebook are worth knowing early. First,
+        the named control structures live in a single shared library that is
+        reused across questions. Each question then has a <term>working
+        codebook</term>: the controls that apply to it, each paired with the
+        criterion-to-judgment relationship that is valid <em>for that
+        question</em>. Correctness is judged against that per-question
+        relationship, not against a global assumption. Second, new terms and
+        codes are not added casually. A proposed term or code enters in a
+        <term>proposed</term> state, and a human reviewer either accepts it as
+        new or maps it to an existing entry; an entry that has already been used
+        in coding is <term>deprecated</term> rather than deleted, so earlier
+        analyses stay interpretable.
       </p>
     </subsection>
 
@@ -406,6 +404,15 @@
         the final codes. It is also interested in how those codes were produced
         and where uncertainty or disagreement occurred.
       </p>
+
+      <aside>
+        <title>Tool Capabilities</title>
+        <p>
+          Currently, every stage runs a simple <term>deterministic baseline</term>,
+          not a large language model. For a list of the tool's current capabilities, 
+          see <xref ref="sec-student-guide-pipeline" text="title"/>.
+        </p>
+      </aside>
     </subsection>
 
     <subsection xml:id="subsec-student-guide-project-human-role">
@@ -592,29 +599,27 @@
         For example, consider the response:
       </p>
 
-      <blockquote>
-        <p>
-          There is a free variable, so the solution cannot be unique.
-        </p>
-      </blockquote>
+      <program>
+        There is a free variable, so the solution cannot be unique.
+      </program>
 
       <p>
         One episode can be represented as:
         <dl width="narrow">
           <li>
-            <title>Criterion, <m>C_1</m></title>
+            <title><m>C_1</m>:</title>
             <p>A free variable exists.</p>
           </li>
 
           <li>
-            <title>Inferential link, <m>I_1</m></title>
+            <title><m>I_1</m>:</title>
             <p>
               A system with a free variable cannot have exactly one solution.
             </p>
           </li>
 
           <li>
-            <title>Judgment, <m>J_1</m></title>
+            <title><m>J_1</m>:</title>
             <p>The solution is not unique.</p>
           </li>
         </dl>
@@ -625,6 +630,20 @@
         does not claim to describe everything the student knew, every operation
         the student performed, or every thought that led to the written answer.
       </p>
+
+		<p>
+			Complete episodes receive a two-part correctness code, adapted from
+      prior work (Gerami et al., 2024):
+			<md>
+				\operatorname{code}(e_k)=(c^1_k,c^2_k).
+			</md>
+			The first digit <m>c^1_k</m> records whether the cited criterion is true of
+      the adopted reference state. The second digit <m>c^2_k</m> records whether
+      the inference from criterion to judgment is mathematically valid for the
+      question. Incomplete episodes are not forced into this two-digit scheme; they
+      are preserved as partial evidence or routed to human review.
+		</p>
+
     </introduction>
 
     <subsection xml:id="subsec-student-guide-episode-project-model">
@@ -738,6 +757,14 @@
       <p>
         The goal is to represent the justification the student provided, not the
         stronger justification the student could have provided.
+      </p>
+
+      <p>
+        When you record the inferential link on a coding sheet, these three
+        levels map onto the values the <term>Coder's Handbook</term> uses: an
+        explicit connector is <c>explicit</c>, a strongly supported but unstated
+        link is <c>implicit</c>, and a missing or unidentifiable link is
+        <c>absent</c> (which marks the episode incomplete).
       </p>
     </subsection>
 
@@ -1114,12 +1141,29 @@
               What should happen to the response next?
             </cell>
             <cell>
-              A workflow destination such as acceptance, ordinary review,
-              terminology review, or escalation.
+              A workflow disposition: <c>auto_accept</c>,
+              <c>standard_review</c>, <c>terminology_flag</c>, <c>no_match</c>,
+              or <c>escalate</c> (a sixth value, <c>problem_type_flag</c>, is
+              defined but not yet produced).
             </cell>
           </row>
         </tabular>
       </table>
+
+      <p>
+        Two points keep this overview honest. First, the same five stages are
+        named for their outputs here (ingest, screen, extract, match, dispose)
+        and for their agents in the <xref ref="ch-automation-tool-roadmap" text="title"/>
+        (Ingestor, Screener, Extractor, Matcher, Disposer); they are the same
+        stages. Second, what runs today is not a language model. Every stage
+        currently uses a <term>deterministic baseline</term>: a rule-based
+        screener, a keyword-and-connector extractor, a substring pattern
+        matcher, and a rule-cascade disposer. These baselines let the pipeline
+        run end to end right now, but their proposals are deliberately shallow.
+        A language model is planned for only the screening and extraction
+        stages, is to be introduced screening-stage-first, and is awaiting IRB 
+        approval.
+      </p>
     </subsection>
 
     <subsection xml:id="subsec-student-guide-pipeline-general">
@@ -1253,11 +1297,13 @@
       </p>
 
       <p>
-        Borderline cases should be preserved for human review rather than
-        silently discarded. Depending on the current project protocol, this may
-        be represented by a separate <c>FLAG</c> label or by an
-        <c>INCLUDE</c>/<c>EXCLUDE</c> decision accompanied by a review flag or
-        low-confidence indicator.
+        Borderline cases are preserved for human review rather than silently
+        discarded. The current screening stage uses three labels: <c>INCLUDE</c>,
+        <c>EXCLUDE</c>, and <c>FLAG</c>. The <c>FLAG</c> label is used for ambiguous responses: for example, one that shows mathematical work but no connector
+        linking it to a conclusion, or one of meaningful length that never states an
+        explicit connector. A <c>FLAG</c> is not a rejection; it reserves the response 
+        for a human to make the final call. Each screening decision also carries a 
+        confidence value, which can further prioritize a response for review.
       </p>
 
       <p>
@@ -1282,21 +1328,21 @@
                   record the specific reason
 
               else if the response gives only an answer with no justification:
-                  propose EXCLUDE or human review
+                  propose EXCLUDE or FLAG
                   follow the current screening policy
 
-              else if the response may contain justification
-                      but the evidence is uncertain:
-                  preserve the response
-                  mark it for human review
+              else if the response shows work but no connector to a conclusion,
+                      or is otherwise borderline:
+                  propose FLAG
+                  reserve the response for human review
                   explain the uncertainty
 
               else:
                   propose INCLUDE
                   identify the evidence that makes the response analyzable
 
-              record the screening decision, rationale,
-              and any confidence or review flag
+              record the screening decision (INCLUDE, EXCLUDE, or FLAG),
+              its rationale, and its confidence
         </program>
       </paragraphs>
 
@@ -1319,21 +1365,30 @@
       </p>
 
       <p>
-        For each possible episode, the extractor attempts to identify:
+        Ideally, for each possible episode the analysis identifies:
         <ul>
           <li>the criterion <m>C_k</m>;</li>
-          <li>the inferential link <m>I_k</m>;</li>
           <li>the judgment <m>J_k</m>;</li>
-          <li>the order of the episodes;</li>
           <li>
-            whether episodes are chained, independent, or potentially nested;
-            and
+            the order of the episodes, and whether they are chained,
+            independent, or potentially nested; and
           </li>
           <li>
             whether any component is missing, ambiguous, or outside the
             controlled vocabulary.
           </li>
         </ul>
+      </p>
+
+      <p>
+        The inferential link <m>I_k</m> is treated a little differently from the
+        criterion and judgment. The extractor records the criterion and judgment
+        a student states, but the <em>validity</em> of the link between them is
+        not read off the student's words; it is evaluated later, at matching and
+        correctness, against the question-specific coding information (the valid
+        criterion-to-judgment relationships for that question). Making the
+        criterion and judgment explicit is the extractor's job; supplying or
+        certifying the link is not.
       </p>
 
       <p>
@@ -1348,6 +1403,20 @@
         <q>there is a free variable</q>, and <q>one variable has no pivot</q>
         may all provide evidence related to the same controlled-vocabulary term.
         The original wording must still remain available for comparison.
+      </p>
+
+      <p>
+        The extraction just described is difficult to automate and is one of the
+        tasks we seek to hand off to a large language model. The tool's current
+        deterministic baseline simply looks for a single connector word
+        (<q>because</q>, <q>so</q>, <q>therefore</q>, and the like), splits the
+        sentence into a premise and a conclusion, and maps each to a
+        controlled-vocabulary term, flagging anything it cannot map as out of
+        vocabulary. It
+        produces at most one premise-to-conclusion step and does not, on its own,
+        segment a response into several episodes or classify their relationships.
+        Multi-episode segmentation and the chained, independent, and nested 
+        distinctions are, for now, human-coder work.
       </p>
 
       <paragraphs>
@@ -1459,6 +1528,17 @@
         A match is a proposal, not a final code. The match indicates that an
         episode satisfies enough of a codebook entry to deserve consideration.
       </p>
+
+      <p>
+        As with the other stages, the comparison just described is the target.
+        The current deterministic matcher is simpler: it looks for codebook
+        keyword patterns and surface-marker phrases that appear as substrings of
+        a step's premise or conclusion, and it reports every code whose pattern
+        or marker fires. A <q>candidate code</q> from the baseline therefore
+        means only that a codebook phrase occurred in the step text. Weighing it
+        against the full code definition, its inclusion and exclusion rules, and
+        the question-specific inferential links is the human reviewer's job.
+      </p>
     </subsection>
 
     <subsection xml:id="subsec-student-guide-stage-dispose">
@@ -1471,51 +1551,63 @@
       </p>
 
       <p>
-        Possible dispositions include:
+        The pipeline records the disposition as one of six values. In the
+        deterministic baseline they are assigned by a simple cascade over the
+        outputs of the earlier stages:
         <dl width="narrow">
           <li>
-            <title>Automatic or expedited acceptance</title>
+            <title><c>auto_accept</c></title>
             <p>
-              The response contains a clear episode and one unambiguous candidate
-              code under an approved project policy.
+              Exactly one codebook code matched a clean chain with no flags. The
+              reviewer's role is confirmation only. Automatic acceptance should
+              be trusted only after the project has validated the rule on
+              human-coded data; during early development, even these may be sent
+              to a human.
             </p>
           </li>
 
           <li>
-            <title>Standard review</title>
+            <title><c>standard_review</c></title>
             <p>
-              The response is codable but requires a human to confirm episode
-              boundaries, candidate codes, or correctness.
+              Two or more distinct codes matched. More than one code plausibly
+              describes the reasoning, so a human confirms or edits the
+              candidates. A response with several plausible codes is routed here;
+              there is no separate <q>multiple-match</q> destination.
             </p>
           </li>
 
           <li>
-            <title>Multiple-match review</title>
+            <title><c>terminology_flag</c></title>
             <p>
-              More than one code plausibly describes the same episode.
+              A chain step used a term outside the controlled vocabulary (an
+              out-of-vocabulary step). This signals a possible vocabulary gap
+              rather than a coding error.
             </p>
           </li>
 
           <li>
-            <title>Terminology review</title>
+            <title><c>no_match</c></title>
             <p>
-              The response contains reasoning outside the controlled vocabulary
-              or current codebook.
+              A chain was extracted, but no codebook pattern fired on any step.
             </p>
           </li>
 
           <li>
-            <title>No-match review</title>
+            <title><c>escalate</c></title>
             <p>
-              An episode was extracted, but no existing code fits it.
+              The response needs full manual coding: anything the screener
+              marked <c>EXCLUDE</c> or <c>FLAG</c>, or any response on which
+              chain extraction failed to produce usable steps.
             </p>
           </li>
 
           <li>
-            <title>Escalation</title>
+            <title><c>problem_type_flag</c></title>
             <p>
-              The response is too ambiguous, incomplete, contradictory, or
-              otherwise difficult for ordinary review.
+              A matched code appears inappropriate for the question type. This
+              value is defined in the schema but is <em>not</em> produced by the
+              current deterministic disposer, which has no question-type lookup;
+              it is reserved for a later, more capable disposer.
             </p>
           </li>
         </dl>
@@ -1528,40 +1620,29 @@
           For each response:
 
               read the screening result
-              read the extracted episodes
+              read the extracted chain and its steps
               read all candidate matches and flags
 
-              if the response was excluded during screening:
-                  preserve the exclusion reason
-                  assign the disposition required by the review policy
-
-              else if extraction is incomplete or highly ambiguous:
-                  assign escalation or specialized review
-
-              else if an out-of-vocabulary term is present:
-                  assign terminology review
-
-              else if no code matches:
-                  assign no-match review
-
-              else if several plausible codes or episodes require a decision:
-                  assign standard or multiple-match review
-
-              else if one clear match satisfies the approved acceptance rule:
-                  assign expedited acceptance
-
-              otherwise:
-                  assign standard human review
+              if the screener said EXCLUDE or FLAG:         assign escalate
+              else if no chain was extracted, or the chain
+                      has no steps:                         assign escalate
+              else if any chain step is out of vocabulary:  assign terminology_flag
+              else if no codebook code matched:             assign no_match
+              else if two or more distinct codes matched:   assign standard_review
+              else (exactly one code matched):              assign auto_accept
 
               record the disposition and the rule that triggered it
         </program>
       </paragraphs>
 
       <p>
-        An automatic or expedited disposition should be used only after the
-        project has validated the relevant rule on human-coded data. During early
-        development, even clear cases may be sent to human review so that the
-        research team can evaluate the pipeline.
+        Because the current disposer is a rule cascade over shallow baseline
+        outputs, even an <c>auto_accept</c> should be trusted only after the
+        project has validated the rule on human-coded data. During early
+        development, every case (clear or not) may be sent to human
+        review so that the research team can evaluate the pipeline. The
+        <xref ref="ch-pipeline-demo" text="title"/> shows five responses reaching
+        five different dispositions, one per branch of this cascade.
       </p>
     </subsection>
 
@@ -2215,7 +2296,25 @@
       <p>
         The tool's original proposal should not be overwritten. The project
         preserves both the proposal and the human decision so that disagreements
-        can be studied later.
+        can be studied later. On the candidate codes specifically, each reviewer
+        edit is recorded as one of a fixed set of actions:
+      </p>
+
+      <blockquote>
+        <p>
+          <c>confirm</c>, 
+          <c>add</c>, 
+          <c>remove</c>, 
+          <c>replace</c>, or 
+          <c>reject_all</c>
+        </p>
+      </blockquote>
+
+      <p>
+        and appended to an <term>override log</term> rather than replacing what the
+        tool proposed. The log is append-only precisely so that the difference
+        between the tool's proposal and the human decision remains available for
+        study.
       </p>
 
       <p>
@@ -2519,11 +2618,12 @@
       </program>
 
       <p>
-        We process the response as follows:
+        This is the kind of clean, single-episode justification that passes through 
+        all stages of the pipeline with an <c>auto_accept</c> label. Here is the 
+        complete process:
         <dl width="narrow">
           <li>
             <title>Screening</title>
-
             <p>
               The response contains a mathematical criterion and connects it to a
               judgment. It should therefore be included for episode analysis.
@@ -2532,7 +2632,6 @@
 
           <li>
             <title>Extraction</title>
-
             <p>
               The response contains one complete episode:
               <md>
@@ -2577,7 +2676,7 @@
             <title>Correctness</title>
 
             <p>
-              Thus, the local episode would receive
+              The local episode would receive
               <md>
                 \operatorname{code}(e_1)=(1,1).
               </md>
@@ -2952,6 +3051,12 @@
       <program>
         It depends what is in the augmented matrix.
       </program>
+
+      <p>
+        This is one of the responses traced through the whole pipeline in the
+        <xref ref="ch-pipeline-demo" text="title"/>, where its out-of-vocabulary
+        phrasing produces a <c>terminology_flag</c> disposition.
+      </p>
 
       <p>
         We process the response as follows:
@@ -3634,6 +3739,14 @@
         The exercises use synthetic responses written to resemble the kinds of
         short answers found in the project data. They are not responses from the
         research corpus.
+      </p>
+
+      <p>
+        These exercises restate, in a self-contained form, the rules the
+        project's separate <term>Coder's Handbook</term> lays out as the working
+        manual. When you begin real coding, that handbook and its coding-sheet
+        template are the authority for the exact columns you fill and the values 
+        they take.
       </p>
 
       <p>
@@ -5233,6 +5346,15 @@
             The frame describes the mathematical context used to analyze the
             response. It is not treated as the student's complete conception.
           </p>
+
+          <p>
+            In the tool, the part of this frame that does concrete work is stored
+            as the question's <term>working codebook</term>: the control
+            structures in scope for the question, each bound to the
+            criterion-to-judgment link that is valid for it. That stored
+            selection, not a full per-question quadruplet, is what the matching
+            and correctness stages consult.
+          </p>
         </li>
       </dl>
     </subsection>
@@ -5326,6 +5448,17 @@
             </md>
             the inferential link is that a system with a free variable cannot
             have exactly one solution.
+          </p>
+
+          <p>
+            The inferential link is not read verbatim from a response. The
+            per-question set of valid links is the project's normative
+            reference, stored in the working codebook (the
+            <c>normative_link</c> field of <c>question_controls</c>); the second
+            correctness digit grades a response's link against that reference. A
+            schema comment glosses this field with the letter <q>L</q>, but in
+            the Episode Model the inferential link is always <m>I</m>, never
+            <m>L</m> (which denotes the representation system).
           </p>
         </li>
 
@@ -5547,6 +5680,13 @@
           </p>
 
           <p>
+            The two-digit code is adapted from prior work (Gerami et&#160;al.,
+            2024) and layered on top of the episode description. It is not part
+            of the cK&#162; model, which does not ask whether a student's
+            reasoning was right.
+          </p>
+
+          <p>
             The possible pairs are:
             <dl width="narrow">
               <li>
@@ -5732,9 +5872,11 @@
           </p>
 
           <p>
-            Depending on the current project protocol, a flag may accompany a
-            binary <c>INCLUDE</c>/<c>EXCLUDE</c> decision rather than function as
-            a separate screening label.
+            In the current screening stage, the review flag is realized as a
+            distinct third label, <c>FLAG</c>, alongside <c>INCLUDE</c> and
+            <c>EXCLUDE</c>. The screener assigns <c>FLAG</c> to borderline
+            responses (e.g., work shown with no connector to a conclusion) and
+            Stage 5 routes a flagged response to <c>escalate</c>.
           </p>
         </li>
 
@@ -5882,7 +6024,9 @@
 
           <p>
             A case in which more than one codebook entry plausibly describes an
-            episode or response.
+            episode or response. A multiple-match case is routed to the
+            <c>standard_review</c> disposition; it is a reason for review, not a
+            disposition of its own.
           </p>
 
           <p>
@@ -5921,14 +6065,20 @@
 
           <p>
             The workflow decision that determines what happens to a response
-            next. Possible dispositions include:
+            next. The pipeline records it as one of six values:
             <ul>
-              <li>expedited acceptance;</li>
-              <li>standard review;</li>
-              <li>multiple-match review;</li>
-              <li>terminology review;</li>
-              <li>no-match review; or</li>
-              <li>escalation.</li>
+              <li><c>auto_accept</c>;</li>
+              <li>
+                <c>standard_review</c> (also where several plausible codes are
+                sent);
+              </li>
+              <li>
+                <c>problem_type_flag</c> (defined in the schema, not produced by
+                the current baseline);
+              </li>
+              <li><c>terminology_flag</c>;</li>
+              <li><c>no_match</c>; or</li>
+              <li><c>escalate</c>.</li>
             </ul>
           </p>
         </li>
@@ -6059,7 +6209,10 @@
           <p>
             A human-review decision that changes or rejects a proposed screening
             label, episode, candidate code, correctness annotation, or
-            disposition.
+            disposition. On candidate codes, an override is recorded as one of a
+            fixed set of edit kinds (<c>confirm</c>, <c>add</c>, <c>remove</c>,
+            <c>replace</c>, or <c>reject_all</c>) and appended to an override log
+            rather than overwriting the tool's original proposal.
           </p>
 
           <p>
@@ -6136,6 +6289,15 @@
             The process of checking whether coders apply the analytic protocol
             consistently. Coders first analyze the same responses independently,
             compare their results, classify disagreements, and adjudicate them.
+          </p>
+
+          <p>
+            The agreement between two independent coders, measured before
+            adjudication, is summarized by a standard inter-rater reliability
+            statistic such as Cohen's <m>\kappa</m> or Krippendorff's
+            <m>\alpha</m>. That number is the human ceiling against which the
+            tool is later compared, and it is one of the project's own research
+            results.
           </p>
         </li>
 
@@ -6528,6 +6690,19 @@
           </row>
         </tabular>
       </table>
+
+      <p>
+        This sequence runs alongside the rest of the book and the project's
+        coding packet. Before independent coding, a new student researcher
+        should have read the <xref ref="ch-automation-tool-roadmap" text="title"/>
+        and the <xref ref="ch-pipeline-demo" text="title"/> for the concrete
+        pipeline, the Analytic Framework section of
+        <xref ref="ch-framing-models" text="title"/> for the formal Episode
+        Model, and the project's <term>Coder's Handbook</term> for the working
+        coding rules and coding-sheet columns. The
+        <xref ref="ch-using-the-tool" text="title"/> shows the prototype a
+        reviewer actually operates.
+      </p>
     </subsection>
 
     <subsection xml:id="subsec-student-guide-next-steps-orientation">
@@ -6740,6 +6915,15 @@
       </p>
 
       <p>
+        On real project data, the first independent pass is deliberately
+        code-free: you describe each criterion-to-judgment move in your own
+        words and leave the code column blank, following the project's coding
+        protocol, until the project introduces its own codes to you. The
+        practice codes in this guide (<c>PC1</c>&#8211;<c>PC5</c>) are for
+        training only and are never used on research data.
+      </p>
+
+      <p>
         For each assigned response, the student researcher should:
         <ol>
           <li>read the exact question and its normative reference;</li>
@@ -6813,7 +6997,10 @@
         each decision is preserved. For every assigned batch, retain:
         <ul>
           <li>the response and question identifiers;</li>
-          <li>the codebook and vocabulary versions used;</li>
+          <li>
+            the coding-rules (handbook), codebook, and vocabulary versions each
+            record was coded under;
+          </li>
           <li>the student's independent first-pass analysis;</li>
           <li>confidence and uncertainty notes;</li>
           <li>all disagreement classifications;</li>
