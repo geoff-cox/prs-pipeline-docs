@@ -6,7 +6,7 @@
 
 ## Why this exercise is one-shot
 
-You currently do *not* know the project's codebook. That makes you something the project can never get back once spent: a careful, fresh reader. Part A measures whether the codebook's categories are ones that fresh readers *discover on their own* — which is evidence about the codebook itself, not about you. This is why the reading restrictions in the roadmap exist, and why Part A comes before you open the sealed companion.
+You currently do *not* know the project's codebook. That makes you something the project can never get back once spent: a careful, fresh reader. Part A measures whether the codebook's categories are ones that fresh readers *discover on their own* — which is evidence about the codebook itself, not about you. This is why the reading restrictions in the orientation exist, and why Part A comes before you open the sealed companion.
 
 ## Part A — Blind pass
 

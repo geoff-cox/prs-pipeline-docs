@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <chapter xml:id="ch-automation-tool-roadmap" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Automation Tool Roadmap</title>
+  <title>Pipeline Roadmap</title>
 
   <introduction>
     <p>
@@ -1129,6 +1129,430 @@
       Every cell in every table is a single query away. Clicking any row in the eventual reviewer interface would 
       expand it to show the full chain, the full set of matches, and the rationale recorded at each stage.
     </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 5: HUMAN DECISION POINTS                             -->
+  <!-- ============================================================ -->
+
+  <section xml:id="sec-student-guide-human-decisions">
+    <title>Human Decision Points</title>
+
+    <introduction>
+      <p>
+        The pipeline can organize responses, propose episodes, suggest codebook
+        matches, and flag difficult cases. Human researchers must still decide
+        whether an interpretation is supported and mathematically defensible.
+      </p>
+
+      <p>
+        Human review is most important when a response is incomplete, ambiguous,
+        contradictory, contains multiple episodes, matches several codes, or uses
+        reasoning not covered by the current codebook.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-student-guide-human-decision-types">
+      <title>Major Decisions</title>
+
+      <p>
+        Reviewers make several distinct decisions. These should not be replaced by
+        a general impression that a response <q>looks right.</q>
+      </p>
+
+      <table xml:id="tab-student-guide-human-decisions">
+        <title>Major human decision points.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="22%"/>
+          <col width="40%"/>
+          <col width="38%"/>
+
+          <row header="yes" bottom="medium">
+            <cell>Decision</cell>
+            <cell>Main question</cell>
+            <cell>Possible outcome</cell>
+          </row>
+
+          <row>
+            <cell>Screening</cell>
+            <cell>Is there enough justification to analyze?</cell>
+            <cell>Include, exclude, or review.</cell>
+          </row>
+
+          <row>
+            <cell>Segmentation</cell>
+            <cell>How many episodes are present?</cell>
+            <cell>One, several, incomplete, or unresolved.</cell>
+          </row>
+
+          <row>
+            <cell>Interpretation</cell>
+            <cell>What are the criterion, link, and judgment?</cell>
+            <cell>Confirm, revise, or mark a part missing.</cell>
+          </row>
+
+          <row>
+            <cell>Code matching</cell>
+            <cell>Which codebook entries fit?</cell>
+            <cell>Confirm, reject, or record no match.</cell>
+          </row>
+
+          <row>
+            <cell>Correctness</cell>
+            <cell>Is the criterion true and the inference valid?</cell>
+            <cell>Assign a correctness code or mark incomplete.</cell>
+          </row>
+
+          <row>
+            <cell>Goal coverage</cell>
+            <cell>Does the response answer the full question?</cell>
+            <cell>Complete, partial, or not addressed.</cell>
+          </row>
+
+          <row bottom="minor">
+            <cell>Framework revision</cell>
+            <cell>Do the rules or codebook need revision?</cell>
+            <cell>Clarify, add an example, propose a term, or leave unresolved.</cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-evidence-before-interpretation">
+      <title>Start with the Evidence</title>
+
+      <p>
+        Record what the student actually wrote before deciding how to code it.
+        Ask:
+        <ol>
+          <li>What words, symbols, or calculations are present?</li>
+          <li>What appears to be the criterion?</li>
+          <li>What judgment is stated?</li>
+          <li>How clearly are the criterion and judgment connected?</li>
+          <li>Would completing the episode require adding new reasoning?</li>
+        </ol>
+      </p>
+
+      <p>
+        Reviewers may <term>paraphrase</term> a student's idea or
+        <term>interpret</term> its mathematical role. They must not
+        <term>repair</term> the response by supplying a missing condition,
+        theorem, or conclusion. Missing information remains missing.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-screening">
+      <title>Screening</title>
+
+      <p>
+        Screening asks whether a response contains enough justification for
+        episode analysis, not whether it is correct.
+      </p>
+
+      <p>
+        An incorrect explanation may be codable if it contains a criterion, link,
+        and judgment. A correct answer may be non-codable if no connection between
+        the work and conclusion is given.
+      </p>
+
+      <p>
+        When the rule is unclear, preserve the response, record the uncertainty,
+        follow the project's conservative policy, and note whether the guidance
+        needs clarification.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-segmentation">
+      <title>Segmenting Episodes</title>
+
+      <p>
+        Segmentation identifies where one local justification ends and another
+        begins. For example:
+      </p>
+
+      <blockquote>
+        <p>
+          There are fewer pivots than variables, so there is a free variable.
+          Therefore, the solution is not unique.
+        </p>
+      </blockquote>
+
+      <p>
+        This response contains two chained episodes:
+        <md>
+          \begin{aligned}
+            e_1 \amp: \text{fewer pivots than variables}
+            \longrightarrow
+            \text{a free variable exists},\\
+            e_2 \amp: \text{a free variable exists}
+            \longrightarrow
+            \text{the solution is not unique}.
+          \end{aligned}
+        </md>
+      </p>
+
+      <p>
+        Nested reasoning requires a consistent project policy: code both the
+        larger episode and its sub-step, only the larger episode, or only the most
+        specific episode. This is a coding convention, not a mathematical fact.
+      </p>
+
+      <p>
+        When boundaries are uncertain, record the competing segmentations.
+        Segmentation disagreements should be kept separate from code disagreements.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-operation-control">
+      <title>Operations and Controls</title>
+
+      <p>
+        An <term>operation</term> creates or transforms a mathematical object. A
+        <term>control</term> interprets a result and supports a decision.
+      </p>
+
+      <dl width="narrow">
+        <li>
+          <title>Operation</title>
+          <p><q>I row reduced the matrix.</q></p>
+        </li>
+
+        <li>
+          <title>Control</title>
+          <p>
+            <q>The reduced matrix has no contradictory row, so the system is
+            consistent.</q>
+          </p>
+        </li>
+      </dl>
+
+      <p>
+        Some statements can serve different roles in different contexts. Ask
+        whether the statement produces a result, interprets a result, or justifies
+        a decision. Document cases that remain ambiguous.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-matching">
+      <title>Matching Codebook Entries</title>
+
+      <p>
+        Compare each episode with the code definition, inclusion and exclusion
+        rules, examples, confusable codes, and the question-specific
+        criterion-to-judgment relationship.
+      </p>
+
+      <p>
+        Do not code by keyword alone. A response mentioning <q>pivot</q> may
+        actually rely on dimension, consistency, or a comparison between pivots
+        and variables.
+      </p>
+
+      <p>
+        More than one code is appropriate only when the response contains distinct
+        controls or episodes. When several codes seem plausible, determine whether
+        the response contains multiple ideas, one code is more specific, the
+        definitions overlap, or the evidence is too ambiguous.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-correctness">
+      <title>Evaluating Correctness</title>
+
+      <p>
+        Evaluate correctness only after identifying an episode. Ask separately:
+        <ol>
+          <li>Is the criterion true in this problem?</li>
+          <li>Does it validly support the judgment?</li>
+        </ol>
+      </p>
+
+      <p>
+        For a complete episode
+        <md>
+          e_k=(C_k,I_k,J_k),
+        </md>
+        record
+        <md>
+          \operatorname{code}(e_k)=(c_k^1,c_k^2),
+        </md>
+        where <m>c_k^1</m> records criterion correctness and
+        <m>c_k^2</m> records inferential validity.
+      </p>
+
+      <p>
+        Do not assign this code to an incomplete episode. Correctness must be
+        judged against the exact question and an agreed
+        <term>normative reference</term>, not a general impression.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-goal-coverage">
+      <title>Goal Coverage</title>
+
+      <p>
+        A valid episode does not guarantee a complete answer. Suppose a question
+        asks whether a solution is unique and asks the student to identify the
+        basic and free variables. The response
+      </p>
+
+      <blockquote>
+        <p>
+          There are two pivots, so one variable is free.
+        </p>
+      </blockquote>
+
+      <p>
+        contains a valid local justification but does not identify the free
+        variable or state whether the solution is unique.
+      </p>
+
+      <p>
+        Evaluate separately:
+        <ul>
+          <li>
+            <term>justification quality</term>: whether each episode is sound; and
+          </li>
+          <li>
+            <term>goal coverage</term>: whether the response completes every task.
+          </li>
+        </ul>
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-oov">
+      <title>Out-of-Vocabulary and No-Match Cases</title>
+
+      <p>
+        An <term>out-of-vocabulary</term> case uses relevant language not covered
+        by the controlled vocabulary. A <term>no-match</term> case contains an
+        episode that no current code describes adequately.
+      </p>
+
+      <p>
+        Do not force these responses into the nearest category. Determine whether
+        the case reflects a new expression of an existing idea, a missing synonym,
+        a new control structure, incomplete reasoning, an overly narrow code, or
+        reasoning outside the project's scope.
+      </p>
+
+      <p>
+        New terms and codes require review across similar cases, not a single
+        unusual response.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-overrides">
+      <title>Confirmations, Overrides, and Unresolved Cases</title>
+
+      <p>
+        A reviewer may confirm or revise an analysis, split or combine episodes,
+        add or remove codes, change the screening decision, or leave the case
+        unresolved.
+      </p>
+
+      <p>
+        Preserve both the tool's proposal and the human decision. Candidate-code
+        edits are recorded as:
+      </p>
+
+      <blockquote>
+        <p>
+          <c>confirm</c>,
+          <c>add</c>,
+          <c>remove</c>,
+          <c>replace</c>, or
+          <c>reject_all</c>.
+        </p>
+      </blockquote>
+
+      <p>
+        These actions are appended to an <term>override log</term>. An override
+        may reflect a tool error, ambiguity, an alternative interpretation, an
+        unclear code, a missing term, or an inconsistent human decision.
+      </p>
+
+      <p>
+        Record a brief evidence-based rationale for each override. Preserve genuine
+        ambiguity rather than forcing agreement.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-adjudication">
+      <title>Disagreement and Adjudication</title>
+
+      <p>
+        First identify the type of disagreement:
+        <ul>
+          <li>screening;</li>
+          <li>episode boundaries;</li>
+          <li>criterion, link, or judgment;</li>
+          <li>code assignment;</li>
+          <li>correctness; or</li>
+          <li>coding policy.</li>
+        </ul>
+      </p>
+
+      <p>
+        Then return to the original question and response, identify the exact
+        disagreement, consult the codebook and policy, compare the evidence, and
+        decide only when one interpretation is defensible. Recurring disagreements
+        should lead to improved guidance.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-rationales">
+      <title>Writing a Review Rationale</title>
+
+      <p>
+        A useful rationale is brief, specific, and tied to visible evidence. For
+        example:
+        <ul>
+          <li>
+            <q>Included because the response states a criterion and connects it to
+            a conclusion using <q>so</q>.</q>
+          </li>
+          <li>
+            <q>The judgment is missing; the response states only that a free
+            variable exists.</q>
+          </li>
+          <li>
+            <q>Two episodes are present because the first judgment becomes the
+            criterion of the second.</q>
+          </li>
+          <li>
+            <q>Removed the pivot code because the justification relies on
+            dimension.</q>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Avoid vague claims such as <q>The student understands</q>,
+        <q>This is obviously what the student meant</q>, or
+        <q>The response seems wrong.</q>
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-student-guide-human-checklist">
+      <title>Reviewer Checklist</title>
+
+      <p>
+        Before finalizing a review, ask:
+        <ol>
+          <li>Did I read the full question and response?</li>
+          <li>Did I separate stated evidence from inference?</li>
+          <li>Did I avoid repairing missing reasoning?</li>
+          <li>Did I apply the current segmentation policy?</li>
+          <li>Did I distinguish operations from controls?</li>
+          <li>Did I match codes using definitions rather than keywords?</li>
+          <li>Did I evaluate criterion truth and inference validity separately?</li>
+          <li>Did I evaluate goal coverage separately?</li>
+          <li>Did I preserve uncertainty and no-match cases?</li>
+          <li>Did I record an evidence-based rationale?</li>
+        </ol>
+      </p>
+    </subsection>
   </section>
 
   <section xml:id="sec-roadmap-overview">

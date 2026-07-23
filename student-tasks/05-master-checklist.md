@@ -4,44 +4,28 @@ Every item has an ID for delegation. Convention: check the box, and fill `@who` 
 
 ---
 
-## Phase A — Setup & logistics *(target: before next meeting)*
+## Phase B — Reading & Handbook feedback *(target: week 1; ~1.5–2 h each)*
 
-- [ ] **A1** (each) Confirm you can open the GitHub repo in a browser and navigate to `docs/source/sa/`. `@___ due:___`
-- [ ] **A2** (each) Confirm access to the shared drive folder; open the data subfolder and verify you can see (not yet read) the response files. `@___ due:___`
-- [ ] **A3** (each) Make your own copy of `templates/doc-feedback-log.csv` in the shared folder, named `feedback-log-<yourname>.csv`. `@___ due:___`
-- [ ] **A4** (each) Confirm the communication channel ([CHANNEL]) works by sending a test message. `@___ due:___`
-- [ ] **A5** (each) Put the weekly memo in your calendar as a recurring item (day: ___). `@___ due:___`
-- [ ] **A6** (each) Read the ground rules (roadmap §5) and the reading restrictions (roadmap §4 ⛔); reply to [PI NAME] confirming you understand the sealed-document rule. `@___ due:___`
-- [ ] **A7** (each) Confirm the next three meeting dates/times work for you. `@___ due:___`
-- [ ] **A8** (each) Note in one sentence to [PI NAME] your realistic hours/week for this project this term (be honest; the plan flexes around it). `@___ due:___`
+- [ ] **B1** (each) Read `00-orientation.md` (the one-page orientation). `@___ due:___`
+- [ ] **B2** (each) Read Coder's Handbook Part I closely — this is the one substantive read. Log anything ambiguous as you go; ambiguity in the *handbook* is the most urgent feedback there is. `@___ due:___`
+- [ ] **B3** (each) Keep the Glossary open as a reference *while* you read (don't read it end to end); note any term whose definition you couldn't follow (feedback log). `@___ due:___`
+- [ ] **B4** (each) Self-check: define criterion / inferential link / judgment in your own words; check against Handbook §2. `@___ due:___`
+- [ ] **B5** (each) Self-check: explain to a rubber duck why (1,0) is a meaningful two-digit code (Handbook §6). `@___ due:___`
+- [ ] **B6** (each) Self-check: state what makes an episode *incomplete* and what you do with one (Handbook §6, §8). `@___ due:___`
+- [ ] **B7** (each) Submit your Handbook feedback + your 3 best questions for the meeting. `@___ due:___`
 
-## Phase B — Reading & doc feedback *(target: week 1; ~4–6 h each)*
+*(The tool chapters — roadmap, demo, and the pipeline-baseline section — are deliberately deferred to Phase I, where reviewing tool output makes them useful. Reading them now can nudge you toward coding the way the tool does, which independence needs you to avoid.)*
 
-- [ ] **B1** (each) Read `00-welcome-and-reading-roadmap.md`. `@___ due:___`
-- [ ] **B2** (each) Read the Automation Tool Roadmap (`ch-automation-roadmap-report.ptx`) end to end. `@___ due:___`
-- [ ] **B3** (each) While reading B2: log ≥ 5 feedback entries (or state in your memo why fewer). `@___ due:___`
-- [ ] **B4** (each) Read the demo chapter (`ch-pipeline-demo.ptx`), following each of the five responses through every table. `@___ due:___`
-- [ ] **B5** (each) While reading B4: log ≥ 5 feedback entries. `@___ due:___`
-- [ ] **B6** (each) Skim the Glossary; list any 3 terms whose definitions you couldn't follow (feedback log). `@___ due:___`
-- [ ] **B7** (each) Read Coder's Handbook Part I closely; log anything ambiguous — ambiguity in the *handbook* is the most urgent feedback there is. `@___ due:___`
-- [ ] **B8** (each) Self-check, closed-book: write from memory the five stage names and one sentence on what each does; check against the docs; note which you got wrong. `@___ due:___`
-- [ ] **B9** (each) Self-check: define criterion / inferential link / judgment in your own words; check against Handbook §2. `@___ due:___`
-- [ ] **B10** (each) Self-check: explain to a rubber duck why (1,0) is a meaningful two-digit code. `@___ due:___`
-- [ ] **B11** (each, optional) Read the Analytic Framework section of `ch-framing-models.ptx`; log where the notation lost you. `@___ due:___`
-- [ ] **B12** (each) Submit your feedback log for review + your 3 best questions for the meeting. `@___ due:___`
+## Phase C — Exercise 1: episode warm-up *(target: before next meeting; ~1–1.5 h each)*
 
-## Phase C — Exercise 1: pipeline trace *(target: before next meeting; ~2–3 h each)*
+- [ ] **C1** (each) Decompose WARMUP-A–E into episodes in `templates/episode-coding-sheet.csv`, per `03-exercise-1-episode-warmup.md` (one row per episode; leave `code` and `codebook_version` blank). `@___ due:___`
+- [ ] **C2** (each) For every complete episode assign (c¹, c²) with a one-line justification in `notes`; mark `relation` on the multi-episode response. `@___ due:___`
+- [ ] **C3** (each) Write the 2–3 sentence "hardest response" note and list any unclear Handbook passages. `@___ due:___`
+- [ ] **C4** (each) Submit Exercise 1 to [PI NAME]. `@___ due:___`
+- [ ] **C5** Meeting: compare both students' episode codings; discuss every divergence to consensus or open-question status (especially WARMUP-B's relation and WARMUP-C's c²). `@___ due:___`
+- [ ] **C6** Log any handbook rule clarified during C5 into the handbook change-log queue. `@___ due:___`
 
-- [ ] **C1** (each) Trace P1 through Stages 2–5 per the exercise sheet. `@___ due:___`
-- [ ] **C2** (each) Trace P2 through Stages 2–5. `@___ due:___`
-- [ ] **C3** (each) Trace P3 through Stages 2–5. `@___ due:___`
-- [ ] **C4** (each) Episode reading for P1–P3: (C, I, J), completeness, relations, two-digit codes. `@___ due:___`
-- [ ] **C5** (each) Predict a final disposition for each of P1–P3 with a one-sentence defense. `@___ due:___`
-- [ ] **C6** (each) Submit Exercise 1 to [PI NAME]. `@___ due:___`
-- [ ] **C7** Meeting: compare the two students' traces; discuss every divergence to consensus or open-question status. `@___ due:___`
-- [ ] **C8** Log any handbook rule clarified during C7 into the handbook change-log queue. `@___ due:___`
-
-## Phase D — Exercise 2, Part A: blind pass *(gate: C6–C7 done; ~2–3 h each)*
+## Phase D — Exercise 2, Part A: blind pass *(gate: C4–C5 done; ~2–3 h each)*
 
 - [ ] **D1** (each) Receive your batch assignment (see X4) and confirm the response count. `@___ due:___`
 - [ ] **D2** (each) Copy `templates/blind-pass-sheet.csv` to `blindpass-<yourname>.csv`; add a `legend` tab. `@___ due:___`
@@ -64,7 +48,7 @@ Every item has an ID for delegation. Convention: check the box, and fill `@who` 
 - [ ] **E6** (each) Submit updated sheet + memo. `@___ due:___`
 - [ ] **E7** Debrief meeting: side-by-side comparison of both coders' sheets; catalog agreements, divergences, and all `NONE`s. `@___ due:___`
 - [ ] **E8** From E7, draft the list of proposed codebook clarifications and candidate new codes for the group. `@___ due:___`
-- [ ] **E9** Update Handbook to v0.2 with rules clarified in C8/E7; both students re-read the diff. `@___ due:___`
+- [ ] **E9** Update Handbook to v0.2 with rules clarified in C6/E7; both students re-read the diff. `@___ due:___`
 
 ## Phase F — Vocabulary & codebook review prep *(gate: Phase E; feeds the group meeting)*
 
@@ -94,7 +78,7 @@ Every item has an ID for delegation. Convention: check the box, and fill `@who` 
 ## Phase H — Independent coding of the held-out set *(gate: X6 frozen codebook + X7 question selection; question count pending [DEC-4] — H5–H7 flex accordingly; this is the gold standard)*
 
 - [ ] **H1** (each) Confirm in writing which handbook version and codebook version you are coding under (they are frozen for this phase). `@___ due:___`
-- [ ] **H2** (each) Calibration warm-up: code the 5 shared warm-up responses; quick sync meeting to confirm the protocol is stable *before* the real batch. `@___ due:___`
+- [ ] **H2** (each) Calibration pass: code a shared 5-response calibration set — a fresh set, distinct from the Exercise 1 warm-up; quick sync meeting to confirm the protocol is stable *before* the real batch. `@___ due:___`
 - [ ] **H3** (each) Code held-out question 1, batch 1, fully independently, full episode + CS coding. `@___ due:___`
 - [ ] **H4** (each) Code held-out question 1, batch 2. `@___ due:___`
 - [ ] **H5** (each) Code held-out question 2, batch 1. `@___ due:___`
@@ -110,11 +94,14 @@ Every item has an ID for delegation. Convention: check the box, and fill `@who` 
 
 ## Phase I — Reviewer-role work *(stretch — in-scope-this-term pending [DEC-12]; gate: pipeline runs on the held-out set)*
 
-- [ ] **I1** (each) Guided tour of the review UI with [PI NAME] (screen-share; you drive). `@___ due:___`
-- [ ] **I2** (each) Review the pipeline's output on 10 responses you personally coded: confirm / add / remove / replace / reject-all, with a rationale note each time. `@___ due:___`
-- [ ] **I3** (each) Flag every pipeline decision that surprised you (right or wrong) — one line each. `@___ due:___`
-- [ ] **I4** Joint memo: the 5 most common ways the pipeline's reading differed from yours. `@___ due:___`
-- [ ] **I5** (each) UI feedback: 5 things that slowed you down in the review interface. `@___ due:___`
+- [ ] **I1** (each) Now read the tool chapters deferred from onboarding: the Automation Tool Roadmap (`ch-automation-roadmap-report.ptx`) and the demo chapter (`ch-pipeline-demo.ptx`), end to end. Log ≥ 5 feedback entries across the two. `@___ due:___`
+- [ ] **I2** (each) Read the `sec-student-guide-pipeline` section (how the deterministic baseline actually runs); it predicts the shallow behavior you'll see in the tool's output, and is more accurate than the demo's polished chains. `@___ due:___`
+- [ ] **I3** (each, optional) Read the Analytic Framework section of `ch-framing-models.ptx` — the formal version of the Episode Model you've been applying. `@___ due:___`
+- [ ] **I4** (each) Guided tour of the review UI with [PI NAME] (screen-share; you drive). `@___ due:___`
+- [ ] **I5** (each) Review the pipeline's output on 10 responses you personally coded: confirm / add / remove / replace / reject-all, with a rationale note each time. `@___ due:___`
+- [ ] **I6** (each) Flag every pipeline decision that surprised you (right or wrong) — one line each. `@___ due:___`
+- [ ] **I7** Joint memo: the 5 most common ways the pipeline's reading differed from yours. `@___ due:___`
+- [ ] **I8** (each) UI feedback: 5 things that slowed you down in the review interface. `@___ due:___`
 
 ## Phase J — Ongoing habits *(every week, no gate)*
 

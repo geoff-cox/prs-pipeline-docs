@@ -20,8 +20,8 @@ Legend: 🔴 must be resolved before the phase it gates · 🟡 resolve when con
 - **Deadline:** before X4. — *Resolved: ______*
 
 ### DEC-3 🟡 Exercise 1 items: synthetic (as written) or real responses?
-- **Bites:** `03-exercise-1-pipeline-trace.md` (P1–P3 are synthetic, labeled as such).
-- **Considerations:** synthetic keeps data governance out of the first week and the three items were engineered to hit specific branches (false criterion + valid link; operations-heavy; OOV). Real responses are more authentic but require selecting equally instructive ones.
+- **Bites:** `03-exercise-1-episode-warmup.md` (WARMUP-A–E are synthetic, labeled as such).
+- **Considerations:** synthetic keeps data governance out of the first week, keeps the warm-up from pre-exposing any real blind-pass responses, and lets each item target one episode-coding case (clean single episode; chained pair; right-answer/invalid-link; incomplete criterion; bare answer). Real responses are more authentic but risk overlapping the blind-pass batch and require hand-picking equally instructive items.
 - **Safe default:** synthetic, as written (no edit needed).
 - **Deadline:** before sending the packet only if you swap. — *Resolved: ______*
 

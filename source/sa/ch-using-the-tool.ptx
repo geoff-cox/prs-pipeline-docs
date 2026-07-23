@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Prototype Rollout Plan — Group meeting schedule.
+  Prototype Rollout Plan - Group meeting schedule.
   Drop into docs/source/ and xi:include from main.ptx.
   Cross-referenced via xml:id="ch-rollout-plan".
 -->
 
 <chapter xml:id="ch-using-the-tool" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Using the Tool</title>
+  <title>Pipeline Rollout &amp; User Guide</title>
 
   <introduction>
     <warning>
@@ -228,11 +228,11 @@
         <ul>
           <li>Each warning corresponds to exactly one row the parser skipped.</li>
           <li>
-            A handful of skipped rows in a large export is normal — a few
+            A handful of skipped rows in a large export is normal and a few
             stray or malformed events rarely matter.
           </li>
           <li>
-            If <em>every</em> row is skipped — the parsed-rows count is zero —
+            If <em>every</em> row is skipped (the parsed-rows count is zero), then
             the file has a format problem worth fixing before committing. A
             common cause is a non-standard date column the timestamp parser
             does not yet recognise, which makes every row fail the same way.
@@ -245,11 +245,10 @@
         they are for:
         <ul>
           <li>
-            <c>course_id</c> is an optional provenance field passed through
-            from the export — which course, instructor, or term a response
-            came from. When the export omits a course identifier a placeholder
-            is shown. It is not analytically central; it is kept so a response
-            can be traced back to its source.
+            <c>course_id</c> is an optional field from the export that can identify
+            the course, instructor, or term a response came from. When the export
+            omits a course identifier a placeholder is shown. It is not analytically
+            central; it is kept so a response can be traced back to its source.
           </li>
           <li>
             <c>response_id</c> is the deterministic hash of the student,
@@ -548,7 +547,7 @@
   <!-- Section: Discussion Items                                    -->
   <!-- ============================================================ -->
    
-  <section xml:id="subsec-discussion-items">
+  <!-- <section xml:id="subsec-discussion-items">
     <title>Discussion Items</title>
 
     <p>
@@ -587,5 +586,5 @@
 
     </paragraphs>
 
-  </section>
+  </section> -->
 </chapter>

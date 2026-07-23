@@ -10,9 +10,9 @@
 
     <xi:include href="./bookends/frontmatter.ptx" />
     <xi:include href="./ch-student-guide.ptx" />
+
     <xi:include href="./ch-automation-roadmap-report.ptx" />
     <xi:include href="./ch-using-the-tool.ptx" />
-    <xi:include href="./ch-framing-models.ptx" />
     <xi:include href="./ch-pipeline-demo.ptx" />
 
     <xi:include href="./bookends/backmatter.ptx" />

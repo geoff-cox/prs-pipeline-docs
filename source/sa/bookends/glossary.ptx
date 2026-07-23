@@ -17,6 +17,45 @@
 <glossary xml:id="glossary-main">
   <title>Glossary</title>
 
+  <headnote>
+    <p>
+      This glossary defines the central theoretical, analytic, and
+      computational terms used in the project. The definitions are written for
+      new student researchers and describe how each term is used within this
+      guide.
+    </p>
+
+    <p>
+      Some terms come from the cK&#162; framework, while others were introduced
+      by this project to support the analysis of short written responses. The
+      source of a term matters:
+      <ul>
+        <li>
+          <term>cK&#162; terms</term> describe the broader theoretical model of
+          mathematical knowing;
+        </li>
+        <li>
+          <term>Episode Model terms</term> describe the local justification
+          extracted from one written response; and
+        </li>
+        <li>
+          <term>pipeline terms</term> describe how the computational tool
+          organizes and supports the analysis.
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      The glossary is divided into four groups:
+      <ol>
+        <li>theoretical terms from the cK&#162; framework;</li>
+        <li>terms from the Episode Model;</li>
+        <li>pipeline and codebook terms; and</li>
+        <li>human-review and research-quality terms.</li>
+      </ol>
+    </p>
+  </headnote>
+
   <!-- ============================================================ -->
   <!-- Project-specific names                                       -->
   <!-- ============================================================ -->
@@ -715,4 +754,1256 @@
       out non-uniqueness.
     </p>
   </gi>
+
+  <!-- ============================================================ -->
+  <!-- THEORETICAL TERMS                                             -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="glossary-conception">
+    <title>Conception</title>
+
+    <p>
+      In the cK&#162; framework, a situated form of mathematical knowing
+      modeled by
+      <md>
+        (P,R,L,\Sigma).
+      </md>
+      A conception describes a relationship among a class of problems,
+      available operators, a representation system, and a control
+      structure.
+    </p>
+
+    <p>
+      A conception is not simply a fixed belief stored inside a student.
+      It describes knowing as it functions within particular mathematical
+      situations.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-knowing">
+    <title>Knowing</title>
+
+    <p>
+      A person's situated mathematical understanding as it functions in
+      interaction with a problem environment. In the cK&#162; tradition,
+      <term>knowing</term> is distinguished from publicly recognized
+      mathematical <term>knowledge</term>.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-problem-class">
+    <title>Problem Class, <m>P</m></title>
+
+    <p>
+      The collection of problems or situations that a conception can
+      successfully address. In the quadruplet <m>(P,R,L,\Sigma)</m>, the
+      component <m>P</m> identifies the sphere of problems for which the
+      conception is useful.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-operator">
+    <title>Operator, <m>R</m></title>
+
+    <p>
+      A mathematical action used to work on a problem or transform a
+      representation. Examples include row reducing a matrix,
+      differentiating a function, substituting into an equation, or
+      rearranging a symbolic expression.
+    </p>
+
+    <p>
+      In Balacheff's notation, <m>R</m> denotes operators, not
+      representations.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-representation-system">
+    <title>Representation System, <m>L</m></title>
+
+    <p>
+      The linguistic, symbolic, graphical, or technological means through
+      which mathematical actions, results, and feedback are expressed.
+      Examples include equations, matrices, diagrams, written language,
+      and mathematical software interfaces.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-control-structure">
+    <title>Control Structure, <m>\Sigma</m></title>
+
+    <p>
+      The means used to make choices, evaluate actions, validate results,
+      and decide whether a mathematical task has been completed.
+    </p>
+
+    <p>
+      A control structure is broader than one criterion in one response.
+      For example, a student may enact a free-variable control by
+      recognizing that a free variable exists and using that fact to judge
+      whether a solution is unique.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-operation">
+    <title>Operation</title>
+
+    <p>
+      A mathematical action that creates or transforms an object. Examples
+      include computing a derivative, row reducing a matrix, solving an
+      equation, or constructing a parametric solution.
+    </p>
+
+    <p>
+      The project distinguishes an operation from a control: an operation
+      produces or transforms something, while a control evaluates a feature
+      and supports a decision. The distinction can occasionally be
+      ambiguous and is treated as a project coding convention.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-control">
+    <title>Control</title>
+
+    <p>
+      An enacted evaluative move that interprets a feature of the current
+      mathematical state and supports a judgment. For example, recognizing
+      that a matrix has no contradictory row and concluding that the system
+      is consistent is a control.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-question-frame">
+    <title>Question-Level Analytic Frame, <m>K_q</m></title>
+
+    <p>
+      The project's question-specific version of the cK&#162; quadruplet:
+      <md>
+        K_q=(P_q,R_q,L_q,\Sigma_q).
+      </md>
+      It records the relevant problem context, operations,
+      representations, and controls for a particular question <m>q</m>.
+    </p>
+
+    <p>
+      The frame describes the mathematical context used to analyze the
+      response. It is not treated as the student's complete conception.
+    </p>
+
+    <p>
+      In the tool, the part of this frame that does concrete work is stored
+      as the question's <term>working codebook</term>: the control
+      structures in scope for the question, each bound to the
+      criterion-to-judgment link that is valid for it. That stored
+      selection, not a full per-question quadruplet, is what the matching
+      and correctness stages consult.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- EPISODE MODEL TERMS                                           -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="glossary-episode-model">
+    <title>Episode Model</title>
+
+    <p>
+      The project-developed framework for representing local pieces of
+      justification in short written responses. It is motivated by the
+      cK&#162; framework but is not itself part of Balacheff's original
+      model.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-episode-sequence">
+    <title>Episode Sequence, <m>E(x)</m></title>
+
+    <p>
+      The ordered collection of episodes extracted from a response
+      <m>x</m>:
+      <md>
+        E(x)=\langle e_1,e_2,\ldots,e_n\rangle.
+      </md>
+      The order usually follows the development of the reasoning in the
+      written response.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-episode">
+    <title>Episode, <m>e_k</m></title>
+
+    <p>
+      A local piece of justification represented as
+      <md>
+        e_k=(C_k,I_k,J_k),
+      </md>
+      where <m>C_k</m> is a criterion, <m>I_k</m> is an inferential link,
+      and <m>J_k</m> is a judgment.
+    </p>
+
+    <p>
+      An episode is evidence visible in a response. It is not a complete
+      model of the student's conception or thought process.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-criterion">
+    <title>Criterion, <m>C_k</m></title>
+
+    <p>
+      The observation, fact, condition, intermediate result, or
+      mathematical feature cited in an episode. Examples include:
+      <ul>
+        <li>a free variable exists;</li>
+        <li>there are fewer pivots than variables;</li>
+        <li>the derivative is positive; or</li>
+        <li>the reduced matrix contains no contradictory row.</li>
+      </ul>
+    </p>
+
+    <p>
+      A criterion is not identical to a control structure. It is the
+      particular condition recognized when a broader control is enacted in
+      a response.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-inferential-link">
+    <title>Inferential Link, <m>I_k</m></title>
+
+    <p>
+      The mathematical relationship or reasoning rule used to connect a
+      criterion to a judgment.
+    </p>
+
+    <p>
+      In the episode
+      <md>
+        \text{a free variable exists}
+        \longrightarrow
+        \text{the solution is not unique},
+      </md>
+      the inferential link is that a system with a free variable cannot
+      have exactly one solution.
+    </p>
+
+    <p>
+      The inferential link is not read verbatim from a response. The
+      per-question set of valid links is the project's normative
+      reference, stored in the working codebook (the
+      <c>normative_link</c> field of <c>question_controls</c>); the second
+      correctness digit grades a response's link against that reference. A
+      schema comment glosses this field with the letter <q>L</q>, but in
+      the Episode Model the inferential link is always <m>I</m>, never
+      <m>L</m> (which denotes the representation system).
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-judgment">
+    <title>Judgment, <m>J_k</m></title>
+
+    <p>
+      The conclusion, classification, or decision reached in an episode.
+      Examples include:
+      <ul>
+        <li>the system is consistent;</li>
+        <li>the solution is not unique;</li>
+        <li>the vector is not in the span; or</li>
+        <li>the function is increasing.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-complete-episode">
+    <title>Complete Episode</title>
+
+    <p>
+      An episode for which the response supplies enough evidence to
+      identify a criterion, an inferential link, and a judgment.
+    </p>
+
+    <p>
+      The link need not be written as a formal theorem, but it must be
+      supported without requiring the coder to add new mathematical
+      reasoning.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-incomplete-episode">
+    <title>Incomplete Episode</title>
+
+    <p>
+      An episode in which one or more of the criterion, inferential link,
+      or judgment cannot be identified from the available evidence.
+    </p>
+
+    <p>
+      An incomplete episode is preserved as partial evidence rather than
+      repaired or forced into a complete correctness code.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-explicit">
+    <title>Explicit Evidence</title>
+
+    <p>
+      Evidence stated directly in the student's words, symbols, diagram,
+      or calculations.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-strongly-supported">
+    <title>Strongly Supported Evidence</title>
+
+    <p>
+      A component that is not stated word for word but is identified
+      clearly by the structure and mathematical content of the response
+      without requiring the coder to add new reasoning.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-missing-ambiguous">
+    <title>Missing or Ambiguous Evidence</title>
+
+    <p>
+      Evidence that is not sufficiently present to support a defensible
+      interpretation. Identifying the component would require guessing,
+      repairing, or selecting among several plausible meanings.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-paraphrasing">
+    <title>Paraphrasing</title>
+
+    <p>
+      Restating the student's idea in clearer or standardized language
+      without changing its mathematical content.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-interpretation">
+    <title>Interpretation</title>
+
+    <p>
+      Identifying the mathematical role of a statement using evidence from
+      the response and the question context.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-repair">
+    <title>Repair</title>
+
+    <p>
+      Adding a missing condition, theorem, intermediate result, or
+      conclusion so that the student's reasoning becomes mathematically
+      complete.
+    </p>
+
+    <p>
+      Repair is not permitted in episode extraction. Missing reasoning
+      must remain recorded as missing.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-segmentation">
+    <title>Episode Segmentation</title>
+
+    <p>
+      The process of deciding how many episodes appear in a response and
+      where the boundary between episodes occurs.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-chained-episodes">
+    <title>Chained Episodes</title>
+
+    <p>
+      Episodes in which the judgment of one episode becomes the criterion
+      for a later episode.
+    </p>
+
+    <p>
+      For example:
+      <md>
+        \text{fewer pivots than variables}
+        \longrightarrow
+        \text{a free variable exists}
+        \longrightarrow
+        \text{the solution is not unique}.
+      </md>
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-independent-episodes">
+    <title>Independent Episodes, <m>e_a\parallel e_b</m></title>
+
+    <p>
+      Separate justifications that do not depend on one another for coding
+      purposes. A student might, for example, justify the same conclusion
+      using both a pivot argument and a dimension argument.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-nested-episodes">
+    <title>Nested Episodes, <m>e_i\sqsubseteq e_j</m></title>
+
+    <p>
+      A relationship in which one episode functions as a sub-step within a
+      larger episode or argument.
+    </p>
+
+    <p>
+      Nested episodes may also be chained. The terms describe related but
+      not necessarily mutually exclusive features.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-nesting-policy">
+    <title>Nesting Policy, <m>\pi</m></title>
+
+    <p>
+      The coding convention that determines how nested episodes are
+      retained. A policy may direct coders to keep:
+      <ul>
+        <li>both the parent and child episodes;</li>
+        <li>only the parent episode; or</li>
+        <li>only the child episode.</li>
+      </ul>
+    </p>
+
+    <p>
+      The research team fixes this policy before validation. The
+      mathematics alone does not determine it.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-valid-link-set">
+    <title>Valid-Inference Set, <m>\mathcal{T}</m></title>
+
+    <p>
+      The question-specific collection of inferential links regarded as
+      mathematically valid for the task. An episode's inferential link is
+      evaluated against this set rather than against a universal
+      question-independent rule.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-normative-reference">
+    <title>Normative Reference</title>
+
+    <p>
+      The agreed mathematical standard used to evaluate an episode. It
+      includes:
+      <ul>
+        <li>the true mathematical state of the problem; and</li>
+        <li>
+          the question-specific inferential links that validly connect
+          criteria to judgments.
+        </li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-correctness-code">
+    <title>Correctness Annotation</title>
+
+    <p>
+      The two-part annotation assigned to a complete episode:
+      <md>
+        \operatorname{code}(e_k)=(c_k^1,c_k^2).
+      </md>
+      The first digit records whether the criterion is true. The second
+      records whether the inferential link validly supports the judgment.
+    </p>
+
+    <p>
+      The two-digit code is adapted from prior work (Gerami et&#160;al.,
+      2024) and layered on top of the episode description. It is not part
+      of the cK&#162; model, which does not ask whether a student's
+      reasoning was right.
+    </p>
+
+    <p>
+      The possible pairs are:
+      <dl width="narrow">
+        <li>
+          <title><m>(1,1)</m></title>
+          <p>True criterion and valid inferential link.</p>
+        </li>
+
+        <li>
+          <title><m>(1,0)</m></title>
+          <p>True criterion but invalid inferential link.</p>
+        </li>
+
+        <li>
+          <title><m>(0,1)</m></title>
+          <p>
+            False criterion, although the general criterion-to-judgment
+            relationship is valid.
+          </p>
+        </li>
+
+        <li>
+          <title><m>(0,0)</m></title>
+          <p>False criterion and invalid inferential link.</p>
+        </li>
+      </dl>
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-criterion-correctness">
+    <title>Criterion Correctness</title>
+
+    <p>
+      Whether the criterion stated in an episode is true in the actual
+      mathematical situation. It is represented by the first digit
+      <m>c_k^1</m> of the correctness annotation.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-link-correctness">
+    <title>Inferential-Link Correctness</title>
+
+    <p>
+      Whether the criterion validly supports the judgment for the
+      particular question. It is represented by the second digit
+      <m>c_k^2</m> of the correctness annotation.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-justification-quality">
+    <title>Justification Quality</title>
+
+    <p>
+      The mathematical quality of the local reasoning in an episode,
+      including whether its criterion is true and its inferential link is
+      valid.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-goal-coverage">
+    <title>Goal Coverage</title>
+
+    <p>
+      The extent to which the response addresses all conclusions or tasks
+      requested by the question.
+    </p>
+
+    <p>
+      Goal coverage is evaluated separately from justification quality. A
+      response may contain sound local episodes but fail to answer the
+      complete prompt.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-response-level-evidence">
+    <title>Response-Level Evidence</title>
+
+    <p>
+      Information visible in one student response that supports a limited
+      interpretation of the student's reasoning.
+    </p>
+
+    <p>
+      Response-level evidence is not treated as a complete model of what
+      the student knows or believes across other situations.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- PIPELINE AND CODEBOOK TERMS                                   -->
+  <!-- ============================================================ -->
+
+
+  <gi xml:id="glossary-pipeline">
+    <title>Pipeline</title>
+
+    <p>
+      The ordered computational workflow that organizes and analyzes
+      student responses:
+      <md>
+        \text{ingest}
+        \longrightarrow
+        \text{screen}
+        \longrightarrow
+        \text{extract}
+        \longrightarrow
+        \text{match}
+        \longrightarrow
+        \text{dispose}.
+      </md>
+    </p>
+
+    <p>
+      Human review surrounds the workflow and is not merely an additional
+      automated stage.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-ingest">
+    <title>Ingest</title>
+
+    <p>
+      The stage that reads a source data file and creates standardized,
+      traceable records for student responses.
+    </p>
+
+    <p>
+      Ingest preserves the original response and its source information. It
+      does not interpret or code the reasoning.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-screening">
+    <title>Screening</title>
+
+    <p>
+      The process of deciding whether a response contains enough
+      interpretable justification to continue through episode analysis.
+    </p>
+
+    <p>
+      Screening concerns codability, not correctness. An incorrect
+      response may be codable, while a correct bare answer may not be.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-include">
+    <title><c>INCLUDE</c></title>
+
+    <p>
+      A screening decision indicating that the response contains enough
+      evidence of mathematical justification to continue through the
+      pipeline.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-exclude">
+    <title><c>EXCLUDE</c></title>
+
+    <p>
+      A screening decision indicating that the response does not satisfy
+      the current requirements for episode analysis.
+    </p>
+
+    <p>
+      Excluded responses are preserved in the dataset together with the
+      reason for exclusion.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-flag">
+    <title>Review Flag</title>
+
+    <p>
+      An indicator that a response or decision requires human attention.
+      A flag may be triggered by low confidence, ambiguity, incomplete
+      reasoning, multiple matches, unfamiliar terminology, or another
+      review rule.
+    </p>
+
+    <p>
+      In the current screening stage, the review flag is realized as a
+      distinct third label, <c>FLAG</c>, alongside <c>INCLUDE</c> and
+      <c>EXCLUDE</c>. The screener assigns <c>FLAG</c> to borderline
+      responses (e.g., work shown with no connector to a conclusion) and
+      Stage 5 routes a flagged response to <c>escalate</c>.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-extraction">
+    <title>Extraction</title>
+
+    <p>
+      The stage that proposes one or more episodes from a written
+      response. It identifies possible criteria, inferential links,
+      judgments, episode boundaries, relationships, and missing
+      components.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-chain">
+    <title>Reasoning Chain</title>
+
+    <p>
+      The stored or displayed sequence of reasoning steps associated with
+      a response. In the current project terminology, the reasoning chain
+      is the implementation carrier of the response's episode sequence.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-chain-step">
+    <title>Chain Step</title>
+
+    <p>
+      One stored step within a reasoning chain. In the implementation, a
+      premise slot may carry the episode's criterion and a conclusion slot
+      may carry its judgment.
+    </p>
+
+    <p>
+      A database chain step is a storage representation. The analytic
+      object remains the episode <m>(C,I,J)</m>.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-controlled-vocabulary">
+    <title>Controlled Vocabulary</title>
+
+    <p>
+      A project-approved collection of standardized terms used to
+      represent recurring mathematical observations, conditions, and
+      conclusions.
+    </p>
+
+    <p>
+      The controlled vocabulary allows different surface expressions such
+      as <q>one variable can be anything</q> and
+      <q>a free variable exists</q> to be compared without erasing the
+      student's original wording.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-canonical-form">
+    <title>Canonical Form</title>
+
+    <p>
+      The standardized wording assigned to a mathematical idea in the
+      controlled vocabulary. For example, several informal expressions may
+      be normalized to a canonical term such as
+      <c>free_var_exists</c>.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-oov">
+    <title>Out of Vocabulary, <c>OOV</c></title>
+
+    <p>
+      A flag indicating that a mathematically relevant idea in the
+      response is not represented in the current controlled vocabulary.
+    </p>
+
+    <p>
+      An OOV case should be preserved for review rather than forced into
+      the nearest existing term.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-codebook">
+    <title>Codebook</title>
+
+    <p>
+      A structured guide for classifying the mathematical reasoning found
+      in responses. A codebook typically contains:
+      <ul>
+        <li>code identifiers and names;</li>
+        <li>definitions;</li>
+        <li>inclusion and exclusion rules;</li>
+        <li>positive examples;</li>
+        <li>near-miss examples;</li>
+        <li>confusable codes; and</li>
+        <li>question-specific information when needed.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-code">
+    <title>Code</title>
+
+    <p>
+      A named category in the codebook used to describe an episode or
+      control structure. A response may contain several episodes and may
+      therefore receive more than one code.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-question-specific-codebook">
+    <title>Question-Specific Coding Information</title>
+
+    <p>
+      The criteria, judgments, inferential links, examples, and exclusions
+      that determine how the broader codebook applies to one particular
+      question.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-match">
+    <title>Match</title>
+
+    <p>
+      A proposed correspondence between an extracted episode and a
+      codebook entry.
+    </p>
+
+    <p>
+      A match is a candidate for human consideration, not automatically a
+      final research code.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-candidate-code">
+    <title>Candidate Code</title>
+
+    <p>
+      A codebook entry proposed as a plausible description of an episode.
+      The pipeline may record zero, one, or several candidate codes.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-multiple-match">
+    <title>Multiple Match</title>
+
+    <p>
+      A case in which more than one codebook entry plausibly describes an
+      episode or response. A multiple-match case is routed to the
+      <c>standard_review</c> disposition; it is a reason for review, not a
+      disposition of its own.
+    </p>
+
+    <p>
+      Multiple matches may indicate several genuine controls, overlapping
+      code definitions, a nesting issue, or an ambiguous response.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-no-match">
+    <title>No Match</title>
+
+    <p>
+      A case in which an episode can be extracted, but no current codebook
+      entry adequately describes it.
+    </p>
+
+    <p>
+      A no-match case is different from an OOV case: the vocabulary may be
+      sufficient to represent the episode even though the codebook has no
+      fitting classification.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-matching">
+    <title>Matching</title>
+
+    <p>
+      The stage that compares extracted episodes with the current
+      codebook and records every plausible candidate code, together with
+      the supporting evidence and rationale.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-disposition">
+    <title>Disposition</title>
+
+    <p>
+      The workflow decision that determines what happens to a response
+      next. The pipeline records it as one of six values:
+      <ul>
+        <li><c>auto_accept</c>;</li>
+        <li>
+          <c>standard_review</c> (also where several plausible codes are
+          sent);
+        </li>
+        <li>
+          <c>problem_type_flag</c> (defined in the schema, not produced by
+          the current baseline);
+        </li>
+        <li><c>terminology_flag</c>;</li>
+        <li><c>no_match</c>; or</li>
+        <li><c>escalate</c>.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-disposer">
+    <title>Disposer</title>
+
+    <p>
+      The fifth pipeline component. It reads the structured outputs of
+      screening, extraction, and matching and assigns a disposition.
+    </p>
+
+    <p>
+      The disposer does not introduce new mathematical analysis.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-escalation">
+    <title>Escalation</title>
+
+    <p>
+      A disposition that sends a response for more extensive human review
+      because the ordinary workflow cannot resolve it reliably.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-rationale">
+    <title>Rationale</title>
+
+    <p>
+      A brief explanation of why a screening decision, episode
+      interpretation, candidate match, disposition, or human override was
+      made.
+    </p>
+
+    <p>
+      A useful rationale refers to visible evidence and the current coding
+      rule rather than speculating about what the student was thinking.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-confidence">
+    <title>Confidence</title>
+
+    <p>
+      A recorded estimate of how certain the tool or reviewer is about a
+      proposed result.
+    </p>
+
+    <p>
+      Confidence does not replace the decision itself. It may be used to
+      prioritize cases for review or support a later flagging rule.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- HUMAN REVIEW AND RESEARCH QUALITY TERMS                       -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="glossary-human-in-loop">
+    <title>Human-in-the-Loop</title>
+
+    <p>
+      A workflow in which computational tools assist with analysis while
+      human researchers retain authority over interpretive and
+      mathematical decisions.
+    </p>
+
+    <p>
+      The human role includes developing coding rules, reviewing uncertain
+      cases, confirming or revising proposed analyses, and deciding when
+      the framework itself needs revision.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-human-review">
+    <title>Human Review</title>
+
+    <p>
+      The process by which a researcher inspects the original response,
+      question, proposed episodes, candidate codes, correctness
+      information, flags, and disposition.
+    </p>
+
+    <p>
+      Human review is a standing layer across the pipeline rather than an
+      isolated final stage.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-review-packet">
+    <title>Review Packet</title>
+
+    <p>
+      The complete collection of information presented to a reviewer for
+      one response. It may include:
+      <ul>
+        <li>the original question and response;</li>
+        <li>screening output;</li>
+        <li>proposed episodes;</li>
+        <li>supporting evidence;</li>
+        <li>candidate codes;</li>
+        <li>correctness annotations;</li>
+        <li>flags; and</li>
+        <li>the proposed disposition.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-confirmation">
+    <title>Confirmation</title>
+
+    <p>
+      A human-review decision accepting the proposed analysis without
+      substantive change.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-override">
+    <title>Override</title>
+
+    <p>
+      A human-review decision that changes or rejects a proposed screening
+      label, episode, candidate code, correctness annotation, or
+      disposition. On candidate codes, an override is recorded as one of a
+      fixed set of edit kinds (<c>confirm</c>, <c>add</c>, <c>remove</c>,
+      <c>replace</c>, or <c>reject_all</c>) and appended to an override log
+      rather than overwriting the tool's original proposal.
+    </p>
+
+    <p>
+      An override does not automatically mean that the tool failed. It may
+      reveal ambiguity, overlapping code definitions, a missing vocabulary
+      term, an inconsistent human decision, or a tool error.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-unresolved">
+    <title>Unresolved Case</title>
+
+    <p>
+      A response or decision for which the available evidence and coding
+      rules do not support one defensible final interpretation.
+    </p>
+
+    <p>
+      Preserving an unresolved case is preferable to creating artificial
+      agreement.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-disagreement">
+    <title>Disagreement</title>
+
+    <p>
+      A difference between coders, between a tool and a coder, or among
+      codebook versions. Disagreements may concern screening, episode
+      boundaries, component interpretation, matching, correctness, goal
+      coverage, or policy.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-disagreement-type">
+    <title>Disagreement Type</title>
+
+    <p>
+      A category identifying the earliest point at which two analyses
+      diverge. Common types include:
+      <ul>
+        <li>screening disagreement;</li>
+        <li>episode-boundary disagreement;</li>
+        <li>criterion disagreement;</li>
+        <li>inferential-link disagreement;</li>
+        <li>judgment disagreement;</li>
+        <li>matching disagreement;</li>
+        <li>correctness disagreement;</li>
+        <li>goal-coverage disagreement; and</li>
+        <li>policy disagreement.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-adjudication">
+    <title>Adjudication</title>
+
+    <p>
+      The structured process of reviewing a disagreement, comparing the
+      evidence and coding rules, and reaching a documented decision when
+      the evidence supports one.
+    </p>
+
+    <p>
+      Adjudication may also result in an unresolved case or a proposed
+      revision to the coding materials.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-calibration">
+    <title>Calibration</title>
+
+    <p>
+      The process of checking whether coders apply the analytic protocol
+      consistently. Coders first analyze the same responses independently,
+      compare their results, classify disagreements, and adjudicate them.
+    </p>
+
+    <p>
+      The agreement between two independent coders, measured before
+      adjudication, is summarized by a standard inter-rater reliability
+      statistic such as Cohen's <m>\kappa</m> or Krippendorff's
+      <m>\alpha</m>. That number is the human ceiling against which the
+      tool is later compared, and it is one of the project's own research
+      results.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-gold-standard">
+    <title>Gold-Standard Dataset</title>
+
+    <p>
+      A collection of responses with carefully developed human annotations
+      used to train coders, evaluate the pipeline, or compare different
+      analytic methods.
+    </p>
+
+    <p>
+      Gold-standard labels should be produced through an explicit coding
+      and adjudication process rather than by one person's unreviewed
+      judgment.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-coding-policy">
+    <title>Coding Policy</title>
+
+    <p>
+      An agreed convention governing decisions that are not determined by
+      the mathematics alone. Examples include:
+      <ul>
+        <li>screening requirements;</li>
+        <li>nested-episode treatment;</li>
+        <li>multiple-code rules;</li>
+        <li>confidence thresholds; and</li>
+        <li>handling of incomplete episodes.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-audit-trail">
+    <title>Audit Trail</title>
+
+    <p>
+      The preserved record showing how an analytic result was produced.
+      An audit trail may include the original response, intermediate
+      pipeline outputs, rationales, model and prompt versions, codebook
+      version, reviewer decisions, and later revisions.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-auditable">
+    <title>Auditable</title>
+
+    <p>
+      Able to be inspected and reconstructed. An auditable result allows a
+      researcher to determine what evidence, rules, tools, and human
+      decisions produced it.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-provenance">
+    <title>Provenance</title>
+
+    <p>
+      Information recording the origin and processing history of a
+      response or analytic result. Provenance may include:
+      <ul>
+        <li>the source file;</li>
+        <li>the question and response identifiers;</li>
+        <li>the pipeline run;</li>
+        <li>the codebook and vocabulary versions;</li>
+        <li>the prompt and model versions; and</li>
+        <li>the reviewer and review date.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-pipeline-run">
+    <title>Pipeline Run</title>
+
+    <p>
+      One execution of the analysis pipeline under a specified
+      configuration. A run is associated with particular codebook,
+      vocabulary, prompt, model, and software versions.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-versioning">
+    <title>Versioning</title>
+
+    <p>
+      The practice of preserving identifiable versions of codebooks,
+      vocabularies, prompts, models, schemas, and software rather than
+      silently replacing earlier forms.
+    </p>
+
+    <p>
+      Versioning allows two configurations to be compared on the same
+      responses and keeps older analyses interpretable.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-reproducible">
+    <title>Reproducible</title>
+
+    <p>
+      Able to be repeated using the documented data, rules, versions, and
+      procedures. Reproducibility does not guarantee that every
+      interpretation is correct, but it makes the process transparent and
+      testable.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-idempotent">
+    <title>Idempotent Ingest</title>
+
+    <p>
+      An ingest process in which importing the same response again does
+      not create a duplicate record. Stable identifiers and duplicate
+      checks make repeated imports safe.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-stable-identifier">
+    <title>Stable Identifier</title>
+
+    <p>
+      A persistent code used to refer to the same response, question,
+      student, import, or pipeline run across stages and files.
+    </p>
+
+    <p>
+      Stable identifiers allow records to be linked without relying on a
+      student's name or the row number of a temporary spreadsheet.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-codability">
+    <title>Codability</title>
+
+    <p>
+      Whether a response contains enough interpretable justification to
+      be analyzed under the current protocol.
+    </p>
+
+    <p>
+      Codability is different from mathematical correctness.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-final-answer-correctness">
+    <title>Final-Answer Correctness</title>
+
+    <p>
+      Whether the response reaches the mathematically correct final
+      conclusion requested by the question.
+    </p>
+
+    <p>
+      This is different from episode-level correctness. A response can
+      contain a correct final answer with no codable justification, or a
+      correct local episode without complete goal coverage.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-keyword-matching">
+    <title>Keyword Matching</title>
+
+    <p>
+      Identifying possible codes from words or phrases appearing in a
+      response. Keywords may be useful clues, but they are not sufficient
+      for final coding because the same word can play different
+      mathematical roles.
+    </p>
+  </gi>
+
+  <gi xml:id="glossary-human-authority">
+    <title>Human Authority</title>
+
+    <p>
+      The project principle that final interpretive decisions remain under
+      human control. The tool may propose, organize, and flag, but it does
+      not independently establish a research finding.
+    </p>
+  </gi>
+
 </glossary>
