@@ -1,12 +1,14 @@
 # Exercise 2 — Blind Pass, Then Recode
 
-**Prerequisites:** Exercise 1 reviewed and approved by [PI NAME]; Handbook Part I read closely.
-**Materials:** a batch of [BATCH SIZE] real responses to the pivots question, supplied by [PI NAME] via the shared folder, plus `templates/blind-pass-sheet.csv`.
-**Time (assuming a 15–20 response batch):** Part A ~2–3 hours; Part B ~1.5–2 hours (after clearance). **Strictly independent throughout** — no comparing with the other coder until the debrief meeting.
+**Materials:** 
+- [BATCH SIZE] real responses to the pivots question in the shared folder, 
+- `templates/blind-pass-sheet.csv`.
+
+**Don't share codes until the meeting**.
 
 ## Why this exercise is one-shot
 
-You currently do *not* know the project's codebook. That makes you something the project can never get back once spent: a careful, fresh reader. Part A measures whether the codebook's categories are ones that fresh readers *discover on their own* — which is evidence about the codebook itself, not about you. This is why the reading restrictions in the orientation exist, and why Part A comes before you open the sealed companion.
+You currently do *not* know the project's codebook. Part A measures whether the codebook's categories are ones that fresh readers *discover on their own*. This is why the reading restrictions in the orientation exist, and why Part A comes before you open the sealed companion.
 
 ## Part A — Blind pass
 

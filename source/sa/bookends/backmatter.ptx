@@ -2,6 +2,7 @@
 	<title>Backmatter</title>
 
 	<xi:include href="glossary.ptx" />
+	<xi:include href="pipeline-glossary.ptx" />
 
 	<references>
 		<biblio type="raw" xml:id="bib-balacheff-gaudin-2010">

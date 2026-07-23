@@ -1,0 +1,1078 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Glossary for the PROTEUS automation tool documentation.
+  Place inside <backmatter> or use as a standalone division.
+
+  Reference any entry from running text via <xref ref="an-..." text="title"/>.
+  In HTML output, this produces a clickable knowl that reveals the entry
+  inline.
+
+  Entries are grouped thematically in this source file for ease of
+  maintenance. PreTeXt will render them in source order; if you want
+  alphabetical rendering, re-order or rely on the publisher's
+  alphabetize option.
+-->
+
+<glossary xml:id="pipeline-glossary">
+  <title>Glossary: Pipeline</title>
+
+  <headnote>
+    <p>
+      This glossary defines the central theoretical, analytic, and
+      computational terms used in the project. The definitions are written for
+      new student researchers and describe how each term is used within this
+      guide.
+    </p>
+
+    <p>
+      Some terms come from the cK&#162; framework, while others were introduced
+      by this project to support the analysis of short written responses. The
+      source of a term matters:
+      <ul>
+        <li>
+          <term>cK&#162; terms</term> describe the broader theoretical model of
+          mathematical knowing;
+        </li>
+        <li>
+          <term>Episode Model terms</term> describe the local justification
+          extracted from one written response; and
+        </li>
+        <li>
+          <term>pipeline terms</term> describe how the computational tool
+          organizes and supports the analysis.
+        </li>
+      </ul>
+    </p>
+  </headnote>
+
+  <!-- ============================================================ -->
+  <!-- Pipeline stages                                              -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-pipeline">
+    <title>Pipeline</title>
+    <p>
+      The end-to-end automated tool that converts raw student responses
+      into reviewable candidate codes. Composed of five sequential
+      stages: 
+      <ul marker="square">
+        <li><xref ref="an-stage-1" text="title"/></li>
+        <li><xref ref="an-stage-2" text="title"/></li>
+        <li><xref ref="an-stage-3" text="title"/></li>
+        <li><xref ref="an-stage-4" text="title"/></li>
+        <li><xref ref="an-stage-5" text="title"/></li>
+      </ul>
+      A response can exit the pipeline early
+      via several escalation routes; the final disposition is recorded
+      in the database regardless.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stage-1">
+    <title>Stage 1: Ingest</title>
+    <p>
+      The first pipeline stage. Reads a raw export
+      (<xref ref="an-datashop" text="title"/> <c>.tab</c> file or
+      <xref ref="an-runestone" text="title"/> <c>useinfo</c> CSV), filters to the
+      short-answer events for the target question, and produces a clean
+      response table. Idempotent: re-importing the same file does not
+      duplicate rows.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stage-2">
+    <title>Stage 2: Eligibility Screening</title>
+    <p>
+      Decides whether each response is a candidate for control-structure
+      coding. Outputs a label (<xref ref="an-include" text="title"/>,
+      <xref ref="an-exclude" text="title"/>) along with a
+      <xref ref="an-confidence-tool" text="title"/> and a one-sentence
+      <xref ref="an-rationale-tool" text="title"/>.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stage-3">
+    <title>Stage 3: Reasoning Chain Extraction</title>
+    <p>
+      Converts a free-text response into a numbered sequence of
+      inferential steps written in the <xref ref="an-controlled-vocab" text="title"/>.
+      Each step has the shape <em>premise</em> <m>\rightarrow</m>
+      <em>conclusion</em>. Steps containing terms not present in the
+      vocabulary are flagged as <xref ref="an-oov" text="title"/>.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stage-4">
+    <title>Stage 4: Pattern Matching</title>
+    <p>
+      For each step in the chain, finds every codebook entry whose
+      pattern fires on that step. Reports all matches; performs no
+      preference selection. Deterministic given a chain and a codebook
+      version.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stage-5">
+    <title>Stage 5: Disposition</title>
+    <p>
+      Decides what to do with the candidate codes from
+      <xref ref="an-stage-4" text="title"/>. Routes each response to one of six
+      <xref ref="an-disposition" text="title"/>s, which determine how
+      and whether the response reaches the human review queue. Human
+      review itself is the standing layer above the pipeline, not a
+      stage of it.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Eligibility / screening terms                                -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-include">
+    <title><c>INCLUDE</c></title>
+
+    <p>
+      A screening decision indicating that the response contains enough
+      evidence of mathematical justification to continue through the
+      pipeline.
+    </p>
+  </gi>
+
+  <gi xml:id="an-exclude">
+    <title><c>EXCLUDE</c></title>
+
+    <p>
+      A screening decision indicating that the response does not satisfy
+      the current requirements for episode analysis.
+    </p>
+
+    <p>
+      Excluded responses are preserved in the dataset together with the
+      reason for exclusion.
+    </p>
+  </gi>
+
+  <gi xml:id="an-confidence-tool">
+    <title>Confidence (tool)</title>
+    <p>
+      A real number in <m>[0, 1]</m> emitted alongside a screener label,
+      reporting how certain the model was in the decision. Logged but
+      not used for evaluation in the first pipeline version. A future
+      version may use a confidence threshold to introduce a
+      <q>flag-for-review</q> class without retraining the screener.
+    </p>
+  </gi>
+
+  <gi xml:id="an-confidence-reviewer">
+    <title>Confidence (reviewer)</title>
+
+    <p>
+      A recorded estimate of how certain the tool or reviewer is about a
+      proposed result.
+    </p>
+
+    <p>
+      Confidence does not replace the decision itself. It may be used to
+      prioritize cases for review or support a later flagging rule.
+    </p>
+  </gi>
+
+  <gi xml:id="an-rationale-tool">
+    <title>Rationale (tool)</title>
+    <p>
+      A short natural-language sentence emitted by a stage of the
+      pipeline, naming the decisive feature behind a decision. Stored
+      alongside the structured output so that human reviewers can audit
+      the pipeline's reasoning at every stage.
+    </p>
+  </gi>
+
+  <gi xml:id="an-rationale-reviewer">
+    <title>Rationale (reviewer)</title>
+
+    <p>
+      A brief explanation of why a screening decision, episode
+      interpretation, candidate match, disposition, or human override was
+      made.
+    </p>
+
+    <p>
+      A useful rationale refers to visible evidence and the current coding
+      rule rather than speculating about what the student was thinking.
+    </p>
+  </gi>
+
+  <gi xml:id="an-criterion">
+    <title>Criterion</title>
+    <p>
+      A property of a matrix, system, or solution set that a student
+      cites to justify their answer (e.g., <q>two pivot columns</q>,
+      <q>a free variable</q>, <q>more variables than equations</q>).
+      The <m>C</m> of an <xref ref="an-episode" text="title"/>
+      <m>e_k = (C_k, I_k, J_k)</m>, carried by the <em>premise</em> slot
+      of a <xref ref="an-chain-step" text="title"/>. The presence of a
+      named criterion is what distinguishes an
+      <xref ref="an-include" text="title"/>-eligible response from a bare answer.
+    </p>
+  </gi>
+
+  <gi xml:id="an-connector">
+    <title>Connector</title>
+    <p>
+      A word or symbol linking work or observation to a conclusion:
+      <q>because</q>, <q>since</q>, <q>therefore</q>, <q>so</q>,
+      <m>\rightarrow</m>, <m>\Rightarrow</m>. The eligibility screener
+      uses connectors as one diagnostic for the presence of a
+      <xref ref="an-criterion" text="title"/>.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Chain / vocabulary terms                                     -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-chain">
+    <title>Reasoning chain</title>
+    <p>
+      The output of <xref ref="an-stage-3" text="title"/>: a numbered sequence of
+      inferential steps that reconstruct the structure of a student
+      response. Each step has a (possibly null) premise and a conclusion,
+      both drawn from the <xref ref="an-controlled-vocab" text="title"/> wherever
+      possible. The chain is the implementation carrier of the response's
+      <xref ref="an-episode" text="title"/> sequence.
+    </p>
+  </gi>
+
+  <gi xml:id="an-chain-step">
+    <title>Chain step</title>
+    <p>
+      One element of a <xref ref="an-chain" text="title"/>, of the shape <em>premise</em>
+      <m>\rightarrow</m> <em>conclusion</em>. A step may be either a
+      bare assertion (premise null) or a derivation. Each step is stored
+      as one row of the <c>chain_steps</c> table and is the stored
+      carrier of an <xref ref="an-episode" text="title"/>: the premise
+      slot carries the <xref ref="an-criterion" text="title"/> <m>C</m>
+      and the conclusion carries the
+      <xref ref="an-judgment" text="title"/> <m>J</m>.
+    </p>
+  </gi>
+
+  <gi xml:id="an-controlled-vocab">
+    <title>Controlled vocabulary</title>
+    <p>
+      A project-approved collection of standardized terms used to
+      represent recurring mathematical observations, conditions, and
+      conclusions.
+    </p>
+    <p>
+      The fixed set of canonical propositions in which
+      <xref ref="an-stage-3" text="title"/> output is written. Examples:
+      <c>free_var_exists</c>, <c>more_vars_than_pivots</c>,
+      <c>system_consistent</c>. The vocabulary is versioned, so a term
+      that was <xref ref="an-oov" text="title"/> under one version may be canonical
+      under a later one.
+    </p>
+  </gi>
+
+  <gi xml:id="an-canonical-form">
+    <title>Canonical form</title>
+    <p>
+      The standardized expression of a proposition. The
+      <xref ref="an-controlled-vocab" text="title"/> defines one canonical form per
+      idea so that paraphrases (e.g., <q>infinite solutions</q>,
+      <q>infinitely many solutions</q>, <q>not unique</q>) collapse to a
+      single matchable string.
+    </p>
+  </gi>
+
+  <gi xml:id="an-oov">
+    <title>Out of Vocabulary, <c>OOV</c></title>
+
+    <p>
+      A flag indicating that a mathematically relevant idea in the
+      response is not represented in the current controlled vocabulary.
+    </p>
+
+    <p>
+      An OOV case should be preserved for review rather than forced into
+      the nearest existing term.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Matching / disposition terms                                 -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-codebook-pattern">
+    <title>Codebook pattern</title>
+    <p>
+      A machine-readable rule, written in the
+      <xref ref="an-controlled-vocab" text="title"/>, that fires on any
+      <xref ref="an-chain-step" text="title"/> matching a particular codebook entry.
+      Patterns are written by the research group, not the tool, and live
+      in the <c>codebook_patterns</c> table.
+    </p>
+  </gi>
+
+  <gi xml:id="an-disposition">
+    <title>Disposition</title>
+
+    <p>
+      The workflow decision that determines what happens to a response
+      next. The pipeline records it as one of six values:
+      <ul>
+        <li><c>auto_accept</c>;</li>
+        <li>
+          <c>standard_review</c> (also where several plausible codes are
+          sent);
+        </li>
+        <li>
+          <c>problem_type_flag</c> (defined in the schema, not produced by
+          the current baseline);
+        </li>
+        <li><c>terminology_flag</c>;</li>
+        <li><c>no_match</c>; or</li>
+        <li><c>escalate</c>.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="an-auto-accept">
+    <title>auto_accept</title>
+    <p>
+      The disposition for responses with a single clean codebook match
+      and no flags. The reviewer's role for these is confirmation only.
+    </p>
+  </gi>
+
+  <gi xml:id="an-standard-review">
+    <title>standard_review</title>
+    <p>
+      The disposition for responses with multiple matches or overlapping
+      pattern hits. The reviewer is expected to confirm or edit each
+      candidate code.
+    </p>
+  </gi>
+
+  <gi xml:id="an-problem-type-flag">
+    <title>problem_type_flag</title>
+    <p>
+      The disposition for responses whose candidate matches seem
+      inappropriate for the question type (e.g., a consistency-related
+      code firing on a question that does not concern consistency). The
+      reviewer is expected to scrutinize and likely remove the match.
+    </p>
+  </gi>
+
+  <gi xml:id="an-terminology-flag">
+    <title>terminology_flag</title>
+    <p>
+      The disposition triggered when a chain contains an
+      <xref ref="an-oov" text="title"/> term. Indicates a possible
+      <xref ref="an-controlled-vocab" text="title"/> gap rather than a coding error.
+    </p>
+  </gi>
+
+  <gi xml:id="an-no-match">
+    <title>No Match</title>
+
+    <p>
+      A case in which an episode can be extracted, but no current codebook
+      entry adequately describes it.
+    </p>
+
+    <p>
+      A no-match case is different from an OOV case: the vocabulary may be
+      sufficient to represent the episode even though the codebook has no
+      fitting classification.
+    </p>
+  </gi>
+
+  <gi xml:id="an-escalate">
+    <title>escalate</title>
+    <p>
+      The disposition for responses that need full manual coding from
+      scratch: anything <xref ref="an-exclude" text="title"/>'d at Stage 2, plus any
+      response on which <xref ref="an-stage-3" text="title"/> chain extraction fails.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Reviewer / workflow terms                                    -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-reviewer">
+    <title>Reviewer</title>
+    <p>
+      A person on the coding team who reads pipeline output and assigns
+      final codes to responses. The pipeline does not change who the
+      reviewers are; it changes what they see when they sit down to work.
+    </p>
+  </gi>
+
+  <gi xml:id="an-candidate-packet">
+    <title>Candidate packet</title>
+    <p>
+      The structured bundle a reviewer sees for one response. Contains
+      the original response text, the eligibility decision, the
+      <xref ref="an-chain" text="title"/>, the candidate codes, and the
+      <xref ref="an-rationale-reviewer" text="title"/> at each stage. The packet is the
+      pipeline's final output for one response on the happy path.
+    </p>
+  </gi>
+
+  <gi xml:id="an-override">
+    <title>Override</title>
+
+    <p>
+      A human-review decision that changes or rejects a proposed screening
+      label, episode, candidate code, correctness annotation, or
+      disposition. On candidate codes, an override is recorded as one of a
+      fixed set of edit kinds (<c>confirm</c>, <c>add</c>, <c>remove</c>,
+      <c>replace</c>, or <c>reject_all</c>) and appended to an override log
+      rather than overwriting the tool's original proposal.
+    </p>
+
+    <p>
+      An override does not automatically mean that the tool failed. It may
+      reveal ambiguity, overlapping code definitions, a missing vocabulary
+      term, an inconsistent human decision, or a tool error.
+    </p>
+  </gi>
+
+  <gi xml:id="an-override-log">
+    <title>Override log</title>
+    <p>
+      The append-only record of every reviewer
+      <xref ref="an-override" text="title"/>, captured automatically as part of the
+      review workflow. The log is the primary feedback signal driving
+      revisions to prompts and <xref ref="an-codebook-pattern" text="title"/>s.
+    </p>
+  </gi>
+
+  <gi xml:id="an-soft-lock">
+    <title>Soft-lock</title>
+    <p>
+      A non-enforced reservation: when a reviewer opens a response, the
+      tool marks it as <q>checked out</q> for a short window so that no
+      other reviewer opens the same response simultaneously. The lock is
+      a UI convention rather than a database constraint; an expired lock
+      releases automatically.
+    </p>
+  </gi>
+
+  <gi xml:id="an-calibration-loop">
+    <title>Calibration loop</title>
+    <p>
+      The ongoing process of using the
+      <xref ref="an-override-log" text="title"/> to refine the pipeline's prompts and
+      <xref ref="an-codebook-pattern" text="title"/>s. Phase 3 of the
+      project roadmap.
+    </p>
+  </gi>
+
+  <gi xml:id="an-inter-rater">
+    <title>Inter-rater agreement</title>
+    <p>
+      A statistical measure of how often two coders, working
+      independently, assign the same codes to the same responses.
+      Commonly reported using <xref ref="an-kappa" text="title"/>.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- Database / architecture terms                                -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-sqlite">
+    <title>SQLite</title>
+    <p>
+      A serverless relational database engine that stores its entire
+      contents in a single file. The pipeline's source of truth lives
+      in a SQLite database (<c>proteus.db</c>) sitting alongside the
+      application code. No server administration is required.
+    </p>
+  </gi>
+
+  <gi xml:id="an-schema">
+    <title>Schema</title>
+    <p>
+      The set of table definitions, column types, and constraints that
+      define the shape of the database. The pipeline's schema is
+      versioned via the <c>schema_version</c> table and evolved through
+      <xref ref="an-migration" text="title"/>s.
+    </p>
+  </gi>
+
+  <gi xml:id="an-migration">
+    <title>Migration</title>
+    <p>
+      A versioned, recorded change to the database
+      <xref ref="an-schema" text="title"/>. Migrations are applied in order, never
+      undone in place, and never bypassed: this preserves the ability
+      to reproduce earlier states of the database for analysis.
+    </p>
+  </gi>
+
+  <gi xml:id="an-pk">
+    <title>Primary key (PK)</title>
+    <p>
+      The column or columns that uniquely identify each row of a table.
+      Most pipeline tables use a single auto-incrementing integer PK;
+      the <c>codebook</c> table uses a composite PK
+      <m>(\textit{code\_id}, \textit{version\_id})</m> so that multiple
+      versions of a codebook can coexist.
+    </p>
+  </gi>
+
+  <gi xml:id="an-fk">
+    <title>Foreign key (FK)</title>
+    <p>
+      A column or columns in one table that reference the
+      <xref ref="an-pk" text="title"/> of another, enforcing referential integrity.
+      When the referenced PK is composite, the referencing FK must also
+      be composite &#x2014; a constraint that surfaced as a real bug
+      during early prototyping of the schema.
+    </p>
+  </gi>
+
+  <gi xml:id="an-idempotent">
+    <title>Idempotent (Ingest)</title>
+
+    <p>
+      An ingest process in which importing the same response again does
+      not create a duplicate record. Stable identifiers and duplicate
+      checks make repeated imports safe.
+    </p>
+  </gi>
+
+  <gi xml:id="an-provenance">
+    <title>Provenance</title>
+
+    <p>
+      Information recording the origin and processing history of a
+      response or analytic result. Provenance may include:
+      <ul>
+        <li>the source file;</li>
+        <li>the question and response identifiers;</li>
+        <li>the pipeline run;</li>
+        <li>the codebook and vocabulary versions;</li>
+        <li>the prompt and model versions; and</li>
+        <li>the reviewer and review date.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="an-acid">
+    <title>ACID</title>
+    <p>
+      A set of four properties (Atomicity, Consistency, Isolation,
+      Durability) that database transactions must satisfy. ACID
+      guarantees mean that an interrupted pipeline run leaves the
+      database in a consistent state rather than half-updated.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- NLP / ML / methodology terms                                 -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-llm">
+    <title>LLM (large language model)</title>
+    <p>
+      A statistical model trained on large quantities of text that can
+      produce, classify, or transform natural-language input. The
+      pipeline uses an LLM in 
+      <ul>
+        <li><xref ref="an-stage-2" text="title"/></li>
+        <li><xref ref="an-stage-3" text="title"/></li>
+      </ul>
+      Whereas, the following stages use no LLM:
+      <ul>
+        <li><xref ref="an-stage-4" text="title"/></li>
+        <li><xref ref="an-stage-5" text="title"/></li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="an-prompt">
+    <title>Prompt</title>
+    <p>
+      The text instruction given to an <xref ref="an-llm" text="title"/> to elicit a
+      specific kind of output. The pipeline maintains versioned prompts
+      so that a change in pipeline behavior can be traced to the prompt
+      version that produced it.
+    </p>
+  </gi>
+
+  <gi xml:id="an-zero-shot">
+    <title>Zero-shot</title>
+    <p>
+      A prompting strategy in which the model is given the task
+      definition and asked to perform it with no worked examples.
+      Cheapest to write; usually the lowest-quality baseline.
+    </p>
+  </gi>
+
+  <gi xml:id="an-few-shot">
+    <title>Few-shot exemplar</title>
+    <p>
+      A worked example included in a prompt to demonstrate the desired
+      input&#x2013;output behavior. A few-shot prompt typically contains
+      between three and ten exemplars chosen to span the range of cases
+      the model is expected to handle.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stratified-split">
+    <title>Stratified split</title>
+    <p>
+      A partition of a labeled dataset into training, development, and
+      test subsets that preserves the class proportions of the original.
+      Used so that evaluation metrics on a small held-out set remain
+      representative.
+    </p>
+  </gi>
+
+  <gi xml:id="an-kappa">
+    <title>Cohen's <m>\kappa</m></title>
+    <p>
+      A statistical measure of agreement between two raters on
+      categorical assignments, corrected for the agreement that would
+      occur by chance. The mathematics-education research community
+      reports <m>\kappa</m> as the standard
+      <xref ref="an-inter-rater" text="title"/> statistic.
+    </p>
+  </gi>
+
+  <gi xml:id="an-token">
+    <title>Token</title>
+    <p>
+      The unit in which an <xref ref="an-llm" text="title"/> reads and produces text.
+      Roughly corresponds to a short word or word-fragment; LLM costs
+      and length limits are usually denominated in tokens rather than
+      characters.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- PIPELINE AND CODEBOOK TERMS                                  -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-flag">
+    <title>Review Flag</title>
+
+    <p>
+      An indicator that a response or decision requires human attention.
+      A flag may be triggered by low confidence, ambiguity, incomplete
+      reasoning, multiple matches, unfamiliar terminology, or another
+      review rule.
+    </p>
+
+    <p>
+      In the current screening stage, the review flag is realized as a
+      distinct third label, <c>FLAG</c>, alongside <c>INCLUDE</c> and
+      <c>EXCLUDE</c>. The screener assigns <c>FLAG</c> to borderline
+      responses (e.g., work shown with no connector to a conclusion) and
+      Stage 5 routes a flagged response to <c>escalate</c>.
+    </p>
+  </gi>
+
+  <gi xml:id="an-extraction">
+    <title>Extraction</title>
+
+    <p>
+      The stage that proposes one or more episodes from a written
+      response. It identifies possible criteria, inferential links,
+      judgments, episode boundaries, relationships, and missing
+      components.
+    </p>
+  </gi>
+
+  <gi xml:id="an-code">
+    <title>Code</title>
+
+    <p>
+      A named category in the codebook used to describe an episode or
+      control structure. A response may contain several episodes and may
+      therefore receive more than one code.
+    </p>
+  </gi>
+
+  <gi xml:id="an-question-specific-codebook">
+    <title>Question-Specific Coding Information</title>
+
+    <p>
+      The criteria, judgments, inferential links, examples, and exclusions
+      that determine how the broader codebook applies to one particular
+      question.
+    </p>
+  </gi>
+
+  <gi xml:id="an-match">
+    <title>Match</title>
+
+    <p>
+      A proposed correspondence between an extracted episode and a
+      codebook entry.
+    </p>
+
+    <p>
+      A match is a candidate for human consideration, not automatically a
+      final research code.
+    </p>
+  </gi>
+
+  <gi xml:id="an-candidate-code">
+    <title>Candidate Code</title>
+
+    <p>
+      A codebook entry proposed as a plausible description of an episode.
+      The pipeline may record zero, one, or several candidate codes.
+    </p>
+  </gi>
+
+  <gi xml:id="an-multiple-match">
+    <title>Multiple Match</title>
+
+    <p>
+      A case in which more than one codebook entry plausibly describes an
+      episode or response. A multiple-match case is routed to the
+      <c>standard_review</c> disposition; it is a reason for review, not a
+      disposition of its own.
+    </p>
+
+    <p>
+      Multiple matches may indicate several genuine controls, overlapping
+      code definitions, a nesting issue, or an ambiguous response.
+    </p>
+  </gi>
+
+  <gi xml:id="an-matching">
+    <title>Matching</title>
+
+    <p>
+      The stage that compares extracted episodes with the current
+      codebook and records every plausible candidate code, together with
+      the supporting evidence and rationale.
+    </p>
+  </gi>
+
+  <gi xml:id="an-disposer">
+    <title>Disposer</title>
+
+    <p>
+      The fifth pipeline component. It reads the structured outputs of
+      screening, extraction, and matching and assigns a disposition.
+    </p>
+
+    <p>
+      The disposer does not introduce new mathematical analysis.
+    </p>
+  </gi>
+
+  <gi xml:id="an-escalation">
+    <title>Escalation</title>
+
+    <p>
+      A disposition that sends a response for more extensive human review
+      because the ordinary workflow cannot resolve it reliably.
+    </p>
+  </gi>
+
+  <!-- ============================================================ -->
+  <!-- HUMAN REVIEW AND RESEARCH QUALITY TERMS                       -->
+  <!-- ============================================================ -->
+
+  <gi xml:id="an-human-in-loop">
+    <title>Human-in-the-Loop</title>
+
+    <p>
+      A workflow in which computational tools assist with analysis while
+      human researchers retain authority over interpretive and
+      mathematical decisions.
+    </p>
+
+    <p>
+      The human role includes developing coding rules, reviewing uncertain
+      cases, confirming or revising proposed analyses, and deciding when
+      the framework itself needs revision.
+    </p>
+  </gi>
+
+  <gi xml:id="an-human-review">
+    <title>Human Review</title>
+
+    <p>
+      The process by which a researcher inspects the original response,
+      question, proposed episodes, candidate codes, correctness
+      information, flags, and disposition.
+    </p>
+
+    <p>
+      Human review is a standing layer across the pipeline rather than an
+      isolated final stage.
+    </p>
+  </gi>
+
+  <gi xml:id="an-review-packet">
+    <title>Review Packet</title>
+
+    <p>
+      The complete collection of information presented to a reviewer for
+      one response. It may include:
+      <ul>
+        <li>the original question and response;</li>
+        <li>screening output;</li>
+        <li>proposed episodes;</li>
+        <li>supporting evidence;</li>
+        <li>candidate codes;</li>
+        <li>correctness annotations;</li>
+        <li>flags; and</li>
+        <li>the proposed disposition.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="an-confirmation">
+    <title>Confirmation</title>
+
+    <p>
+      A human-review decision accepting the proposed analysis without
+      substantive change.
+    </p>
+  </gi>
+
+  <gi xml:id="an-unresolved">
+    <title>Unresolved Case</title>
+
+    <p>
+      A response or decision for which the available evidence and coding
+      rules do not support one defensible final interpretation.
+    </p>
+
+    <p>
+      Preserving an unresolved case is preferable to creating artificial
+      agreement.
+    </p>
+  </gi>
+
+  <gi xml:id="an-disagreement">
+    <title>Disagreement</title>
+
+    <p>
+      A difference between coders, between a tool and a coder, or among
+      codebook versions. Disagreements may concern screening, episode
+      boundaries, component interpretation, matching, correctness, goal
+      coverage, or policy.
+    </p>
+  </gi>
+
+  <gi xml:id="an-disagreement-type">
+    <title>Disagreement Type</title>
+
+    <p>
+      A category identifying the earliest point at which two analyses
+      diverge. Common types include:
+      <ul>
+        <li>screening disagreement;</li>
+        <li>episode-boundary disagreement;</li>
+        <li>criterion disagreement;</li>
+        <li>inferential-link disagreement;</li>
+        <li>judgment disagreement;</li>
+        <li>matching disagreement;</li>
+        <li>correctness disagreement;</li>
+        <li>goal-coverage disagreement; and</li>
+        <li>policy disagreement.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="an-adjudication">
+    <title>Adjudication</title>
+
+    <p>
+      The structured process of reviewing a disagreement, comparing the
+      evidence and coding rules, and reaching a documented decision when
+      the evidence supports one.
+    </p>
+
+    <p>
+      Adjudication may also result in an unresolved case or a proposed
+      revision to the coding materials.
+    </p>
+  </gi>
+
+  <gi xml:id="an-calibration">
+    <title>Calibration</title>
+
+    <p>
+      The process of checking whether coders apply the analytic protocol
+      consistently. Coders first analyze the same responses independently,
+      compare their results, classify disagreements, and adjudicate them.
+    </p>
+
+    <p>
+      The agreement between two independent coders, measured before
+      adjudication, is summarized by a standard inter-rater reliability
+      statistic such as Cohen's <m>\kappa</m> or Krippendorff's
+      <m>\alpha</m>. That number is the human ceiling against which the
+      tool is later compared, and it is one of the project's own research
+      results.
+    </p>
+  </gi>
+
+  <gi xml:id="an-gold-standard">
+    <title>Gold-Standard Dataset</title>
+
+    <p>
+      A collection of responses with carefully developed human annotations
+      used to train coders, evaluate the pipeline, or compare different
+      analytic methods.
+    </p>
+
+    <p>
+      Gold-standard labels should be produced through an explicit coding
+      and adjudication process rather than by one person's unreviewed
+      judgment.
+    </p>
+  </gi>
+
+  <gi xml:id="an-coding-policy">
+    <title>Coding Policy</title>
+
+    <p>
+      An agreed convention governing decisions that are not determined by
+      the mathematics alone. Examples include:
+      <ul>
+        <li>screening requirements;</li>
+        <li>nested-episode treatment;</li>
+        <li>multiple-code rules;</li>
+        <li>confidence thresholds; and</li>
+        <li>handling of incomplete episodes.</li>
+      </ul>
+    </p>
+  </gi>
+
+  <gi xml:id="an-audit-trail">
+    <title>Audit Trail</title>
+
+    <p>
+      The preserved record showing how an analytic result was produced.
+      An audit trail may include the original response, intermediate
+      pipeline outputs, rationales, model and prompt versions, codebook
+      version, reviewer decisions, and later revisions.
+    </p>
+  </gi>
+
+  <gi xml:id="an-auditable">
+    <title>Auditable</title>
+
+    <p>
+      Able to be inspected and reconstructed. An auditable result allows a
+      researcher to determine what evidence, rules, tools, and human
+      decisions produced it.
+    </p>
+  </gi>
+
+  <gi xml:id="an-pipeline-run">
+    <title>Pipeline Run</title>
+
+    <p>
+      One execution of the analysis pipeline under a specified
+      configuration. A run is associated with particular codebook,
+      vocabulary, prompt, model, and software versions.
+    </p>
+  </gi>
+
+  <gi xml:id="an-versioning">
+    <title>Versioning</title>
+
+    <p>
+      The practice of preserving identifiable versions of codebooks,
+      vocabularies, prompts, models, schemas, and software rather than
+      silently replacing earlier forms.
+    </p>
+
+    <p>
+      Versioning allows two configurations to be compared on the same
+      responses and keeps older analyses interpretable.
+    </p>
+  </gi>
+
+  <gi xml:id="an-reproducible">
+    <title>Reproducible</title>
+
+    <p>
+      Able to be repeated using the documented data, rules, versions, and
+      procedures. Reproducibility does not guarantee that every
+      interpretation is correct, but it makes the process transparent and
+      testable.
+    </p>
+  </gi>
+
+  <gi xml:id="an-stable-identifier">
+    <title>Stable Identifier</title>
+
+    <p>
+      A persistent code used to refer to the same response, question,
+      student, import, or pipeline run across stages and files.
+    </p>
+
+    <p>
+      Stable identifiers allow records to be linked without relying on a
+      student's name or the row number of a temporary spreadsheet.
+    </p>
+  </gi>
+
+  <gi xml:id="an-codability">
+    <title>Codability</title>
+
+    <p>
+      Whether a response contains enough interpretable justification to
+      be analyzed under the current protocol.
+    </p>
+
+    <p>
+      Codability is different from mathematical correctness.
+    </p>
+  </gi>
+
+  <gi xml:id="an-final-answer-correctness">
+    <title>Final-Answer Correctness</title>
+
+    <p>
+      Whether the response reaches the mathematically correct final
+      conclusion requested by the question.
+    </p>
+
+    <p>
+      This is different from episode-level correctness. A response can
+      contain a correct final answer with no codable justification, or a
+      correct local episode without complete goal coverage.
+    </p>
+  </gi>
+
+  <gi xml:id="an-keyword-matching">
+    <title>Keyword Matching</title>
+
+    <p>
+      Identifying possible codes from words or phrases appearing in a
+      response. Keywords may be useful clues, but they are not sufficient
+      for final coding because the same word can play different
+      mathematical roles.
+    </p>
+  </gi>
+
+  <gi xml:id="an-human-authority">
+    <title>Human Authority</title>
+
+    <p>
+      The project principle that final interpretive decisions remain under
+      human control. The tool may propose, organize, and flag, but it does
+      not independently establish a research finding.
+    </p>
+  </gi>
+
+</glossary>

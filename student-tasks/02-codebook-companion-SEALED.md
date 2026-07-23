@@ -1,8 +1,6 @@
 # PROTEUS Coder's Handbook — Part II: Codebook Companion
 
-# ⛔ SEALED — do not read until [PI NAME] clears you
-
-Opening this document before completing the blind pass (Exercise 2, Part A) invalidates a one-time measurement the project needs. If you're reading this sentence and haven't been cleared: close the file, tell [PI NAME] you got this far, and no harm done.
+Opening this document before completing the blind pass (Exercise 2, Part A) invalidates a one-time measurement the project needs. If you're reading this sentence and haven't been cleared: close the file.
 
 ---
 
