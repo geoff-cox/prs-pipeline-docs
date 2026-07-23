@@ -15,6 +15,13 @@
   <title>The Pipeline in Action</title>
 
   <introduction>
+
+    <warning>
+      <p>
+        WORK IN PROGRESS
+      </p>
+    </warning>
+    
     <p>
       The previous chapter described the pipeline at the level of design
       and intent. This chapter shows it running. We pick five real student
