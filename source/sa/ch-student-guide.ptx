@@ -798,8 +798,10 @@
 
       <p>
         Column spec for episode-level coding (template:
-        <c>templates/episode-coding-sheet.csv</c>). One <term>row per episode</term>,
-        so a response with two episodes gets two rows.
+        <url href="https://drive.google.com/drive/folders/1Ok7EQg3d1Io3B7j5C7ecJ6BbsMmzCdtb/">
+          <c>episode-coding-sheet.csv</c>
+        </url>). 
+        One <term>row per episode</term>, so a response with two episodes gets two rows.
       </p>
 
       <table xml:id="tab-handbook-columns">
@@ -1014,9 +1016,12 @@
       <title>What to produce</title>
 
       <p>
-        Use <c>templates/episode-coding-sheet.csv</c> from the shared folder.
-        <term>One row per episode</term>, so a response with two episodes gets
-        two rows, and a response with none still gets one row recording that.
+        Use 
+        <url href="https://drive.google.com/drive/folders/1Ok7EQg3d1Io3B7j5C7ecJ6BbsMmzCdtb/">
+          <c>episode-coding-sheet.csv</c>
+        </url>
+        from the shared folder. <term>One row per episode</term>, so a response with two 
+        episodes gets two rows, and a response with none still gets one row recording that.
       </p>
 
       <p>
