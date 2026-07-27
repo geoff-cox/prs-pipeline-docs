@@ -248,9 +248,21 @@
 
     <introduction>
       <p>
-        <term>Version 0.1</term> — <today />. This handbook will be revised as we
+        <term>Version 0.2</term> — <today />. This handbook will be revised as we
         code. When a rule changes, the version number changes, and your coding 
         sheets record which version you coded under.
+      </p>
+
+      <p>
+        <term>The Coding Protocol <m>\pi</m>.</term> Decisions this handbook
+        deliberately leaves open are ruled in <c>07-coding-protocol-pi.md</c>,
+        released with the sealed companion and not before: multiple matches, goal
+        coverage, criterion-versus-link placement, the absent link, and the
+        consistency-family anchor. Its <m>\S\S</m>1–5 are ratified and frozen for
+        this round — a rule that turns out to be wrong mid-round goes in the change
+        log and waits for a version bump rather than being edited under you.
+        <m>\S</m>6 (nesting) is the one part still open. Sheets record
+        <c>protocol_version</c> alongside <c>handbook_version</c>.
       </p>
     </introduction>
 
@@ -394,7 +406,8 @@
       </p>
 
       <p>
-        Coders use three evidence levels:
+        When reading a response, a coder should distinguish among three levels
+        of evidence:
         <dl width="narrow">
           <li>
             <title>Explicit</title>
@@ -418,8 +431,28 @@
 
       <p>
         On the coding sheet, these correspond to <c>explicit</c>,
-        <c>implicit</c>, and <c>absent</c>. An absent link makes the episode
-        incomplete.
+        <c>implicit</c>, and <c>absent</c>. These three values describe the
+        <em>link only</em>. An <c>absent</c> link empties the link field, not the
+        episode: if a criterion and a judgment are both present, the episode is
+        still <c>complete</c> and still gets both correctness digits. A
+        <em>missing judgment</em> is a different failure, and it is recorded by
+        <c>complete</c>=0 — never by <c>link_stated</c>.
+      </p>
+
+
+      <p>
+        The goal is to represent the justification the student provided, not the
+        stronger justification the student could have provided.
+      </p>
+
+      <p>
+        When you record the inferential link on a coding sheet, these three
+        levels map onto the values the <term>Coder's Handbook</term> uses: an
+        explicit connector is <c>explicit</c>, an unstated but recoverable
+        warrant is <c>implicit</c>, and a warrant that cannot be recovered at all
+        is <c>absent</c>. All three describe the <em>link only</em> — an
+        <c>absent</c> link empties the link field, not the episode, and a missing
+        judgment is recorded by <c>complete</c>=0 instead.
       </p>
     </subsection>
 
@@ -721,6 +754,22 @@
         In contrast, when a response gives two <em>separate</em>, non-interacting
         justifications, we say that the episodes are <term>independent</term>.
       </p>
+
+      <remark xml:id="rem-handbook-nesting-rule">
+        <title>The nesting rule — read carefully</title>
+        <p>
+          The research group has <em>not yet fixed</em> the policy that decides
+          whether chained or nested episodes ultimately count as one unit or
+          several. That policy is <m>\S</m>6 of the Coding Protocol <m>\pi</m>, and
+          it is the one part of the protocol left open: <m>\S\S</m>1–5 are ratified
+          and frozen for this round, <m>\S</m>6 is not. Until it is settled:
+          <term>record every episode you can identify, mark the relation, and do not
+          collapse or drop anything.</term> Your job is to preserve the structure;
+          the collapsing decision will be applied later, uniformly, by policy. If
+          you find yourself wanting to merge two episodes into one, that impulse
+          goes in the <c>notes</c> column, not into the rows.
+        </p>
+      </remark>
     </subsection>
 
     <subsection xml:id="subsec-handbook-confidence">
@@ -823,7 +872,18 @@
           </row>
           <row>
             <cell><c>criterion_verbatim</c></cell>
-            <cell>The student's words for <m>C</m>, copy-pasted.</cell>
+            <cell>
+              The student's words for <m>C</m>, copy-pasted. Only what the student <em>names</em>
+              — anything you reconstruct goes in <c>link_recorded</c> (<m>\pi</m> <m>\S</m>3).
+            </cell>
+          </row>
+          <row>
+            <cell><c>link_recorded</c></cell>
+            <cell>
+              The smallest warrant sufficient to license the step (<m>\pi</m> <m>\S</m>4), in your
+              words — or <c>[none stated]</c> if no warrant is recoverable. This is where reconstructed
+              and imported material goes (<m>\pi</m> <m>\S</m>3).
+            </cell>
           </row>
           <row>
             <cell><c>judgment_verbatim</c></cell>
@@ -831,39 +891,88 @@
           </row>
           <row>
             <cell><c>link_stated</c></cell>
-            <cell><c>explicit</c> (a connector word is present), <c>implicit</c> (the move is clearly made but no connector), or <c>absent</c> (no verdict follows the criterion, so the episode is <em>incomplete</em>).</cell>
+            <cell>
+              <c>explicit</c> (a connector word is present), <c>implicit</c> (no connector, but the 
+              warrant is recoverable), or <c>absent</c> (no warrant is recoverable — <m>\pi</m> 
+              <m>\S</m>4). This describes the <em>link only</em>: a missing judgment is recorded by 
+              <c>complete</c>, not here.
+            </cell>
           </row>
           <row>
             <cell><c>complete</c></cell>
-            <cell>1 if the episode has both a criterion and a judgment; 0 otherwise.</cell>
+            <cell>
+              1 if the episode has both a criterion and a judgment; 0 otherwise. An unrecorded 
+              <em>link</em> does not make an episode incomplete (<m>\pi</m> <m>\S</m>4).
+            </cell>
           </row>
           <row>
             <cell><c>c1</c></cell>
-            <cell>Correctness digit 1 (<xref ref="subsec-handbook-two-digit" text="title"/>). Leave blank for incomplete episodes.</cell>
+            <cell>
+              Correctness digit 1 (<xref ref="subsec-handbook-two-digit" text="title"/>). Leave 
+              blank for incomplete episodes.
+            </cell>
           </row>
           <row>
             <cell><c>c2</c></cell>
-            <cell>Correctness digit 2 (<xref ref="subsec-handbook-two-digit" text="title"/>). Leave blank for incomplete episodes.</cell>
+            <cell>
+              Correctness digit 2 (<xref ref="subsec-handbook-two-digit" text="title"/>). Leave 
+              blank for incomplete episodes.
+            </cell>
           </row>
           <row>
             <cell><c>relation</c></cell>
-            <cell>Blank for a lone episode; <c>chained(k)</c> if this episode's criterion is episode <m>k</m>'s judgment; <c>independent</c> if it stands apart from the others (<xref ref="subsec-handbook-nesting" text="title"/>).</cell>
+            <cell>
+              Blank for a lone episode; <c>chained(k)</c> if this episode's criterion is episode 
+              <m>k</m>'s judgment; <c>independent</c> if it stands apart from the others 
+              (<xref ref="subsec-handbook-nesting" text="title"/>).
+            </cell>
+          </row>
+          <row>
+            <cell><c>goal_coverage</c></cell>
+            <cell>
+              Which of the question's listed goals this episode's judgment addresses; <c>off-target</c> 
+              if none; <c>unclear</c> (plus a note) if you can't tell. Never a reason to drop a row 
+              (<m>\pi</m> <m>\S</m>2).
+            </cell>
           </row>
           <row>
             <cell><c>code</c></cell>
-            <cell>The control-structure code</cell>
+            <cell>
+              The control-structure code — <em>only used after the blind pass; leave blank until 
+              then.</em>
+            </cell>
+          </row>
+          <row>
+            <cell><c>alt_codes</c></cell>
+            <cell>
+              Runner-up code(s) when more than one fits the <em>same</em> episode (<m>\pi</m> <m>\S</m>1). 
+              Supersedes the <c>ALT:</c> note convention.
+            </cell>
           </row>
           <row>
             <cell><c>oov_note</c></cell>
-            <cell>Any terminology that feels outside the course's standard way of talking about this topic. Copy the term verbatim (<xref ref="subsec-handbook-edge-cases" text="title"/>).</cell>
+            <cell>
+              Any terminology that feels outside the course's standard way of talking about this topic — 
+              copy the term verbatim (<xref ref="subsec-handbook-edge-cases" text="title"/>).
+            </cell>
           </row>
           <row>
             <cell><c>confidence</c></cell>
             <cell>3 = confident; 2 = plausible but arguable; 1 = genuinely unsure.</cell>
           </row>
-          <row bottom="minor">
+          <row>
             <cell><c>notes</c></cell>
-            <cell>Anything a future reader of this row needs. Never leave a <c>confidence</c>=1 row without a note.</cell>
+            <cell>
+              Anything a future reader of this row needs. Never leave a <c>confidence</c>=1 row without 
+              a note.
+            </cell>
+          </row>
+          <row bottom="minor">
+            <cell><c>protocol_version</c></cell>
+            <cell>
+              The <m>\pi</m> version you coded under, alongside <c>handbook_version</c> and 
+              <c>codebook_version</c>.
+            </cell>
           </row>
         </tabular>
       </table>
@@ -1022,13 +1131,24 @@
         </url>
         from the shared folder. <term>One row per episode</term>, so a response with two 
         episodes gets two rows, and a response with none still gets one row recording that.
+        Fill these columns; <em>leave <c>code</c>, <c>alt_codes</c>,
+        <c>goal_coverage</c>, <c>codebook_version</c>, and
+        <c>protocol_version</c> blank</em> (you have neither the codebook nor the
+        coding protocol yet — that's deliberate):
       </p>
 
       <p>
-        Fill out all columns except: <c>code</c>, <c>oov_note</c>, 
-        <c>handbook_version</c>, and <c>codebook_version</c>. For how to score
-        the <c>confidence</c> column, see
+        Fill out all columns except <c>code</c>, <c>alt_codes</c>, <c>goal_coverage</c>,
+        <c>codebook_version</c>, and <c>protocol_version</c>. For how to score the 
+        <c>confidence</c> column, see
         <xref ref="subsec-handbook-confidence" text="title"/>.
+      </p>
+
+      <p>
+        <c>link_recorded</c> is the one that takes practice: write the smallest
+        inference that gets you from the criterion to the judgment, in your own
+        words. If you genuinely cannot reconstruct one, write <c>[none stated]</c>
+        — that does <em>not</em> make the episode incomplete.
       </p>
 
       <p>
@@ -1053,6 +1173,10 @@
           <row>
             <cell><c>criterion_verbatim</c></cell>
             <cell>there is a free variable</cell>
+          </row>
+          <row>
+            <cell><c>link_recorded</c></cell>
+            <cell>a free variable leaves the solution unconstrained, so it cannot be unique</cell>
           </row>
           <row>
             <cell><c>judgment_verbatim</c></cell>
@@ -1091,7 +1215,7 @@
       </table>
     </subsection>
 
-    <!-- <subsection xml:id="subsec-warmup-watch">
+    <subsection xml:id="subsec-warmup-watch">
       <title>Things to watch for</title>
 
       <p>
@@ -1130,12 +1254,12 @@
           </li>
         </dl>
       </p>
-    </subsection> -->
+    </subsection>
 
     <!-- ================================================================= -->
     <!-- ANSWER KEY. See the note at the top of this file about hiding this -->
     <!-- subsection from the student-facing build.                          -->
-    <!-- <subsection xml:id="subsec-warmup-solution">
+    <subsection xml:id="subsec-warmup-solution">
       <title>Coding solution</title>
 
       <p>
@@ -1231,22 +1355,26 @@
           <title>STU-D — one row, incomplete</title>
           <p>
             <m>C</m> = <q>there is a free variable</q>; no verdict is drawn, so
-            <c>link_stated = absent</c>, <c>complete = 0</c>, and <c>c1</c>/<c>c2</c>
-            are blank. A criterion with no conclusion is not an episode; do not
-            supply the missing judgment.
+            <c>complete = 0</c> and <c>c1</c>/<c>c2</c> are blank. A criterion
+            with no conclusion is not an episode; do not supply the missing
+            judgment. Leave <c>link_stated</c> and <c>link_recorded</c> blank —
+            with no judgment there is no step for a link to license, and
+            <c>absent</c> means <em>the warrant is unrecoverable</em>, which is a
+            different situation (<m>\pi</m> <m>\S</m>4).
           </p>
         </li>
         <li>
           <title>STU-E — one row, incomplete</title>
           <p>
             A bare <q>No</q>: <c>judgment_verbatim</c> = <q>No</q>, no criterion,
-            <c>link_stated = absent</c>, <c>complete = 0</c>, <c>c1</c>/<c>c2</c>
-            blank. It answers the question but offers no justification structure to
-            code.
+            <c>complete = 0</c>, <c>c1</c>/<c>c2</c> blank, and
+            <c>link_stated</c>/<c>link_recorded</c> blank for the same reason as
+            STU-D. It answers the question but offers no justification structure
+            to code.
           </p>
         </li>
       </dl>
-    </subsection> -->
+    </subsection>
 
   </section>
 
