@@ -79,7 +79,7 @@
     <ol>
       <li><p><xref ref="sec-coding-before" text="title"/>, <xref ref="sec-coding-pass" text="title"/>, and <xref ref="sec-coding-checklist" text="title"/> in <xref ref="ch-coding-workflow" text="title"/>.</p></li>
       <li><p><xref ref="sec-decision-types" text="title"/>, <xref ref="sec-edge-case-playbook" text="title"/>, and <xref ref="sec-disagreement" text="title"/> in <xref ref="ch-edge-cases-decisions" text="title"/>.</p></li>
-      <li><p><xref ref="sec-practice-readiness" text="title"/> and <xref ref="sec-practice-feedback" text="title"/> in <xref ref="ch-practice-calibration" text="title"/>.</p></li>
+      <li><p><xref ref="sec-practice-readiness" text="title"/> and <xref ref="sec-practice-feedback" text="title"/> in <xref ref="ch-coding-methodology" text="title"/>.</p></li>
       <li><p><xref ref="sec-app-coding-sheet-fields" text="title"/> in <xref ref="app-coding-sheet" text="title"/>.</p></li>
       <li><p><xref ref="sec-app-protocol-workflow" text="title"/>, <xref ref="sec-app-protocol-review" text="title"/>, and <xref ref="sec-app-protocol-final-check" text="title"/> in <xref ref="app-protocol-summary" text="title"/>.</p></li>
       <li><p><xref ref="sec-data-access" text="title"/>, <xref ref="sec-data-files" text="title"/>, <xref ref="sec-data-reproducibility" text="title"/>, and <xref ref="subsec-data-incident" text="title"/> in <xref ref="ch-data-management" text="title"/>.</p></li>
