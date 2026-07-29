@@ -43,7 +43,7 @@
       <xi:include href="./ch-coding-workflow.ptx" />
       <xi:include href="./ch-edge-cases-decisions.ptx" />
       <xi:include href="./ch-worked-examples.ptx" />
-      <xi:include href="./ch-practice-calibration.ptx" />
+      <xi:include href="./ch-coding-methodology.ptx" />
       <xi:include href="./ch-data-management.ptx" />
       <xi:include href="./ch-milestone-worksheets.ptx" />
 
