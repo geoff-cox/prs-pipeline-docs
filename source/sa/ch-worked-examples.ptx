@@ -428,10 +428,13 @@
       <p>
         The constructed response
       </p>
+
       <program>
-        A free variable exists, so the solution is not unique. The parametric
-        solution also contains a parameter, so the solution is not unique.
+        A free variable exists, so the solution is not unique.
+        The parametric solution also contains a parameter, so 
+        the solution is not unique.
       </program>
+
       <p>
         contains two separate justifications for the same judgment. Neither episode's
         judgment becomes the criterion of the other, so they are independent for
@@ -459,7 +462,7 @@
         </sidebyside>
       </statement>
 
-      <solution>
+      <!-- <solution>
         <title>Potential Coding</title>
         <p>
           <dl width="narrow">
@@ -552,7 +555,7 @@
             </li>
           </dl>
         </p>
-      </solution>
+      </solution> -->
     </example>
 
     <example xml:id="example-oov">
@@ -569,7 +572,7 @@
         </sidebyside>
       </statement>
 
-      <solution>
+      <!-- <solution>
         <title>Potential Coding</title>
 
         <p>
@@ -649,7 +652,7 @@
             </li>
           </dl>
         </p>
-      </solution>
+      </solution> -->
     </example>
 
     <example xml:id="example-unresolved">
@@ -667,7 +670,7 @@
         </sidebyside>
       </statement>
 
-      <solution>
+      <!-- <solution>
         <title>Potential Coding</title>
         <p>
           <dl width="narrow">
@@ -744,7 +747,7 @@
             </li>
           </dl>
         </p>
-      </solution>
+      </solution> -->
     </example>
 
     <example xml:id="example-invalid-link">
@@ -761,7 +764,7 @@
         </sidebyside>
       </statement>
 
-      <solution>
+      <!-- <solution>
         <title>Potential Coding</title>
 
         <p>
@@ -839,8 +842,7 @@
             </li>
           </dl>
         </p>
-      </solution>
-
+      </solution> -->
     </example>
 
     <example xml:id="example-partial-coverage">
@@ -857,7 +859,7 @@
         </sidebyside>
       </statement>
 
-      <solution>
+      <!-- <solution>
         <title>Potential Coding</title>
 
         <p>
@@ -930,7 +932,7 @@
             </li>
           </dl>
         </p>
-      </solution>
+      </solution> -->
     </example>
 
     <example xml:id="example-bare-answer">
@@ -947,7 +949,7 @@
         </sidebyside>
       </statement>
 
-      <solution>
+      <!-- <solution>
         <title>Potential Coding</title>
 
         <p>
@@ -1021,7 +1023,7 @@
             </li>
           </dl>
         </p>
-      </solution>
+      </solution> -->
     </example>
   </section>
 
@@ -1030,10 +1032,10 @@
 
     <table xml:id="tab-examples-summary">
       <title>The principal analytic issue in each example.</title>
-      <tabular halign="left" top="major" bottom="minor">
-        <col width="10%"/>
-        <col width="32%"/>
-        <col width="58%"/>
+      <tabular halign="center" top="major" bottom="minor">
+        <col width="15%"/>
+        <col width="25%"/>
+        <col width="60%" halign="left"/>
         <row header="yes" bottom="medium">
           <cell><p>Example</p></cell>
           <cell><p>Main issue</p></cell>
@@ -1265,7 +1267,7 @@
       </table>
     </subsection>
 
-    <subsection xml:id="subsec-warmup-watch">
+    <!-- <subsection xml:id="subsec-warmup-watch">
       <title>Things to watch for</title>
 
       <p>
@@ -1302,12 +1304,12 @@
           </li>
         </dl>
       </p>
-    </subsection>
+    </subsection> -->
 
     <!-- ================================================================= -->
     <!-- ANSWER KEY. See the note at the top of this file about hiding this -->
     <!-- subsection from the student-facing build.                          -->
-    <subsection xml:id="subsec-warmup-solution">
+    <!-- <subsection xml:id="subsec-warmup-solution">
       <title>Coding solution</title>
 
       <p>
@@ -1421,7 +1423,7 @@
           </p>
         </li>
       </dl>
-    </subsection>
+    </subsection> -->
 
   </section>
 
