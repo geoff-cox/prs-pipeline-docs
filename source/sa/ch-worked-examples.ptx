@@ -167,15 +167,15 @@
                 <col width="95%" />
                 <row>
                   <cell><p><m>C_1</m>:</p></cell>
-                  <cell><p>A free variable exists.</p></cell>
+                  <cell><p><c>There is a free variable</c></p></cell>
                 </row>
                 <row>
                   <cell><p><term><m>I_1</m>:</term></p></cell>
-                  <cell><p>A free variable in this consistent system rules out exactly one solution.</p></cell>
+                  <cell><p>A free variable can take more than one value, producing more than one solution.</p></cell>
                 </row>
                 <row>
                   <cell><p><term><m>J_1</m>:</term></p></cell>
-                  <cell><p>The solution is not unique.</p></cell>
+                  <cell><p><c>the solution is not unique</c></p></cell>
                 </row>
               </tabular>
               <p>
@@ -256,11 +256,11 @@
                 <col width="95%" />
                 <row>
                   <cell><p><m>C_1</m>:</p></cell>
-                  <cell><p>A free variable exists</p></cell>
+                  <cell><p><c>There is a free variable</c></p></cell>
                 </row>
                 <row>
                   <cell><p><term><m>I_1</m>:</term></p></cell>
-                  <cell><p>Not applicable because no criterion-to-judgment move is completed</p></cell>
+                  <cell><p>None stated (criterion-to-judgment move was made)</p></cell>
                 </row>
                 <row>
                   <cell><p><term><m>J_1</m>:</term></p></cell>
@@ -347,7 +347,7 @@
                 <col width="95%" />
                 <row>
                   <cell><p><m>C_1</m>:</p></cell>
-                  <cell><p>fewer pivots than variables</p></cell>
+                  <cell><p><c>There are fewer pivots than variables</c></p></cell>
                 </row>
                 <row>
                   <cell><p><term><m>I_1</m>:</term></p></cell>
@@ -355,7 +355,7 @@
                 </row>
                 <row>
                   <cell><p><term><m>J_1</m>:</term></p></cell>
-                  <cell><p>one variable is free</p></cell>
+                  <cell><p><c>one variable is free</c></p></cell>
                 </row>
               </tabular>
               <p>
@@ -366,7 +366,7 @@
                 <col width="95%" />
                 <row>
                   <cell><p><m>C_2</m>:</p></cell>
-                  <cell><p>one variable is free</p></cell>
+                  <cell><p><c>one variable is free</c> (carried forward from <m>e_1</m>)</p></cell>
                 </row>
                 <row>
                   <cell><p><term><m>I_2</m>:</term></p></cell>
@@ -374,7 +374,7 @@
                 </row>
                 <row>
                   <cell><p><term><m>J_2</m>:</term></p></cell>
-                  <cell><p>the solution is not unique</p></cell>
+                  <cell><p><c>the solution is not unique</c></p></cell>
                 </row>
               </tabular>
               <p>
