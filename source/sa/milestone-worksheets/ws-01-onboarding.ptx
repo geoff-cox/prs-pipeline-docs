@@ -28,6 +28,13 @@
         <li><p><xref ref="subsec-episode-complete-incomplete" text="title"/></p></li>
         <li>
           <p>
+            <xref ref="subsec-episode-chained" text="title"/>, 
+            <xref ref="subsec-episode-independent" text="title"/>, 
+            <xref ref="subsec-episode-nested" text="title"/>
+          </p>
+        </li>
+        <li>
+          <p>
             Worked Examples:
             <ul>
               <li><xref ref="example-one-complete" text="title"/></li>
@@ -237,9 +244,9 @@
         <p>
           For each response below, record:
           <ol>
-            <li>the criterion <m>C</m>, copied from the student's words when present;</li>
+            <li>the criterion <m>C</m>, copied <em>verbatim</em> from the student's words;</li>
             <li>the minimal link <m>I</m> sufficient to justify the step;</li>
-            <li>the judgment <m>J</m>, copied from the student's words when present;</li>
+            <li>the judgment <m>J</m>, copied <em>verbatim</em> from the student's words;</li>
             <li>whether the link is <c>explicit</c>, <c>implicit</c>, or <c>absent</c>; and</li>
             <li>whether the episode is complete.</li>
           </ol>
@@ -502,7 +509,7 @@
             <li>state whether it contains analyzable mathematical justification;</li>
             <li>identify the number of defensible episodes;</li>
             <li>mark each episode complete or incomplete; and</li>
-            <li>state any relation among episodes.</li>
+            <li>state any <xref ref="sec-episode-relations" text="custom">relation</xref> among episodes.</li>
           </ol>
         </p>
         
