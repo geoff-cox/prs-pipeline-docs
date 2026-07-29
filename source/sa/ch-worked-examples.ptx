@@ -1099,8 +1099,7 @@
       <p>
         The goal is to practice the one skill everything else builds on: read
         a response, break it into <term>episodes</term>: criterion (<m>C</m>),
-        inferential link (<m>I</m>), judgment (<m>J</m>), defined in the
-        <xref ref="sec-coders-handbook" text="title"/>.
+        inferential link (<m>I</m>), judgment (<m>J</m>).
       </p>
     </introduction>
 
@@ -1132,8 +1131,7 @@
 
       <p>
         Treat that as the true state of the mathematics when you judge the
-        two correctness digits using
-        <xref ref="subsec-handbook-two-digit" text="title"/>.
+        two correctness digits.
       </p>
     </subsection>
 
@@ -1193,8 +1191,7 @@
       <p>
         Fill out all columns except <c>code</c>, <c>alt_codes</c>, <c>goal_coverage</c>,
         <c>codebook_version</c>, and <c>protocol_version</c>. For how to score the 
-        <c>confidence</c> column, see
-        <xref ref="subsec-handbook-confidence" text="title"/>.
+        <c>confidence</c> column.
       </p>
 
       <p>
@@ -1279,7 +1276,6 @@
               More than one episode. Where does one end and the next begin,
               and how do you record that the second one's criterion is the
               first one's judgment?
-              (<xref ref="subsec-handbook-nesting" text="title"/>.)
             </p>
           </li>
           <li>
@@ -1298,7 +1294,6 @@
             <title>STU-D</title>
             <p>
               States something but stops. Is it a complete episode?
-              (<xref ref="subsec-handbook-two-digit" text="title"/>, rule 2.)
             </p>
           </li>
           <li>
@@ -1382,8 +1377,7 @@
             regardless of consistency. Episode 2 (<c>relation = chained(1)</c>):
             <m>C</m> = <q>there will be a free variable</q>, <m>J</m> = <q>it can't
             have exactly one solution</q>, scored exactly as STU-A. Record both rows
-            and do not collapse them. The nesting policy <m>\pi</m> is still open
-            (<xref ref="subsec-handbook-nesting" text="title"/>).
+            and do not collapse them. The nesting policy <m>\pi</m> is still open.
           </p>
         </li>
         <li>
