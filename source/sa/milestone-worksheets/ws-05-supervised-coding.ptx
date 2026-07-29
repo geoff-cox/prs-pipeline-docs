@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<section xml:id="sec-ws-05-supervised-coding">
+  <title>Worksheet 5: Supervised Project Coding</title>
+
+  <objectives>
+    <ul>
+      <li>Apply the complete coding workflow to approved project responses.</li>
+      <li>Transfer calibration skills to authentic data without weakening privacy or provenance controls.</li>
+      <li>Produce a locked independent record before receiving response-specific review.</li>
+      <li>Use research-lead feedback to diagnose coder drift, artifact gaps, and remaining competency limits.</li>
+      <li>Document the scope of any authorization for production coding.</li>
+    </ul>
+  </objectives>
+
+  <introduction>
+    <p>
+      This worksheet is the fifth milestone in the researcher training sequence. It
+      tests whether a researcher who has completed calibration can apply the full
+      method to approved project responses. Unlike the constructed onboarding set and
+      the calibration set, these records come from the project corpus and must be
+      handled under the data-governance rules in
+      <xref ref="ch-data-management" text="title"/>.
+    </p>
+
+    <p>
+      Supervised coding is not informal practice with real data. The coder completes a
+      small, assigned batch under the same evidence, versioning, and preservation rules
+      expected in later production work. The research lead then reviews the complete
+      path from question context through disposition, not only whether the final code
+      matches a preferred result.
+    </p>
+
+    <p>
+      The assigned responses must not belong to the held-out validation set. The purpose
+      of this milestone is development and transfer assessment. Feedback may be used to
+      improve the coder, the handbook, the codebook, the question frame, or the protocol
+      before production authorization is granted.
+    </p>
+
+    <remark xml:id="rem-ws-05-status">
+      <title>Milestone status</title>
+      <p>
+        Completing the assigned batch does not by itself authorize production coding.
+        The research lead must review the preserved record and issue a dated decision
+        stating the approved scope, required secondary review, remaining limitations,
+        and governing versions.
+      </p>
+    </remark>
+  </introduction>
+
+  <subsection xml:id="subsec-ws-05-overview">
+    <title>Milestone at a Glance</title>
+
+    <table xml:id="tab-ws-05-overview">
+      <title>Purpose and output of the supervised-coding milestone.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="22%"/>
+        <col width="78%"/>
+        <row header="yes" bottom="medium"><cell>Item</cell><cell>Description</cell></row>
+        <row><cell>Primary purpose</cell><cell>Test transfer of the complete method from calibration to authentic project responses.</cell></row>
+        <row><cell>Work mode</cell><cell>Independent full coding followed by research-lead review and documented feedback.</cell></row>
+        <row><cell>Data</cell><cell>A small approved project batch that is excluded from held-out validation.</cell></row>
+        <row><cell>Available support</cell><cell>Frozen analytic materials, approved project systems, and procedural questions to the research lead before response-specific review.</cell></row>
+        <row><cell>Primary deliverables</cell><cell>A locked coding batch, work-session log, issue log, review record, correction layer, and authorization decision.</cell></row>
+        <row bottom="minor"><cell>Next milestone</cell><cell>Production coding within the authorization boundaries recorded by the research lead.</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-05-prerequisites">
+    <title>Prerequisites and Assigned Reading</title>
+
+    <p>
+      Begin only after the research lead has documented successful calibration or an
+      explicitly limited supervised-coding authorization. Review:
+    </p>
+
+    <ol>
+      <li><p><xref ref="sec-coding-before" text="title"/>, <xref ref="sec-coding-pass" text="title"/>, and <xref ref="sec-coding-checklist" text="title"/> in <xref ref="ch-coding-workflow" text="title"/>.</p></li>
+      <li><p><xref ref="sec-decision-types" text="title"/>, <xref ref="sec-edge-case-playbook" text="title"/>, and <xref ref="sec-disagreement" text="title"/> in <xref ref="ch-edge-cases-decisions" text="title"/>.</p></li>
+      <li><p><xref ref="sec-practice-readiness" text="title"/> and <xref ref="sec-practice-feedback" text="title"/> in <xref ref="ch-practice-calibration" text="title"/>.</p></li>
+      <li><p><xref ref="sec-app-coding-sheet-fields" text="title"/> in <xref ref="app-coding-sheet" text="title"/>.</p></li>
+      <li><p><xref ref="sec-app-protocol-workflow" text="title"/>, <xref ref="sec-app-protocol-review" text="title"/>, and <xref ref="sec-app-protocol-final-check" text="title"/> in <xref ref="app-protocol-summary" text="title"/>.</p></li>
+      <li><p><xref ref="sec-data-access" text="title"/>, <xref ref="sec-data-files" text="title"/>, <xref ref="sec-data-reproducibility" text="title"/>, and <xref ref="subsec-data-incident" text="title"/> in <xref ref="ch-data-management" text="title"/>.</p></li>
+    </ol>
+
+    <p>
+      Review only the question-specific codebooks, vocabularies, frames, and normative
+      references assigned to this batch. Do not assume that a familiar code or rule has
+      the same scope in a new question.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-05-access">
+    <title>Materials and Access Rules</title>
+
+    <table xml:id="tab-ws-05-access">
+      <title>Resources available and withheld during supervised coding.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="50%"/>
+        <col width="50%"/>
+        <row header="yes" bottom="medium"><cell>You may use</cell><cell>You must not use</cell></row>
+        <row><cell>The approved project system and assigned response batch</cell><cell>Personal copies, screenshots, exports, note applications, or unapproved storage</cell></row>
+        <row><cell>The exact question contexts, goals, normative references, and stable identifiers supplied with the batch</cell><cell>Question materials from another version or a similar-looking task</cell></row>
+        <row><cell>The assigned frozen handbook, protocol, codebook, vocabulary, and coding schema</cell><cell>Draft, unlabeled, older, or privately edited analytic materials</cell></row>
+        <row><cell>Your own calibration notes that do not contain copied project responses</cell><cell>Another coder's response-specific decisions before your record is locked</cell></row>
+        <row><cell>The research lead for access, missing-material, identifier, and governing-rule questions</cell><cell>Adjudicated answers or preferred codings before the independent submission</cell></row>
+        <row><cell>Pipeline output only when the packet explicitly defines a separate tool-review phase</cell><cell>Machine proposals during an ordinary independent supervised pass</cell></row>
+        <row bottom="minor"><cell>Approved institutional communication channels</cell><cell>External AI, search, translation, transcription, or cloud services without specific project approval</cell></row>
+      </tabular>
+    </table>
+
+    <warning xml:id="warn-ws-05-real-data">
+      <title>Project responses remain protected data</title>
+      <p>
+        Do not copy a response into a personal document, email, chat, screenshot, or
+        external service. Use stable project identifiers in notes and communicate only
+        the minimum response text required through the approved channel.
+      </p>
+    </warning>
+
+    <warning xml:id="warn-ws-05-review-timing">
+      <title>Complete the assigned independent unit before response-specific review</title>
+      <p>
+        Unless the packet deliberately divides the batch into smaller locked sub-batches,
+        do not request or receive item-by-item corrections while the independent unit is
+        still open. Early feedback can anchor later records and weaken the transfer evidence.
+      </p>
+    </warning>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-05-packet">
+    <title>Check the Supervised-Coding Packet</title>
+
+    <table xml:id="tab-ws-05-packet-manifest">
+      <title>Supervised-coding packet manifest.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="34%"/>
+        <col width="66%"/>
+        <row header="yes" bottom="medium"><cell>Required item</cell><cell>Value or confirmation</cell></row>
+        <row><cell>Batch identifier</cell><cell>Record the stable supervised-batch ID.</cell></row>
+        <row><cell>Corpus role</cell><cell>Confirm that the records are approved development or supervised-coding data and are not held-out validation cases.</cell></row>
+        <row><cell>Authorization record</cell><cell>Record the calibration decision authorizing this milestone and any limitations.</cell></row>
+        <row><cell>Question and response identifiers</cell><cell>Confirm stable IDs, complete response text, and the assigned response count.</cell></row>
+        <row><cell>Question materials</cell><cell>Record each prompt, representation, goal list, question-frame version, and normative-reference version.</cell></row>
+        <row><cell>Analytic materials</cell><cell>Record handbook, protocol, codebook, vocabulary, and schema versions.</cell></row>
+        <row><cell>Storage and access</cell><cell>Confirm the approved project location, device, account, and communication channel.</cell></row>
+        <row><cell>Independent unit</cell><cell>Record whether the batch is locked as one unit or as pre-specified sub-batches.</cell></row>
+        <row><cell>Review plan</cell><cell>Record who reviews the batch, which records are reviewed, and when response-specific feedback becomes available.</cell></row>
+        <row><cell>Work-session requirements</cell><cell>Record required timing, sitting, interruption, and fatigue fields.</cell></row>
+        <row bottom="minor"><cell>Advancement rule</cell><cell>Record the competency evidence and authorization decision the research lead will produce after review.</cell></row>
+      </tabular>
+    </table>
+
+    <warning xml:id="warn-ws-05-stop-packet">
+      <title>Stop when context, authorization, or provenance is incomplete</title>
+      <p>
+        Do not begin when a response lacks its question context, stable identifier,
+        governing versions, approved storage location, or documented corpus role. A
+        private repair would create an unauditable project record.
+      </p>
+    </warning>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-05-fields">
+    <title>Fields for This Milestone</title>
+
+    <table xml:id="tab-ws-05-fields">
+      <title>Fields completed and reserved during supervised coding.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="31%"/>
+        <col width="18%"/>
+        <col width="51%"/>
+        <row header="yes" bottom="medium"><cell>Field or field group</cell><cell>Action</cell><cell>Supervised-coding rule</cell></row>
+        <row><cell>Response identity, screening, and routing fields</cell><cell>Complete</cell><cell>Use stable supplied identifiers and the exact allowed values in the assigned schema.</cell></row>
+        <row><cell>Episode content and relation fields</cell><cell>Complete</cell><cell>Preserve verbatim evidence, missing components, minimal links, and every required relation.</cell></row>
+        <row><cell>Matching, correctness, coverage, confidence, and notes</cell><cell>Complete</cell><cell>Apply the assigned working codebook and normative reference without conflating local correctness and response-level completion.</cell></row>
+        <row><cell>Provenance and session fields</cell><cell>Complete</cell><cell>Record coder, timestamp, versions, batch, and required work-session information.</cell></row>
+        <row><cell>Issue log</cell><cell>Complete when needed</cell><cell>Record data, identifier, artifact, policy, ambiguity, OOV, no-match, and suspected-drift issues without altering source records.</cell></row>
+        <row><cell>Research-lead review fields</cell><cell>Leave blank during independent coding</cell><cell>The reviewer records confirmations, corrections, disagreement types, rationales, and follow-up in a separate layer.</cell></row>
+        <row><cell>Correction layer</cell><cell>Complete after review when assigned</cell><cell>Record the reviewed value and explanation without replacing the locked independent record.</cell></row>
+        <row bottom="minor"><cell>Machine proposal and tool-review fields</cell><cell>Leave blank unless explicitly authorized</cell><cell>A separate tool-review phase must preserve both the independent human record and the computational proposal.</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-05-procedure">
+    <title>Supervised-Coding Procedure</title>
+
+    <ol>
+      <li><p><em>Verify authorization and packet integrity.</em> Confirm the corpus role, stable identifiers, versions, approved systems, and review plan.</p></li>
+      <li><p><em>Open only the assigned records.</em> Do not browse neighboring responses, other coder folders, or unassigned exports.</p></li>
+      <li><p><em>Read the complete question context.</em> Verify the supplied state, goals, and normative information before interpreting the response.</p></li>
+      <li><p><em>Apply the ten-step workflow.</em> Complete screening through routing in order and preserve the evidence supporting every difficult decision.</p></li>
+      <li><p><em>Record work conditions.</em> Use the assigned session log and stop when fatigue, interruption, or uncertainty threatens data quality.</p></li>
+      <li><p><em>Escalate stewardship problems immediately.</em> Stop affected work for possible exposure, unapproved storage, corrupt files, or identifier conflicts.</p></li>
+      <li><p><em>Log analytic problems without requesting an answer.</em> Continue unaffected records when possible and preserve ambiguity, alternatives, OOV, no match, and policy questions.</p></li>
+      <li><p><em>Perform the independent integrity check.</em> Confirm required fields, versions, stable IDs, notes, and preservation of source evidence.</p></li>
+      <li><p><em>Lock the independent unit.</em> Submit the batch or pre-specified sub-batch before response-specific review begins.</p></li>
+      <li><p><em>Participate in supervised review.</em> Examine the earliest decision behind each correction and distinguish coder error from an artifact or policy problem.</p></li>
+      <li><p><em>Record corrections separately.</em> Do not overwrite the independent row. Link every review action to the original response, episode, reviewer, rationale, and versions.</p></li>
+      <li><p><em>Complete the transfer assessment.</em> Summarize strengths, recurring difficulties, drift indicators, unresolved limits, and recommended production boundaries.</p></li>
+    </ol>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-05-assignment">
+    <title>Assignment</title>
+
+    <exercise xml:id="ex-ws-05-manifest">
+      <title>Part A: Complete the Packet and Access Check</title>
+      <statement>
+        <p>
+          Record the batch manifest, confirm the approved project location and corpus
+          role, and report any missing or inconsistent item before opening a response.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-05-independent">
+      <title>Part B: Complete the Independent Full-Coding Pass</title>
+      <statement>
+        <p>
+          Apply all ten workflow steps to every assigned response. Use one episode row
+          per episode and preserve a response-level record when no complete episode is
+          present. Complete all authorized analytic and provenance fields.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-05-issues">
+      <title>Part C: Maintain the Issue Log</title>
+      <statement>
+        <p>
+          For each problem, record the response and question IDs, the exact affected
+          decision, visible evidence, governing reference, immediate action, and needed
+          review. Distinguish analytic uncertainty from privacy, access, identifier,
+          version, or file-integrity problems.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-05-session">
+      <title>Part D: Complete the Work-Session Log</title>
+      <statement>
+        <p>
+          Record every required start and stop time, interruption, and fatigue note.
+          When your interpretation of a rule appears to shift, record suspected drift
+          and notify the research lead rather than revising earlier rows silently.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-05-integrity">
+      <title>Part E: Perform the Independent Integrity Check</title>
+      <statement>
+        <p>
+          Confirm stable IDs, exact versions, complete authorized fields, specific
+          notes for low confidence, visible alternatives, unchanged source evidence,
+          and approved storage. Resolve clerical omissions before locking; preserve
+          substantive revisions for the review layer.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-05-lock">
+      <title>Part F: Lock the Independent Record</title>
+      <statement>
+        <p>
+          Submit the complete independent unit through the approved location. Record
+          its identifier and lock timestamp. Do not reopen it for response-specific
+          revision after the supervised review begins.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-05-review">
+      <title>Part G: Complete the Supervised Review</title>
+      <statement>
+        <p>
+          For each reviewed difference, identify the earliest affected decision,
+          preserve the original value, record the reviewer-supported value, classify
+          the disagreement, and state whether the source is coder application, coder
+          drift, unclear materials, missing vocabulary, incomplete normative context,
+          or a genuine unresolved case.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-05-corrections">
+      <title>Part H: Record Corrections and Follow-Up</title>
+      <statement>
+        <p>
+          Enter assigned corrections in the separate review layer. For recurring
+          difficulties, record targeted remediation or an artifact proposal. Do not
+          recode the entire batch unless the research lead issues a documented recoding
+          instruction.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-05-authorization">
+      <title>Part I: Complete the Production-Authorization Record</title>
+      <statement>
+        <p>
+          The research lead records one of the review outcomes below, the evidence
+          supporting it, approved question families or decision types, required review
+          level, remaining limitations, governing versions, and effective date.
+        </p>
+      </statement>
+    </exercise>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-05-questions">
+    <title>Questions, Problems, and Escalation</title>
+
+    <table xml:id="tab-ws-05-questions">
+      <title>Required action during supervised project coding.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="34%"/>
+        <col width="66%"/>
+        <row header="yes" bottom="medium"><cell>Situation</cell><cell>Required action</cell></row>
+        <row><cell>A response or metadata contains identifying information</cell><cell>Do not copy it into notes. Continue only inside the approved system and report the issue when the assigned procedure requires masking or review.</cell></row>
+        <row><cell>A file, identifier, or question context is missing or corrupt</cell><cell>Stop the affected record and contact the research lead. Do not reconstruct the missing content privately.</cell></row>
+        <row><cell>A version label is absent or conflicts with the packet</cell><cell>Stop the affected coding and obtain the assigned version. Do not use the most recent file by assumption.</cell></row>
+        <row><cell>You need a governing rule</cell><cell>Ask the research lead using stable IDs and the exact decision. Do not request another coder's answer.</cell></row>
+        <row><cell>You are uncertain about one response</cell><cell>Record the supported readings, evidence, confidence, and route. Continue unaffected cases when possible.</cell></row>
+        <row><cell>The same difficulty recurs across responses</cell><cell>Collect the stable IDs and classify the earliest decision. Propose review of the relevant artifact or competency.</cell></row>
+        <row><cell>You suspect your coding has drifted</cell><cell>Stop silent revision, record the point at which the shift became apparent, and notify the research lead for recalibration or planned recoding.</cell></row>
+        <row><cell>You accidentally see another coder's work or a machine proposal</cell><cell>Stop, preserve the work completed before exposure, and report the incident so the research lead can determine the effect on the batch.</cell></row>
+        <row bottom="minor"><cell>A possible privacy or access incident occurs</cell><cell>Stop the affected work and report it immediately under <xref ref="subsec-data-incident" text="title"/>.</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-05-deliverables">
+    <title>Deliverables</title>
+
+    <p>
+      Submit:
+      <ol>
+        <li>the completed supervised-coding packet manifest;</li>
+        <li>the locked independent coding record;</li>
+        <li>the work-session log;</li>
+        <li>the issue and escalation log;</li>
+        <li>the independent integrity-check confirmation;</li>
+        <li>the research-lead review record;</li>
+        <li>the linked correction and follow-up layer;</li>
+        <li>the transfer and drift assessment;</li>
+        <li>the dated production-authorization decision; and</li>
+        <li>the version record below.</li>
+      </ol>
+    </p>
+
+    <table xml:id="tab-ws-05-version-record">
+      <title>Version information to preserve with the supervised-coding submission.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="35%"/>
+        <col width="65%"/>
+        <row header="yes" bottom="medium"><cell>Field</cell><cell>Entry</cell></row>
+        <row><cell><c>worksheet_version</c></cell><cell><c>ws-05-supervised-coding-v0.1</c></cell></row>
+        <row><cell><c>pass_type</c></cell><cell><c>supervised_project_coding</c></cell></row>
+        <row><cell><c>batch_id</c></cell><cell>Record the supplied supervised-batch ID.</cell></row>
+        <row><cell><c>authorization_id</c></cell><cell>Record the calibration or limited-authorization decision.</cell></row>
+        <row><cell><c>coder_id</c></cell><cell>Use the assigned project identifier.</cell></row>
+        <row><cell><c>reviewer_id</c></cell><cell>Use the assigned project identifier.</cell></row>
+        <row><cell><c>handbook_version</c></cell><cell>Record the assigned version.</cell></row>
+        <row><cell><c>protocol_version</c></cell><cell>Record the assigned version.</cell></row>
+        <row><cell><c>codebook_version</c></cell><cell>Record every version represented in the batch.</cell></row>
+        <row><cell><c>vocabulary_version</c></cell><cell>Record every version represented in the batch.</cell></row>
+        <row><cell><c>question_frame_version</c></cell><cell>Record every version represented in the batch.</cell></row>
+        <row><cell><c>schema_version</c></cell><cell>Record the coding and review schema versions.</cell></row>
+        <row bottom="minor"><cell><c>completed_at</c></cell><cell>Record the final review date.</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-05-checklist">
+    <title>Completion Checklist</title>
+
+    <p>
+      Before final review, confirm that:
+      <ul>
+        <li>the batch contains only approved project responses and no held-out validation cases;</li>
+        <li>all work occurred through approved accounts, devices, folders, and communication channels;</li>
+        <li>stable identifiers and governing versions are complete;</li>
+        <li>question context and verbatim student evidence were preserved;</li>
+        <li>missing reasoning was not repaired;</li>
+        <li>matching used definitions and question-specific links rather than keywords;</li>
+        <li>correctness and goal coverage remain separate;</li>
+        <li>low-confidence, OOV, no-match, ambiguous, and unresolved cases contain useful notes;</li>
+        <li>the work-session and issue logs are complete;</li>
+        <li>the independent record was locked before response-specific review;</li>
+        <li>review corrections were stored separately; and</li>
+        <li>no identifying information or unapproved copies appear in notes or files.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-05-review-advancement">
+    <title>Review and Production Authorization</title>
+
+    <p>
+      The research lead reviews procedural integrity, analytic decisions, issue handling,
+      work-session evidence, and the pattern of corrections. The review should identify
+      the earliest source of each recurring problem rather than treating every wrong
+      final code as a matching failure.
+    </p>
+
+    <p>
+      Possible outcomes are:
+      <dl width="narrow">
+        <li><title>Authorize production coding</title><p>The coder may work independently within the question families, artifact versions, and review conditions stated in the authorization record.</p></li>
+        <li><title>Authorize with required secondary review</title><p>The coder may produce records, but specified decisions, question types, or confidence levels require review before acceptance.</p></li>
+        <li><title>Targeted remediation</title><p>The coder completes a focused new set addressing the earliest recurring difficulty before production authorization is reconsidered.</p></li>
+        <li><title>Repeat supervised coding</title><p>A new project batch is required when transfer remains unstable, independence was compromised, or suspected drift affects much of the record.</p></li>
+        <li><title>Resolve a project-artifact problem</title><p>The team versions a correction to the question frame, codebook, vocabulary, protocol, schema, or packet before evaluating affected coding again.</p></li>
+        <li><title>Suspend project-data access</title><p>Access is paused when privacy, security, or stewardship requirements were not followed.</p></li>
+      </dl>
+    </p>
+
+    <p>
+      The authorization is scoped, dated, and versioned. It does not grant permanent
+      access to every dataset or permission to alter codebooks, source files, schemas,
+      or adjudicated records. Later drift, artifact changes, or new question families
+      may require recalibration or renewed supervision.
+    </p>
+  </subsection>
+</section>

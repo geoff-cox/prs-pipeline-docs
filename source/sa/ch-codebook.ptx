@@ -1,0 +1,433 @@
+<chapter xml:id="ch-codebook">
+  <title>The Codebook</title>
+
+  <introduction>
+    <p>
+      The Episode Model describes the local justification steps visible in a response. A
+      codebook connects that response-level evidence to the broader control structures
+      the project studies. This connection cannot be made from isolated words alone. A
+      possible code must be interpreted relative to the exact question, the mathematical
+      state supplied to the student, and the judgment the response is attempting to
+      support.
+    </p>
+
+    <p>
+      The project therefore separates two related resources:
+      <dl width="medium">
+        <li>
+          <title>Control-structure library</title>
+          <p>
+            A reusable catalog defining the control structures recognized by the
+            project.
+          </p>
+        </li>
+        <li>
+          <title>Question-specific codebook</title>
+          <p>
+            The controls selected for one question, together with the criteria,
+            judgments, and inferential links through which each control may appear
+            in that question.
+          </p>
+        </li>
+      </dl>
+    </p>
+
+    <p>
+      The distinction is essential because a control structure may recur across 
+      questions, but the inference it implies depends on the question. The shared 
+      library provides a catalog of reusable control structures, while the question-
+      specific codebook provides the mathematical anchors needed for matching and 
+      correctness evaluation.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-codebook-purpose">
+    <title>Purpose of the Codebook</title>
+
+    <paragraphs xml:id="subsec-codebook-library">
+      <title>Control-Structure Library</title>
+
+      <p>
+        At the library level, each control structure has one reusable
+        identity rather than a separate definition for every question on which it
+        appears. A control such as reasoning from pivots, consistency, dimension, or a
+        free variable can therefore be studied across questions without treating each
+        occurrence as a new category.
+      </p>
+
+      <p>
+        The library records what a control structure <em>is</em>. At minimum, it provides:
+        <ul>
+          <li>a stable code identifier and name;</li>
+          <li>a concise definition of the control;</li>
+          <li>the mathematical decision or validation activity it represents;</li>
+          <li>inclusion and exclusion guidance;</li>
+          <li>positive and near-miss examples; and</li>
+          <li>relationships to easily confused controls.</li>
+        </ul>
+      </p>
+
+      <p>
+        The library definition must be broad enough to remain meaningful across
+        questions. It should not encode one question's correct criterion-to-judgment
+        link as though that link were universally valid. Question-specific scope and
+        correctness belong in the working codebook described next.
+      </p>
+
+      <p>
+        A shared library reduces duplication, but it does not remove interpretation.
+        Its purpose is to give researchers common names and common boundaries so that
+        their interpretations can be compared, discussed, and revised. A code remains
+        an analytic category, not a keyword label.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-codebook-working">
+      <title>Question-Specific Codebook</title>
+
+      <p>
+        A <term>codebook</term> is a subset of library controls selected for a particular
+        question. For each selected control, it records how that control can operate in 
+        the question's mathematical context. It therefore binds a shared code identity to 
+        question-specific information.
+      </p>
+
+      <p>
+        The broader context may be summarized by a question-level analytic frame
+        <md>
+          K_q=(P_q,R_q,L_q,\Sigma_q),
+        </md>
+        where:
+      </p>
+
+      <tabular valign="top">
+        <col width="5%"/>
+        <col width="85%"/>
+        <row>
+          <cell><p><m>P_q</m>:</p></cell>
+          <cell><p>
+              <term>Question &amp; task context</term>. The exact prompt, supplied 
+              conditions, requested outputs, and mathematical situation for question 
+              <m>q</m>.
+            </p></cell>
+        </row>
+        <row>
+          <cell><p><m>R_q</m>:</p></cell>
+          <cell><p>
+              <term>relevant operations</term>. The mathematical actions that may 
+              produce or transform objects used in a response.
+            </p></cell>
+        </row>
+        <row>
+          <cell><p><m>L_q</m>:</p></cell>
+          <cell><p>
+              <term>representation system</term>. The symbolic, linguistic, graphical, 
+              or technological representations available in and around the question.
+            </p></cell>
+        </row>
+        <row>
+          <cell><p><m>\Sigma_q</m>:</p></cell>
+          <cell><p>
+              <term>relevant controls</term>. The control structures that may reasonably 
+              be applied when evaluating results or making decisions for this question.
+            </p></cell>
+        </row>
+      </tabular>
+
+      <p>
+        This frame is a researcher's description of the question context (not the student's 
+        conception). For example, the statement <q>a free variable exists</q> can support 
+        the judgment that a solution is not unique when the system is known to be
+        consistent. If consistency has not been established, the same criterion does not
+        by itself show that solutions exist. The library identity for a free-variable
+        control remains stable, but the working codebook must state the conditions under
+        which a particular inference is valid.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-codebook-entry">
+      <title>A Codebook Entry</title>
+
+      <p>
+        A useful codebook entry gives a reviewer enough information to distinguish the
+        intended control from nearby alternatives. The following fields describe the
+        project's canonical content model. The exact schema may use different column names, 
+        but distinctions should be the same.
+      </p>
+
+      <table xml:id="tab-codebook-entry-anatomy">
+        <title>Recommended contents of a control-structure entry.</title>
+        <tabular top="major" bottom="minor">
+          <col width="25%" halign="center"/>
+          <col width="75%"/>
+          <row header="yes" bottom="medium">
+            <cell><p>Field</p></cell>
+            <cell><p>Purpose</p></cell>
+          </row>
+          <row>
+            <cell><p>Identifier</p></cell>
+            <cell><p>A stable and unique code ID.</p></cell>
+          </row>
+          <row>
+            <cell><p>Name</p></cell>
+            <cell><p>A short human-readable name.</p></cell>
+          </row>
+          <row>
+            <cell><p>Definition</p></cell>
+            <cell><p>State the broader control or decision rule without tying it to one question.</p></cell>
+          </row>
+          <row>
+            <cell><p>Inclusion rules</p></cell>
+            <cell><p>Describe the evidence that supports assigning the code.</p></cell>
+          </row>
+          <row>
+            <cell><p>Exclusion rules</p></cell>
+            <cell><p>Identify reasoning patterns that resemble the intended control, but are not instances of it.</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><m>\text{Surface markers}</m></p></cell>
+            <cell><p>Common words or phrases that may help identify codes. These are search aids only.</p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        Question-specific bindings are not part of the universal library definition.
+        They are added when the entry is selected for a working codebook. This prevents
+        a correct inference for one question from being silently reused where it is not
+        valid.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-codebook-normative-links">
+    <title>Question-Specific Information</title>
+
+    <p>
+      Before coding responses to question <m>q</m>, the research team establishes the
+      mathematical reference against which episodes will be interpreted. This work
+      extends the question-level analytic context introduced in
+      <xref ref="subsec-framework-question-frame" text="title"/> and supplies the
+      normative reference used by the correctness overlay in
+      <xref ref="subsec-episode-normative-reference" text="title"/>.
+    </p>
+
+    <paragraphs xml:id="subsec-codebook-criteria">
+      <title>Criteria</title>
+
+      <p>
+        The codebook identifies mathematical features that may function as
+        criteria in responses to the question. These may include observations,
+        conditions, intermediate results, comparisons, definitions, or cited theorems.
+        For each criterion, the team should record:
+        <ul>
+          <li>a concise canonical description;</li>
+          <li>the conditions under which the criterion is true;</li>
+          <li>common student phrasings or representations;</li>
+          <li>nearby features that should not be treated as equivalent; and</li>
+          <li>the controls for which the criterion may provide evidence.</li>
+        </ul>
+      </p>
+
+      <p>
+        A list of criteria is not a list of keywords. The same word may refer to
+        different mathematical features, and the same feature may be expressed through
+        different words. A mention of <q>pivot</q>, for example, could report an
+        operation, identify a count, compare pivots with variables, or support a
+        dimension argument. Coding depends on the role the feature plays in the episode.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-codebook-judgments">
+      <title>Judgments and Question Goals</title>
+
+      <p>
+        The codebook also records judgments a response may draw in the question
+        context. A judgment is a conclusion, classification, or decision within an
+        episode. Examples include statements about consistency, uniqueness, span,
+        dimension, monotonicity, or the number of solutions.
+      </p>
+
+      <p>
+        Judgments must be distinguished from the full set of goals in the prompt. A
+        question may ask a student to make several determinations, identify specific
+        objects, or explain multiple parts of an answer. The project therefore records:
+        <dl width="narrow">
+          <li>
+            <title>Episode judgments</title>
+            <p>The local conclusions that may appear in individual episodes.</p>
+          </li>
+          <li>
+            <title>Question goals</title>
+            <p>
+              The complete set of requested outcomes against which response-level goal
+              coverage is evaluated.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        A response may contain one or more mathematically sound episodes while leaving 
+        part of the question unanswered. Conversely, a response may state the requested 
+        final judgment without providing a criterion that reveals how it was reached.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-codebook-links">
+      <title>Valid and Invalid Inferential Links</title>
+
+      <p>
+        Let <m>\mathcal{T}_q</m> denote the question-specific set of inferential links
+        accepted as mathematically valid for question <m>q</m>. An entry in
+        <m>\mathcal{T}_q</m> states that, under the question's supplied conditions, a
+        particular criterion validly supports a particular judgment.
+      </p>
+
+      <p>
+        For every control, the codebook should record at least one criterion-to-judgment 
+        relationship. It should also document common invalid or incomplete links when 
+        they are likely to be confused with the valid relationship. These near-misses are 
+        important because a student may cite a true criterion but connect it to a judgment 
+        through an invalid justification.
+      </p>
+
+      <p>
+        For example, in a known consistent system, the link
+        <md>
+          \text{a free variable exists}
+          \Longrightarrow
+          \text{the solution is not unique}
+        </md>
+        is valid. The broader claim
+        <md>
+          \text{there are more variables than equations}
+          \Longrightarrow
+          \text{there are infinitely many solutions}
+        </md>
+        is not valid without information about the system's consistency. A useful 
+        codebook records both the valid link and the tempting overgeneralization.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-codebook-governance">
+    <title>Vocabulary and Codebook Tracking</title>
+
+    <p>
+      The codebook and controlled vocabulary are related but distinct resources. The
+      <term>controlled vocabulary</term> contains canonical propositions used to
+      normalize recurring mathematical language, such as <c>free_var_exists</c> or
+      <c>system_consistent</c>. The codebook contains analytic categories and rules for
+      deciding when those propositions use a control structure. Vocabulary terms help
+      represent an episode; codebook entries classify the role of that episode.
+    </p>
+
+    <paragraphs xml:id="subsec-codebook-versioning">
+      <title>Versioning and Freezing</title>
+
+      <p>
+        Every research coding record must identify the codebook and vocabulary versions
+        under which it was produced. A version records a stable set of definitions,
+        identifiers, question bindings, and normative links. When a substantive rule or
+        definition changes, the project creates a new version rather than silently
+        rewriting the version used by earlier coding.
+      </p>
+
+      <p>
+        Current version labels belong in the compact project version summary described
+        in <xref ref="sec-version-summary" text="title"/>.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-codebook-oov">
+      <title>Out-of-Vocabulary Terms</title>
+
+      <p>
+        An <term>out-of-vocabulary</term> or <term>OOV</term> case contains relevant
+        mathematical language or a proposition not represented in the current controlled
+        vocabulary. The raw student wording must be preserved. It should not be replaced
+        immediately with the nearest familiar term, because the wording may indicate:
+        <ul>
+          <li>a new expression of an existing proposition;</li>
+          <li>a missing synonym or representation;</li>
+          <li>a genuinely new criterion or control structure;</li>
+          <li>reasoning imported from another source;</li>
+          <li>incomplete or ambiguous reasoning; or</li>
+          <li>reasoning outside the project's current scope.</li>
+        </ul>
+      </p>
+
+      <p>
+        OOV and no-match are not synonyms. An OOV case exposes a gap in the vocabulary
+        used to represent the response. A <term>no-match</term> case may use familiar
+        vocabulary but contain an episode that no current codebook entry describes
+        adequately. The first suggests a representation problem; the second suggests a
+        classification or scope problem.
+      </p>
+
+      <p>
+        A single unusual response does not automatically justify a new vocabulary term
+        or code. Reviewers should preserve the case, compare it with similar responses,
+        and decide whether to add a synonym, accept a new proposition, create a new
+        control, revise an existing entry, or retain the case as outside scope. Detailed
+        response-level actions appear in
+        <xref ref="ch-edge-cases-decisions" text="title"/>.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-codebook-summary">
+    <title>Codebook Architecture Summary</title>
+
+    <table xml:id="tab-codebook-architecture-summary">
+      <title>Canonical distinctions in the codebook architecture.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="24%"/>
+        <col width="32%"/>
+        <col width="44%"/>
+        <row header="yes" bottom="medium">
+          <cell><p>Resource</p></cell>
+          <cell><p>What it contains</p></cell>
+          <cell><p>What it does not determine alone</p></cell>
+        </row>
+        <row>
+          <cell><p>Shared library</p></cell>
+          <cell><p>Stable code identities, names, definitions, and general boundaries.</p></cell>
+          <cell><p>Whether the control is in scope or correct for a particular question.</p></cell>
+        </row>
+        <row>
+          <cell><p>Working codebook</p></cell>
+          <cell><p>In-scope controls and their question-specific normative bindings.</p></cell>
+          <cell><p>The final interpretation of an ambiguous student response.</p></cell>
+        </row>
+        <row>
+          <cell><p>Controlled vocabulary</p></cell>
+          <cell><p>Canonical propositions and recognized expressions.</p></cell>
+          <cell><p>Which control structure an episode enacts.</p></cell>
+        </row>
+        <row>
+          <cell><p><m>\mathcal{T}_q</m></p></cell>
+          <cell><p>Valid criterion-to-judgment links for question <m>q</m>.</p></cell>
+          <cell><p>Whether the criterion is true in the actual student work.</p></cell>
+        </row>
+        <row bottom="minor">
+          <cell><p>Question goals</p></cell>
+          <cell><p>The outcomes a complete response should address.</p></cell>
+          <cell><p>Whether each local episode is mathematically sound.</p></cell>
+        </row>
+      </tabular>
+    </table>
+  </section>
+
+  <conclusion>
+    <p>
+      The shared library provides stable control-structure identities; the codebook 
+      selects and interprets those controls for one question; the controlled vocabulary 
+      represents recurring propositions; and the normative link set records which
+      criterion-to-judgment relationships are valid. Versioning, human acceptance, and
+      preservation of OOV and no-match cases keep these resources auditable as the
+      project develops.
+    </p>
+  </conclusion>
+</chapter>

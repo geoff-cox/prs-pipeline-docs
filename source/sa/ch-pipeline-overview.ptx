@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-pipeline-overview">
+  <title>Pipeline Overview</title>
+
+  <introduction>
+    <p>
+      The short-answer pipeline is an auditable sequence for turning imported response
+      records into structured proposals for researcher review. Its five computational
+      stages are <term>ingest</term>, <term>screen</term>, <term>extract</term>,
+      <term>match</term>, and <term>dispose</term>. Each stage has a limited job and
+      preserves a connection to the response and run that produced its output.
+    </p>
+    <p>
+      This chapter gives the stable conceptual map. It distinguishes the deterministic
+      baseline that exists in the repository from the richer Episode Model analysis the
+      project intends to support. Procedures, interface details, and a field-by-field
+      execution trace belong in the following chapters.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-pipeline-purpose">
+    <title>Purpose and Boundaries</title>
+
+    <p>
+      The pipeline organizes responses, proposes structured analyses, preserves the
+      evidence behind those proposals, and routes cases according to their review
+      needs. Separating the work into stages makes an error local: a reviewer can tell
+      whether a questionable result began with screening, extraction, matching, or
+      disposition instead of receiving one unexplained final label.
+    </p>
+
+    <p>
+      The pipeline is not an autonomous coder. It does not establish a student's
+      complete conception from one response, make final research decisions that cannot
+      be reviewed, silently complete missing reasoning, or erase ambiguity. A response
+      is evidence of the justification visible in that response, subject to its
+      question context. The interpretive boundary is defined in
+      <xref ref="subsec-project-boundaries" text="title"/>; the analytic unit is the
+      episode defined in <xref ref="ch-episode-model" text="title"/>.
+    </p>
+
+    <p>
+      Pipeline output therefore remains a proposal even when the current disposer uses
+      the routing label <c>auto_accept</c>. That label means that the deterministic
+      cascade found one clean candidate match; it does not transfer authority from the
+      researcher to the software or turn the candidate into an unreviewable finding.
+    </p>
+  </section>
+
+  <section xml:id="sec-pipeline-current-target">
+    <title>Current Implementation and Analytic Target</title>
+
+    <subsection xml:id="subsec-pipeline-current">
+      <title>What Runs Now</title>
+
+      <p>
+        The repository contains a working SQLite-backed short-answer service. A shared
+        import reader captures DataShop tabular events, the format the command-line
+        interface supports; the short-answer derive step normalizes eligible event rows
+        into responses. The
+        four analysis stages then write screening, chain, candidate-match, and
+        disposition records under a pipeline run. Implementations are replaceable
+        behind small stage interfaces, but the implementations supplied now are
+        deterministic baselines:
+        <ul>
+          <li>a rule-based screener using response length, mathematical notation, and
+          connector heuristics;</li>
+          <li>a keyword extractor that splits on one explicit connector and produces
+          at most one coarse chain step;</li>
+          <li>a matcher that applies keyword patterns and codebook surface markers,
+          while deliberately ignoring structural patterns not yet supported; and</li>
+          <li>a rule-based disposition cascade based on screening, extraction, OOV,
+          and match results.</li>
+        </ul>
+      </p>
+
+      <p>
+        The stored extraction schema predates the canonical Episode Model. It names an
+        extracted response a <c>chain</c> and stores ordered <c>chain_steps</c> with
+        <c>premise</c>, <c>conclusion</c>, and <c>oov_flag</c>. These are literal legacy
+        field names, not a competing analytic vocabulary. At present a stored premise
+        is the closest available field for a criterion and a stored conclusion is the
+        closest available field for a judgment; there is no separate stored
+        inferential-link text or link-status field. The current baseline therefore
+        cannot represent the full <m>e_k=(C_k,I_k,J_k)</m> structure.
+      </p>
+
+      <p>
+        The database also contains reviewer, review-code, and append-only override-log
+        tables. Those records can associate a reviewer and rationale with
+        <c>confirm</c>, <c>add</c>, <c>remove</c>, <c>replace</c>, or
+        <c>reject_all</c> code changes. They establish an audit structure; they should
+        not be mistaken for a complete, currently integrated review experience across
+        every stage.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-pipeline-target">
+      <title>Intended Analytic Behavior</title>
+
+      <p>
+        The analytic target is more expressive than the baseline. Extraction should
+        propose every identifiable episode in order, preserve the student's criterion
+        and judgment, classify the inferential link as explicit, implicit, or absent,
+        and retain uncertainty instead of inventing a connector. Matching should use
+        the question-specific working codebook, preserve multiple and alternate
+        matches, and distinguish OOV language from a valid term that yields no code
+        match. Correctness should remain local to criterion correctness and link
+        validity, while goal coverage remains a separate response-level judgment.
+      </p>
+
+      <p>
+        This target is a statement of intended analytic behavior, not a description of
+        features already supplied by the keyword baseline. The coding rules are
+        authoritative in <xref ref="ch-coding-workflow" text="title"/> and
+        <xref ref="ch-edge-cases-decisions" text="title"/>. The governed relationship
+        between the shared code library and a question-specific working codebook is in
+        <xref ref="ch-codebook" text="title"/>. In particular, the
+        policy for nested episodes remains open and must not be settled by pipeline
+        convenience.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-pipeline-stages">
+    <title>The Five Stages</title>
+
+    <p>
+      The following subsections use the canonical stage names. For each stage,
+      <term>preserved provenance</term> means the identifiers or explanations that let
+      a later reader reconnect an output to its input; it does not imply that every
+      desired research version is already stored.
+    </p>
+
+    <subsection xml:id="subsec-pipeline-ingest">
+      <title>Stage 1: Ingest</title>
+
+      <p>
+        <term>Purpose.</term> Ingest preserves the source export and produces stable,
+        normalized records that later services can analyze. The shared reader first
+        captures log rows as events. For events selected as short-answer data, the
+        derive step creates one response record with a stable hash-derived
+        <c>response_id</c>.
+      </p>
+      <p>
+        <term>Input and output.</term> The supported ingest format is the DataShop
+        tab-separated export. A Runestone use-info CSV reader also exists and can be
+        selected explicitly, but it remains a dormant seam rather than a supported
+        path. Their
+        events provide source fields such as
+        student, problem, action text, timestamp, and course. The short-answer output
+        retains the import identifier, student and question identifiers, response text,
+        submission time, and course identifier. Text normalization preserves internal
+        whitespace while applying Unicode normalization and removing trailing
+        whitespace.
+      </p>
+      <p>
+        <term>Provenance, limitation, and escalation.</term> The raw-import record keeps
+        the source path, SHA-256 file hash, detected format, import time, row count, and
+        notes; events and responses retain the import link. Duplicate source files are
+        rejected by hash, and re-derivation skips already present response identities.
+        Missing identifiers or timestamps and malformed timestamps are logged and
+        counted as malformed rather than guessed. Ingest does not interpret the
+        mathematics, decide codability, or de-identify data by itself. Authorization
+        and identifier handling remain researcher responsibilities under
+        <xref ref="ch-data-management" text="title"/>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-pipeline-screen">
+      <title>Stage 2: Screen</title>
+
+      <p>
+        <term>Purpose.</term> Screen proposes whether a response contains enough visible
+        effort to proceed. It receives normalized response text and writes one
+        <c>INCLUDE</c>, <c>EXCLUDE</c>, or <c>FLAG</c> decision per response and run,
+        together with a heuristic confidence and rationale.
+      </p>
+      <p>
+        <term>Current implementation.</term> The supplied <c>rules-v1</c> baseline
+        excludes blanks, no-effort boilerplate, bare yes/no answers, and some very
+        short unsupported answers. It includes text with a recognized connector. It
+        flags mathematical work without a connector and longer borderline prose. Its
+        confidence is explicitly a heuristic, not a calibrated probability.
+      </p>
+      <p>
+        <term>Provenance, limitation, and escalation.</term> The screening row retains
+        <c>response_id</c> and <c>run_id</c>, so its label, confidence, and rationale can
+        be inspected with the original response and run configuration. Keyword and
+        length rules cannot determine analytic relevance reliably in every question
+        context. <c>FLAG</c> is therefore an explicit request for review; under the
+        current disposer, both <c>FLAG</c> and <c>EXCLUDE</c> route to
+        <c>escalate</c> rather than disappearing from the record.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-pipeline-extract">
+      <title>Stage 3: Extract</title>
+
+      <p>
+        <term>Purpose.</term> Extract proposes internal reasoning structure for screened
+        responses. It receives response text plus the run's controlled-vocabulary
+        version and writes a chain record, ordered steps, extractor notes, and an OOV
+        flag when a clause cannot be mapped to that vocabulary.
+      </p>
+      <p>
+        <term>Current implementation.</term> The supplied <c>keywords-v1</c> extractor
+        finds the first supported connector, assigns the clauses on its two sides to
+        the legacy <c>premise</c> and <c>conclusion</c> fields, and attempts to map both
+        clauses to canonical vocabulary terms. With no connector, or with a connector
+        that leaves no conclusion clause, it writes an empty chain and an explanatory
+        note. When only the conclusion side survives, it records a single
+        observation-only step whose stored premise is empty. With a usable connector
+        it produces no more than one step. It does not infer implicit links or segment
+        a response into a rich sequence of episodes.
+      </p>
+      <p>
+        <term>Provenance, limitation, and escalation.</term> A chain retains its
+        response and run identifiers; each step retains its one-based order, and raw
+        unmatched clause text is preserved rather than discarded. Empty chains later
+        escalate. Any OOV step later receives <c>terminology_flag</c>. Because one OOV
+        flag currently covers either side of a step, the baseline cannot identify
+        which analytic component caused the vocabulary issue. Note also that the
+        screener recognizes a longer connector list than the extractor splits on:
+        the screener additionally accepts <c>given</c>, <c>if</c>, <c>when</c>,
+        <c>gives</c>, and <c>results in</c>, and matches the bare <c>means</c>
+        where the extractor splits only on <c>means that</c>. A response included
+        on one of those screener-only connectors yields a no-connector note, an
+        empty chain, and an eventual <c>escalate</c> disposition. The pattern is
+        systematic and expected, not a data defect.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-pipeline-match">
+      <title>Stage 4: Match</title>
+
+      <p>
+        <term>Purpose.</term> Match compares each stored step with the selected codebook
+        version and records candidate control-structure codes. It receives the legacy
+        premise and conclusion plus codebook patterns and surface markers. It outputs
+        zero, one, or several match rows, each with a code identifier, codebook-version
+        identifier, and rationale naming the evidence that fired.
+      </p>
+      <p>
+        <term>Current implementation.</term> The <c>keywords-v1</c> matcher performs
+        case-insensitive substring matching for patterns explicitly classified as
+        <c>keyword</c>, and separately checks semicolon-delimited surface markers. It
+        retains every distinct code that fires and combines the rationales when more
+        than one pattern supports the same code; for surface markers it keeps only the
+        longest phrase that fired for a given code. Structural <c>slot=term</c>
+        patterns are stored but are not evaluated by this baseline.
+      </p>
+      <p>
+        <term>Provenance, limitation, and escalation.</term> Matches link through their
+        step to the chain, response, and run and directly record the codebook version.
+        Literal substring hits are candidate evidence, not proof of the student's
+        meaning or of mathematical correctness. Multiple candidate codes are preserved
+        for standard review, and the absence of any candidate is preserved as a
+        <c>no_match</c> outcome at disposition rather than being forced into the
+        nearest code. Human treatment of
+        alternate interpretations and OOV cases follows
+        <xref ref="subsec-decision-matching" text="title"/>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-pipeline-dispose">
+      <title>Stage 5: Dispose</title>
+
+      <p>
+        <term>Purpose.</term> Dispose summarizes the earlier proposals into a routing
+        decision. It receives the response's screening label, chain presence and step
+        counts, OOV count, and distinct matched codes. It writes one disposition and a
+        trigger note for that response and run.
+      </p>
+      <p>
+        <term>Current implementation.</term> The supplied <c>rules-v1</c> cascade routes
+        <c>EXCLUDE</c>, <c>FLAG</c>, missing chains, and empty chains to
+        <c>escalate</c>; any OOV step to <c>terminology_flag</c>; no candidate codes to
+        <c>no_match</c>; several codes to <c>standard_review</c>; and exactly one clean
+        code to <c>auto_accept</c>. The schema also permits
+        <c>problem_type_flag</c>, but the current rule baseline does not produce it
+        because it does not yet perform the required question-type lookup.
+      </p>
+      <p>
+        <term>Provenance, limitation, and escalation.</term> The disposition retains the
+        response and run identifiers and a concise explanation of the first rule that
+        fired. This is queue organization, not an analytic verdict. A coarse cascade
+        cannot judge episode completeness, link status, mathematical correctness,
+        question-goal coverage, or the adequacy of nested-episode coding. Those remain
+        human decisions even when the route is <c>auto_accept</c>.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-pipeline-human-layer">
+    <title>Human Review Across the Pipeline</title>
+
+    <p>
+      Human review is a standing layer, not Stage 6. Researchers act before a run by
+      governing access, defining the question frame, freezing versions, and deciding
+      what counts as acceptable evidence. During and after a run, they can inspect the
+      source response, challenge a screening label, revise segmentation or component
+      interpretation, assess candidate matches, evaluate correctness and coverage, and
+      leave a case unresolved.
+    </p>
+
+    <p>
+      Review should begin at the earliest questionable transformation. A plausible
+      code match cannot repair an incorrect screen or a fabricated extraction. The
+      current schema supports reviewer identity, review status and timestamps, human
+      code assignments, correctness digits, notes, and append-only override events.
+      Each override event preserves tool codes, reviewer codes, an action, and an
+      optional rationale. These records allow disagreement to remain visible rather
+      than overwriting the proposal that prompted it.
+    </p>
+
+    <p>
+      The authoritative review procedure, including 
+      <xref ref="g-adjudication" text="title"/> and unresolved cases, is in 
+      <xref ref="ch-edge-cases-decisions" text="title"/>. An unresolved record is a 
+      successful preservation of uncertainty, not a pipeline failure.
+    </p>
+  </section>
+
+  <section xml:id="sec-pipeline-provenance">
+    <title>Audit Trail and Provenance</title>
+
+    <p>
+      Reproducibility depends on joining three layers of provenance:
+      <ol>
+        <li><p><term>Source provenance:</term> the raw-import file path, file hash,
+        format, import timestamp, row count, and notes, with imported events and
+        derived responses tied to the import identifier.</p></li>
+        <li><p><term>Run provenance:</term> the run identifier, start and completion
+        times, status, owning service, prompt version, model identifier,
+        controlled-vocabulary version, codebook version, notes, and, for
+        stage-specific runs,
+        stage name and serialized configuration.</p></li>
+        <li><p><term>Decision provenance:</term> per-stage rationales and notes,
+        ordered extracted steps, every candidate match and its firing evidence,
+        disposition trigger notes, and reviewer and override history.</p></li>
+      </ol>
+    </p>
+
+    <p>
+      Not every desired version is a first-class run field. In particular, the current
+      run schema has no dedicated software-commit, coding-protocol, or question-frame
+      version column. These values must not be claimed as automatically captured.
+      Until the schema provides dedicated fields, a reproducible run should record
+      them explicitly in run notes or a linked immutable artifact, following the
+      version discipline in <xref ref="sec-data-reproducibility" text="title"/>.
+    </p>
+
+    <p>
+      Provenance makes a proposal inspectable; it does not make the proposal correct.
+      Researchers must preserve OOV terms, no-match and multiple-match outcomes,
+      alternate interpretations, disagreement, and unresolved cases because those
+      records are evidence about both the responses and the performance of the method.
+    </p>
+  </section>
+</chapter>

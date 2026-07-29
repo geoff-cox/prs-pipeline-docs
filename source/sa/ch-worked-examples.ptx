@@ -1,1039 +1,1099 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
-<chapter xml:id="ch-student-guide-short-answer-analysis"
-         xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Analyzing Student Mathematical Reasoning</title>
-
-
-    <p>
-      This project studies those short explanations. Our goal is to examine the
-      mathematical justification contained in the response. In particular, we
-      ask:
-      <ul>
-        <li>What feature or fact did the student notice?</li>
-        <li>What conclusion did the student draw?</li>
-        <li>How did the student connect the feature to the conclusion?</li>
-      </ul>
-    </p>
-
-    <p>
-      This guide outlines the basic ideas of our approach.
-    </p>
-  </introduction>
+<chapter xml:id="ch-worked-examples">
+  <title>Worked Examples</title>
 
   <objectives>
     <ul>
-      <li>
-        Explain the purpose of the project.
-      </li>
-      <li>
-        Identify the criterion, inferential link, and judgment in a short
-        mathematical explanation.
-      </li>
-      <li>
-        Describe how a response moves through the analysis pipeline.
-      </li>
-      <li>
-        Recognize decisions that require interpretation by a human researcher.
-      </li>
-      <li>
-        Annotate introductory examples using the Episode Model.
-      </li>
+      <li>Apply the same analysis sequence to clear and difficult responses.</li>
+      <li>Separate extraction, matching, correctness, and goal coverage.</li>
+      <li>Recognize when a response should remain incomplete, OOV, no-match, or unresolved.</li>
+      <li>Write brief decisions that are tied to visible evidence.</li>
     </ul>
   </objectives>
 
-  <!-- ============================================================ -->
-  <!-- SECTION 1: BALACHEFF FRAMEWORK                               -->
-  <!-- ============================================================ -->
+  <introduction>
+    <p>
+      Worked examples expose the decisions a coder must make. Each example follows
+      the sequence in <xref ref="ch-coding-workflow" text="title"/>: screening,
+      extraction, matching, correctness, goal coverage, and the remaining human
+      decision. The analyses describe only the justification visible in the
+      response.
+    </p>
 
-  <section xml:id="sec-student-guide-balacheff">
-    <title>The Balacheff Framework</title>
-
-    <introduction>
+    <remark xml:id="rem-examples-access-status">
+      <title>Access During Training</title>
       <p>
-        This project is motivated by the cK&#162; framework developed by
-        Balacheff and his collaborators (Balacheff &amp; Gaudin, 2009). The
-        framework provides a language for describing mathematical knowing as it
-        appears when a person works on a particular class of problems.
+        This chapter may be used during guided onboarding and remediation. Do not
+        consult it during a blind or independent calibration pass unless the
+        assigned worksheet explicitly permits access.
       </p>
+    </remark>
 
-      <p>
-        A central principle is that researchers should be cautious when inferring
-        what a student knows from what the student writes or does. A written
-        response provides evidence, not direct access to the student's thinking.
-        The framework therefore focuses on the problem being solved, the
-        mathematical actions and representations involved, and the means by which
-        the student appears to make decisions or judge results.
-      </p>
+    <p>
+      Candidate matches are described by control-structure type rather than by a
+      fixed code ID. A final code must come from the current question-specific
+      working codebook described in
+      <xref ref="ch-codebook" text="title"/>.
+    </p>
+  </introduction>
 
-      <p>
-        In this framework, a conception is situated. It describes a form of
-        mathematical knowing that functions within a particular range of problems
-        and conditions, not a fixed belief or permanent characteristic located
-        entirely within the student.
-      </p>
-    </introduction>
+  <section xml:id="sec-example-common-context">
+    <title>Common Question Context</title>
+    <p>
+      Examples 1, 2, 3, 7, 8, and 9 use the following constructed version of the
+      source journal's recurring linear-system question. A student is shown the reduced
+      row echelon form
+      <md>
+        \left[
+        \begin{array}{ccc|c}
+          1 &amp; 2 &amp; 0 &amp; 3\\
+          0 &amp; 0 &amp; 1 &amp; -1
+        \end{array}
+        \right]
+      </md>
+      for a consistent system with variables <m>x_1,x_2,x_3</m>. The prompt asks the
+      student to:
+      <ol>
+        <li>determine whether the solution is unique; and</li>
+        <li>identify the basic and free variables.</li>
+      </ol>
+    </p>
 
-    <subsection xml:id="subsec-student-guide-conception-model">
-      <title>The Model of a Conception</title>
+    <p>
+      The normative mathematical reference is:
+      <ul>
+        <li><m>x_1</m> and <m>x_3</m> are basic variables;</li>
+        <li><m>x_2</m> is a free variable;</li>
+        <li>the solution is not unique; and</li>
+        <li>because the system is consistent, it has infinitely many solutions.</li>
+      </ul>
+      The required question goals are the uniqueness decision and the identification
+      of the basic and free variables. Infinitely many solutions is a valid consequence,
+      but the constructed prompt does not require that phrase explicitly.
+    </p>
 
-      <p>
-        Balacheff and Gaudin model a conception by the quadruplet
-        <md>
-          (P,R,L,\Sigma),
-        </md>
-        whose components describe distinct aspects of mathematical activity.
+    <p>
+      Examples 4, 5, and 6 use different or incompletely preserved question contexts.
+      That limitation is stated when it affects matching or correctness. A response
+      cannot be scored responsibly by importing the common context into an unrelated
+      example.
+    </p>
 
-        <dl width="medium">
-          <li>
-            <title>Problems</title>
-            <p>
-              <m>P</m> is the class of problems or situations that the conception
-              can successfully address.
-            </p>
-          </li>
-
-          <li>
-            <title>Operators</title>
-            <p>
-              <m>R</m> is the set of mathematical actions used to work on a
-              problem or transform a representation in <m>L</m>. Examples include
-              row reducing a matrix, substituting into an equation,
-              differentiating a function, and rearranging a symbolic expression.
-            </p>
-          </li>
-
-          <li>
-            <title>Representation System</title>
-            <p>
-              <m>L</m> is the linguistic, symbolic, graphical, or other system
-              through which mathematical actions, feedback, and results are
-              expressed. Examples include equations, matrices, diagrams, written
-              mathematical language, and software interfaces.
-            </p>
-          </li>
-
-          <li>
-            <title>Control Structure</title>
-            <p>
-              <m>\Sigma</m> is the means used to make choices, evaluate actions,
-              validate results, and decide whether a problem has been solved.
-              Examples include applying a definition, checking a computation,
-              recognizing that a system is consistent, and using the presence of
-              a free variable to classify the number of solutions.
-            </p>
-          </li>
-        </dl>
-      </p>
+    <paragraphs xml:id="sec-example-template">
+      <title>Analysis Format</title>
 
       <p>
-        Here, <m>R</m> denotes <em>operators</em>, not representations;
-        Balacheff and Gaudin use <m>L</m> for the representation system.
-      </p>
-    </subsection>
-
-    <subsection xml:id="subsec-student-guide-control-structures">
-      <title>Control Structures</title>
-
-      <p>
-        This project focuses on evidence for control structures in students'
-        written justifications. Short responses rarely show every mathematical
-        operation a student performed, but they often identify a feature the
-        student noticed and the conclusion drawn from it.
+        Every example uses the following fields. The fields correspond to distinct
+        decisions and should not be collapsed into a single judgment that the response
+        is simply <q>right</q> or <q>wrong.</q>
       </p>
 
-      <p>
-        For example, a student might justify a conclusion using the presence of a
-        free variable, the number of pivots, the consistency of a system, or the
-        sign of a derivative. Such features function as
-        <term>criteria</term> in the student's reasoning.
-      </p>
-
-      <p>
-        A criterion and a control structure are related but distinct. A criterion
-        is a particular condition or feature identified in a response. A control
-        structure is the broader means by which such information is used to make
-        a decision or validate a conclusion. The <term>Episode Model</term>,
-        introduced later in this guide, records how a criterion is connected to a
-        judgment in a particular response.
-      </p>
-    </subsection>
-    
-    <subsection xml:id="subsec-student-guide-operation-control">
-      <title>Operations and Controls</title>
-
-      <p>
-        An <term>operation</term> creates or transforms a mathematical object. A
-        <term>control</term> interprets a result and supports a decision.
-        <dl width="narrow">
-          <li>
-            <title>Operation</title>
-            <p><q>I row reduced the augmented matrix.</q></p>
-          </li>
-
-          <li>
-            <title>Control</title>
-            <p>
-              <q>The reduced matrix has no contradictory row, so the system is
-              consistent.</q>
-            </p>
-          </li>
-        </dl>
-      </p>
-
-      <p>
-        The first statement reports an action. The second evaluates the result and
-        draws a judgment. Operations may still provide the criterion used in an episode.
-      </p>
-    </subsection>
-
-    <subsection xml:id="subsec-student-guide-balacheff-limits">
-      <title>What We Can and Cannot Claim</title>
-
-      <p>
-        A short response may provide evidence that a student used a particular
-        mathematical criterion or enacted a particular control structure. It
-        rarely provides enough evidence to reconstruct an entire conception,
-        including its full range of problems, operators, representations, and
-        controls.
-      </p>
-
-      <p>
-        The project therefore uses language such as:
-        <ul>
-          <li>
-            <q>the response provides evidence for a control structure,</q>
-          </li>
-          <li>
-            <q>the student appears to use the following criterion,</q> or
-          </li>
-          <li>
-            <q>the written justification contains the following episode.</q>
-          </li>
-        </ul>
-      </p>
-
-      <p>
-        It avoids statements such as:
-        <ul>
-          <li><q>the tool detected the student's conception,</q></li>
-          <li><q>the student believes this in every situation,</q> or</li>
-          <li>
-            <q>the response gives a complete model of the student's thinking.</q>
-          </li>
-        </ul>
-      </p>
-
-      <p>
-        The framework motivates the analytic categories, but the project analyzes
-        evidence in written responses rather than claiming to model students'
-        complete conceptions.
-      </p>
-    </subsection>
+      <table xml:id="tab-example-analysis-format">
+        <title>Fields used in each worked example.</title>
+        <tabular top="major" bottom="minor">
+          <col width="28%" halign="center" />
+          <col width="72%" halign="left" />
+          <row header="yes" bottom="medium">
+            <cell><p>Field</p></cell>
+            <cell><p>Question answered</p></cell>
+          </row>
+          <row>
+            <cell><p>Screening</p></cell>
+            <cell><p>Is there enough here for episode analysis?</p></cell>
+          </row>
+          <row>
+            <cell><p>Extraction</p></cell>
+            <cell><p>What episode components are identifiable?</p></cell>
+          </row>
+          <row>
+            <cell><p>Matching</p></cell>
+            <cell><p>Which codebook codes apply to this response?</p></cell>
+          </row>
+          <row>
+            <cell><p>Correctness</p></cell>
+            <cell><p>Is the criterion true and the link valid?</p></cell>
+          </row>
+          <row>
+            <cell><p>Goal coverage</p></cell>
+            <cell><p>Are all parts of the full question addressed?</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><m>\text{Human decision}</m></p></cell>
+            <cell><p>What must be confirmed/flagged/escalated?</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
   </section>
 
-  <!-- ============================================================ -->
-  <!-- SECTION 2: CODER'S HANDBOOK                                  -->
-  <!-- ============================================================ -->
+  <section xml:id="sec-examples-progression">
+    <title>Examples</title>
 
-  <section xml:id="sec-coders-handbook">
-    <title>Coder's Handbook</title>
+    <example xml:id="example-one-complete">
+      <title>One Complete Episode</title>
+      <statement>
+        <sidebyside>
+          <stack>
+            <p>Response:</p>
+            <pre>
+              There is a free variable, so the solution is not unique.
+            </pre>
+          </stack>
+        </sidebyside>
 
-    <introduction>
-      <p>
-        <term>Version 0.2</term> — <today />. This handbook will be revised as we
-        code. When a rule changes, the version number changes, and your coding 
-        sheets record which version you coded under.
-      </p>
-
-      <p>
-        <term>The Coding Protocol <m>\pi</m>.</term> Decisions this handbook
-        deliberately leaves open are ruled in <c>07-coding-protocol-pi.md</c>,
-        released with the sealed companion and not before: multiple matches, goal
-        coverage, criterion-versus-link placement, the absent link, and the
-        consistency-family anchor. Its <m>\S\S</m>1–5 are ratified and frozen for
-        this round — a rule that turns out to be wrong mid-round goes in the change
-        log and waits for a version bump rather than being edited under you.
-        <m>\S</m>6 (nesting) is the one part still open. Sheets record
-        <c>protocol_version</c> alongside <c>handbook_version</c>.
-      </p>
-    </introduction>
-
-    <subsection xml:id="sec-student-guide-episode">
-      <title>The Episode Model</title>
-
-      <p>
-        A student response may contain one or more justifications. Moving from one 
-        justification to the next is called an <term>episode</term>. For some
-        response <m>x</m>, the ordered sequence of episodes is given by
-        <md>
-          E(x)=\langle e_1,e_2,\ldots,e_n\rangle.
-        </md>
-      </p>
-
-      <p>
-        Each episode has the form
-        <md>
-          e_k=(C_k,I_k,J_k),
-        </md>
-        where:
-        <ul>
-          <li>
-            <m>C_k</m> is the <term>criterion</term>: a fact, observation,
-            condition, or feature of the situation the student <em>cites</em>
-            (what they point at);
-          </li>
-          <li>
-            <m>I_k</m> is the <term>inferential link</term>: The (usually unstated) 
-            inference connecting the criterion to the verdict; and
-          </li>
-          <li>
-            <m>J_k</m> is the <term>judgment</term>: The verdict the student <em>draws</em>.
-          </li>
-        </ul>
-      </p>
-
-      <p>
-        In brief:
-        <md>
-          \text{criterion}
-          \quad \xrightarrow{\text{inferential link}} \quad
-          \text{judgment}.
-        </md>
-      </p>
-
-      <example>
-        <statement>
-          <p>
-            Consider the response:
-          </p>
-
-          <blockquote>
-            <p>There is a free variable, so the solution cannot be unique.</p>
-          </blockquote>
-
-          <p>
-            The criterion, inferential link, and judgment could be identified as:
-            <dl width="narrow">
-              <li>
-                <title><m>C_1</m>:</title>
-                <p><q>There is a free variable</q> (A free variable exists)</p>
-              </li>
-
-              <li>
-                <title><m>I_1</m>:</title>
-                <p>A system with a free variable cannot have one unique solution (free variable exists <m>\Rightarrow</m> solution not unique)</p>
-              </li>
-
-              <li>
-                <title><m>J_1</m>:</title>
-                <p><q>not possible to have a unique solution</q> (solution is not unique).</p>
-              </li>
-            </dl>
-          </p>
-        </statement>
-      </example>
-
-      <p>
-        An episode records only the justification visible in the response. It does
-        not describe everything the student knew, did, or thought.
-      </p>
-
-      <remark xml:id="rem-handbook-crux">
+      </statement>
+      <solution>
+        <title>Potential Coding</title>
         <p>
-          An episode is a <term>visible trace of justification in the writing</term>.
-          It is <em>not</em> a claim about what the student understands, believes,
-          or <q>has in their head.</q> We code what is on the page. Nothing more.
-        </p>
-      </remark>
-    </subsection>
-
-    <subsection xml:id="subsec-student-guide-episode-project-model">
-      <title>Why Use Episodes?</title>
-
-      <p>
-        The Episode Model is motivated by the cK&#162; framework, especially its
-        treatment of control structures and validation. However,
-        <m>(C,I,J)</m> is not part of Balacheff's original model.
-      </p>
-
-      <p>
-        A conception is represented by the broader quadruplet
-        <m>(P,R,L,\Sigma)</m>. An episode records only a criterion, a link, and a
-        judgment. It therefore provides evidence related to a control structure,
-        not a complete conception.
-      </p>
-    </subsection>
-
-    <subsection xml:id="subsec-student-guide-episode-evidence">
-      <title>Finding the Three Parts</title>
-
-      <p>
-        The criterion, link, and judgment may appear in one sentence. Words such
-        as <q>because</q>, <q>since</q>, <q>so</q>, and <q>therefore</q> often
-        signal the connection.
-      </p>
-
-      <blockquote>
-        <p>
-          The system is inconsistent, so the vector is not in the span.
-        </p>
-      </blockquote>
-
-      <p>
-        Here:
-        <ul>
-          <li>criterion: the system is inconsistent;</li>
-          <li>
-            link: an inconsistent system has no solution, so the vector cannot be
-            written as a linear combination of the given vectors; and
-          </li>
-          <li>judgment: the vector is not in the span.</li>
-        </ul>
-      </p>
-
-      <p>
-        Connector words are clues, not guarantees. A clear inference may appear
-        without one, and a response may use <q>because</q> without giving a valid
-        connection.
-      </p>
-
-      <p>
-        When reading a response, a coder should distinguish among three levels
-        of evidence:
-        <dl width="narrow">
-          <li>
-            <title>Explicit</title>
-            <p>The component is directly stated.</p>
-          </li>
-
-          <li>
-            <title>Strongly supported</title>
-            <p>
-              The component is unstated but clear from the response without
-              adding new reasoning.
-            </p>
-          </li>
-
-          <li>
-            <title>Missing or ambiguous</title>
-            <p>Identifying the component would require guessing or repair.</p>
-          </li>
-        </dl>
-      </p>
-
-      <p>
-        On the coding sheet, these correspond to <c>explicit</c>,
-        <c>implicit</c>, and <c>absent</c>. These three values describe the
-        <em>link only</em>. An <c>absent</c> link empties the link field, not the
-        episode: if a criterion and a judgment are both present, the episode is
-        still <c>complete</c> and still gets both correctness digits. A
-        <em>missing judgment</em> is a different failure, and it is recorded by
-        <c>complete</c>=0 — never by <c>link_stated</c>.
-      </p>
-
-
-      <p>
-        The goal is to represent the justification the student provided, not the
-        stronger justification the student could have provided.
-      </p>
-
-      <p>
-        When you record the inferential link on a coding sheet, these three
-        levels map onto the values the <term>Coder's Handbook</term> uses: an
-        explicit connector is <c>explicit</c>, an unstated but recoverable
-        warrant is <c>implicit</c>, and a warrant that cannot be recovered at all
-        is <c>absent</c>. All three describe the <em>link only</em> — an
-        <c>absent</c> link empties the link field, not the episode, and a missing
-        judgment is recorded by <c>complete</c>=0 instead.
-      </p>
-    </subsection>
-
-    <subsection xml:id="subsec-student-guide-complete-episode">
-      <title>Complete and Incomplete Episodes</title>
-
-      <p>
-        A <term>complete episode</term> contains enough evidence to identify the
-        criterion, link, and judgment.
-      </p>
-
-      <p>
-        An <term>incomplete episode</term> lacks one or more parts. For example:
-      </p>
-
-      <blockquote>
-        <p>
-          There is a free variable.
-        </p>
-      </blockquote>
-
-      <p>
-        This gives a criterion but no judgment. The student might mean that the
-        solution is not unique, that there are infinitely many solutions, or
-        something else. The coder must not choose a conclusion for the student.
-      </p>
-
-      <p>
-        Missing information remains missing. Incomplete episodes may be preserved
-        as partial evidence, but they do not receive the correctness code used for
-        complete episodes.
-      </p>
-    </subsection>
-
-    <subsection xml:id="subsec-student-guide-multiple-episodes">
-      <title>Responses with More Than One Episode</title>
-
-      <p>
-        A response may contain several episodes. Consider:
-      </p>
-
-      <blockquote>
-        <p>
-          There are fewer pivots than variables, so there is a free variable.
-          Therefore, the solution cannot be unique.
-        </p>
-      </blockquote>
-
-      <p>
-        This response contains two chained episodes:
-        <md>
-          \begin{aligned}
-            e_1 \amp: \text{fewer pivots than variables}
-            \longrightarrow
-            \text{a free variable exists},\\
-            e_2 \amp: \text{a free variable exists}
-            \longrightarrow
-            \text{the solution is not unique}.
-          \end{aligned}
-        </md>
-        The judgment of <m>e_1</m> becomes the criterion of <m>e_2</m>.
-      </p>
-
-      <p>
-        Episodes may be:
-        <dl width="narrow">
-          <li>
-            <title>Chained</title>
-            <p>The judgment of one becomes the criterion of another.</p>
-          </li>
-
-          <li>
-            <title>Independent</title>
-            <p>
-              Separate justifications support the same conclusion, such as a
-              pivot argument and a dimension argument.
-            </p>
-          </li>
-
-          <li>
-            <title>Nested</title>
-            <p>One episode serves as a sub-step inside a larger argument.</p>
-          </li>
-        </dl>
-      </p>
-
-      <p>
-        Nested episodes require a consistent project policy: code both levels,
-        only the larger episode, or only the most specific episode. This is a
-        coding convention, not a mathematical requirement.
-      </p>
-    </subsection>
-
-    <subsection xml:id="subsec-student-guide-local-global">
-      <title>Local Reasoning and the Complete Answer</title>
-
-      <p>
-        A valid episode does not guarantee a complete answer. Suppose a question
-        asks whether a solution is unique and asks the student to identify the
-        basic and free variables. The response
-      </p>
-
-      <blockquote>
-        <p>
-          There are two pivots, so one variable is free.
-        </p>
-      </blockquote>
-
-      <p>
-        contains a sound local episode:
-        <md>
-          \text{two pivots among three variables}
-          \longrightarrow
-          \text{one variable is free}.
-        </md>
-        However, it does not identify the free variable or state whether the
-        solution is unique.
-      </p>
-
-      <p>
-        The project therefore evaluates:
-        <ul>
-          <li>
-            <term>justification quality</term>: whether the episode is
-            mathematically sound; and
-          </li>
-          <li>
-            <term>goal coverage</term>: whether the response completes every task.
-          </li>
-        </ul>
-      </p>
-
-      <p>
-        A response may contain sound but incomplete reasoning, or reach the
-        requested answer through an invalid inference.
-      </p>
-    </subsection>
-
-    <subsection xml:id="subsec-handbook-operations">
-      <title>What does not get coded</title>
-
-      <p>
-        Student writing contains two kinds of move:
-        <dl width="narrow">
-          <li>
-            <title>Operation</title>
-            <p>
-              It builds or transforms an object. Row-reducing a
-              matrix, solving for <m>x</m>, computing a count (<q>I counted 2
-              pivots</q>). Operations are <em>not</em> coded as episodes.
-            </p>
-          </li>
-          <li>
-            <title>Control</title>
-            <p>
-              It reads a feature of the current state and returns
-              a verdict (<q>there's a free variable, so it's not unique</q>). Controls
-              <em>are</em> what episodes record.
-            </p>
-          </li>
-        </dl>
-      </p>
-    </subsection>
-
-    <subsection xml:id="subsec-handbook-finding">
-      <title>Finding episodes in real writing</title>
-
-      <p>
-        Practical signals:
-        <dl width="narrow">
-          <li>
-            <title>Connector words</title>
-            <p>
-              Words like <em>so</em>, <em>because</em>, <em>since</em>, <em>therefore</em>, 
-              etc. signal an inference link. Look for these connector words, but do not assume 
-              that a response is incomplete without them.
-            </p>
-          </li>
-          <li>
-            <title>Multiple criteria</title>
-            <p>
-              If a student cites two different features and draws a verdict from each, 
-              that's two episodes.
-            </p>
-          </li>
-          <li>
-            <title>Bare assertions</title>
-            <p>
-              The response <q>there is a free variable</q> with no verdict drawn from it,
-              are not complete episodes. Record them as incomplete.
-            </p>
-          </li>
-        </dl>
-      </p>
-    </subsection>
-
-    <subsection xml:id="subsec-handbook-two-digit">
-      <title>The two-digit correctness code</title>
-
-      <p>
-        Complete episodes receive the two-part correctness code (adapted from Gerami
-        et al. 2024)
-        <md>
-          \operatorname{code}(e_k)=(c_k^1,c_k^2).
-        </md>
-        where the digits, <m>c_k^1</m> and <m>c_k^2</m>, are determined as follows:
-        <dl width="narrow">
-          <li>
-            <title>Is the criterion true?</title>
-            <p>
-              We score <m>c_k^1 = 1</m> if the criterion they cited is true, and 
-              <m>c_k^1 = 0</m> otherwise. It is judged against the actual mathematical
-              state of the problem. If the student says <q>there is a free variable</q>
-              and, in fact, there is, then <m>c_k^1 = 1</m>.
-            </p>
-          </li>
-          <li>
-            <title>Is the inference valid?</title>
-            <p>
-              We score <m>c_k^2 = 1</m> if the inference is valid, and <m>c_k^2 = 0</m> 
-              otherwise.
-            </p>
-            <blockquote>
+          <dl width="narrow">
+            <li>
+              <title>Screening</title>
               <p>
-                Free variable (in a consistent system) <m>\Rightarrow</m> not a unique solution
+                <c>include</c>. A mathematical criterion connects it to a judgment.
               </p>
-            </blockquote>
-            <p>
-              is mathematically valid, so <m>c_k^2 = 1</m>. Whereas
-            </p>
-            <blockquote>
+            </li>
+            <li>
+              <title>Extraction</title>
               <p>
-                # variables <m>&gt;</m> # equations <m>\Rightarrow</m> <m>\infty</m>-many solutions
+                The response contains one episode:
+                <md>
+                  e_1=(C_1,I_1,J_1),
+                </md>
+                where
               </p>
-            </blockquote>
-            <p>
-              is <em>not</em> valid in general so <m>c_k^2 = 0</m>.
-            </p>
-          </li>
-        </dl>
-      </p>
+              <tabular valign="top">
+                <col width="5%" />
+                <col width="95%" />
+                <row>
+                  <cell><p><m>C_1</m>:</p></cell>
+                  <cell><p>A free variable exists.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>I_1</m>:</term></p></cell>
+                  <cell><p>A free variable in this consistent system rules out exactly one solution.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>J_1</m>:</term></p></cell>
+                  <cell><p>The solution is not unique.</p></cell>
+                </row>
+              </tabular>
+              <p>
+                The word <q>so</q> makes the link explicit.
+              </p>
+            </li>
+            <!-- <li>
+              <title>Matching</title>
+              <p>
+                The episode is a candidate for the working-codebook entry that uses the
+                existence of a free variable to judge uniqueness. The match rests on the
+                complete criterion-to-judgment relationship, not on the phrase
+                <q>free variable</q> alone.
+              </p>
+            </li>
+            <li>
+              <title>Correctness</title>
+              <p>
+                The criterion is true and the link is valid in the stated context:
+                <md>
+                  \operatorname{code}(e_1)=(1,1).
+                </md>
+              </p>
+            </li>
+            <li>
+              <title>Goal coverage</title>
+              <p>
+                The response answers the uniqueness question. It does not identify
+                <m>x_2</m> as the free variable or <m>x_1,x_3</m> as the basic variables.
+                Goal coverage is therefore partial.
+              </p>
+            </li>
+            <li>
+              <title>Human decision</title>
+              <p>
+                This is a clear episode-level case. A reviewer still confirms the working
+                codebook match and records partial goal coverage rather than treating
+                <m>(1,1)</m> as evidence of a complete answer.
+              </p>
+            </li> -->
+          </dl>
+        </p>
+      </solution>
+    </example>
+
+    <example xml:id="example-incomplete">
+      <title>An Incomplete Episode</title>
+
+      <statement>
+        <sidebyside>
+          <stack>
+            <p>Response:</p>
+            <pre>
+              There is a free variable.
+            </pre>
+          </stack>
+        </sidebyside>
+      </statement>
+
+      <solution>
+        <title>Potential Coding</title>
+        <p>
+          <dl width="narrow">
+            <li>
+              <title>Screening</title>
+              <p>
+                <c>review</c>. The response is not a complete justification, but its criterion 
+                is usable evidence.
+              </p>
+            </li>
+            <li>
+              <title>Extraction</title>
+              <p>
+                Record one incomplete episode candidate:
+              </p>
+              <tabular valign="top">
+                <col width="5%" />
+                <col width="95%" />
+                <row>
+                  <cell><p><m>C_1</m>:</p></cell>
+                  <cell><p>A free variable exists</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>I_1</m>:</term></p></cell>
+                  <cell><p>Not applicable because no criterion-to-judgment move is completed</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>J_1</m>:</term></p></cell>
+                  <cell><p>Missing</p></cell>
+                </row>
+              </tabular>
+              <p>
+                Do not convert the missing judgment into <c>link_stated=absent</c>; the link-status 
+                field describes a link between an identifiable criterion and judgment.
+              </p>
+            </li>
+            <li>
+              <title>Completeness</title>
+              <p><c>complete = 0</c> (incomplete).</p>
+            </li>
+            <!-- <li>
+              <title>Matching</title>
+              <p>
+                The fragment suggests the free-variable family, but it does not support a
+                final control-structure code because the student has not drawn a judgment.
+              </p>
+            </li>
+            <li>
+              <title>Correctness</title>
+              <p>
+                Leave both correctness digits blank. The criterion is true, but incomplete
+                episodes do not receive the episode correctness pair.
+              </p>
+            </li>
+            <li>
+              <title>Goal coverage</title>
+              <p>
+                The response indicates that some variable is free, but it does not identify
+                <m>x_2</m>, identify the basic variables, or address uniqueness. It touches
+                one goal without completing it.
+              </p>
+            </li>
+            <li>
+              <title>Human decision</title>
+              <p>
+                Preserve the fragment. Do not add <q>therefore the solution is not
+                unique</q> or any other conclusion for the student.
+              </p>
+            </li> -->
+          </dl>
+        </p>
+      </solution>
+    </example>
+
+    <example xml:id="example-chained">
+      <title>A Chain of Two Episodes</title>
+
+      <statement>
+        <sidebyside>
+          <stack>
+            <p>Response:</p>
+            <pre>
+              There are fewer pivots than variables, so one variable is
+              free. Therefore, the solution is not unique.
+            </pre>
+          </stack>
+        </sidebyside>
+      </statement>
+
+      <solution>
+        <title>Potential Coding</title>
+        <p>
+          <dl width="narrow">
+            <li>
+              <title>Screening</title>
+              <p>
+                <c>include</c>. The response contains two connected criterion-to-judgment moves.
+              </p>
+            </li>
+            <li>
+              <title>Extraction</title>
+              <p>
+                Record the two-episode chain:
+                <md>E(x)=\langle e_1,e_2\rangle</md>,
+                where <m>e_1</m> has components:
+              </p>
+              <tabular valign="top">
+                <col width="5%" />
+                <col width="95%" />
+                <row>
+                  <cell><p><m>C_1</m>:</p></cell>
+                  <cell><p>fewer pivots than variables</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>I_1</m>:</term></p></cell>
+                  <cell><p>an unpivoted variable is free</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>J_1</m>:</term></p></cell>
+                  <cell><p>one variable is free</p></cell>
+                </row>
+              </tabular>
+              <p>
+                and <m>e_2</m> has components:
+              </p>
+              <tabular valign="top">
+                <col width="5%" />
+                <col width="95%" />
+                <row>
+                  <cell><p><m>C_2</m>:</p></cell>
+                  <cell><p>one variable is free</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>I_2</m>:</term></p></cell>
+                  <cell><p>a free variable rules out uniqueness</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>J_2</m>:</term></p></cell>
+                  <cell><p>the solution is not unique</p></cell>
+                </row>
+              </tabular>
+              <p>
+                The episodes are chained because <m>J_1=C_2</m>. This would get logged on 
+                <m>e_2</m>'s row as <c>chained(1)</c>.
+              </p>
+            </li>
+            <!-- <li>
+              <title>Matching</title>
+              <p>
+                The first episode is a candidate for a pivot-count-to-free-variable control.
+                The second is a candidate for a free-variable-to-non-uniqueness control.
+                They should not be reduced to one match merely because both involve pivots
+                and variables.
+              </p>
+            </li>
+            <li>
+              <title>Correctness</title>
+              <p>
+                Both criteria are true and both links are valid:
+                <md>
+                  \operatorname{code}(e_1)=(1,1),
+                  \qquad
+                  \operatorname{code}(e_2)=(1,1).
+                </md>
+              </p>
+            </li>
+            <li>
+              <title>Goal coverage</title>
+              <p>
+                The response answers the uniqueness question and states that one variable is
+                free. It does not identify <m>x_2</m> or the basic variables. Coverage is
+                partial.
+              </p>
+            </li>
+            <li>
+              <title>Human decision</title>
+              <p>
+                Until the nesting-retention policy is fixed, record both visible episodes
+                and their relation. Do not collapse the rows during the independent pass.
+              </p>
+            </li> -->
+          </dl>
+        </p>
+      </solution>
+    </example>
+
+    <aside xml:id="aside-example-independent-contrast">
+      <title>Contrast: independent episodes</title>
 
       <p>
-        Remember:
-        <ol>
-          <li>
-            <p>
-              <term>Incomplete episodes are never scored.</term> No judgment, or no
-              criterion, means leave the scores blank (not <m>(0,0)</m>).
-            </p>
-          </li>
-          <li>
-            <p>
-              <term>A <m>(1,1)</m> score certifies the justification, not the answer.</term> A
-              response can be all-<m>(1,1)</m> episodes and still fail to answer the
-              question. We are grading only the reasoning moves.
-            </p>
-          </li>
-        </ol>
+        The constructed response
       </p>
-    </subsection>
-
-    <subsection xml:id="subsec-handbook-nesting">
-      <title>Chained and Independent Episodes</title>
-
-      <p>The student response</p>
-
-      <blockquote>
-        <p>One and only one solution is not possible because there will be a free variable since there are more variables than rows.</p>
-      </blockquote>
-
+      <program>
+        A free variable exists, so the solution is not unique. The parametric
+        solution also contains a parameter, so the solution is not unique.
+      </program>
       <p>
-        contains two <term>chained</term> episodes since the criterion of <m>e_2</m>
-        <em>is</em> the judgment of <m>e_1</m>. That is:
+        contains two separate justifications for the same judgment. Neither episode's
+        judgment becomes the criterion of the other, so they are independent for
+        coding purposes. See <xref ref="subsec-episode-independent" text="title"/>.
       </p>
+    </aside>
 
-      <tabular halign="left">
-        <col halign="center"/>
-        <col />
-        <col />
-        <row>
-          <cell><m>E</m></cell>
-          <cell halign="center"><m>C</m></cell>
-          <cell halign="center"><m>J</m></cell>
+    <example xml:id="example-multiple-controls">
+      <title>Several Controls and a Segmentation Choice</title>
+
+      <statement>
+        <p>
+          The source question asks whether the columns of a matrix <m>A</m> span
+          <m>\mathbb{R}^3</m>, and the matrix has exactly two pivots.
+        </p>
+        <sidebyside>
+          <stack>
+            <p>Response:</p>
+            <pre>
+              2 pivots implies dim(C(A)) = 2, and dim(C(A)) is less than
+              dim(R^3), so the columns of A cannot span R^3 by the
+              Goldilocks Theorem.
+            </pre>
+          </stack>
+        </sidebyside>
+      </statement>
+
+      <solution>
+        <title>Potential Coding</title>
+        <p>
+          <dl width="narrow">
+            <li>
+              <title>Screening</title>
+              <p>
+                <c>include</c>. The response contains a connected mathematical argument and a
+                direct answer to the span question.
+              </p>
+            </li>
+            <li>
+              <title>Extraction</title>
+              <p>
+                One defensible segmentation is
+                <md>
+                  E(x)=\langle e_1,e_2,e_3\rangle,
+                </md>
+                with
+              </p>
+              <tabular valign="top">
+                <col width="5%" />
+                <col width="95%" />
+                <row>
+                  <cell><p><m>C_1</m>:</p></cell>
+                  <cell><p>A free variable exists.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>I_1</m>:</term></p></cell>
+                  <cell><p>A free variable in this consistent system rules out exactly one solution.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>J_1</m>:</term></p></cell>
+                  <cell><p>The solution is not unique.</p></cell>
+                </row>
+              </tabular>
+              <p>
+                <md>
+                  \begin{aligned}
+                    e_1
+                    &amp;=(\text{two pivots},
+                        \text{pivot count determines column-space dimension},
+                        \dim C(A)=2),\\
+                    e_2
+                    &amp;=(\dim C(A)=2&lt;3,
+                        \text{a two-dimensional subspace cannot equal }\mathbb{R}^3,
+                        C(A)\ne\mathbb{R}^3),\\
+                    e_3
+                    &amp;=(C(A)\ne\mathbb{R}^3,
+                        \text{the columns span exactly }C(A),
+                        \text{the columns do not span }\mathbb{R}^3).
+                  \end{aligned}
+                </md>
+                A coder could also combine <m>e_2</m> and <m>e_3</m> into one larger
+                episode. The difference is a boundary decision, not disagreement about the
+                overall argument.
+              </p>
+            </li>
+            <li>
+              <title>Matching</title>
+              <p>
+                Plausible matches involve pivot count, dimension or column space, and the
+                course-specific theorem named by the student. The theorem label should
+                receive a separate code only if the current working codebook defines its
+                role and distinguishes it from the dimension argument.
+              </p>
+            </li>
+            <li>
+              <title>Correctness</title>
+              <p>
+                Given the stated two-pivot context, the pivot and dimension steps are valid.
+                Under the three-episode segmentation, each episode receives <m>(1,1)</m>.
+                A reviewer should not use the theorem's name alone as proof that the link is
+                valid; the actual criterion-to-judgment relation must be checked.
+              </p>
+            </li>
+            <li>
+              <title>Goal coverage</title>
+              <p>
+                Complete for the stated span question: the response concludes that the
+                columns do not span <m>\mathbb{R}^3</m> and provides supporting reasoning.
+              </p>
+            </li>
+            <li>
+              <title>Human decision</title>
+              <p>
+                Record whether the disagreement concerns boundaries, nesting, or code
+                assignment. Do not treat a segmentation difference as a screening or
+                mathematical-correctness disagreement.
+              </p>
+            </li>
+          </dl>
+        </p>
+      </solution>
+    </example>
+
+    <example xml:id="example-oov">
+      <title>Relevant but Out-of-Vocabulary Reasoning</title>
+
+      <statement>
+        <sidebyside>
+          <stack>
+            <p>Response:</p>
+            <pre>
+              It depends what is in the augmented matrix.
+            </pre>
+          </stack>
+        </sidebyside>
+      </statement>
+
+      <solution>
+        <title>Potential Coding</title>
+
+        <p>
+          <dl width="narrow">
+            <li>
+              <title>Screening</title>
+              <p>
+                Preserve for review. The response is mathematically relevant and makes a
+                conditional claim about what information controls the answer.
+              </p>
+            </li>
+            <li>
+              <title>Extraction</title>
+              <p>
+                A possible complete reading is
+                <md>
+                  e_1=(\text{the augmented entries may vary},
+                      \text{those entries can change the relevant classification},
+                      \text{the answer depends on the augmented matrix}).
+                </md>
+              </p>
+              <tabular valign="top">
+                <col width="5%" />
+                <col width="95%" />
+                <row>
+                  <cell><p><m>C_1</m>:</p></cell>
+                  <cell><p>A free variable exists.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>I_1</m>:</term></p></cell>
+                  <cell><p>A free variable in this consistent system rules out exactly one solution.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>J_1</m>:</term></p></cell>
+                  <cell><p>The solution is not unique.</p></cell>
+                </row>
+              </tabular>
+              <p>
+                The final judgment is expressed through <q>depends</q>, but the precise
+                classification being judged is absent from the preserved context. An
+                alternative coding is therefore an ambiguous or incomplete episode. Record
+                the primary reading, the alternative, and low confidence.
+              </p>
+            </li>
+            <li>
+              <title>Matching</title>
+              <p>
+                Suppose the controlled vocabulary includes pivots, free variables,
+                consistency, and solution counts but lacks a proposition for dependence on
+                the augmented column. Record the raw phrase as OOV. Do not force the response
+                into a pivot or consistency code merely because those ideas are common in
+                nearby questions.
+              </p>
+            </li>
+            <li>
+              <title>Correctness</title>
+              <p>
+                Do not assign the two-digit code from this excerpt alone. The exact question
+                and mathematical state are required to determine whether the criterion and
+                link are valid.
+              </p>
+            </li>
+            <li>
+              <title>Goal coverage</title>
+              <p>
+                Unclear because the requested goal is not preserved with the response.
+              </p>
+            </li>
+            <li>
+              <title>Human decision</title>
+              <p>
+                Decide whether the case is a new expression of an existing idea, a proposed
+                vocabulary term, a proposed control, an incomplete episode, or reasoning
+                outside the current scope. Until that review occurs, retain the OOV evidence
+                and route the case for terminology review or escalation.
+              </p>
+            </li>
+          </dl>
+        </p>
+      </solution>
+    </example>
+
+    <example xml:id="example-unresolved">
+      <title>A Genuinely Unresolved No-Match Case</title>
+
+      <statement>
+        <sidebyside>
+          <stack>
+            <p>Response:</p>
+            <pre>
+              It is the same because, as we discussed in class, only four
+              pivot points would be available.
+            </pre>
+          </stack>
+        </sidebyside>
+      </statement>
+
+      <solution>
+        <title>Potential Coding</title>
+        <p>
+          <dl width="narrow">
+            <li>
+              <title>Screening</title>
+              <p>
+                Preserve for review. The response names a mathematical feature and attempts
+                to use it as justification, but the referent of <q>the same</q> is missing.
+              </p>
+            </li>
+            <li>
+              <title>Extraction</title>
+              <p>
+                A tentative representation is
+                <md>
+                  e_1=(\text{only four pivot positions are available},
+                      \text{that limitation leaves the relevant property unchanged},
+                      \text{the result is the same}).
+                </md>
+              </p>
+              <tabular valign="top">
+                <col width="5%" />
+                <col width="95%" />
+                <row>
+                  <cell><p><m>C_1</m>:</p></cell>
+                  <cell><p>A free variable exists.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>I_1</m>:</term></p></cell>
+                  <cell><p>A free variable in this consistent system rules out exactly one solution.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>J_1</m>:</term></p></cell>
+                  <cell><p>The solution is not unique.</p></cell>
+                </row>
+              </tabular>
+              <p>
+                The criterion is identifiable, but both the link and judgment are too vague
+                for a defensible final extraction without the question. Record the competing
+                interpretation rather than pretending the pronoun has a fixed mathematical
+                referent.
+              </p>
+            </li>
+            <li>
+              <title>Matching</title>
+              <p>
+                <q>Pivot</q> may already be represented in the controlled vocabulary, so this
+                is not automatically OOV. It is a no-match case when no current codebook
+                entry adequately represents the unclear pivot-to-<q>same</q> relationship.
+              </p>
+            </li>
+            <li>
+              <title>Correctness</title>
+              <p>
+                Do not score. The original question is needed to identify the judgment and
+                evaluate whether the cited pivot limitation supports it.
+              </p>
+            </li>
+            <li>
+              <title>Goal coverage</title>
+              <p>
+                Unresolved because the response's target and the original question goals are
+                unavailable in the excerpt.
+              </p>
+            </li>
+            <li>
+              <title>Human decision</title>
+              <p>
+                Preserve the case as unresolved unless the original prompt can be restored.
+                Likely disagreement labels include <c>LINK</c>, <c>JUDGMENT</c>,
+                <c>MATCH</c>, and possibly <c>POLICY</c>. Missing context is not a license to
+                choose the most plausible meaning.
+              </p>
+            </li>
+          </dl>
+        </p>
+      </solution>
+    </example>
+
+    <example xml:id="example-invalid-link">
+      <title>A True Criterion with an Invalid Link</title>
+
+      <statement>
+        <sidebyside>
+          <stack>
+            <p>Response:</p>
+            <pre>
+              There is a free variable, so the system is inconsistent.
+            </pre>
+          </stack>
+        </sidebyside>
+      </statement>
+
+      <solution>
+        <title>Potential Coding</title>
+
+        <p>
+          <dl width="narrow">
+            <li>
+              <title>Screening</title>
+              <p>
+                <c>include</c>. Codability does not depend on mathematical correctness; the
+                response contains a criterion, explicit link, and judgment.
+              </p>
+            </li>
+            <li>
+              <title>Extraction</title>
+              <p>
+                Record one complete episode:
+                <md>
+                  e_1=(\text{a free variable exists},
+                      \text{a free variable makes the system inconsistent},
+                      \text{the system is inconsistent}).
+                </md>
+              </p>
+              <tabular valign="top">
+                <col width="5%" />
+                <col width="95%" />
+                <row>
+                  <cell><p><m>C_1</m>:</p></cell>
+                  <cell><p>A free variable exists.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>I_1</m>:</term></p></cell>
+                  <cell><p>A free variable in this consistent system rules out exactly one solution.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>J_1</m>:</term></p></cell>
+                  <cell><p>The solution is not unique.</p></cell>
+                </row>
+              </tabular>
+              <p>
+              </p>
+            </li>
+            <li>
+              <title>Matching</title>
+              <p>
+                The response invokes free-variable and consistency reasoning. Preserve the
+                student's actual relationship. Do not replace it with the correct
+                free-variable-to-non-uniqueness link. The current protocol determines whether
+                this receives a control-family code with an incorrect link or a no-match
+                designation against the valid question-specific pattern.
+              </p>
+            </li>
+            <li>
+              <title>Correctness</title>
+              <p>
+                The criterion is true, but the link is invalid because the problem states
+                that the system is consistent:
+                <md>
+                  \operatorname{code}(e_1)=(1,0).
+                </md>
+              </p>
+            </li>
+            <li>
+              <title>Goal coverage</title>
+              <p>
+                The response does not answer the uniqueness question and does not identify
+                the variables. Its judgment also contradicts the supplied problem state.
+              </p>
+            </li>
+            <li>
+              <title>Human decision</title>
+              <p>
+                Preserve the distinction between a true observed feature and an invalid use
+                of that feature. A single label such as <q>incorrect</q> would erase the main
+                analytic result.
+              </p>
+            </li>
+          </dl>
+        </p>
+      </solution>
+
+    </example>
+
+    <example xml:id="example-partial-coverage">
+      <title>Local Reasoning with Partial Goal Coverage</title>
+
+      <statement>
+        <sidebyside>
+          <stack>
+            <p>Response:</p>
+            <pre>
+              We only have two pivot points, so one variable will be free.
+            </pre>
+          </stack>
+        </sidebyside>
+      </statement>
+
+      <solution>
+        <title>Potential Coding</title>
+
+        <p>
+          <dl width="narrow">
+            <li>
+              <title>Screening</title>
+              <p>
+                <c>include</c>. The response contains a criterion, explicit link, and judgment.
+              </p>
+            </li>
+            <li>
+              <title>Extraction</title>
+              <p>
+                Record
+                <md>
+                  e_1=(\text{two pivots among three variables},
+                      \text{fewer pivots than variables leaves an unpivoted variable},
+                      \text{one variable is free}).
+                </md>
+              </p>
+              <tabular valign="top">
+                <col width="5%" />
+                <col width="95%" />
+                <row>
+                  <cell><p><m>C_1</m>:</p></cell>
+                  <cell><p>A free variable exists.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>I_1</m>:</term></p></cell>
+                  <cell><p>A free variable in this consistent system rules out exactly one solution.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>J_1</m>:</term></p></cell>
+                  <cell><p>The solution is not unique.</p></cell>
+                </row>
+              </tabular>
+              <p>
+              </p>
+            </li>
+            <li>
+              <title>Matching</title>
+              <p>
+                The episode is a candidate for the working-codebook entry that compares
+                pivot count with variable count to identify a free variable.
+              </p>
+            </li>
+            <li>
+              <title>Correctness</title>
+              <p>
+                The criterion is true and the link is valid:
+                <md>
+                  \operatorname{code}(e_1)=(1,1).
+                </md>
+              </p>
+            </li>
+            <li>
+              <title>Goal coverage</title>
+              <p>
+                Partial. The response correctly states that one variable is free, but it
+                does not identify <m>x_2</m>, identify <m>x_1,x_3</m> as basic, or state
+                whether the solution is unique.
+              </p>
+            </li>
+            <li>
+              <title>Human decision</title>
+              <p>
+                Do not lower the correctness pair because the answer is incomplete. Record
+                a sound local episode and partial coverage as separate results.
+              </p>
+            </li>
+          </dl>
+        </p>
+      </solution>
+    </example>
+
+    <example xml:id="example-bare-answer">
+      <title>A Correct Answer without Codable Justification</title>
+
+      <statement>
+        <sidebyside>
+          <stack>
+            <p>Response:</p>
+            <pre>
+              No, the solution is not unique.
+            </pre>
+          </stack>
+        </sidebyside>
+      </statement>
+
+      <solution>
+        <title>Potential Coding</title>
+
+        <p>
+          <dl width="narrow">
+            <li>
+              <title>Screening</title>
+              <p>
+                Under a screen requiring identifiable justification, the response is not
+                included as a complete episode. Preserve the response and route it according
+                to the current bare-answer policy rather than deleting it.
+              </p>
+            </li>
+            <li>
+              <title>Extraction</title>
+              <p>
+                Record an incomplete row if the schema requires one:
+                <dl width="narrow">
+                  <li><title><m>C_1</m>:</title><p>Missing.</p></li>
+                  <li><title><m>I_1</m>:</title><p>Not recoverable because no criterion is stated.</p></li>
+                  <li><title><m>J_1</m>:</title><p>The solution is not unique.</p></li>
+                </dl>
+              </p>
+              <tabular valign="top">
+                <col width="5%" />
+                <col width="95%" />
+                <row>
+                  <cell><p><m>C_1</m>:</p></cell>
+                  <cell><p>A free variable exists.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>I_1</m>:</term></p></cell>
+                  <cell><p>A free variable in this consistent system rules out exactly one solution.</p></cell>
+                </row>
+                <row>
+                  <cell><p><term><m>J_1</m>:</term></p></cell>
+                  <cell><p>The solution is not unique.</p></cell>
+                </row>
+              </tabular>
+              <p>
+                Set <c>complete=0</c>. The final answer is not evidence that the student used
+                the most obvious available criterion.
+              </p>
+            </li>
+            <li>
+              <title>Matching</title>
+              <p>
+                Do not assign a free-variable, pivot-count, or other control code based only
+                on the judgment <q>not unique.</q>
+              </p>
+            </li>
+            <li>
+              <title>Correctness</title>
+              <p>
+                The final answer is mathematically correct, but no episode-level correctness
+                pair is assigned because the response contains no complete episode.
+              </p>
+            </li>
+            <li>
+              <title>Goal coverage</title>
+              <p>
+                The uniqueness goal is answered. The response does not identify the basic or
+                free variables, so overall coverage is partial.
+              </p>
+            </li>
+            <li>
+              <title>Human decision</title>
+              <p>
+                Apply the screening and bare-answer rules consistently. Do not infer a hidden
+                justification from the fact that the answer is correct.
+              </p>
+            </li>
+          </dl>
+        </p>
+      </solution>
+    </example>
+  </section>
+
+  <section xml:id="sec-examples-summary">
+    <title>Summary of the Examples</title>
+
+    <table xml:id="tab-examples-summary">
+      <title>The principal analytic issue in each example.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="10%"/>
+        <col width="32%"/>
+        <col width="58%"/>
+        <row header="yes" bottom="medium">
+          <cell><p>Example</p></cell>
+          <cell><p>Main issue</p></cell>
+          <cell><p>Central lesson</p></cell>
         </row>
         <row>
-          <cell><m>e_1</m></cell>
-          <cell><q>more variables than rows</q></cell>
-          <cell><q>there will be a free variable</q></cell>
+          <cell><p>1</p></cell>
+          <cell><p>Complete episode</p></cell>
+          <cell><p>A locally sound episode can still leave question goals uncovered.</p></cell>
         </row>
         <row>
-          <cell><m>e_2</m></cell>
-          <cell><q>there will be a free variable</q></cell>
-          <cell><q>one and only one solution is not possible</q></cell>
+          <cell><p>2</p></cell>
+          <cell><p>Incomplete fragment</p></cell>
+          <cell><p>Preserve a stated criterion without supplying the student's missing judgment.</p></cell>
+        </row>
+        <row>
+          <cell><p>3</p></cell>
+          <cell><p>Chained episodes</p></cell>
+          <cell><p>Record each visible step and its relation before applying a retention policy.</p></cell>
+        </row>
+        <row>
+          <cell><p>4</p></cell>
+          <cell><p>Several controls</p></cell>
+          <cell><p>Segmentation and code assignment are distinct from mathematical correctness.</p></cell>
+        </row>
+        <row>
+          <cell><p>5</p></cell>
+          <cell><p>OOV and ambiguity</p></cell>
+          <cell><p>Preserve unfamiliar reasoning and avoid scoring without the question context.</p></cell>
+        </row>
+        <row>
+          <cell><p>6</p></cell>
+          <cell><p>No match and missing context</p></cell>
+          <cell><p>Known vocabulary does not guarantee an adequate codebook relationship.</p></cell>
+        </row>
+        <row>
+          <cell><p>7</p></cell>
+          <cell><p>True criterion, invalid link</p></cell>
+          <cell><p>Criterion truth and inferential validity must be evaluated separately.</p></cell>
+        </row>
+        <row>
+          <cell><p>8</p></cell>
+          <cell><p>Partial goal coverage</p></cell>
+          <cell><p>A <m>(1,1)</m> episode does not certify a complete response.</p></cell>
+        </row>
+        <row bottom="minor">
+          <cell><p>9</p></cell>
+          <cell><p>Correct bare answer</p></cell>
+          <cell><p>Final-answer correctness does not provide evidence for a control structure.</p></cell>
         </row>
       </tabular>
-
-      <p>
-        In contrast, when a response gives two <em>separate</em>, non-interacting
-        justifications, we say that the episodes are <term>independent</term>.
-      </p>
-
-      <remark xml:id="rem-handbook-nesting-rule">
-        <title>The nesting rule — read carefully</title>
-        <p>
-          The research group has <em>not yet fixed</em> the policy that decides
-          whether chained or nested episodes ultimately count as one unit or
-          several. That policy is <m>\S</m>6 of the Coding Protocol <m>\pi</m>, and
-          it is the one part of the protocol left open: <m>\S\S</m>1–5 are ratified
-          and frozen for this round, <m>\S</m>6 is not. Until it is settled:
-          <term>record every episode you can identify, mark the relation, and do not
-          collapse or drop anything.</term> Your job is to preserve the structure;
-          the collapsing decision will be applied later, uniformly, by policy. If
-          you find yourself wanting to merge two episodes into one, that impulse
-          goes in the <c>notes</c> column, not into the rows.
-        </p>
-      </remark>
-    </subsection>
-
-    <subsection xml:id="subsec-handbook-confidence">
-      <title>Scoring confidence</title>
-
-      <p>
-        The pipeline records a confidence value with every automated decision, and
-        so do you (the <c>confidence</c> column). Low confidence plus a clear note 
-        is good coding.
-      </p>
-
-      <p>
-        First, what confidence is <em>about</em>. It records your confidence in the
-        <em>coding decision</em>. That is, how confident you are in extracting an 
-        episode and how to fill a single row, <em>not</em> whether the student is 
-        mathematically right.
-      </p>
-
-      <p>
-        Confidence is logged on a three-point scale:
-        <dl>
-          <li>
-            <title>3: unambiguous</title>
-            <p>
-              Any coder would code it the same way; there is no plausible alternative
-              reading; the completeness and scoring are clear.
-            </p>
-          </li>
-          <li>
-            <title>2: an alternative may exist</title>
-            <p>
-              You have a clear reading, but a coder could read it differently: 
-              an ambiguous connector, one-episode-vs-two, a borderline 
-              complete/incomplete call, or a <m>c^1</m>/<m>c^2</m> judgment that
-              hinges on a subtle point.
-            </p>
-          </li>
-          <li>
-            <title>1: genuinely unsure</title>
-            <p>
-              You are torn between readings, or you doubt the framework has a clean
-              slot for this response at all.
-            </p>
-          </li>
-        </dl>
-      </p>
-
-      <p>
-        Three practices make the number mean something:
-        <ul>
-          <li>
-            <p>
-              <term>Say what is uncertain.</term> Add a note that names your doubt:
-              segmentation, completeness, or the validity of the link.
-            </p>
-          </li>
-          <li>
-            <p>
-              <term>Be consistent.</term> Coder consistency matters more than matching
-              the other coder's number. You are each calibrating your own scale.
-            </p>
-          </li>
-          <li>
-            <p>
-              <term>Treat it as triage.</term> Every 1 and 2 opens up discussion.
-              Confidence is a flag, not a measurement.
-            </p>
-          </li>
-        </ul>
-      </p>
-    </subsection>
-
-    <subsection xml:id="subsec-handbook-sheet">
-      <title>What goes in your coding sheet</title>
-
-      <p>
-        Column spec for episode-level coding (template:
-        <url href="https://drive.google.com/drive/folders/1Ok7EQg3d1Io3B7j5C7ecJ6BbsMmzCdtb/">
-          <c>episode-coding-sheet.csv</c>
-        </url>). 
-        One <term>row per episode</term>, so a response with two episodes gets two rows.
-      </p>
-
-      <table xml:id="tab-handbook-columns">
-        <title>Columns of the episode coding sheet.</title>
-        <tabular halign="left" top="major" bottom="minor">
-          <col width="22%"/>
-          <col width="78%"/>
-          <row header="yes" bottom="medium">
-            <cell>Column</cell>
-            <cell>What to enter</cell>
-          </row>
-          <row>
-            <cell><c>response_id</c></cell>
-            <cell>The ID supplied with the data (copy exactly).</cell>
-          </row>
-          <row>
-            <cell><c>episode_n</c></cell>
-            <cell>1, 2, 3, … within this response, in the order the <em>judgments</em> appear.</cell>
-          </row>
-          <row>
-            <cell><c>criterion_verbatim</c></cell>
-            <cell>
-              The student's words for <m>C</m>, copy-pasted. Only what the student <em>names</em>
-              — anything you reconstruct goes in <c>link_recorded</c> (<m>\pi</m> <m>\S</m>3).
-            </cell>
-          </row>
-          <row>
-            <cell><c>link_recorded</c></cell>
-            <cell>
-              The smallest warrant sufficient to license the step (<m>\pi</m> <m>\S</m>4), in your
-              words — or <c>[none stated]</c> if no warrant is recoverable. This is where reconstructed
-              and imported material goes (<m>\pi</m> <m>\S</m>3).
-            </cell>
-          </row>
-          <row>
-            <cell><c>judgment_verbatim</c></cell>
-            <cell>The student's words for <m>J</m>, copy-pasted.</cell>
-          </row>
-          <row>
-            <cell><c>link_stated</c></cell>
-            <cell>
-              <c>explicit</c> (a connector word is present), <c>implicit</c> (no connector, but the 
-              warrant is recoverable), or <c>absent</c> (no warrant is recoverable — <m>\pi</m> 
-              <m>\S</m>4). This describes the <em>link only</em>: a missing judgment is recorded by 
-              <c>complete</c>, not here.
-            </cell>
-          </row>
-          <row>
-            <cell><c>complete</c></cell>
-            <cell>
-              1 if the episode has both a criterion and a judgment; 0 otherwise. An unrecorded 
-              <em>link</em> does not make an episode incomplete (<m>\pi</m> <m>\S</m>4).
-            </cell>
-          </row>
-          <row>
-            <cell><c>c1</c></cell>
-            <cell>
-              Correctness digit 1 (<xref ref="subsec-handbook-two-digit" text="title"/>). Leave 
-              blank for incomplete episodes.
-            </cell>
-          </row>
-          <row>
-            <cell><c>c2</c></cell>
-            <cell>
-              Correctness digit 2 (<xref ref="subsec-handbook-two-digit" text="title"/>). Leave 
-              blank for incomplete episodes.
-            </cell>
-          </row>
-          <row>
-            <cell><c>relation</c></cell>
-            <cell>
-              Blank for a lone episode; <c>chained(k)</c> if this episode's criterion is episode 
-              <m>k</m>'s judgment; <c>independent</c> if it stands apart from the others 
-              (<xref ref="subsec-handbook-nesting" text="title"/>).
-            </cell>
-          </row>
-          <row>
-            <cell><c>goal_coverage</c></cell>
-            <cell>
-              Which of the question's listed goals this episode's judgment addresses; <c>off-target</c> 
-              if none; <c>unclear</c> (plus a note) if you can't tell. Never a reason to drop a row 
-              (<m>\pi</m> <m>\S</m>2).
-            </cell>
-          </row>
-          <row>
-            <cell><c>code</c></cell>
-            <cell>
-              The control-structure code — <em>only used after the blind pass; leave blank until 
-              then.</em>
-            </cell>
-          </row>
-          <row>
-            <cell><c>alt_codes</c></cell>
-            <cell>
-              Runner-up code(s) when more than one fits the <em>same</em> episode (<m>\pi</m> <m>\S</m>1). 
-              Supersedes the <c>ALT:</c> note convention.
-            </cell>
-          </row>
-          <row>
-            <cell><c>oov_note</c></cell>
-            <cell>
-              Any terminology that feels outside the course's standard way of talking about this topic — 
-              copy the term verbatim (<xref ref="subsec-handbook-edge-cases" text="title"/>).
-            </cell>
-          </row>
-          <row>
-            <cell><c>confidence</c></cell>
-            <cell>3 = confident; 2 = plausible but arguable; 1 = genuinely unsure.</cell>
-          </row>
-          <row>
-            <cell><c>notes</c></cell>
-            <cell>
-              Anything a future reader of this row needs. Never leave a <c>confidence</c>=1 row without 
-              a note.
-            </cell>
-          </row>
-          <row bottom="minor">
-            <cell><c>protocol_version</c></cell>
-            <cell>
-              The <m>\pi</m> version you coded under, alongside <c>handbook_version</c> and 
-              <c>codebook_version</c>.
-            </cell>
-          </row>
-        </tabular>
-      </table>
-    </subsection>
-
-    <subsection xml:id="subsec-handbook-edge-cases">
-      <title>Edge-case Rules of Thumb</title>
-
-      <table xml:id="tab-handbook-edge-cases">
-        <title>What to do with common non-standard responses.</title>
-        <tabular halign="left" top="major" bottom="minor">
-          <col width="34%"/>
-          <col width="66%"/>
-          <row header="yes" bottom="medium">
-            <cell>You see…</cell>
-            <cell>Do this</cell>
-          </row>
-          <row>
-            <cell><term>Blank / whitespace only</term></cell>
-            <cell>One row: <c>complete</c>=0, note <q>blank.</q> No episode content.</cell>
-          </row>
-          <row>
-            <cell><term>Bare answer, no justification</term> (<q>No.</q> / <q>Not possible.</q>)</cell>
-            <cell>One row: <c>judgment_verbatim</c> filled, no criterion, <c>complete</c>=0, note <q>bare answer.</q></cell>
-          </row>
-          <row>
-            <cell><term>Restates the question</term> or <q>I don't know</q></cell>
-            <cell>One row, <c>complete</c>=0, note what happened.</cell>
-          </row>
-          <row>
-            <cell><term>Pure computation, no verdict</term> (<q>I row reduced and got x=2, y=3</q>)</cell>
-            <cell>Operations only, but watch for a hidden episode: <q>…so yes, there is one solution</q> turns the computation's <em>result</em> into a criterion. If genuinely no verdict: <c>complete</c>=0, note <q>operations only.</q></cell>
-          </row>
-          <row>
-            <cell><term>Hedged / conditional reasoning</term> (<q>It depends what is in the augmented matrix</q>)</cell>
-            <cell>This <em>is</em> often a codable move (the student's criterion is that the given information underdetermines the answer). Code it as an episode if a criterion and judgment are identifiable; confidence 1–2 and a note are expected here.</cell>
-          </row>
-          <row>
-            <cell><term>Unfamiliar or off-standard terminology</term> (e.g., invoking determinants, kernels, or other machinery outside how the course discusses this topic)</cell>
-            <cell>Code the episode structure normally; copy the term into <c>oov_note</c> verbatim. Do not translate the student's term into more standard language.</cell>
-          </row>
-          <row>
-            <cell><term>Citation of a theorem by number</term> (<q>by Proposition 1.4.4</q>)</cell>
-            <cell>The citation is the criterion. Record it verbatim; put the proposition reference in <c>oov_note</c>; do not chase down the proposition's content unless instructed.</cell>
-          </row>
-          <row>
-            <cell><term>Correct answer, invalid link</term></cell>
-            <cell>Ordinary case: code it, expect <m>c^1</m> and/or <m>c^2 = 0</m> per <xref ref="subsec-handbook-two-digit" text="title"/>. Resist the halo effect of a right answer.</cell>
-          </row>
-          <row>
-            <cell><term>Two readings both feel defensible</term></cell>
-            <cell>Code your primary reading; describe the alternative in <c>notes</c>; confidence at most 2.</cell>
-          </row>
-          <row bottom="minor">
-            <cell><term>You want to ask the other coder</term></cell>
-            <cell>Don't (during independent passes). Ask [PI NAME] if it's a rules question; otherwise note it and move on.</cell>
-          </row>
-        </tabular>
-      </table>
-    </subsection>
+    </table>
   </section>
 
   <!-- ============================================================ -->
-  <!-- SECTION 3: EXERCISE: EPISODE IDENTIFICATION                  -->
+  <!-- SECTION X: PREVIOUS EXAMPLES                                 -->
   <!-- ============================================================ -->
 
   <section xml:id="sec-exercise-episode-warmup">
-    <title>Episode Identification Practice</title>
+    <title>Episode Identification Practice (Original ToDo List)</title>
 
     <introduction>
       <p>
@@ -3924,5 +3984,16 @@
       </p>
     </subsection>
   </section> -->
+
+  <conclusion>
+    <p>
+      These examples show why the project records several decisions rather than one
+      overall label. A response may be codable but incorrect, locally sound but
+      incomplete, mathematically relevant but outside the vocabulary, or impossible to
+      interpret without its original question. The coder's responsibility is to preserve
+      those distinctions, apply the governing versions consistently, and leave a case
+      unresolved when the evidence does not support a unique decision.
+    </p>
+  </conclusion>
 
 </chapter>

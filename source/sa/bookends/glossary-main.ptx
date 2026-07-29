@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<glossary xml:id="g-main">
+  <title>Glossary</title>
+  <headnote>
+    <p>This glossary merges the previous framework and pipeline glossaries into one reference. Each definition is labeled by function so terms from the theoretical model, Episode Model, coding protocol, pipeline, research design, and data stewardship are not conflated.</p>
+    <p>Definitions describe current project usage. Historical terms and superseded definitions remain in the source journal and change log rather than appearing as competing current entries.</p>
+  </headnote>
+  <gi xml:id="g-proteus">
+    <title>PROTEUS</title>
+    <p><term>Project term.</term> The collaborative research project for which this short-answer framework and pipeline are being developed. See <xref ref="ch-project-overview" text="title"/>.</p>
+  </gi>
+  <gi xml:id="g-runestone">
+    <title>Runestone</title>
+    <p><term>Project term.</term> The platform that delivers the interactive textbooks and records the student responses used by the project.</p>
+  </gi>
+  <gi xml:id="g-pretext">
+    <title>PreTeXt</title>
+    <p><term>Project term.</term> The XML-based authoring system used for this book and for the project's interactive mathematics textbooks.</p>
+  </gi>
+  <gi xml:id="g-datashop">
+    <title>DataShop</title>
+    <p><term>Project term.</term> A learning-data format and repository ecosystem. The pipeline can ingest tab-separated DataShop exports as one source of short-answer events.</p>
+  </gi>
+  <gi xml:id="g-ckc">
+    <title>cK¢ model</title>
+    <p><term>Theoretical term.</term> Balacheff's conception–knowing–concept framework, which describes a conception using problems, operators, representation systems, and control structures. This project draws on the framework without claiming that one short response reveals a complete conception.</p>
+  </gi>
+  <gi xml:id="g-conception">
+    <title>Conception</title>
+    <p><term>Theoretical term.</term> A situated organization of problems, operators, representation systems, and control structures. The project does not infer a complete conception from a single response.</p>
+  </gi>
+  <gi xml:id="g-knowing">
+    <title>Knowing</title>
+    <p><term>Theoretical term.</term> The collection of conceptions available to a person or community across situations, rather than one isolated response.</p>
+  </gi>
+  <gi xml:id="g-problem-class">
+    <title>Problem class, <m>P</m></title>
+    <p><term>Theoretical term.</term> The family of problems or situations in which a conception is viable.</p>
+  </gi>
+  <gi xml:id="g-operator">
+    <title>Operator, <m>R</m></title>
+    <p><term>Theoretical term.</term> An action, procedure, or transformation used to work on a problem.</p>
+  </gi>
+  <gi xml:id="g-representation-system">
+    <title>Representation system, <m>L</m></title>
+    <p><term>Theoretical term.</term> The symbols, diagrams, language, and other forms used to express and transform mathematical objects.</p>
+  </gi>
+  <gi xml:id="g-control-structure">
+    <title>Control structure, <m>\Sigma</m></title>
+    <p><term>Theoretical term.</term> A criterion or rule used to judge the validity, adequacy, or completion of mathematical work. In this project, a response may provide evidence for an enacted control structure.</p>
+  </gi>
+  <gi xml:id="g-operation">
+    <title>Operation</title>
+    <p><term>Theoretical term.</term> An action that creates or transforms a mathematical object, such as row reduction. An operation may produce a result later used as an episode criterion.</p>
+  </gi>
+  <gi xml:id="g-control">
+    <title>Control</title>
+    <p><term>Theoretical term.</term> An evaluation of information that supports a judgment, such as using the absence of a contradictory row to judge that a system is consistent.</p>
+  </gi>
+  <gi xml:id="g-question-frame">
+    <title>Question-level analytic frame, <m>K_q</m></title>
+    <p><term>Analytic term.</term> The operational context for one question: its problem class, relevant operations, representations, controls, goals, normative reference, and valid-inference set. See <xref ref="ch-codebook" text="title"/>.</p>
+  </gi>
+  <gi xml:id="g-normative-reference">
+    <title>Normative reference</title>
+    <p><term>Analytic term.</term> The agreed mathematical state of the question used to evaluate criterion truth, inferential validity, and goal coverage.</p>
+  </gi>
+  <gi xml:id="g-valid-link-set">
+    <title>valid-inference set, <m>\mathcal T_q</m></title>
+    <p><term>Analytic term.</term> The question-specific set of criterion-to-judgment relationships accepted as mathematically valid for correctness coding.</p>
+  </gi>
+  <gi xml:id="g-response-level-evidence">
+    <title>Response-level evidence</title>
+    <p><term>Analytic term.</term> Evidence available in one written response. It supports local claims about visible justification, not global claims about everything the student knows or believes.</p>
+  </gi>
+  <gi xml:id="g-episode-model">
+    <title>Episode Model</title>
+    <p><term>Analytic term.</term> The project's local model of justification, representing a response as an ordered sequence of criterion–inferential link–judgment episodes. See <xref ref="ch-episode-model" text="title"/>.</p>
+  </gi>
+  <gi xml:id="g-episode-sequence">
+    <title>Episode sequence, <m>E(x)</m></title>
+    <p><term>Analytic term.</term> The ordered list <m>\langle e_1,\ldots,e_n\rangle</m> of episodes extracted from response <m>x</m>.</p>
+  </gi>
+  <gi xml:id="g-episode">
+    <title>Episode, <m>e_k</m></title>
+    <p><term>Analytic term.</term> A local justification unit <m>(C_k,I_k,J_k)</m> connecting a criterion to a judgment through an inferential link.</p>
+  </gi>
+  <gi xml:id="g-criterion">
+    <title>Criterion, <m>C_k</m></title>
+    <p><term>Analytic term.</term> The fact, observation, condition, or feature cited or strongly supported as the basis for an episode judgment.</p>
+  </gi>
+  <gi xml:id="g-inferential-link">
+    <title>inferential link, <m>I_k</m></title>
+    <p><term>Analytic term.</term> The relationship that connects an episode criterion to its judgment. It may be explicit, implicit, or absent.</p>
+  </gi>
+  <gi xml:id="g-judgment">
+    <title>Judgment, <m>J_k</m></title>
+    <p><term>Analytic term.</term> The conclusion, classification, or verdict drawn in an episode.</p>
+  </gi>
+  <gi xml:id="g-link-status">
+    <title>Link status</title>
+    <p><term>Analytic term.</term> The annotation describing whether an inferential link is <c>explicit</c>, <c>implicit</c>, or <c>absent</c>. Link status is separate from episode completeness.</p>
+  </gi>
+  <gi xml:id="g-explicit-link">
+    <title>Explicit link</title>
+    <p><term>Analytic term.</term> A link signaled directly by wording such as <q>so</q>, <q>because</q>, or an equivalent stated connection.</p>
+  </gi>
+  <gi xml:id="g-implicit-link">
+    <title>Implicit link</title>
+    <p><term>Analytic term.</term> An unstated but recoverable relationship between an identifiable criterion and judgment.</p>
+  </gi>
+  <gi xml:id="g-absent-link">
+    <title>Absent link</title>
+    <p><term>Analytic term.</term> A case in which criterion and judgment may be identifiable but no defensible justification can be recovered. The episode can remain complete, with inferential correctness coded as 0.</p>
+  </gi>
+  <gi xml:id="g-complete-episode">
+    <title>Complete episode</title>
+    <p><term>Analytic term.</term> An episode with an identifiable criterion and judgment. An explicit link is not required.</p>
+  </gi>
+  <gi xml:id="g-incomplete-episode">
+    <title>Incomplete episode</title>
+    <p><term>Analytic term.</term> A preserved fragment lacking an identifiable criterion or judgment. Incomplete episodes do not receive the two correctness digits.</p>
+  </gi>
+  <gi xml:id="g-repair">
+    <title>Repair</title>
+    <p><term>Analytic term.</term> Supplying, strengthening, or correcting reasoning that the response does not support. Repair is prohibited during extraction.</p>
+  </gi>
+  <gi xml:id="g-segmentation">
+    <title>Episode segmentation</title>
+    <p><term>Analytic term.</term> The decision about how many episodes a response contains and where their boundaries lie.</p>
+  </gi>
+  <gi xml:id="g-chained-episodes">
+    <title>Chained episodes</title>
+    <p><term>Analytic term.</term> Episodes in which the judgment of one episode becomes the criterion of another.</p>
+  </gi>
+  <gi xml:id="g-independent-episodes">
+    <title>Independent episodes</title>
+    <p><term>Analytic term.</term> Separate justifications in the same response that do not depend on one another.</p>
+  </gi>
+  <gi xml:id="g-nested-episodes">
+    <title>Nested episodes</title>
+    <p><term>Analytic term.</term> A smaller defensible episode contained within a larger unit of reasoning.</p>
+  </gi>
+  <gi xml:id="g-nesting-policy">
+    <title>Nesting policy</title>
+    <p><term>Coding term.</term> The project rule deciding which overlapping or nested episodes are retained as final coding units. Until frozen, the working rule is to record every defensible episode and its relation.</p>
+  </gi>
+  <gi xml:id="g-correctness-code">
+    <title>Correctness annotation</title>
+    <p><term>Analytic term.</term> The pair <m>(c_k^1,c_k^2)</m> assigned to a complete episode: criterion truth and inferential validity.</p>
+  </gi>
+  <gi xml:id="g-criterion-correctness">
+    <title>Criterion correctness, <m>c_k^1</m></title>
+    <p><term>Analytic term.</term> Whether the episode criterion is true in the actual mathematical state of the question.</p>
+  </gi>
+  <gi xml:id="g-link-correctness">
+    <title>Inferential-link correctness, <m>c_k^2</m></title>
+    <p><term>Analytic term.</term> Whether the criterion validly supports the judgment for the current question.</p>
+  </gi>
+  <gi xml:id="g-evidence-boundary">
+    <title>evidence boundary</title>
+    <p><term>Analytic term.</term> The evidence boundary is the rule that: <q>the analysis may represent only what is supported by the student's response and its immediate task context.</q></p>
+  </gi>
+  <gi xml:id="g-goal-coverage">
+    <title>Goal coverage</title>
+    <p><term>Analytic term.</term> The extent to which the response addresses the goals of the prompt. It is separate from local episode correctness.</p>
+  </gi>
+  <gi xml:id="g-codability">
+    <title>Codability</title>
+    <p><term>Coding term.</term> Whether a response contains enough interpretable evidence to preserve for episode analysis. Codability is not the same as correctness.</p>
+  </gi>
+  <gi xml:id="g-final-answer-correctness">
+    <title>Final-answer correctness</title>
+    <p><term>Analytic term.</term> Whether the response's final answer is mathematically correct. A correct answer may lack codable justification, and a response with sound local episodes may omit required goals.</p>
+  </gi>
+  <gi xml:id="g-codebook">
+    <title>Codebook</title>
+    <p><term>Coding term.</term> A versioned guide defining control-structure codes, boundaries, examples, and confusable cases. The current frozen pivot-question version is <c>codebook2-june1</c>.</p>
+  </gi>
+  <gi xml:id="g-codebook-library">
+    <title>Shared codebook library</title>
+    <p><term>Coding term.</term> The reusable collection of accepted control-structure entries from which question-specific working codebooks are selected.</p>
+  </gi>
+  <gi xml:id="g-question-specific-codebook">
+    <title>Question-specific working codebook</title>
+    <p><term>Coding term.</term> The subset of codebook entries relevant to one question, with criterion, judgment, and normative-link bindings.</p>
+  </gi>
+  <gi xml:id="g-controlled-vocab">
+    <title>Controlled vocabulary</title>
+    <p><term>Coding term.</term> A versioned collection of canonical proposition labels used to normalize extracted criteria and judgments. It is descriptive and does not determine correctness.</p>
+  </gi>
+  <gi xml:id="g-canonical-form">
+    <title>Canonical form</title>
+    <p><term>Coding term.</term> The standardized labels used by the controlled vocabulary for multiple surface expressions.</p>
+  </gi>
+  <gi xml:id="g-code">
+    <title>Code</title>
+    <p><term>Coding term.</term> A versioned identifier assigned to an episode when the codebook definition fits its criterion-to-judgment relationship.</p>
+  </gi>
+  <gi xml:id="g-candidate-code">
+    <title>Candidate code</title>
+    <p><term>Coding term.</term> A plausible code proposed by a human or tool before final review.</p>
+  </gi>
+  <gi xml:id="g-match">
+    <title>Match</title>
+    <p><term>Coding term.</term> A defensible correspondence between an extracted episode and a current codebook entry.</p>
+  </gi>
+  <gi xml:id="g-multiple-match">
+    <title>Multiple match</title>
+    <p><term>Coding term.</term> A case in which more than one codebook entry plausibly fits the same episode.</p>
+  </gi>
+  <gi xml:id="g-oov">
+    <title>Out of vocabulary (OOV)</title>
+    <p><term>Coding term.</term> Relevant language or a proposition not represented in the current controlled vocabulary. Preserve the wording and route it for review rather than forcing a translation.</p>
+  </gi>
+  <gi xml:id="g-no-match">
+    <title>No match</title>
+    <p><term>Coding term.</term> A case in which an episode is extractable, but no current codebook entry adequately describes it. This differs from OOV.</p>
+  </gi>
+  <gi xml:id="g-blind-pass">
+    <title>Blind pass</title>
+    <p><term>Coding term.</term> An independent first pass completed without the project codebook or machine proposal, used to reduce anchoring and preserve the coder's unaided interpretation.</p>
+  </gi>
+  <gi xml:id="g-confidence-reviewer">
+    <title>Reviewer confidence</title>
+    <p><term>Coding term.</term> A triage judgment about confidence in a coding decision, commonly recorded as 3, 2, or 1. It is not a probability or a student-correctness score.</p>
+  </gi>
+  <gi xml:id="g-rationale-reviewer">
+    <title>Reviewer rationale</title>
+    <p><term>Coding term.</term> A concise explanation tied to visible evidence, governing definitions, and the exact decision made.</p>
+  </gi>
+  <gi xml:id="g-disagreement">
+    <title>Disagreement</title>
+    <p><term>Coding term.</term> A difference between analyses that must be located at its earliest divergent stage rather than described only as general confusion.</p>
+  </gi>
+  <gi xml:id="g-disagreement-type">
+    <title>Disagreement type</title>
+    <p><term>Coding term.</term> A classification such as SCREEN, BOUNDARY, CRITERION, LINK, JUDGMENT, RELATION, MATCH, CORRECTNESS, COVERAGE, VOCABULARY, or POLICY.</p>
+  </gi>
+  <gi xml:id="g-calibration">
+    <title>calibration</title>
+    <p><term>Coding term.</term> The process in which coders independently analyze a shared set, compare decisions, classify disagreements, and revise when possible.</p>
+  </gi>
+  <gi xml:id="g-adjudication">
+    <title>adjudication</title>
+    <p><term>Coding term.</term> A resolution of a disagreement using the original question, response, current protocol, codebook, and evidence.</p>
+  </gi>
+  <gi xml:id="g-unresolved">
+    <title>Unresolved case</title>
+    <p><term>Coding term.</term> A preserved case for which the available evidence and current rules do not support one defensible final interpretation.</p>
+  </gi>
+  <gi xml:id="g-override">
+    <title>Override</title>
+    <p><term>Coding term.</term> A human revision to a proposed pipeline or earlier coding decision, recorded without deleting the original proposal.</p>
+  </gi>
+  <gi xml:id="g-override-log">
+    <title>Override log</title>
+    <p><term>Coding term.</term> The audit record of confirmations, additions, removals, replacements, rejections, rationales, reviewers, and timestamps.</p>
+  </gi>
+  <gi xml:id="g-pipeline">
+    <title>Pipeline</title>
+    <p><term>Pipeline term.</term> The staged system that ingests responses, screens them, extracts episodes, matches candidate codes, and assigns a disposition for human review.</p>
+  </gi>
+  <gi xml:id="g-stage-1">
+    <title>Stage 1: Ingest</title>
+    <p><term>Pipeline term.</term> Reads an approved source export, creates stable response records, and preserves source provenance. Re-ingesting the same file should not create duplicate records.</p>
+  </gi>
+  <gi xml:id="g-stage-2">
+    <title>Stage 2: Screening</title>
+    <p><term>Pipeline term.</term> Determines whether a response should continue to episode analysis and records the decision, confidence, and rationale.</p>
+  </gi>
+  <gi xml:id="g-stage-3">
+    <title>Stage 3: Episode extraction</title>
+    <p><term>Pipeline term.</term> Converts response text into reviewable episode components and flags missing, ambiguous, or OOV material.</p>
+  </gi>
+  <gi xml:id="g-stage-4">
+    <title>Stage 4: Matching</title>
+    <p><term>Pipeline term.</term> Compares extracted episodes with a versioned question-specific working codebook and preserves all plausible candidate matches.</p>
+  </gi>
+  <gi xml:id="g-stage-5">
+    <title>Stage 5: Disposition</title>
+    <p><term>Pipeline term.</term> Routes the response according to screening, extraction, matching, uncertainty, and review needs.</p>
+  </gi>
+  <gi xml:id="g-disposition">
+    <title>Disposition</title>
+    <p><term>Pipeline term.</term> The routing status assigned after pipeline analysis, such as <c>auto_accept</c>, <c>standard_review</c>, <c>terminology_flag</c>, <c>no_match</c>, or <c>escalate</c>.</p>
+  </gi>
+  <gi xml:id="g-candidate-packet">
+    <title>Candidate packet</title>
+    <p><term>Pipeline term.</term> The reviewable bundle containing the original question and response, extracted episodes, candidate codes, rationales, flags, versions, and disposition.</p>
+  </gi>
+  <gi xml:id="g-human-in-loop">
+    <title>Human-in-the-loop</title>
+    <p><term>Pipeline term.</term> A design in which computational proposals organize and prioritize work while authorized human reviewers retain final analytic authority.</p>
+  </gi>
+  <gi xml:id="g-human-review">
+    <title>Human review</title>
+    <p><term>Pipeline term.</term> The examination of a candidate analysis by an authorized reviewer who may confirm, add, remove, replace, reject, or leave unresolved.</p>
+  </gi>
+  <gi xml:id="g-review-action">
+    <title>Review action</title>
+    <p><term>Pipeline term.</term> One of the controlled actions <c>confirm</c>, <c>add</c>, <c>remove</c>, <c>replace</c>, or <c>reject_all</c> applied to candidate codes.</p>
+  </gi>
+  <gi xml:id="g-auto-accept">
+    <title>
+      <c>auto_accept</c>
+    </title>
+    <p><term>Pipeline term.</term> A disposition for a clear case that meets the current criteria for acceptance without ordinary manual intervention. Its use depends on the governing deployment policy.</p>
+  </gi>
+  <gi xml:id="g-standard-review">
+    <title>
+      <c>standard_review</c>
+    </title>
+    <p><term>Pipeline term.</term> A disposition placing a routine included case in the normal human-review queue.</p>
+  </gi>
+  <gi xml:id="g-terminology-flag">
+    <title>
+      <c>terminology_flag</c>
+    </title>
+    <p><term>Pipeline term.</term> A disposition used when unfamiliar or OOV terminology requires human attention.</p>
+  </gi>
+  <gi xml:id="g-no-match-disposition">
+    <title><c>no_match</c> disposition</title>
+    <p><term>Pipeline term.</term> A routing status indicating that extraction succeeded but current codebook matching did not produce an adequate code.</p>
+  </gi>
+  <gi xml:id="g-escalate">
+    <title>
+      <c>escalate</c>
+    </title>
+    <p><term>Pipeline term.</term> A disposition for cases requiring specialized review because the ordinary protocol or artifacts do not resolve the issue.</p>
+  </gi>
+  <gi xml:id="g-corpus">
+    <title>corpus</title>
+    <p><term>Technical term.</term> A body or collection of text or data used for written or spoken analysis.</p>
+  </gi>
+  <gi xml:id="g-pipeline-run">
+    <title>Pipeline run</title>
+    <p><term>Technical term.</term> One execution of a pipeline configuration over a specified corpus, identified with its software, model, prompt, codebook, vocabulary, and question-frame versions.</p>
+  </gi>
+  <gi xml:id="g-provenance">
+    <title>Provenance</title>
+    <p><term>Technical term.</term> The information needed to trace a record to its source and governing artifacts, including source file, row, hash, versions, run, coder, reviewer, and timestamps.</p>
+  </gi>
+  <gi xml:id="g-stable-identifier">
+    <title>Stable identifier</title>
+    <p><term>Technical term.</term> An identifier that continues to refer to the same response, question, student record, episode, or artifact across files and processing stages.</p>
+  </gi>
+  <gi xml:id="g-versioning">
+    <title>Versioning</title>
+    <p><term>Technical term.</term> Assigning explicit identifiers to changing protocols, codebooks, vocabularies, prompts, models, schemas, and other artifacts so historical records remain interpretable.</p>
+  </gi>
+  <gi xml:id="g-validation-freeze">
+    <title>Validation freeze</title>
+    <p><term>Research design term.</term> The point before held-out evaluation when the governing protocol, codebook, vocabulary, question frames, prompts, models, and software are fixed.</p>
+  </gi>
+  <gi xml:id="g-audit-trail">
+    <title>Audit trail</title>
+    <p><term>Technical term.</term> The preserved sequence of proposals, decisions, overrides, rationales, versions, and reviewers through which a final record was produced.</p>
+  </gi>
+  <gi xml:id="g-auditable">
+    <title>Auditable</title>
+    <p><term>Technical term.</term> Describes a process whose inputs, transformations, versions, decisions, and human interventions can be inspected and reconstructed.</p>
+  </gi>
+  <gi xml:id="g-reproducible">
+    <title>Reproducible</title>
+    <p><term>Technical term.</term> Describes an analysis that can be rerun or reconstructed from preserved data, versions, configuration, and decision records.</p>
+  </gi>
+  <gi xml:id="g-idempotent">
+    <title>Idempotent ingest</title>
+    <p><term>Technical term.</term> An ingest operation that produces no duplicate records when the same source file is processed again.</p>
+  </gi>
+  <gi xml:id="g-schema">
+    <title>Schema</title>
+    <p><term>Technical term.</term> The formal organization of stored tables, fields, types, keys, and relationships.</p>
+  </gi>
+  <gi xml:id="g-migration">
+    <title>Migration</title>
+    <p><term>Technical term.</term> A numbered, reproducible change that transforms stored data or schema from one version to another.</p>
+  </gi>
+  <gi xml:id="g-protected-data">
+    <title>Protected research data</title>
+    <p><term>Data stewardship term.</term> Student responses and related contextual fields handled under the project's approved institutional, IRB, storage, access, and communication procedures.</p>
+  </gi>
+  <gi xml:id="g-deidentification">
+    <title>De-identification</title>
+    <p><term>Data stewardship term.</term> Removing or replacing direct identifiers. De-identified text can remain re-identifying when combined with distinctive wording, section, timestamp, or other context.</p>
+  </gi>
+  <gi xml:id="g-gold-standard">
+    <title>Gold-standard dataset</title>
+    <p><term>Research design term.</term> A set of responses with independently produced and adjudicated human annotations used as a reference for evaluation. It is an empirical standard, not infallible ground truth.</p>
+  </gi>
+  <gi xml:id="g-inter-rater">
+    <title>Inter-rater agreement</title>
+    <p><term>Research design term.</term> The extent to which independent coders make the same decisions under the same protocol, reported with measures appropriate to the decision type.</p>
+  </gi>
+  <gi xml:id="g-calibration-set">
+    <title>Calibration set</title>
+    <p><term>Research design term.</term> A shared training set coded independently before comparison and used to test readiness, identify policy gaps, and improve guidance. It is distinct from held-out validation data.</p>
+  </gi>
+  <gi xml:id="g-human-authority">
+    <title>Human authority</title>
+    <p><term>Pipeline term.</term> The principle that authorized human reviewers, not automated suggestions, make final research coding and governance decisions.</p>
+  </gi>
+  <gi xml:id="g-rref">
+    <title>RREF (reduced row echelon form)</title>
+    <p><term>Mathematical context term.</term> A canonical row-reduced matrix form used in many project examples to reason about consistency, pivots, basic variables, free variables, and solution sets.</p>
+  </gi>
+  <gi xml:id="g-pivot">
+    <title>Pivot</title>
+    <p><term>Mathematical context term.</term> A leading entry that identifies a pivot position and, in the relevant examples, a basic-variable column.</p>
+  </gi>
+  <gi xml:id="g-free-variable">
+    <title>Free variable</title>
+    <p><term>Mathematical context term.</term> A variable corresponding to a non-pivot variable column. In a consistent linear system, its presence rules out a unique solution.</p>
+  </gi>
+</glossary>

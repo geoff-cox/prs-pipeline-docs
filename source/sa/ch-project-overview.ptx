@@ -1,0 +1,334 @@
+<chapter xml:id="ch-project-overview">
+  <title>Project Overview</title>
+
+  <introduction>
+    <p>
+      This project develops a method and computational workflow for analyzing the
+      mathematical justification visible in short student responses. The responses
+      come from mathematical questions embedded in interactive textbooks and are
+      interpreted together with the exact question, the information supplied to the
+      student, and the mathematical task the student was asked to complete.
+    </p>
+
+    <p>
+      The central analytic object is an <term>episode of justification</term>: a local
+      reasoning move in which a student cites a mathematical feature or condition and
+      uses it to support a judgment. The project represents these episodes in a form
+      that can be examined by human researchers and processed by a computational tool.
+      The full definition appears in <xref ref="ch-episode-model" text="title"/>.
+    </p>
+
+    <p>
+      The tool assists researchers by organizing responses, screening for codable
+      justification, proposing episodes, comparing those episodes with a
+      question-specific codebook, and routing uncertain cases for review. It does not
+      replace mathematical or interpretive judgment. Human researchers define the
+      analytic rules, review the tool's proposals, and remain responsible for the
+      resulting research claims.
+    </p>
+
+    <p>
+      The project therefore joins three related efforts:
+      <ol>
+        <li>
+          <p>
+            develop a defensible method for describing local justification in short
+            responses;
+          </p>
+        </li>
+        <li>
+          <p>
+            implement that method as an auditable, human-in-the-loop computational
+            workflow; and
+          </p>
+        </li>
+        <li>
+          <p>
+            evaluate whether the workflow improves or clarifies the reliability,
+            efficiency, and transparency of response coding.
+          </p>
+        </li>
+      </ol>
+    </p>
+  </introduction>
+
+  <section xml:id="sec-project-problem">
+    <title>The Analytic Problem</title>
+
+    <paragraphs xml:id="subsec-project-data">
+      <title>What the Project Studies</title>
+
+      <p>
+        The basic unit of data is a student's written response to a specific
+        mathematical question. A response cannot be interpreted responsibly in
+        isolation. Its meaning depends on the surrounding problem context, including:
+        <ul>
+          <li>the exact question the student answered;</li>
+          <li>the mathematical information and representations supplied;</li>
+          <li>the conclusion, explanation, or computation requested; and</li>
+          <li>
+            the definitions, results, and forms of reasoning available in the course.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Most examples in this guide come from short-answer questions in linear
+        algebra. The same analytic process can be applied to other mathematical
+        topics, but each new question requires its own mathematical reference and
+        question-specific coding information.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-project-unit">
+      <title>Unit of Analysis</title>
+
+      <p>
+        The project focuses on local pieces of justification rather than treating an
+        entire response as single entity. A response may contain no justification, 
+        one episode, or several related episodes.
+      </p>
+
+      <p>
+        Informally, an episode records three things:
+        <ul>
+          <li>the mathematical feature or condition the student cites;</li>
+          <li>the inference connecting that feature to a conclusion; and</li>
+          <li>the judgment the student draws.</li>
+        </ul>
+        Separating these components allows researchers to distinguish, for example, a
+        false observation from an invalid inference or a sound local argument from an
+        incomplete answer.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-project-boundaries">
+      <title>What the Project Does Not Infer</title>
+
+      <p>
+        A written response provides evidence about the reasoning visible in that
+        response. It does not provide direct access to everything the student knew,
+        believed, considered, or did before writing.
+      </p>
+
+      <p>
+        The project is motivated by the cK&#162; framework, especially its treatment
+        of control structures, but it does not claim that a single short response
+        reveals a complete student conception. The project may report that:
+        <ul>
+          <li>a response contains a particular episode of justification;</li>
+          <li>a student appears to use a stated mathematical criterion; or</li>
+          <li>a response provides evidence related to a control structure.</li>
+        </ul>
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-project-goals">
+    <title>Project Goals</title>
+
+    <paragraphs xml:id="subsec-project-analytic-goal">
+      <title>Analytic Goal</title>
+
+      <p>
+        The analytic goal is to develop a clear and consistent method for describing
+        the justification present in short mathematical responses. The method should:
+        <ul>
+          <li>preserve the student's stated evidence and conclusions;</li>
+          <li>distinguish observations, inferences, and judgments;</li>
+          <li>represent incomplete and ambiguous reasoning without repairing it;</li>
+          <li>allow several reasoning moves to be recorded separately; and</li>
+          <li>
+            support comparison across coders, questions, topics, and analytic tools.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        The Episode Model provides this common representation. A question-specific
+        codebook then connects extracted episodes to broader control-structure codes.
+        The codebook and question-level analytic frame are introduced in
+        <xref ref="ch-codebook" text="title"/>.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-project-computational-goal">
+      <title>Computational Goal</title>
+
+      <p>
+        The computational goal is to support the analysis of large collections of
+        responses without hiding the decisions that produce a code. The pipeline is
+        designed to:
+        <ul>
+          <li>standardize responses while preserving their source information;</li>
+          <li>screen for responses containing analyzable justification;</li>
+          <li>propose one or more episodes from the response text;</li>
+          <li>compare those episodes with the current question-specific codebook;</li>
+          <li>record zero, one, or several candidate codes;</li>
+          <li>
+            flag incomplete, ambiguous, contradictory, or unfamiliar reasoning; and
+          </li>
+          <li>route each response to an appropriate form of human review.</li>
+        </ul>
+      </p>
+
+      <p>
+        Each stage records its output and rationale instead of retaining only a final
+        label. This staged design allows a reviewer to determine whether a disagreement
+        arose during screening, episode extraction, code matching, correctness
+        assessment, or disposition. The pipeline is described in
+        <xref ref="ch-pipeline-overview" text="title"/>.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-project-research-goal">
+      <title>Research Goal</title>
+
+      <p>
+        The research goal is to determine whether the analytic method and supporting
+        pipeline improve or clarify the coding process. The project does not assume
+        that automation is beneficial merely because it produces codes quickly.
+        Instead, it asks whether the workflow produces measurable gains in:
+        <ul>
+          <li>agreement with independently developed human coding;</li>
+          <li>consistency across repeated analyses;</li>
+          <li>efficiency and organization of researcher labor;</li>
+          <li>transparency of intermediate decisions; and</li>
+          <li>
+            diagnosis of disagreements, codebook gaps, and recurring failure modes.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        A working software pipeline is therefore not the final research contribution.
+        The contribution requires an empirical comparison with human coding and a
+        careful analysis of errors, overrides, ambiguous cases, and codebook revisions.
+        The proposed evaluation appears in
+        <xref ref="ch-study-design" text="title"/>.
+      </p>
+    </paragraphs>
+
+    <table xml:id="tab-guiding-principles">
+      <title>Guiding Principles</title>
+      <tabular top="major" bottom="minor">
+        <col width="40%"/>
+        <col width="60%"/>
+        <row header="yes" bottom="medium">
+          <cell><p>Principle</p></cell>
+          <cell><p>Canonical treatment</p></cell>
+        </row>
+        <row>
+          <cell><p>Human authority</p></cell>
+          <cell><p>Pipeline overview &amp; study design</p></cell>
+        </row>
+        <row>
+          <cell><p>Question-relative interpretation</p></cell>
+          <cell><p>Codebook &amp; question frame</p></cell>
+        </row>
+        <row>
+          <cell><p>Auditability &amp; versioning</p></cell>
+          <cell><p>Data stewardship &amp; pipeline provenance</p></cell>
+        </row>
+        <row bottom="major">
+          <cell><p>Uncertainty as data</p></cell>
+          <cell><p>Edge Cases &amp; Study Design</p></cell>
+        </row>
+      </tabular>
+    </table>
+  </section>
+
+  <section xml:id="sec-project-questions">
+    <title>Research Questions</title>
+
+    <paragraphs xml:id="subsec-project-reasoning-questions">
+      <title>Questions About Student Justification</title>
+
+      <p>
+        The substantive analysis asks questions such as:
+        <ol>
+          <li>
+            <p>
+              What mathematical criteria do students cite in short written
+              justifications?
+            </p>
+          </li>
+          <li>
+            <p>
+              What judgments do students draw from those criteria, and what
+              inferential links connect them?
+            </p>
+          </li>
+          <li>
+            <p>
+              Which forms of control recur across questions, topics, or student
+              groups?
+            </p>
+          </li>
+          <li>
+            <p>
+              When do students cite a true criterion but use it through an invalid or
+              incomplete inference?
+            </p>
+          </li>
+          <li>
+            <p>
+              When does a response contain sound local reasoning but fail to address
+              the complete goal of the question?
+            </p>
+          </li>
+        </ol>
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-project-method-questions">
+      <title>Questions About the Analytic Method</title>
+
+      <p>
+        The methods study asks questions such as:
+        <ol>
+          <li>
+            <p>
+              How consistently can human researchers identify and code episodes under
+              the current framework and protocol?
+            </p>
+          </li>
+          <li>
+            <p>
+              Which screening, extraction, and matching decisions can a computational
+              tool reproduce reliably, and which still require substantial human
+              interpretation?
+            </p>
+          </li>
+          <li>
+            <p>
+              How closely do deterministic and language-model-assisted workflows agree
+              with independently developed human coding?
+            </p>
+          </li>
+          <li>
+            <p>
+              How does the pipeline change the amount and distribution of researcher
+              labor?
+            </p>
+          </li>
+          <li>
+            <p>
+              What do disagreements among coders, tools, and codebook versions reveal
+              about the strengths and weaknesses of the analytic method?
+            </p>
+          </li>
+        </ol>
+      </p>
+    </paragraphs>
+  </section>
+
+  <conclusion>
+    <p>
+      In summary, the Episode Model supplies the analytic unit, the pipeline supplies
+      an auditable human-in-the-loop workflow, and the empirical study evaluates
+      whether that workflow improves or clarifies the analysis of mathematical
+      justification in short student responses.
+    </p>
+  </conclusion>
+</chapter>

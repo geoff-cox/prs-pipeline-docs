@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <pretext xml:lang="en-US" xmlns:xi="http://www.w3.org/2001/XInclude">
 
   <xi:include href="./bookends/docinfo.ptx" />
@@ -9,13 +8,79 @@
     <subtitle>A Research Journal and Reference Guide</subtitle>
 
     <xi:include href="./bookends/frontmatter.ptx" />
-    <xi:include href="./ch-student-guide.ptx" />
 
-    <xi:include href="./ch-automation-roadmap-report.ptx" />
-    <xi:include href="./ch-using-the-tool.ptx" />
-    <xi:include href="./ch-pipeline-demo.ptx" />
+    <!-- ================================================================ -->
+    <!-- PART I: PROJECT AND RESEARCH DESIGN                              -->
+    <!-- ================================================================ -->
 
-    <xi:include href="./bookends/backmatter.ptx" />
+    <part xml:id="part-project-research-design">
+      <title>Project &amp; Design</title>
+
+      <xi:include href="./ch-project-overview.ptx" />
+      <xi:include href="./ch-study-design.ptx" />
+
+    </part>
+
+    <!-- ================================================================ -->
+    <!-- PART II: ANALYTIC FRAMEWORK                                      -->
+    <!-- ================================================================ -->
+
+    <part xml:id="part-analytic-framework">
+      <title>Analytic Framework</title>
+
+      <xi:include href="./ch-theoretical-foundation.ptx" />
+      <xi:include href="./ch-episode-model.ptx" />
+      <xi:include href="./ch-codebook.ptx" />
+    </part>
+
+    <!-- ================================================================ -->
+    <!-- PART III: CODER'S HANDBOOK                                       -->
+    <!-- ================================================================ -->
+
+    <part xml:id="part-coders-handbook">
+      <title>Coder's Handbook</title>
+
+      <xi:include href="./ch-coding-workflow.ptx" />
+      <xi:include href="./ch-edge-cases-decisions.ptx" />
+      <xi:include href="./ch-worked-examples.ptx" />
+      <xi:include href="./ch-practice-calibration.ptx" />
+      <xi:include href="./ch-data-management.ptx" />
+      <xi:include href="./ch-milestone-worksheets.ptx" />
+
+    </part>
+
+    <!-- ================================================================ -->
+    <!-- PART IV: COMPUTATIONAL PIPELINE                                  -->
+    <!-- ================================================================ -->
+
+    <part xml:id="part-computational-pipeline">
+      <title>Computational Pipeline</title>
+
+      <xi:include href="./ch-pipeline-overview.ptx" />
+      <xi:include href="./ch-pipeline-user-guide.ptx" />
+      <xi:include href="./ch-pipeline-trace.ptx" />
+      <!-- <xi:include href="./ch-technical-orientation.ptx" /> -->
+    </part>
+
+    <backmatter xml:id="backmatter">
+      <title>Reference Material</title>
+
+      <xi:include href="./bookends/app-coding-sheet.ptx" />
+      <xi:include href="./bookends/app-protocol-summary.ptx" />
+      <xi:include href="./bookends/app-codebook-reference.ptx" />
+      <!-- <xi:include href="./bookends/app-migration-map.ptx" /> -->
+      <!-- <xi:include href="./bookends/app-change-log.ptx" /> -->
+      <xi:include href="./bookends/glossary-main.ptx" />
+
+      <references>
+        <biblio type="raw" xml:id="bib-balacheff-gaudin-2010">
+          Balacheff, N., &amp; Gaudin, N. (2010). Modeling students' conceptions:
+          The case of function. <em>Research in Collegiate Mathematics Education,
+          16</em>, 183&#x2013;211.
+          <url href="https://doi.org/10.1090/cbmath/016/08"/>
+        </biblio>
+      </references>
+    </backmatter>
 
   </book>
 

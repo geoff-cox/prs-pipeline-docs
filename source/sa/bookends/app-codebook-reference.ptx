@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix xml:id="app-codebook-reference">
+  <title>Codebook and Controlled Vocabulary Reference</title>
+
+  <introduction>
+    <p>
+      This appendix identifies the authoritative codebook and vocabulary artifacts,
+      explains how they fit together, and records their present status. It deliberately
+      does not reproduce the complete contents of a versioned database table or source
+      spreadsheet. A manually copied table would become stale as soon as the underlying
+      artifact changed.
+    </p>
+
+    <remark xml:id="rem-app-codebook-status">
+      <title>Status: Canonical Artifact Reference</title>
+      <p>
+        The current frozen codebook is <c>codebook2-june1</c>, containing identifiers
+        <c>CS1</c> through <c>CS10</c>. The exact names and definitions must be read from
+        that imported, versioned artifact. The controlled vocabulary remains a separate
+        evolving artifact and must not be treated as a second codebook.
+      </p>
+    </remark>
+  </introduction>
+
+  <section xml:id="sec-app-codebook-artifacts">
+    <title>Authoritative Artifacts</title>
+
+    <table xml:id="tab-app-codebook-artifacts">
+      <title>Artifacts used to interpret and classify an episode.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="24%"/>
+        <col width="20%"/>
+        <col width="56%"/>
+        <row header="yes" bottom="medium">
+          <cell>Artifact</cell>
+          <cell>Current status</cell>
+          <cell>Authority and purpose</cell>
+        </row>
+        <row>
+          <cell>Shared codebook library</cell>
+          <cell>Versioned</cell>
+          <cell>
+            Stores reusable control-structure identifiers, names, definitions,
+            boundaries, and examples. It is the stable library from which a
+            question-specific working codebook is selected.
+          </cell>
+        </row>
+        <row>
+          <cell>Frozen pivot-question codebook</cell>
+          <cell><c>codebook2-june1</c></cell>
+          <cell>
+            The ten-code <c>CS1</c>–<c>CS10</c> version used for the existing human
+            coding. It is the governing codebook for records whose
+            <c>codebook_version</c> has this value.
+          </cell>
+        </row>
+        <row>
+          <cell>Derived pivot-question codebook</cell>
+          <cell><c>codebook2-june1-2slot</c> (proposed; import pending)</cell>
+          <cell>
+            A derived two-slot rewrite of the frozen codebook with harvested surface
+            markers, proposed as the label <c>codebook2-june1-2slot</c>. The
+            derived-vs-frozen rule: derivations are imported under a fresh label and
+            the frozen <c>codebook2-june1</c> remains byte-identical. Its import is an
+            owner-run work item (CP1.9); until it lands, no record's
+            <c>codebook_version</c> carries the derived label.
+          </cell>
+        </row>
+        <row>
+          <cell>Question-specific working codebook</cell>
+          <cell>Question-relative</cell>
+          <cell>
+            The subset of library entries applicable to one question, together with
+            their criterion, judgment, and normative-link bindings. Its construction is
+            governed by <xref ref="ch-codebook" text="title"/>.
+          </cell>
+        </row>
+        <row>
+          <cell>Controlled vocabulary</cell>
+          <cell>Provisional and versioned</cell>
+          <cell>
+            Provides canonical proposition labels for normalized extraction and
+            matching. The source journal records a seeded seventeen-term draft, but does
+            not establish that every draft term has completed formal review.
+          </cell>
+        </row>
+        <row bottom="minor">
+          <cell>Question-level analytic frame</cell>
+          <cell>Question-relative</cell>
+          <cell>
+            Records the problem context, representations, normative reference, question
+            goals, and valid-inference set used for correctness and coverage decisions.
+          </cell>
+        </row>
+      </tabular>
+    </table>
+  </section>
+
+  <section xml:id="sec-app-codebook-freeze">
+    <title>Current Codebook Freeze</title>
+
+    <p>
+      The governing freeze label is <c>codebook2-june1</c>. It registers ten entries,
+      <c>CS1</c> through <c>CS10</c>, and replaces the earlier planned freeze label
+      <c>codebook2-april24</c>. The June 1 artifact was selected because it matches the
+      version used for the existing human coding. Historical records retain their own
+      version labels; they are not silently relabeled.
+    </p>
+
+    <p>
+      The source journal reports that the April 24, May 13, and June 1 artifacts use the
+      same ten-code scheme and identical descriptions. The only imported difference in
+      June 1 is the name of <c>CS1</c>. This small textual difference does not remove the
+      need to record the exact version: validation must compare the tool against the
+      definitions that governed the human coding.
+    </p>
+
+    <warning xml:id="warn-app-codebook-no-manual-copy">
+      <title>Do not reconstruct the codebook from examples</title>
+      <p>
+        The source journal discusses several codes and includes provisional worked
+        authoring examples, but it does not reproduce a verified current row for every
+        code. Do not infer missing names, definitions, patterns, or boundaries from
+        those examples. Generate the complete reference directly from the frozen
+        database or imported source artifact.
+      </p>
+    </warning>
+  </section>
+
+  <section xml:id="sec-app-codebook-entry">
+    <title>Required Content of a Codebook Entry</title>
+
+    <p>
+      A mature codebook entry should provide enough information for a reviewer to
+      distinguish a genuine criterion-to-judgment relationship from a keyword
+      coincidence. The authoritative entry should contain at least:
+    </p>
+
+    <table xml:id="tab-app-codebook-entry-fields">
+      <title>Recommended content of an authoritative codebook entry.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="27%"/>
+        <col width="73%"/>
+        <row header="yes" bottom="medium">
+          <cell>Field</cell>
+          <cell>Purpose</cell>
+        </row>
+        <row><cell><c>code_id</c></cell><cell>Stable opaque identifier, interpreted together with the codebook version.</cell></row>
+        <row><cell><c>name</c></cell><cell>Short human-readable label.</cell></row>
+        <row><cell><c>definition</c></cell><cell>The criterion-to-judgment relationship represented by the code.</cell></row>
+        <row><cell>Inclusion rule</cell><cell>Evidence that is sufficient to make the code a plausible match.</cell></row>
+        <row><cell>Exclusion rule</cell><cell>Nearby reasoning that must not receive the code.</cell></row>
+        <row><cell>Positive examples</cell><cell>Responses or episodes that clearly instantiate the entry.</cell></row>
+        <row><cell>Near misses</cell><cell>Examples that resemble the entry but differ in a decisive way.</cell></row>
+        <row><cell>Confusable codes</cell><cell>Other entries that reviewers should compare explicitly.</cell></row>
+        <row bottom="minor"><cell>Surface markers</cell><cell>Optional search aids. They may retrieve candidates but never determine a final match by themselves.</cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      Machine-readable patterns and example identifiers may be stored with the entry or
+      in related tables. They are implementation aids, not substitutes for the human
+      definition and boundary rules.
+    </p>
+  </section>
+
+  <section xml:id="sec-app-codebook-vocabulary">
+    <title>Controlled Vocabulary</title>
+
+    <p>
+      The controlled vocabulary supplies concise canonical forms for propositions that
+      may appear as criteria or judgments. It supports normalization, retrieval, and
+      machine-readable matching. It does not determine whether a proposition is true,
+      whether an inference is valid, or which code should be assigned.
+    </p>
+
+    <p>
+      Each vocabulary record should preserve:
+      <ul>
+        <li>the canonical form;</li>
+        <li>a readable description;</li>
+        <li>the slot or slots in which it may appear;</li>
+        <li>attested surface forms;</li>
+        <li>its lifecycle status and version history; and</li>
+        <li>notes about contested granularity or question dependence.</li>
+      </ul>
+    </p>
+
+    <p>
+      A term absent from the vocabulary creates an
+      <xref ref="g-oov" text="custom">out-of-vocabulary</xref> question. An episode
+      expressed with known vocabulary but unsupported by any current code creates a
+      <xref ref="g-no-match" text="custom">no-match</xref> question. These statuses
+      diagnose different limitations and must remain separate.
+    </p>
+  </section>
+
+  <section xml:id="sec-app-codebook-use">
+    <title>How Coders Use This Reference</title>
+
+    <ol>
+      <li>
+        <p>
+          During a blind pass, extract the episode without consulting the codebook and
+          leave code fields blank.
+        </p>
+      </li>
+      <li>
+        <p>
+          During a codebook-assisted pass, compare the complete episode with the current
+          question-specific entries. Match the criterion-to-judgment relationship, not
+          isolated words.
+        </p>
+      </li>
+      <li>
+        <p>
+          Record the strongest candidate in <c>code</c> and other defensible candidates
+          in <c>alt_codes</c>. Do not force a unique match when the definitions overlap.
+        </p>
+      </li>
+      <li>
+        <p>
+          Use OOV, no-match, or unresolved status when the current artifacts do not
+          support a defensible assignment.
+        </p>
+      </li>
+      <li>
+        <p>
+          Evaluate <c>c1</c>, <c>c2</c>, and goal coverage from the question's normative
+          reference and valid-inference set, not from the code label.
+        </p>
+      </li>
+      <li>
+        <p>
+          Record <c>codebook_version</c>, <c>vocabulary_version</c>, and the question-frame
+          version with every coding record.
+        </p>
+      </li>
+    </ol>
+  </section>
+
+  <section xml:id="sec-app-codebook-governance">
+    <title>Governance and Known Issues</title>
+
+    <p>
+      Proposed terms and codes require review across multiple cases. A used identifier
+      is not silently deleted or redefined. Changes are accepted through a new version,
+      with deprecations and mappings recorded so historical data remain interpretable.
+    </p>
+
+    <p>
+      The source journal records one unresolved governance issue: some historical coding
+      assigns <c>CS2</c>, defined there as a rightmost-column consistency structure, to
+      free-variable and number-of-solutions reasoning outside that definition. This
+      appendix does not repair those rows. The mismatch must remain visible for
+      adjudication, recoding, or an explicit historical mapping decision.
+    </p>
+
+    <p>
+      Consult <xref ref="app-protocol-summary" text="title"/> for current matching rules,
+      <xref ref="app-coding-sheet" text="title"/> for fields.
+    </p>
+  </section>
+</appendix>

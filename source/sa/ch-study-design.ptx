@@ -1,0 +1,854 @@
+<chapter xml:id="ch-study-design">
+  <title>Study Design</title>
+
+  <introduction>
+    <p>
+      A working pipeline demonstrates that the analytic framework can be implemented.
+      It does not establish that the implementation produces dependable research data
+      or improves the coding process. That claim requires an empirical study comparing
+      the pipeline with independently developed human coding on real student responses.
+    </p>
+
+    <p>
+      The proposed study evaluates three coding conditions: a human-only workflow, a
+      deterministic computational baseline, and an LLM-assisted pipeline. The study
+      examines more than final-code accuracy. It also measures human agreement,
+      researcher time, review volume, reviewer overrides, trace completeness, and the
+      types of disagreement each workflow reveals.
+    </p>
+
+    <p>
+      The design treats uncertainty and disagreement as data. A response may expose an
+      ambiguous episode boundary, an incomplete inference, overlapping codebook
+      definitions, missing vocabulary, or an unstable coding rule. The study therefore
+      asks not only whether the pipeline agrees with an accepted human result, but
+      also whether it helps researchers locate and understand the source of a
+      disagreement.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-study-contribution">
+    <title>Proposed Contribution</title>
+
+    <p>
+      The project makes a methods contribution only if it delivers three connected
+      results: a defensible analytic framing, an auditable workflow, and empirical
+      evidence about how that workflow performs. None of the three is sufficient by
+      itself.
+    </p>
+
+    <paragraphs xml:id="subsec-study-framing-contribution">
+      <title>Analytic Framing</title>
+
+      <p>
+        The first contribution is a response-level operationalization of a broader
+        theoretical perspective on mathematical control structures. The project uses
+        the Episode Model to represent the local justification visible in one written
+        response. It does not treat one response as a complete student conception.
+      </p>
+
+      <p>
+        This framing makes several analytic distinctions explicit. It separates the
+        criterion a student cites, the inferential link the student uses, and the
+        judgment the student draws. It also separates local reasoning quality from
+        final-answer correctness and from coverage of the full question goal. These
+        distinctions allow disagreements to be located more precisely than a single
+        response-level label would permit.
+      </p>
+
+      <p>
+        The study does not revalidate the theoretical framework as a whole. It tests
+        whether this response-level operationalization can be applied consistently and
+        whether it supports useful comparison among human and computational coding
+        workflows. The theoretical basis appears in
+        <xref ref="ch-theoretical-foundation" text="title"/>, and the analytic unit is
+        defined in <xref ref="ch-episode-model" text="title"/>.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-method-contribution">
+      <title>Workflow Contribution</title>
+
+      <p>
+        The second contribution is an auditable human-in-the-loop workflow. Rather
+        than producing only a final code, the pipeline records the response source,
+        screening decision, proposed episode structure, candidate code matches,
+        confidence or uncertainty, review disposition, and any later human override.
+        Each run also records the governing codebook, vocabulary, protocol, prompt,
+        model, and software versions.
+      </p>
+
+      <p>
+        This structure supports two forms of review. A researcher can inspect one case
+        from the original response through the final disposition, and the research team
+        can aggregate recurring disagreements across cases. The latter may reveal a
+        weak extraction rule, an overlapping code definition, missing vocabulary, or a
+        coding policy that human researchers are applying inconsistently.
+      </p>
+
+      <p>
+        The workflow contribution is therefore not automation alone. It is the
+        conversion of an interpretive coding process into explicit stages whose outputs,
+        rationales, and revisions can be inspected. The current computational design is
+        described in <xref ref="ch-pipeline-overview" text="title"/>.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-empirical-contribution">
+      <title>Empirical Contribution</title>
+
+      <p>
+        The third contribution is the evaluation itself. The study must determine
+        whether the pipeline improves or clarifies the research process relative to the
+        human-only workflow. The relevant outcomes include:
+        <ul>
+          <li>agreement with accepted human coding;</li>
+          <li>consistency across independent coders and repeated runs;</li>
+          <li>time required to code and review responses;</li>
+          <li>the amount and distribution of human review;</li>
+          <li>the completeness of the audit trail;</li>
+          <li>the rate and type of reviewer overrides; and</li>
+          <li>
+            the ability to diagnose codebook, vocabulary, protocol, and tool failures.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        A software demonstration, a small set of illustrative examples, or a high
+        aggregate accuracy value would not establish this contribution. The study needs
+        a real research corpus, independent human coding, a held-out evaluation set,
+        pre-specified comparisons, and qualitative analysis of representative errors.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-study-corpus">
+    <title>Corpus and Sampling</title>
+
+    <paragraphs xml:id="subsec-study-data-sources">
+      <title>Data Sources</title>
+
+      <p>
+        The research corpus consists of real short-answer responses to mathematical
+        reading questions delivered through interactive textbooks. Each response must
+        remain linked to the question it answered and to the information needed to
+        interpret that question. At minimum, the research record should preserve:
+        <ul>
+          <li>a stable, de-identified response identifier;</li>
+          <li>the exact response text;</li>
+          <li>the question identifier and prompt;</li>
+          <li>the course and offering from which the response came;</li>
+          <li>the relevant mathematical reference or expected reasoning;</li>
+          <li>the source and ingestion version; and</li>
+          <li>the inclusion boundary used to form the corpus.</li>
+        </ul>
+      </p>
+
+      <p>
+        Repository fixtures and synthetic examples may be used to test ingestion,
+        train coders, or illustrate the method. They are not research evidence and
+        must not be included in the validation results. The final report should state
+        clearly which records are authentic student responses and which were created
+        for development or training.
+      </p>
+
+      <p>
+        Before sampling begins, the research team should create a corpus inventory
+        listing the participating courses, semesters, questions, response counts, and
+        any exclusions. The current source material establishes that the corpus will
+        span several questions, but it does not yet fix the final courses, semesters,
+        question families, or sample size.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-sampling">
+      <title>Sampling and Stratification</title>
+
+      <p>
+        A simple random sample could contain mostly easy or repetitive cases and would
+        provide little evidence about the situations in which the pipeline is intended
+        to assist. The evaluation sample should therefore be stratified by question and
+        by expected coding difficulty.
+      </p>
+
+      <p>
+        At minimum, the sample should represent:
+        <ul>
+          <li>clear single-episode or single-control responses;</li>
+          <li>blank, no-effort, and restatement responses;</li>
+          <li>bare answers with no justification;</li>
+          <li>incomplete episodes;</li>
+          <li>responses containing several possible control structures;</li>
+          <li>chained, independent, or nested reasoning;</li>
+          <li>multiple-match cases;</li>
+          <li>out-of-vocabulary and no-match cases;</li>
+          <li>
+            responses with a true criterion but an incomplete or invalid inferential
+            link; and
+          </li>
+          <li>
+            responses with sound local reasoning but incomplete coverage of the
+            question goal.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        The corpus should be divided into non-overlapping sets serving distinct
+        purposes:
+        <dl width="medium">
+          <li>
+            <title>Onboarding set</title>
+            <p>
+              Synthetic or non-evaluation responses used to teach the framework and
+              coding workflow.
+            </p>
+          </li>
+          <li>
+            <title>Calibration set</title>
+            <p>
+              A shared set coded independently before formal work begins and used to
+              identify unclear rules and assess coder readiness.
+            </p>
+          </li>
+          <li>
+            <title>Development set</title>
+            <p>
+              Responses used to refine deterministic rules, prompts, vocabulary, and
+              codebook patterns. Results on this set are not reported as held-out
+              performance.
+            </p>
+          </li>
+          <li>
+            <title>Validation set</title>
+            <p>
+              A held-out set used only after the governing materials and comparison
+              conditions have been frozen.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        The development roadmap recommends at least 100 already-coded responses,
+        stratified by the screening label, for the initial Stage 2 screening study.
+        That recommendation does not determine the final sample size for the full
+        multi-stage validation. The research team must select and justify the final
+        sizes before evaluation.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-ethics">
+      <title>Ethics, Consent, and De-identification</title>
+
+      <p>
+        The final study report must state the ethics and consent basis for using the
+        student responses. The corpus should contain only the information required for
+        the analysis, and published examples should be masked or paraphrased when
+        necessary to prevent identification.
+      </p>
+
+      <p>
+        LLM-assisted analysis introduces a separate data-governance question. Before
+        any response text is sent to an external service, the research team must confirm
+        that the intended transmission, provider, storage policy, and retention policy
+        are permitted by the applicable IRB determination and institutional rules.
+        De-identifying a response does not by itself establish that external processing
+        is authorized.
+      </p>
+
+      <p>
+        The study record should document:
+        <ul>
+          <li>the IRB protocol, exemption, or other formal determination;</li>
+          <li>the consent basis and permitted research uses;</li>
+          <li>the de-identification procedure;</li>
+          <li>who may access identifiable and de-identified data;</li>
+          <li>where data and review records are stored;</li>
+          <li>whether an external model provider receives response text; and</li>
+          <li>restrictions on quoting or publishing student responses.</li>
+        </ul>
+      </p>
+
+      <aside xml:id="aside-study-open-specifications">
+        <title>Specifications Still to Be Finalized</title>
+        <p>
+          The source material does not yet establish the following study details. They
+          should be entered here before the chapter is treated as the final protocol.
+        </p>
+        <table xml:id="tab-study-open-specifications">
+          <title>Required study decisions.</title>
+          <tabular halign="left" top="major" bottom="minor">
+            <col width="32%"/>
+            <col width="68%"/>
+            <row header="yes" bottom="medium">
+              <cell>Decision</cell>
+              <cell>Required record</cell>
+            </row>
+            <row>
+              <cell>Corpus scope</cell>
+              <cell>Courses, semesters, questions, and inclusion dates.</cell>
+            </row>
+            <row>
+              <cell>Sample sizes</cell>
+              <cell>Counts for calibration, development, and validation sets.</cell>
+            </row>
+            <row>
+              <cell>IRB and governance</cell>
+              <cell>Protocol or determination, API permissions, and access controls.</cell>
+            </row>
+            <row>
+              <cell>Coder readiness</cell>
+              <cell>Evidence or threshold required before independent research coding.</cell>
+            </row>
+            <row>
+              <cell>Frozen versions</cell>
+              <cell>Protocol, codebook, vocabulary, prompt, model, and software versions.</cell>
+            </row>
+            <row bottom="minor">
+              <cell>Primary metrics</cell>
+              <cell>Exact agreement statistics and treatment of multi-label codes.</cell>
+            </row>
+          </tabular>
+        </table>
+      </aside>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-study-gold-standard">
+    <title>Human Coding and the Gold Standard</title>
+
+    <paragraphs xml:id="subsec-study-independent-coding">
+      <title>Independent Coding</title>
+
+      <p>
+        At least two trained coders should analyze the same validation responses
+        independently. Their first-pass decisions must be made without seeing the
+        pipeline's candidate codes, confidence values, or dispositions. This blind
+        first pass protects the human comparison from anchoring on the tool's proposal.
+      </p>
+
+      <p>
+        The independent record should preserve the decisions needed to evaluate the
+        full workflow, including:
+        <ul>
+          <li>screening decision and rationale;</li>
+          <li>number and boundaries of episodes;</li>
+          <li>criterion, inferential link, and judgment for each episode;</li>
+          <li>relationships among episodes;</li>
+          <li>candidate control-structure codes;</li>
+          <li>criterion and inferential-link correctness, when eligible;</li>
+          <li>goal coverage;</li>
+          <li>OOV, no-match, ambiguity, or policy flags;</li>
+          <li>confidence and uncertainty notes; and</li>
+          <li>recommended disposition.</li>
+        </ul>
+      </p>
+
+      <p>
+        Coders should use the same frozen versions of the question reference, coding
+        protocol, codebook, and controlled vocabulary. They should record coding time
+        and work in bounded sittings so that efficiency and fatigue can be examined
+        rather than left as unobserved influences.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-calibration">
+      <title>Calibration</title>
+
+      <p>
+        Calibration precedes formal validation. Coders first analyze a shared set
+        independently, compare their decisions, identify the earliest point of each
+        disagreement, and <xref ref="g-adjudication" text="custom">adjudicate</xref>
+        the cases using the original question, response, and current coding materials.
+      </p>
+
+      <p>
+        The calibration set should contain the same broad range of response types as
+        the validation set, including incomplete, multi-episode, multiple-match, OOV,
+        invalid-link, and partial-coverage cases. When a disagreement reveals an unclear
+        definition or policy, the research team should revise and test the relevant
+        material before freezing the study versions.
+      </p>
+
+      <p>
+        The calibration record should preserve both coders' original decisions, the
+        evidence supporting each interpretation, the disagreement category, the
+        adjudicated result or unresolved status, and any follow-up change. Calibration
+        responses must not later be counted as held-out validation cases.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-adjudication">
+      <title>Adjudication</title>
+
+      <p>
+        Adjudication begins only after the independent decisions have been preserved
+        and pre-adjudication agreement has been calculated. The purpose is not to erase
+        disagreement but to produce a documented research decision when the available
+        evidence and coding rules support one.
+      </p>
+
+      <p>
+        For each disagreement, the adjudicators should:
+        <ol>
+          <li>return to the exact question and response;</li>
+          <li>identify the earliest workflow stage at which the codings diverged;</li>
+          <li>state the evidence for each interpretation;</li>
+          <li>consult the frozen question reference, protocol, and codebook;</li>
+          <li>record the agreed result when one interpretation is defensible;</li>
+          <li>preserve the case as unresolved when the evidence is insufficient; and</li>
+          <li>
+            record whether the disagreement suggests a future change to the coding
+            materials.
+          </li>
+        </ol>
+      </p>
+
+      <p>
+        The resulting adjudicated annotations form the gold-standard comparison set.
+        They should not be presented as infallible labels. They are the documented
+        outcome of the study's human coding and adjudication procedure under specified
+        versions of the governing materials.
+      </p>
+
+      <p>
+        If adjudication exposes a flaw serious enough to require an immediate codebook
+        or policy change, the team should version the change and decide whether the
+        affected portion of the validation study must be restarted. It should not
+        silently reinterpret earlier records under a new rule.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-human-ceiling">
+      <title>Human Agreement as a Reference Point</title>
+
+      <p>
+        Human–human agreement should be reported before adjudication. At minimum, the
+        report should include percent agreement and either Cohen's <m>\kappa</m> or
+        Krippendorff's <m>\alpha</m>, chosen to match the number of coders, missing-data
+        pattern, and form of the coding decision.
+      </p>
+
+      <p>
+        Agreement should be examined separately at major decision levels rather than
+        collapsed immediately into one statistic. Relevant levels include screening,
+        episode count or boundaries, component interpretation, code assignment,
+        correctness, goal coverage, and final disposition.
+      </p>
+
+      <p>
+        Pre-adjudication human agreement is an empirical reference point for judging
+        the difficulty and stability of the task. It is sometimes described as a human
+        ceiling, but it is not a strict numerical upper bound on agreement with the
+        adjudicated labels. A system may agree with an adjudicated result more often
+        than either individual coder did while still failing in important ways. Human
+        disagreement must therefore be interpreted alongside system performance and the
+        error analysis.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-study-comparisons">
+    <title>Comparison Conditions</title>
+
+    <p>
+      The study compares three workflows on the same held-out responses and under the
+      same frozen analytic materials. The comparison is intended to separate the value
+      of the staged architecture from the additional value, if any, of LLM-assisted
+      language interpretation.
+    </p>
+
+    <paragraphs xml:id="subsec-study-human-only">
+      <title>Human-Only Workflow</title>
+
+      <p>
+        In the human-only condition, trained coders apply the protocol and codebook
+        using the ordinary spreadsheet or manual workflow. They do not receive
+        pipeline-generated episodes, candidate codes, confidence values, or review
+        dispositions during the independent pass.
+      </p>
+
+      <p>
+        The study should record coding and adjudication time, uncertainty notes, and
+        disagreements under this condition. These records establish the current labor
+        requirements and the difficulties that exist without computational assistance.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-deterministic">
+      <title>Deterministic Baseline</title>
+
+      <p>
+        The deterministic condition runs the rule-based pipeline without an LLM. In
+        the current prototype, this includes a rule-based eligibility screener, a
+        connector- and pattern-based extractor, a pattern matcher, and a rule-based
+        disposer. The pipeline returns structured proposals and review dispositions
+        using fixed rules.
+      </p>
+
+      <p>
+        This condition is load-bearing. It shows how much performance and auditability
+        come from explicit pipeline structure alone. Without it, any difference between
+        the human-only and LLM-assisted conditions could not be attributed specifically
+        to the language model.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-llm-assisted">
+      <title>LLM-Assisted Workflow</title>
+
+      <p>
+        The LLM-assisted condition uses the same pipeline architecture and output
+        schemas as the deterministic condition. Language-model components replace only
+        selected language-heavy stages. The current roadmap places LLM assistance in
+        screening and episode extraction while retaining deterministic ingestion,
+        codebook matching, and disposition logic.
+      </p>
+
+      <p>
+        The language model produces structured, reviewable proposals rather than final
+        research codes. The study must record the model identifier, prompt version,
+        decoding or sampling settings, vocabulary version, codebook version, and any
+        retries or failures. A material change to these settings creates a new study
+        condition rather than an invisible update to the old one.
+      </p>
+
+      <p>
+        The project treats the LLM as unreliable at the mathematical judgments needed
+        for criterion truth, inferential validity, and final adjudication. Those
+        decisions remain under human authority even when the model assists with
+        screening or extraction.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-ablation">
+      <title>Ablation Studies</title>
+
+      <p>
+        The primary planned ablation compares two extraction policies:
+        <dl width="narrow">
+          <li>
+            <title>Literal extraction</title>
+            <p>
+              Record only reasoning components that are clearly present in the
+              student's words or notation.
+            </p>
+          </li>
+          <li>
+            <title>Interpretive extraction</title>
+            <p>
+              Permit the extractor to recover implicit links or normalize the
+              student's language when the intended relation appears sufficiently
+              supported.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        This comparison tests a central methodological tradeoff. Literal extraction
+        may omit recoverable reasoning, whereas interpretive extraction may attribute
+        reasoning the student did not express. The study should compare their agreement,
+        review burden, override rate, and characteristic errors.
+      </p>
+
+      <p>
+        Additional ablations may be added only if they are specified before the held-out
+        validation set is examined. Exploratory comparisons discovered after evaluation
+        should be labeled exploratory rather than reported as pre-planned confirmatory
+        results.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-study-outcomes">
+    <title>Outcomes and Analysis</title>
+
+    <paragraphs xml:id="subsec-study-reliability-outcomes">
+      <title>Reliability</title>
+
+      <p>
+        Reliability outcomes should distinguish human agreement from agreement between
+        a computational workflow and the adjudicated human set.
+      </p>
+
+      <table xml:id="tab-study-reliability-measures">
+        <title>Primary reliability comparisons.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="30%"/>
+          <col width="34%"/>
+          <col width="36%"/>
+          <row header="yes" bottom="medium">
+            <cell>Decision</cell>
+            <cell>Comparison</cell>
+            <cell>Planned summary</cell>
+          </row>
+          <row>
+            <cell>Screening</cell>
+            <cell>Coder–coder and workflow–gold standard</cell>
+            <cell>Agreement, accuracy, precision, recall, and <m>F_1</m>.</cell>
+          </row>
+          <row>
+            <cell>Control-structure assignment</cell>
+            <cell>Coder–coder and workflow–gold standard</cell>
+            <cell>Code-level agreement and a pre-specified multi-label summary.</cell>
+          </row>
+          <row>
+            <cell>Episode structure</cell>
+            <cell>Coder–coder and workflow–gold standard</cell>
+            <cell>Episode-count, boundary, and component disagreements.</cell>
+          </row>
+          <row bottom="minor">
+            <cell>Disposition</cell>
+            <cell>Workflow distribution and human review result</cell>
+            <cell>Counts, percentages, confirmations, and overrides.</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        Because code assignment may be multi-label and episode structures may not align
+        one-to-one, the exact scoring rule must be chosen before evaluation. The final
+        protocol should state how multiple codes, unresolved cases, and unmatched
+        episodes enter each statistic.
+      </p>
+
+      <p>
+        Reliability results should be reported overall and by question, response type,
+        and difficulty stratum when the sample size permits. Aggregate performance may
+        conceal that a workflow handles clear single-episode responses well while
+        failing systematically on OOV, nested, or invalid-link cases.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-efficiency-outcomes">
+      <title>Efficiency</title>
+
+      <p>
+        Efficiency concerns the amount and organization of human labor, not merely
+        computational runtime. The study should record:
+        <ul>
+          <li>total and per-response coding time;</li>
+          <li>time required for review and adjudication;</li>
+          <li>the number and percentage of responses auto-accepted;</li>
+          <li>the number routed to standard review or escalation;</li>
+          <li>the number flagged for terminology or no-match review;</li>
+          <li>the number of candidate codes inspected per response;</li>
+          <li>the rate of confirmation and each type of override; and</li>
+          <li>the amount of recoding caused by later policy or codebook changes.</li>
+        </ul>
+      </p>
+
+      <p>
+        A reduction in first-pass coding time is not automatically beneficial. It may
+        be offset by increased review, poorly targeted escalations, or correction of
+        confident but unsupported proposals. The study should therefore compare the
+        full path from initial coding through final documented disposition.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-audit-outcomes">
+      <title>Auditability</title>
+
+      <p>
+        Auditability measures whether a result can be traced and whether disagreement
+        can be localized. For each pipeline run, the expected trace includes:
+        <ul>
+          <li>the source response and question;</li>
+          <li>the output and rationale from each stage;</li>
+          <li>the governing analytic and software versions;</li>
+          <li>the candidate codes and confidence information;</li>
+          <li>the assigned review disposition;</li>
+          <li>the human decision and evidence-based rationale; and</li>
+          <li>the complete sequence of confirmations or overrides.</li>
+        </ul>
+      </p>
+
+      <p>
+        The validation report should state how often the required trace is complete and
+        how often a disagreement can be assigned to a specific stage or policy. It
+        should also report how often review identifies a needed vocabulary addition,
+        codebook clarification, protocol revision, or software correction.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-error-taxonomy">
+      <title>Error and Disagreement Taxonomy</title>
+
+      <p>
+        Quantitative summaries should be paired with an error taxonomy. Each
+        workflow–human disagreement should be assigned to the earliest applicable
+        category:
+        <dl width="narrow">
+          <li>
+            <title>Screening error</title>
+            <p>
+              A response is included, excluded, or flagged differently from the
+              adjudicated decision.
+            </p>
+          </li>
+          <li>
+            <title>Episode-boundary error</title>
+            <p>
+              The workflow identifies the wrong number of episodes or places their
+              boundaries differently.
+            </p>
+          </li>
+          <li>
+            <title>Component-interpretation error</title>
+            <p>
+              The criterion, inferential link, or judgment is missing, added, or
+              interpreted incorrectly.
+            </p>
+          </li>
+          <li>
+            <title>Relation error</title>
+            <p>
+              Chained, independent, or nested relationships are represented
+              incorrectly.
+            </p>
+          </li>
+          <li>
+            <title>Matching error</title>
+            <p>
+              The extracted episode is compared with the codebook incorrectly or is
+              assigned an unsupported code.
+            </p>
+          </li>
+          <li>
+            <title>Vocabulary or OOV error</title>
+            <p>
+              Relevant language is missed, normalized incorrectly, or forced into an
+              existing term or code.
+            </p>
+          </li>
+          <li>
+            <title>Correctness or coverage error</title>
+            <p>
+              Criterion truth, inferential validity, or question-goal coverage is
+              evaluated incorrectly.
+            </p>
+          </li>
+          <li>
+            <title>Policy error</title>
+            <p>
+              The governing coding convention is unclear, incomplete, or applied
+              inconsistently.
+            </p>
+          </li>
+          <li>
+            <title>Human-instability case</title>
+            <p>
+              Independent coders or adjudicators apply the same materials differently
+              in a way not attributable solely to the computational workflow.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        The report should provide counts and representative cases for each category.
+        The examples should preserve the distinction between a tool failure, a genuine
+        ambiguity in the response, and a weakness in the human coding system. Reporting
+        only aggregate performance would hide the methodological information the
+        staged workflow is designed to reveal.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-study-limitations">
+    <title>Scope, Threats, and Limitations</title>
+
+    <paragraphs xml:id="subsec-study-generality">
+      <title>Generality</title>
+
+      <p>
+        The initial validation is a bounded case study using a limited set of questions,
+        mathematical topics, courses, and institutional settings. Its results may show
+        that the method is workable and useful in those settings; they do not establish
+        universal performance across mathematical domains or student populations.
+      </p>
+
+      <p>
+        Question-relative reasoning is central to the method. A code or inferential
+        link that is valid for one question may not be valid for another. Claims of
+        transfer should therefore be based on explicit replication across new questions
+        and topics rather than assumed from aggregate success within the initial corpus.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-moving-targets">
+      <title>Moving Codebooks and Protocols</title>
+
+      <p>
+        Tool performance cannot be interpreted against an unstable target. The
+        question reference, coding protocol, codebook, controlled vocabulary, nesting
+        policy, prompt, model, and software configuration must be frozen before the
+        held-out evaluation begins.
+      </p>
+
+      <p>
+        If a serious flaw requires a change during validation, the change should receive
+        a new version and its effect should be documented. The team must then decide
+        whether to restart the affected comparison, report separate pre-change and
+        post-change results, or classify the finding as exploratory. Earlier records
+        should never be silently recoded under a revised rule.
+      </p>
+
+      <p>
+        Anchoring and learning effects are related threats. Human coders must complete
+        their independent pass before seeing tool proposals, and the held-out set should
+        not be reused repeatedly for prompt or rule development. Otherwise, apparent
+        improvement may reflect adaptation to the evaluation set rather than a more
+        dependable method.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-study-overclaiming">
+      <title>Interpretive Overreach</title>
+
+      <p>
+        The study evaluates coding of evidence visible in short written responses. It
+        does not validate claims that the pipeline detects complete conceptions,
+        reconstructs everything a student believed, or predicts how the student would
+        reason in other settings.
+      </p>
+
+      <p>
+        The pipeline should propose candidate analyses and review dispositions, not
+        final research claims. It must not complete a missing judgment for the student,
+        treat a correct final answer as proof of valid reasoning, or force ambiguous and
+        OOV cases into an existing code merely to improve aggregate agreement.
+      </p>
+
+      <p>
+        The LLM-assisted condition creates an additional risk of plausible but
+        unsupported interpretation. Preserving literal response evidence, comparing
+        against a deterministic baseline, and requiring human adjudication are therefore
+        essential features of the method rather than optional safeguards.
+      </p>
+    </paragraphs>
+  </section>
+
+  <conclusion>
+    <p>
+      The validation study converts the project from a framework and software design
+      into an empirical methods investigation. Independent human coding establishes the
+      stability and difficulty of the task; adjudication produces a documented comparison
+      set; the human-only, deterministic, and LLM-assisted conditions separate different
+      sources of value; and the outcome analyses test reliability, efficiency,
+      auditability, and disagreement diagnosis together.
+    </p>
+
+    <p>
+      The study succeeds only if its conclusions remain proportional to the evidence.
+      A favorable result would show that the pipeline improves or clarifies coding within
+      a specified corpus and under frozen analytic rules. It would not eliminate human
+      judgment or establish unrestricted generality. Instead, it would provide a
+      reproducible basis for refining the method and testing it in additional questions,
+      topics, and settings.
+    </p>
+  </conclusion>
+</chapter>

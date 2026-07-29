@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-pipeline-user-guide">
+  <title>Using the Short-Answer Pipeline</title>
+
+  <introduction>
+    <p>
+      This chapter gives a practical workflow for running the current short-answer
+      pipeline, checking its output, and preserving the evidence needed for review. The
+      command-line interface supports the complete workflow. The Streamlit interface
+      supports import management, question selection, screening, extraction, and response
+      export, but it does not yet provide matching, disposition, or final coding pages.
+    </p>
+
+    <p>
+      Pipeline output is a proposal, not a final research decision. A clean
+      <c>auto_accept</c> disposition still remains auditable and reviewable. The analytic
+      rules governing episode extraction and coding are in
+      <xref ref="ch-coding-workflow" text="title"/> and
+      <xref ref="ch-edge-cases-decisions" text="title"/>.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-user-guide-prepare">
+    <title>Prepare the Input</title>
+
+    <subsection xml:id="subsec-user-guide-input">
+      <title>Input File and Required Fields</title>
+
+      <p>
+        The core CLI accepts two file types:
+      </p>
+
+      <dl width="narrow">
+        <li>
+          <title>DataShop tab export</title>
+          <p>
+            A tab-separated file must include <c>Time</c>, <c>Anon Student Id</c>,
+            <c>Problem Name</c>, <c>Selection</c>, and <c>Problem View</c>. The shared
+            reader stores every row as an event. The short-answer service later claims
+            rows whose selection identifies short-answer data. Response text is normally
+            taken from the event's <c>Action</c> field.
+          </p>
+        </li>
+        <li>
+          <title>Runestone useinfo CSV</title>
+          <p>
+            A comma-separated useinfo export must include <c>id</c>, <c>timestamp</c>,
+            <c>sid</c>, <c>event</c>, <c>act</c>, and <c>div_id</c>. The CLI maps those
+            columns onto the shared event model. Spreadsheet-damaged timestamps are
+            rejected during short-answer derivation rather than assigned invented dates.
+          </p>
+        </li>
+      </dl>
+
+      <p>
+        The Streamlit Upload page currently exposes the DataShop <c>.tab</c> path. Use
+        the CLI for Runestone useinfo CSV files.
+      </p>
+
+      <warning xml:id="warn-user-guide-private-data">
+        <title>Keep real responses out of version control</title>
+        <p>
+          Student free text may contain names or other identifying details. Store real
+          exports under the repository's ignored <c>data/private/</c> directory or another
+          approved protected location. Do not assume an export is response-free merely
+          because its <c>Input</c> column is blank; short-answer text may appear in
+          <c>Action</c>. Follow <xref ref="ch-data-management" text="title"/> before
+          moving, sharing, or uploading any research data.
+        </p>
+      </warning>
+    </subsection>
+
+    <subsection xml:id="subsec-user-guide-config">
+      <title>Versions and Run Configuration</title>
+
+      <p>
+        Before processing data, record the following choices in a work note or run note:
+      </p>
+
+      <ul>
+        <li>database path;</li>
+        <li>source file and import identifier;</li>
+        <li>question identifier or the decision to run all questions;</li>
+        <li>controlled-vocabulary version;</li>
+        <li>codebook version;</li>
+        <li>stage implementation, prompt version, and model identifier; and</li>
+        <li>purpose of the run.</li>
+      </ul>
+
+      <p>
+        The frozen pivot-question codebook is <c>codebook2-june1</c>. The controlled
+        vocabulary is versioned separately and remains provisional. Use the current
+        database lists rather than copying a version name from an old notebook.
+      </p>
+
+      <program>
+python -m proteus.cli --db data/proteus.db sa codebook list --label codebook2-june1 --patterns
+python -m proteus.cli --db data/proteus.db sa vocab list
+      </program>
+
+      <p>
+        A <c>run_id</c> groups the four analysis stages. Reusing one run identifier for
+        screen, extract, match, and dispose is essential: otherwise the stages describe
+        different runs and cannot be interpreted as one end-to-end analysis.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-user-guide-run">
+    <title>Run the Pipeline</title>
+
+    <subsection xml:id="subsec-user-guide-cli-workflow">
+      <title>Complete CLI Workflow</title>
+
+      <p>
+        Run commands from the repository root. The package has no standalone
+        <c>proteus</c> console command, so invoke it as a Python module.
+      </p>
+
+      <p>
+        First install the project in an active virtual environment and initialize or
+        migrate the database.
+      </p>
+
+      <program>
+pip install -e ".[dev,ui]"
+python -m proteus.cli --db data/proteus.db init
+# For an existing database, use migrate instead of init:
+python -m proteus.cli --db data/proteus.db migrate --dry-run
+python -m proteus.cli --db data/proteus.db migrate
+      </program>
+
+      <p>
+        Two root maintenance commands exist alongside <c>init</c> and <c>migrate</c>:
+        <c>reset</c> deletes and re-creates the database (it asks for confirmation
+        unless <c>--yes</c> is passed), and <c>reingest-events</c> backfills the shared
+        event table from an already-imported export file, which requires the original
+        file. Neither belongs in routine coding workflows; both change stored state.
+      </p>
+
+      <p>
+        A note on old command forms: the un-namespaced aliases from earlier notes
+        (<c>proteus screen</c>, <c>proteus extract</c>, and the other stage commands)
+        still parse as deprecated aliases for <c>proteus sa &lt;stage&gt;</c> and print a
+        deprecation note on stderr before running. Seeing that note is expected, not an
+        error. <c>sa derive</c> and <c>sa compare</c> are newer and exist only under the
+        <c>sa</c> namespace.
+      </p>
+
+      <p>
+        Ingest the export into the shared event store and derive typed service rows. The
+        <c>--derive</c> option asks every available service to derive the rows it claims.
+      </p>
+
+      <program>
+python -m proteus.cli --db data/proteus.db ingest --derive data/private/responses.tab
+python -m proteus.cli --db data/proteus.db status
+      </program>
+
+      <p>
+        If ingest was run without <c>--derive</c>, derive short-answer responses explicitly.
+      </p>
+
+      <program>
+python -m proteus.cli --db data/proteus.db sa derive
+      </program>
+
+      <p>
+        Start screening. The command prints the new <c>run_id</c>. Copy that integer and
+        reuse it for every later stage. The example uses <c>17</c> only as a placeholder.
+      </p>
+
+      <program>
+python -m proteus.cli --db data/proteus.db sa screen \
+    --question QUESTION_ID \
+    --notes "deterministic baseline pilot"
+
+# Replace 17 with the run_id printed above.
+python -m proteus.cli --db data/proteus.db sa extract --run-id 17 --question QUESTION_ID
+python -m proteus.cli --db data/proteus.db sa match   --run-id 17 --question QUESTION_ID
+python -m proteus.cli --db data/proteus.db sa dispose --run-id 17 --question QUESTION_ID
+python -m proteus.cli --db data/proteus.db status
+      </program>
+
+      <p>
+        The <c>--question</c> filter is strongly recommended for research work. The
+        question supplies the normative frame and working codebook needed to interpret
+        criteria, links, judgments, and correctness. Omitting it is useful for system
+        checks but can mix several analytic contexts in one run.
+      </p>
+
+      <p>
+        Stage commands are resumable within a run. Screening and extraction skip records
+        already written for that response and run. Disposition also skips an existing
+        response/run row. Matching skips steps that already have a match, but a step that
+        previously produced zero matches can be visited again because no match row marks
+        it complete.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-user-guide-ui-workflow">
+      <title>Optional Streamlit Workflow</title>
+
+      <p>
+        Start the local interface with the same database path used by the CLI.
+      </p>
+
+      <program>
+cd proteus_ui
+streamlit run streamlit_app/app.py
+      </program>
+
+      <p>
+        The current interface supports the following workflow:
+      </p>
+
+      <ol>
+        <li><p>Set the database path on the Home page.</p></li>
+        <li><p>Upload and commit a DataShop <c>.tab</c> file on the shared Upload page.</p></li>
+        <li><p>Inspect the source record, row counts, and deletion blast radius on Imports.</p></li>
+        <li><p>Select a short-answer question on Questions and inspect its synchronized preview when available.</p></li>
+        <li><p>Open Screening, choose a run, inspect labels and rationales, and download the displayed rows.</p></li>
+        <li><p>Open Extraction, inspect chain shape, premise, conclusion, notes, and OOV flags, and download the displayed rows.</p></li>
+        <li><p>Use Export to browse and download the selected question's responses.</p></li>
+      </ol>
+
+      <p>
+        Course, class, week, and date filters bound the interface view and export. They do
+        not re-derive the data. Matching and disposition must still be run and inspected
+        through the CLI or database. Final review actions must be recorded through an
+        approved manual or programmatic workflow until reviewer pages are implemented.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-user-guide-review">
+    <title>Review the Results</title>
+
+    <subsection xml:id="subsec-user-guide-queue">
+      <title>Read the Disposition Queue</title>
+
+      <p>
+        Disposition summarizes earlier stage output into a routing proposal. Read the
+        trigger note with the label.
+      </p>
+
+      <table xml:id="tab-user-guide-dispositions">
+        <title>Current disposition meanings.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="24%"/>
+          <col width="76%"/>
+          <row header="yes" bottom="medium"><cell><p>Disposition</p></cell><cell><p>Current meaning</p></cell></row>
+          <row><cell><p><c>auto_accept</c></p></cell><cell><p>One distinct candidate code, at least one extracted step, and no screening or OOV flag. This is a clean routing case, not an unreviewable final code.</p></cell></row>
+          <row><cell><p><c>standard_review</c></p></cell><cell><p>Two or more distinct candidate codes were found. Compare the complete episode with the question-specific entries.</p></cell></row>
+          <row><cell><p><c>terminology_flag</c></p></cell><cell><p>At least one extracted step was marked OOV. Decide whether the phrase maps to an existing vocabulary term or proposes a genuinely new term.</p></cell></row>
+          <row><cell><p><c>no_match</c></p></cell><cell><p>A non-OOV chain was extracted, but no current keyword pattern or surface marker produced a code candidate.</p></cell></row>
+          <row><cell><p><c>problem_type_flag</c></p></cell><cell><p>The schema reserves this route, but the supplied rule disposer does not currently produce it.</p></cell></row>
+          <row bottom="minor"><cell><p><c>escalate</c></p></cell><cell><p>Screening returned <c>EXCLUDE</c> or <c>FLAG</c>, extraction did not run, or extraction produced an empty chain. A person must inspect the source evidence and decide what is analytically recoverable.</p></cell></row>
+        </tabular>
+      </table>
+    </subsection>
+
+    <subsection xml:id="subsec-user-guide-packet">
+      <title>Assemble a Review Packet</title>
+
+      <p>
+        A defensible review packet should place the following evidence together:
+      </p>
+
+      <ul>
+        <li>response and question identifiers;</li>
+        <li>verbatim response text and question context;</li>
+        <li>import identifier and source metadata;</li>
+        <li>run identifier, implementation labels, vocabulary version, and codebook version;</li>
+        <li>screening label, confidence, and rationale;</li>
+        <li>every extracted step, its order, extractor notes, and OOV flag;</li>
+        <li>every candidate code and match rationale;</li>
+        <li>disposition and trigger note; and</li>
+        <li>reviewer decision, rationale, final codes, and local correctness when assigned.</li>
+      </ul>
+
+      <p>
+        The current interface does not yet assemble all these fields on one review page.
+        Use stage exports and a run-scoped database query, or an approved analysis script,
+        to build the packet without changing the source tables.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-user-guide-override">
+      <title>Confirm, Revise, Reject, or Leave Unresolved</title>
+
+      <p>
+        Review the student's criterion-to-judgment relationship, not isolated words. Then
+        make one of the following decisions:
+      </p>
+
+      <dl width="narrow">
+        <li><title>Confirm</title><p>Keep the tool's candidate-code set. Record <c>confirm</c> with the same before-and-after list and an optional rationale.</p></li>
+        <li><title>Revise</title><p>Use <c>add</c>, <c>remove</c>, or <c>replace</c> and preserve both the tool list and reviewer list. Explain the decisive evidence.</p></li>
+        <li><title>Reject all</title><p>Use <c>reject_all</c> when none of the candidates is defensible. Do not force the nearest code.</p></li>
+        <li><title>Unresolved</title><p>Leave the review in an unresolved or in-progress state and explain what is missing or ambiguous. Because <c>unresolved</c> is not an override-log edit kind, preserve it through review status and notes.</p></li>
+      </dl>
+
+      <p>
+        OOV, no-match, alternate matches, coder disagreement, and unresolved decisions are
+        analytic data. Do not erase them after a later decision is made. Final review must
+        also keep local correctness and goal coverage separate, following
+        <xref ref="ch-edge-cases-decisions" text="title"/>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-user-guide-compare">
+      <title>Compare a Run Against Gold Coding</title>
+
+      <p>
+        The <c>sa compare</c> command scores one pipeline run against a human gold CSV
+        containing <c>response_id</c> and <c>code_id</c> rows (extra columns are
+        ignored; a blank <c>code_id</c> means the response was included but received no
+        code). It reports include/exclude agreement and per-code precision and recall
+        as a markdown report, written to <c>--out</c> or stdout.
+      </p>
+
+      <program>
+python -m proteus.cli --db data/proteus.db sa compare gold.csv \
+    --run-id 17 --question QUESTION_ID \
+    --universe exports/gold_sample.key.csv \
+    -o reports/run17_vs_gold.md
+      </program>
+
+      <p>
+        Bound the comparison universe with <c>--universe</c> — the gold-sample answer
+        key works as-is — so responses the coders never saw do not count as
+        gold-excluded. When preparing the human side, remember that coders record one
+        primary code plus alternates while the pipeline reports every match its
+        patterns permit; a fair comparison reads the human side as <c>code</c>
+        together with <c>alt_codes</c> (Coding Protocol <m>\pi</m> §1).
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-user-guide-export">
+    <title>Export and Archive</title>
+
+    <p>
+      The current short-answer export command supports five stage views —
+      <c>responses</c>, <c>screenings</c>, <c>chains</c>, <c>matches</c>, and
+      <c>dispositions</c> — plus the <c>gold_sample</c> sampler described below. Scope
+      exports by question and run whenever possible.
+    </p>
+
+    <program>
+python -m proteus.cli --db data/proteus.db sa export responses \
+    --question QUESTION_ID -o exports/QUESTION_ID_responses.csv
+
+python -m proteus.cli --db data/proteus.db sa export screenings \
+    --question QUESTION_ID --run-id 17 -o exports/run17_screenings.csv
+
+python -m proteus.cli --db data/proteus.db sa export chains \
+    --question QUESTION_ID --run-id 17 -o exports/run17_chains.csv
+
+python -m proteus.cli --db data/proteus.db sa export matches \
+    --question QUESTION_ID --run-id 17 -o exports/run17_matches.csv
+
+python -m proteus.cli --db data/proteus.db sa export dispositions \
+    --question QUESTION_ID --run-id 17 --disposition escalate \
+    -o exports/run17_escalations.csv
+      </program>
+
+      <p>
+        The <c>gold_sample</c> export draws a reproducible stratified sample for
+        independent human coding: a blinded coder sheet showing no pipeline outputs,
+        plus a companion answer key (identifiers and strata only, no response text)
+        written beside it. <c>--seed</c> fixes the sample (default 0; same database,
+        seed, and options reproduce the same sample), <c>--per-stratum</c> sets how
+        many responses are drawn per stratum (default 10; smaller strata are taken
+        whole), <c>--strata</c> selects <c>question</c> strata (the default) or
+        <c>screening</c> strata (question by Stage 2 label, which requires
+        <c>--run-id</c>), and <c>--key</c> overrides the answer-key path (default:
+        the output path with a <c>.key.csv</c> suffix).
+      </p>
+
+      <program>
+python -m proteus.cli --db data/proteus.db sa export gold_sample \
+    --question QUESTION_ID --seed 0 --per-stratum 10 \
+    -o exports/gold_sample.csv
+      </program>
+
+      <p>
+        Review tables are stored in SQLite but are not export datasets. Export them
+        with a reviewed, version-controlled analysis script or preserve a read-only
+        database snapshot. Do not modify operational tables merely to create a
+        spreadsheet.
+      </p>
+
+      <p>
+        An archive for a completed analysis should include:
+      </p>
+
+      <ul>
+        <li>a protected copy or approved reference to each raw export;</li>
+        <li>its import identifier and hash;</li>
+        <li>a database snapshot or reproducible migration state;</li>
+        <li>all stage and final-review exports;</li>
+        <li>the exact codebook, vocabulary, protocol, and question-frame versions;</li>
+        <li>the software commit or release identifier;</li>
+        <li>the commands or script used; and</li>
+        <li>an experiment-log entry explaining purpose, result, and limitations.</li>
+      </ul>
+  </section>
+
+  <section xml:id="sec-user-guide-troubleshooting">
+    <title>Troubleshooting</title>
+
+    <table xml:id="tab-user-guide-troubleshooting">
+      <title>Common symptoms and checks.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="30%"/>
+        <col width="70%"/>
+        <row header="yes" bottom="medium"><cell><p>Symptom</p></cell><cell><p>Checks</p></cell></row>
+        <row><cell><p>Ingest rejects the file</p></cell><cell><p>Check the format override and required headers. For a duplicate-file error, compare the file hash and decide whether the earlier import is the intended source.</p></cell></row>
+        <row><cell><p>Events exist but responses do not</p></cell><cell><p>Run <c>sa derive</c>. Verify that the event selection is claimed by the short-answer service, the action text is present, identifiers are nonblank, and timestamps are valid.</p></cell></row>
+        <row><cell><p>CLI and interface show different data</p></cell><cell><p>Confirm that both use the same <c>--db</c> path. The default is repository-relative, so starting tools from different locations can create confusion if an explicit path is not used.</p></cell></row>
+        <row><cell><p>No chains appear</p></cell><cell><p>Extraction processes only <c>INCLUDE</c> screenings from the same run. Check the screening label and <c>run_id</c>.</p></cell></row>
+        <row><cell><p>Chains are empty</p></cell><cell><p>The keyword extractor found no supported connector or no conclusion clause. A common systematic case is a response the screener included on a connector the extractor does not split on, such as <c>if</c> or <c>given</c>. Read <c>extractor_notes</c>; do not invent an episode to fill the table.</p></cell></row>
+        <row><cell><p>Most steps are OOV</p></cell><cell><p>Check whether the correct vocabulary version is attached to the run. The current baseline matches literal canonical-form substrings, so ordinary paraphrases may remain OOV even when a human recognizes them.</p></cell></row>
+        <row><cell><p>No codes match</p></cell><cell><p>Check codebook version, accepted status, keyword patterns, and surface markers. Structural <c>slot=term</c> patterns are stored but are not evaluated by the current keyword matcher.</p></cell></row>
+        <row><cell><p>Counts exceed the number of responses</p></cell><cell><p>Several runs may exist for the same response. Count distinct response identifiers or filter to one run before interpreting stage counts.</p></cell></row>
+        <row><cell><p>Matching or disposition page is missing</p></cell><cell><p>This is expected in the current Streamlit interface. Run and inspect those stages through the CLI or database.</p></cell></row>
+        <row bottom="minor"><cell><p>A stage fails halfway</p></cell><cell><p>The supplied batch runners roll back their stage writes on failure. Read the error, fix the cause, and rerun the same stage and run identifier. Verify the database before assuming partial rows remain.</p></cell></row>
+      </tabular>
+    </table>
+  </section>
+</chapter>

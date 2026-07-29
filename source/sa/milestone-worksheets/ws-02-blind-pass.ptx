@@ -1,0 +1,806 @@
+<section xml:id="sec-ws-02-blind-pass">
+  <title>Worksheet 2: Blind Episode Pass</title>
+
+  <objectives>
+    <ul>
+      <li>Produce an independent record of the justification visible in each assigned response.</li>
+      <li>Screen and segment responses without access to codebook identities or machine proposals.</li>
+      <li>Record criteria, inferential links, judgments, completeness, and episode relations without repairing the response.</li>
+      <li>Document uncertainty and alternative readings before comparison or review.</li>
+      <li>Lock the first-pass record so later assistance cannot erase the unaided analysis.</li>
+    </ul>
+  </objectives>
+
+  <introduction>
+    <p>
+      This worksheet is the second milestone in the researcher training sequence. It
+      measures how you interpret short mathematical justifications before formal
+      categories or machine suggestions can influence that interpretation. Your task is
+      to preserve the episode structure visible in the response, not to assign a
+      control-structure code or decide whether the pipeline would agree.
+    </p>
+
+    <p>
+      This is an <term>independent</term> milestone. Complete the assigned batch without
+      consulting another coder, the project codebook, the controlled vocabulary, or any
+      pipeline output. Questions about instructions or missing materials may be sent to
+      the research lead. Questions about how another person interpreted a particular
+      response must wait until the comparison or review stage.
+    </p>
+
+    <remark xml:id="rem-ws-02-status">
+      <title>Milestone status</title>
+      <p>
+        Completing this worksheet does not authorize formal coding of project data. It
+        establishes whether you can produce a stable, auditable episode extraction
+        without categorical or machine anchoring. Advancement is based on the preserved
+        first-pass record and the review described at the end of this worksheet.
+      </p>
+    </remark>
+
+    <remark xml:id="rem-ws-02-governing-instrument">
+      <title>Governing instrument (adjudicated 2026-07-28)</title>
+      <p>
+        The ratified blind-pass instrument is the assigned student-tasks packet:
+        Exercise 2 Part A, the supplied blind-pass sheet template, and the Coder's
+        Handbook Part I. This worksheet is a derived milestone guide, not a second
+        instrument. Where this worksheet and the assigned packet differ — in field
+        lists, recorded values, or reading and access restrictions — the packet
+        governs. The Coding Protocol <m>\pi</m> is released only after the blind
+        pass and does not govern it; the pass is deliberately protocol-light.
+      </p>
+    </remark>
+  </introduction>
+  <subsection xml:id="subsec-ws-01-overview">
+    <title>Milestone at a Glance</title>
+
+    <table xml:id="tab-ws-01-overview">
+        <title>Purpose and output of the onboarding milestone.</title>
+        <tabular halign="left" top="major" bottom="minor">
+            <col width="20%"/>
+            <col width="80%"/>
+            <row header="yes" bottom="medium">
+                    <cell><p>Item</p></cell>
+                    <cell><p>Description</p></cell>
+            </row>
+            <row>
+              <cell><p>Purpose</p></cell>
+              <cell><p>Learn the <xref ref="g-evidence-boundary" text="title"/> and practice episode coding.</p></cell>
+            </row>
+            <row>
+              <cell><p>Work-mode</p></cell>
+              <cell><p>Independent first attempt followed by review and feedback.</p></cell>
+            </row>
+            <row>
+              <cell><p>Data</p></cell>
+              <cell><p>Constructed responses only. No real data is used.</p></cell>
+            </row>
+            <row>
+              <cell><p>Support</p></cell>
+              <cell><p>Assigned handbook sections, worked examples, personal notes, and discussion at meetings.</p></cell>
+            </row>
+            <row bottom="minor">
+              <cell><p>Deliverable</p></cell>
+              <cell><p>A completed worksheet with the original attempt, corrections, and brief evidence-based rationales.</p></cell>
+            </row>
+        </tabular>
+    </table>
+  </subsection>
+  <subsection xml:id="subsec-ws-02-overview">
+    <title>Milestone at a Glance</title>
+
+    <table xml:id="tab-ws-02-overview">
+      <title>Purpose and output of the blind-pass milestone.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="22%"/>
+        <col width="78%"/>
+        <row header="yes" bottom="medium">
+            <cell><p>Item</p></cell>
+            <cell><p>Description</p></cell>
+        </row>
+        <row>
+            <cell><p>Primary purpose</p></cell>
+            <cell><p>Capture unaided screening, segmentation, and episode interpretation before formal matching begins.</p></cell>
+        </row>
+        <row>
+            <cell><p>Work mode</p></cell>
+            <cell><p>Independent, codebook-blind, and machine-blind.</p></cell>
+        </row>
+        <row>
+            <cell><p>Data</p></cell>
+            <cell><p>The assigned blind-pass packet. Use only the question contexts and responses supplied for this milestone.</p></cell>
+        </row>
+        <row>
+            <cell><p>Primary deliverable</p></cell>
+            <cell><p>A locked first-pass record containing one row per identified episode, own-words rules and invented category labels with a personal category legend, confidence, and evidence-based notes.</p></cell>
+        </row>
+        <row>
+            <cell><p>Not produced</p></cell>
+            <cell><p>Control-structure codes, goal coverage, dispositions, or reviews of machine proposals. The two correctness digits <em>are</em> recorded for complete episodes: they evaluate the mathematics against the question and require no codebook.</p></cell>
+        </row>
+        <row bottom="minor">
+            <cell><p>Next milestone</p></cell>
+            <cell><p>The codebook-assisted pass, after the research lead confirms that the blind record is complete and properly preserved.</p></cell>
+        </row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-02-prerequisites">
+    <title>Prerequisites and Assigned Reading</title>
+
+    <p>
+      Begin only after the research lead has marked Worksheet 1 complete and supplied
+      the blind-pass packet, coding sheet, and governing version labels. Review the
+      following sections before opening the response packet:
+    </p>
+
+    <ol>
+      <li>
+        <p>
+          <xref ref="subsec-episode-components" text="title"/>,
+          <xref ref="subsec-episode-explicit-implicit-absent" text="title"/>,
+          <xref ref="subsec-episode-complete-incomplete" text="title"/>, and
+          <xref ref="subsec-episode-no-repair" text="title"/> in
+          <xref ref="ch-episode-model" text="title"/>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <xref ref="subsec-coding-context" text="title"/> and
+          <xref ref="subsec-coding-independent-pass" text="title"/> in
+          <xref ref="ch-coding-workflow" text="title"/>.
+        </p>
+      </li>
+      <li>
+        <p>
+          Steps 1–5 and Step 9 in <xref ref="sec-coding-pass" text="title"/>:
+          screening, segmentation, transcription, link recording, episode relations,
+          and confidence.
+        </p>
+      </li>
+      <li>
+        <p>
+          <xref ref="subsec-decision-screening" text="title"/>,
+          <xref ref="subsec-decision-segmentation" text="title"/>, and
+          <xref ref="subsec-decision-interpretation" text="title"/> in
+          <xref ref="ch-edge-cases-decisions" text="title"/>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <xref ref="subsec-app-coding-sheet-response-fields" text="title"/> and
+          <xref ref="subsec-app-coding-sheet-episode-fields" text="title"/> in
+          <xref ref="app-coding-sheet" text="title"/>.
+        </p>
+      </li>
+    </ol>
+
+    <p>
+      Do not read <xref ref="app-protocol-summary" text="title"/> before or during
+      the blind pass: it summarizes coding-protocol rules that are released only
+      with the assisted recode, and the blind measurement depends on your not having
+      them yet.
+    </p>
+
+    <p>
+      The reading provides rules, not answers to the assigned responses. Do not search
+      the handbook, repository, or earlier exercises for wording that resembles a
+      response in the blind packet.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-02-access">
+    <title>Materials and Access Rules</title>
+
+    <table xml:id="tab-ws-02-access">
+      <title>Resources available and withheld during the blind pass.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="50%"/>
+        <col width="50%"/>
+        <row header="yes" bottom="medium">
+            <cell><p>You may use</p></cell>
+            <cell><p>You must not use</p></cell>
+        </row>
+        <row>
+            <cell><p>The exact question, representations, goals, and normative context supplied in the packet</p></cell>
+            <cell><p>The project codebook, code names, code descriptions, or <c>CS1</c>–<c>CS10</c> labels</p></cell>
+        </row>
+        <row>
+            <cell><p>The response text and stable identifiers supplied in the packet</p></cell>
+            <cell><p>The controlled vocabulary or lists of preferred mathematical terms</p></cell>
+        </row>
+        <row>
+            <cell><p>The Episode Model, Coding Workflow, edge-case rules, and assigned coding-sheet dictionary</p></cell>
+            <cell><p>Another coder's sheet, notes, interpretation, or advice about a response</p></cell>
+        </row>
+        <row>
+            <cell><p>Your own notes created before opening the assigned packet</p></cell>
+            <cell><p>Pipeline screening, extraction, matching, confidence, or disposition output</p></cell>
+        </row>
+        <row>
+            <cell><p>The research lead for questions about instructions, missing context, identifiers, or approved access</p></cell>
+            <cell><p>Public search, external AI systems, unapproved cloud tools, or real-response examples outside the packet</p></cell>
+        </row>
+        <row bottom="minor">
+            <cell><p>The approved project folder and assigned coding application</p></cell>
+            <cell><p>Private copies, screenshots, personal notes applications, or local renaming of supplied identifiers</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <warning xml:id="warn-ws-02-independence">
+      <title>Protect the blind record</title>
+      <p>
+        The blind pass is a study control. Seeing a code name, another coder's decision,
+        or a machine proposal before submission changes the evidence this milestone is
+        intended to produce. If accidental exposure occurs, stop, preserve what you had
+        completed, and report the exposure to the research lead. Do not conceal the
+        incident or continue as though the pass remained blind.
+      </p>
+    </warning>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-02-packet">
+    <title>Check the Assigned Packet</title>
+
+    <p>
+      Before coding any response, verify that the packet provides enough context for an
+      independent reading. Record the supplied values in the manifest below. Do not
+      invent missing identifiers or privately repair inconsistent materials.
+    </p>
+
+    <table xml:id="tab-ws-02-packet-manifest">
+      <title>Blind-pass packet manifest.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="32%"/>
+        <col width="68%"/>
+        <row header="yes" bottom="medium">
+            <cell><p>Required item</p></cell>
+            <cell><p>Value or confirmation</p></cell>
+        </row>
+        <row>
+            <cell><p>Batch identifier</p></cell>
+            <cell><p>Record the supplied blind-pass batch ID.</p></cell>
+        </row>
+        <row>
+            <cell><p>Question identifier(s)</p></cell>
+            <cell><p>Record every supplied <c>question_id</c>.</p></cell>
+        </row>
+        <row>
+            <cell><p>Response identifiers</p></cell>
+            <cell><p>Confirm that every response has one stable <c>response_id</c>.</p></cell>
+        </row>
+        <row>
+            <cell><p>Question context</p></cell>
+            <cell><p>Confirm that the exact prompt and relevant representation are present.</p></cell>
+        </row>
+        <row>
+            <cell><p>Normative context</p></cell>
+            <cell><p>Confirm that the agreed mathematical state needed to interpret the response is present.</p></cell>
+        </row>
+        <row>
+            <cell><p>Requested goals</p></cell>
+            <cell><p>Confirm that the packet identifies what the question asks the student to address.</p></cell>
+        </row>
+        <row>
+            <cell><p>Assigned schema</p></cell>
+            <cell><p>Record the coding-sheet or database template supplied for the pass.</p></cell>
+        </row>
+        <row bottom="minor">
+            <cell><p>Governing versions</p></cell>
+            <cell><p>Record the worksheet, handbook, and protocol versions supplied with the assignment.</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <warning xml:id="warn-ws-02-stop-context">
+      <title>Stop when the packet is incomplete</title>
+      <p>
+        Stop and contact the research lead when the prompt, mathematical representation,
+        normative context, response text, or stable identifiers are missing, corrupted,
+        or internally inconsistent. A private correction would create a different coding
+        task from the one assigned.
+      </p>
+    </warning>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-02-fields">
+    <title>Fields for This Pass</title>
+
+    <p>
+      Use the assigned coding schema. Complete only the fields authorized below. If the
+      physical sheet uses different column names, follow the supplied mapping rather
+      than creating new columns.
+    </p>
+
+    <table xml:id="tab-ws-02-fields">
+      <title>Columns of the blind-pass template.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="29%"/>
+        <col width="20%"/>
+        <col width="51%"/>
+        <row header="yes" bottom="medium">
+            <cell><p>Field or field group</p></cell>
+            <cell><p>Action</p></cell>
+            <cell><p>Blind-pass rule</p></cell>
+        </row>
+        <row>
+            <cell><p><c>response_id</c></p></cell>
+            <cell><p>Complete</p></cell>
+            <cell><p>Copy supplied identifiers exactly.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>episode_n</c></p></cell>
+            <cell><p>Complete when applicable</p></cell>
+            <cell><p>Number episodes in the order their judgments appear. Use the assigned stub-row convention when no episode is identifiable.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>own_words_rule</c></p></cell>
+            <cell><p>Complete</p></cell>
+            <cell><p>The heart of the blind pass. One sentence in your own plain words: <q>The student decides ___ because ___.</q> Reconstructed material belongs here, never in the verbatim fields.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>my_category</c></p></cell>
+            <cell><p>Complete</p></cell>
+            <cell><p>A short label you invent for the kind of rule. Reuse your own labels when the same kind recurs, and keep a personal legend defining each label.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>criterion_verbatim</c>, <c>judgment_verbatim</c></p></cell>
+            <cell><p>Complete</p></cell>
+            <cell><p>Copy visible evidence. Leave missing components missing.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>link_stated</c></p></cell>
+            <cell><p>Complete</p></cell>
+            <cell><p>Classify the link as <c>explicit</c>, <c>implicit</c>, or <c>absent</c>. The blind template has no separate reconstructed-link column; your reading of the rule lives in <c>own_words_rule</c>.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>complete</c></p></cell>
+            <cell><p>Complete</p></cell>
+            <cell><p>Completeness depends on identifiable <m>C</m> and <m>J</m>. An absent link alone does not make an episode incomplete.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>c1</c>, <c>c2</c></p></cell>
+            <cell><p>Complete for complete episodes</p></cell>
+            <cell><p>The two-digit correctness code per the Coder's Handbook. The digits evaluate the mathematics against the question and require no codebook. Leave blank for incomplete episodes.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>relation</c></p></cell>
+            <cell><p>Complete when applicable</p></cell>
+            <cell><p>Record <c>chained(k)</c> or <c>independent</c>; leave blank for a lone episode. Preserve every defensible episode and relation.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>oov_note</c></p></cell>
+            <cell><p>Complete when applicable</p></cell>
+            <cell><p>Copy off-standard terminology verbatim. Do not translate it into preferred course language.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>confidence</c>, <c>notes</c></p></cell>
+            <cell><p>Complete</p></cell>
+            <cell><p>Record confidence in your interpretation and identify the source of uncertainty.</p></cell>
+        </row>
+        <row bottom="minor">
+            <cell><p><c>code</c>, <c>alt_codes</c>, <c>goal_coverage</c>, and all screening, disposition, review, and version columns</p></cell>
+            <cell><p>Not present</p></cell>
+            <cell><p>The blind template deliberately carries no codebook-shaped, routing, or comparison columns. The recode columns are appended only in the later assisted pass; do not add them now. Governing versions are preserved in the submission version record, not on coding rows.</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      Screening has no dedicated column in the blind template: every assigned response
+      is represented by at least one row, and a response with no identifiable episode
+      receives the assigned stub-row convention with the visible basis recorded in
+      <c>notes</c>.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-02-procedure">
+    <title>Blind-Pass Procedure</title>
+
+    <p>
+      Process one complete response at a time. Do not begin by scanning the packet for
+      recurring words or likely categories.
+    </p>
+
+    <ol>
+      <li>
+        <p>
+          <term>Read the context.</term> Read the exact prompt, representation,
+          normative context, and requested goals before reading the response.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>Read the entire response.</term> Do not code from an isolated phrase or
+          stop after recognizing one familiar mathematical statement.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>Screen.</term> Decide whether the response contains or plausibly
+          contains analyzable mathematical justification. Record a brief rationale.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>Segment.</term> Identify every defensible criterion-to-judgment move.
+          Connector words may help, but they do not determine episode boundaries.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>Transcribe.</term> Record the criterion and judgment from the student's
+          wording before writing anything in your own words.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>Record the rule in your own words.</term> Complete
+          <c>own_words_rule</c> and <c>my_category</c>, then classify
+          <c>link_stated</c> as explicit, implicit, or absent. When no justification
+          is recoverable, mark it absent; do not invent one.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>Record structure.</term> Mark completeness and the relation among
+          episodes. Preserve alternative segmentations in notes rather than replacing
+          the primary record.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>Record confidence.</term> Assign confidence to the coding decision and
+          identify the precise source of uncertainty when the decision is arguable or
+          unresolved.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>Check the row against the response.</term> Confirm that verbatim fields
+          contain only source evidence and that no missing reason or conclusion has been
+          supplied from the normative reference.
+        </p>
+      </li>
+      <li>
+        <p>
+          <term>Continue independently.</term> Record questions for the research lead
+          under the rules below; do not seek another coder's interpretation.
+        </p>
+      </li>
+    </ol>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-02-assignment">
+    <title>Assignment</title>
+
+    <exercise xml:id="ex-ws-02-manifest">
+      <title>Part A: Verify the Batch</title>
+      <statement>
+        <p>
+          Complete the packet manifest in <xref ref="tab-ws-02-packet-manifest"/>
+          before coding. Report any missing or inconsistent item and wait for corrected
+          materials when the issue changes the task.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-02-screen">
+      <title>Part B: Screen Every Response</title>
+      <statement>
+        <p>
+          Represent every assigned <c>response_id</c> by at least one row. A
+          mathematically incorrect response still receives episode analysis. Blanks
+          and bare answers still get a row: use the assigned stub-row convention and
+          record a one-sentence note tied to visible evidence.
+        </p>
+
+        <p>
+          Preserve uncertain cases for review. Do not exclude a response merely because
+          its language is unfamiliar, compressed, or difficult to parse.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-02-extract">
+      <title>Part C: Extract and Relate Episodes</title>
+      <statement>
+        <p>
+          For every response that continues to episode analysis:
+          <ol>
+            <li>identify every defensible episode;</li>
+            <li>number episodes in the order their judgments appear;</li>
+            <li>copy each criterion and judgment into its verbatim field;</li>
+            <li>write the own-words rule and your invented category label;</li>
+            <li>classify the link as <c>explicit</c>, <c>implicit</c>, or <c>absent</c>;</li>
+            <li>record episode completeness;</li>
+            <li>record the two correctness digits for complete episodes;</li>
+            <li>record <c>chained(k)</c> or <c>independent</c> relations, leaving the field blank for a lone episode; and</li>
+            <li>preserve a defensible alternative segmentation in <c>notes</c>.</li>
+          </ol>
+        </p>
+
+        <p>
+          Do not assign control-structure codes and do not evaluate overall goal
+          coverage in this milestone; those columns are appended only in the later
+          assisted pass.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-02-uncertainty">
+      <title>Part D: Document Uncertainty</title>
+      <statement>
+        <p>
+          Assign a confidence value to every recorded analysis. For each
+          <c>confidence</c>=1 or <c>confidence</c>=2 decision, write a concise note that
+          identifies the uncertainty as one or more of the following:
+          <ul>
+            <li>screening;</li>
+            <li>episode boundary;</li>
+            <li>criterion;</li>
+            <li>inferential link;</li>
+            <li>judgment;</li>
+            <li>episode relation;</li>
+            <li>unfamiliar terminology;</li>
+            <li>missing question context; or</li>
+            <li>current policy.</li>
+          </ul>
+        </p>
+
+        <p>
+          State the visible evidence for your primary reading and the strongest
+          alternative. Do not write only <q>unclear</q> or <q>not sure.</q>
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-02-integrity-check">
+      <title>Part E: Perform the Integrity Check</title>
+      <statement>
+        <p>
+          Before submission, search the completed record for fields or text that would
+          show accidental assistance. Confirm that:
+          <ul>
+            <li>no <c>CS</c> labels or codebook names appear;</li>
+            <li>no machine proposal has been copied or paraphrased;</li>
+            <li>no note cites another coder's interpretation;</li>
+            <li>no codebook-dependent or review-dependent columns have been added;</li>
+            <li>verbatim fields preserve the student's wording; and</li>
+            <li>the first-pass timestamps and governing versions are present in the submission version record (<xref ref="tab-ws-02-version-record"/>), not as added columns on coding rows.</li>
+          </ul>
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-02-lock">
+      <title>Part F: Lock the First-Pass Record</title>
+      <statement>
+        <p>
+          Submit the completed file through the approved project location and follow the
+          supplied procedure for marking the pass <c>locked</c>. After submission:
+          <ul>
+            <li>do not overwrite or silently revise the blind record;</li>
+            <li>do not replace it with a corrected copy under the same filename;</li>
+            <li>record later corrections in the assigned review or override fields; and</li>
+            <li>retain the original analysis even when later discussion changes your decision.</li>
+          </ul>
+        </p>
+      </statement>
+    </exercise>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-02-questions">
+    <title>Questions, Interruptions, and Escalation</title>
+
+    <table xml:id="tab-ws-02-questions">
+      <title>How to handle questions without compromising independence.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="31%"/>
+        <col width="69%"/>
+        <row header="yes" bottom="medium">
+            <cell><p>Situation</p></cell>
+            <cell><p>Required action</p></cell>
+        </row>
+        <row>
+            <cell><p>A worksheet instruction is ambiguous</p></cell>
+            <cell><p>Ask the research lead for clarification. Record the clarification if it changes how the whole batch is processed.</p></cell>
+        </row>
+        <row>
+            <cell><p>The question context or response text appears incomplete</p></cell>
+            <cell><p>Stop on that item and report the missing material. Do not reconstruct it privately.</p></cell>
+        </row>
+        <row>
+            <cell><p>Two readings of a response are defensible</p></cell>
+            <cell><p>Record a primary reading, the alternative, and reduced confidence. Continue without consulting another coder.</p></cell>
+        </row>
+        <row>
+            <cell><p>You want to know how another coder handled the case</p></cell>
+            <cell><p>Record the question and wait until the comparison stage.</p></cell>
+        </row>
+        <row>
+            <cell><p>You accidentally see a codebook entry, another coder's work, or machine output</p></cell>
+            <cell><p>Stop, preserve the work completed before exposure, and report the incident immediately.</p></cell>
+        </row>
+        <row>
+            <cell><p>You discover a possible data-access or privacy problem</p></cell>
+            <cell><p>Stop work and follow the incident procedure in <xref ref="subsec-data-incident" text="title"/>.</p></cell>
+        </row>
+        <row bottom="minor">
+            <cell><p>You become fatigued or notice inconsistent decisions</p></cell>
+            <cell><p>End the session, record the stopping point, and resume later. Do not silently rewrite earlier rows.</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      See <xref ref="subsec-data-useful-question" text="title"/> for the form of a
+      useful analytic question and <xref ref="rem-coding-no-silent-revision" text="title"/>
+      for the rule governing later discoveries of drift.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-02-deliverables">
+    <title>Deliverables</title>
+
+    <p>
+      Submit the following through the approved project location:
+      <ol>
+        <li>the completed packet manifest;</li>
+        <li>one row for every defensible episode, plus the assigned stub record for responses with no episode, so that every assigned response is represented;</li>
+        <li>the personal category legend: each <c>my_category</c> label with a one-line definition and a count of uses;</li>
+        <li>confidence and evidence-based uncertainty notes;</li>
+        <li>a brief incident note for any exposure, missing context, or access problem;</li>
+        <li>the integrity-check confirmation; and</li>
+        <li>the locked first-pass file with the version record below.</li>
+      </ol>
+    </p>
+
+    <table xml:id="tab-ws-02-version-record">
+      <title>Version information to preserve with the blind-pass submission.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="34%"/>
+        <col width="66%"/>
+        <row header="yes" bottom="medium">
+            <cell><p>Field</p></cell>
+            <cell><p>Entry</p></cell>
+        </row>
+        <row>
+            <cell><p><c>worksheet_version</c></p></cell>
+            <cell><p><c>ws-02-blind-pass-v0.1</c></p></cell>
+        </row>
+        <row>
+            <cell><p><c>pass_type</c></p></cell>
+            <cell><p><c>blind_episode</c></p></cell>
+        </row>
+        <row>
+            <cell><p><c>batch_id</c></p></cell>
+            <cell><p>Record the identifier supplied with the packet.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>handbook_version</c></p></cell>
+            <cell><p>Record the version supplied with the assignment.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>protocol_version</c></p></cell>
+            <cell><p>Leave blank. The coding protocol is released after the blind pass and does not govern it.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>codebook_version</c></p></cell>
+            <cell><p>Leave blank.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>vocabulary_version</c></p></cell>
+            <cell><p>Leave blank.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>coder_id</c></p></cell>
+            <cell><p>Use the assigned project identifier.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>started_at</c></p></cell>
+            <cell><p>Record the start of the first work session.</p></cell>
+        </row>
+        <row>
+            <cell><p><c>coded_at</c></p></cell>
+            <cell><p>Record completion of the independent pass.</p></cell>
+        </row>
+        <row bottom="minor">
+            <cell><p><c>locked_at</c></p></cell>
+            <cell><p>Record when the first-pass record was submitted and locked.</p></cell>
+        </row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-02-checklist">
+    <title>Completion Checklist</title>
+
+    <p>
+      Before locking the submission, confirm that:
+      <ul>
+        <li>the packet manifest is complete and the supplied context is internally consistent;</li>
+        <li>every response is represented by at least one row, with stub rows and evidence-based notes for responses with no identifiable episode;</li>
+        <li>every defensible episode is preserved under the current record-everything rule;</li>
+        <li>criteria and judgments are copied from the response when present;</li>
+        <li>reconstructed material appears only in the own-words rule and notes, never in verbatim fields;</li>
+        <li>missing criteria or judgments have not been repaired;</li>
+        <li>link status and completeness are recorded as separate decisions;</li>
+        <li>alternative segmentations and readings are recorded in notes rather than substituted silently;</li>
+        <li>every low-confidence decision identifies the source of uncertainty;</li>
+        <li>correctness digits are recorded for complete episodes only, and no codebook, coverage, disposition, or review columns have been added;</li>
+        <li>no other coder's work or machine proposal influenced the record;</li>
+        <li>any accidental exposure or data incident has been reported;</li>
+        <li>identifiers and student wording have not been normalized or renamed;</li>
+        <li>the governing versions and timestamps are present; and</li>
+        <li>the submitted first-pass record is locked against silent revision.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-02-review">
+    <title>Review and Advancement</title>
+
+    <p>
+      The research lead first checks the submission for procedural integrity: complete
+      identifiers, authorized fields, preserved first-pass evidence, and compliance with
+      blind-access rules. Analytic review begins only after the record is locked.
+    </p>
+
+    <p>
+      The review should examine the earliest decision that produced each difference
+      between the blind record and the current reference analysis. A later disagreement
+      about the final episode description may originate in screening, episode boundary,
+      criterion selection, link reconstruction, judgment selection, or episode relation.
+      The reviewer should identify that earliest divergence rather than treating every
+      difference as one undifferentiated error.
+    </p>
+
+    <p>
+      The research lead may advance the researcher to the codebook-assisted pass when
+      the locked record demonstrates that the researcher can:
+      <ul>
+        <li>work independently under the stated access restrictions;</li>
+        <li>read the complete question context before interpreting a response;</li>
+        <li>screen for analyzable justification without screening on correctness;</li>
+        <li>identify and preserve defensible episode boundaries;</li>
+        <li>record <m>C</m>, <m>I</m>, and <m>J</m> without strengthening the response;</li>
+        <li>apply link status and completeness separately;</li>
+        <li>record chained and independent structure when present, with detected nesting noted;</li>
+        <li>write useful uncertainty notes rather than force agreement;</li>
+        <li>add no codebook-shaped columns or values; and</li>
+        <li>preserve the unaided record for later comparison.</li>
+      </ul>
+    </p>
+
+    <p>
+      Possible outcomes are:
+      <dl width="narrow">
+        <li>
+          <title>Advance</title>
+          <p>The blind record is procedurally valid and demonstrates stable independent extraction.</p>
+        </li>
+        <li>
+          <title>Targeted remediation</title>
+          <p>Complete a new short blind set focused on one decision type, such as segmentation or implicit links.</p>
+        </li>
+        <li>
+          <title>Repeat the blind pass</title>
+          <p>Complete a fresh packet when independence was compromised or several foundational decisions remain unstable.</p>
+        </li>
+        <li>
+          <title>Resolve a materials problem</title>
+          <p>Repeat affected items when the packet, schema, or governing instructions were incomplete or inconsistent.</p>
+        </li>
+      </dl>
+    </p>
+
+    <p>
+      Corrections made during review belong in the assigned review record. They must not
+      replace the locked blind submission. The difference between the two records is
+      evidence about training, protocol clarity, and possible anchoring in later stages.
+    </p>
+  </subsection>
+</section>

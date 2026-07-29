@@ -1,0 +1,373 @@
+<chapter xml:id="ch-theoretical-foundation">
+  <title>Theoretical Foundation</title>
+
+  <introduction>
+    <p>
+      The project needs a theoretical language that can describe mathematical
+      justification without treating a short written response as a complete record of
+      a student's knowledge. It draws on the cK¢ framework, which describes
+      mathematical knowing as situated in particular problems, actions,
+      representations, and forms of control.
+    </p>
+
+    <p>
+      The framework supplies the project's account of <term>control</term>: the means by
+      which a person selects an action, evaluates a result, validates a claim, or decides
+      that a problem has been resolved. The project then adapts this idea to the limited
+      evidence available in short written responses. It analyzes visible traces of
+      justification while preserving a strict boundary between what the response shows
+      and what a researcher might infer about the student.
+    </p>
+
+    <p>
+      This chapter introduces that theoretical foundation and states the claims it can
+      support. It does not define the project's response-level coding unit or prescribe
+      coding decisions. Those tasks belong to
+      <xref ref="ch-episode-model" text="title"/> and
+      <xref ref="ch-coding-workflow" text="title"/>.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-ck-cent-framework">
+    <title>The cK¢ Framework</title>
+
+    <paragraphs xml:id="subsec-ck-cent-situated-knowing">
+      <title>Situated Mathematical Knowing</title>
+
+      <p>
+        The cK¢ framework treats mathematical knowing as situated rather than as a
+        fixed collection of beliefs that can be read directly from a student's words.
+        A conception describes a form of mathematical activity that functions within a
+        particular range of problems and conditions. The problems posed, the actions
+        available, the representations in use, and the criteria for judging progress
+        all contribute to that activity.
+      </p>
+
+      <p>
+        This perspective imposes an important evidentiary caution. A written response
+        gives researchers access to what the student wrote in one situation. It does not
+        provide direct access to every idea the student considered, every operation the
+        student performed, or every criterion the student could use in a different
+        situation. The same student may act differently when the question, notation,
+        representation, or available information changes.
+      </p>
+
+      <p>
+        The project therefore avoids treating one response as a stable description of
+        the student. Its immediate object is the mathematical reasoning made visible in
+        that response. Broader interpretations require evidence across additional tasks,
+        contexts, or sources.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-ck-cent-conception">
+      <title>The Conception Quadruplet</title>
+
+      <p>
+        In the cK¢ framework, a conception is represented by the quadruplet
+        <md>
+          (P,R,L,\Sigma).
+        </md>
+        Each component describes a different aspect of mathematical activity.
+        <dl width="medium">
+          <li>
+            <title>Problems: <m>P</m></title>
+            <p>
+              <m>P</m> is the class of problems or situations for which the conception
+              functions. A form of reasoning that is productive for one class of problems
+              may be incomplete or inappropriate for another.
+            </p>
+          </li>
+
+          <li>
+            <title>Operators: <m>R</m></title>
+            <p>
+              <m>R</m> is the set of mathematical actions used to work on a problem or
+              transform a representation in <m>L</m>. Examples include row reducing a
+              matrix, substituting into an equation, differentiating a function, and
+              rearranging a symbolic expression.
+            </p>
+          </li>
+
+          <li>
+            <title>Representation system: <m>L</m></title>
+            <p>
+              <m>L</m> is the linguistic, symbolic, graphical, or other system through
+              which mathematical objects, actions, feedback, and results are expressed.
+              Examples include equations, matrices, diagrams, written mathematical
+              language, and software interfaces.
+            </p>
+          </li>
+
+          <li>
+            <title>Control structure: <m>\Sigma</m></title>
+            <p>
+              <m>\Sigma</m> is the means used to make choices, evaluate actions, validate
+              results, and decide whether a problem has been solved. Examples include
+              applying a definition, checking a computation, recognizing that a system is
+              consistent, and using the presence of a free variable to classify the number
+              of solutions.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        In the system, an operator acts on a representation within a problem situation, 
+        and a control structure helps determine which actions and results are acceptable.
+      </p>
+
+      <p>
+        The project does not attempt to reconstruct this entire quadruplet from one
+        response. The quadruplet instead clarifies why the response must be interpreted
+        within its question context and why evidence about control is only one part of a
+        broader conception.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-ck-cent-controls">
+      <title>Control Structures</title>
+
+      <p>
+        This project focuses on evidence related to control structures because short
+        justifications often reveal how a student evaluates a mathematical situation.
+        A response may identify a feature, invoke a rule or definition, and use it to
+        support a conclusion. For example, a student may reason from the presence of a
+        free variable, the number of pivots, the consistency of a system, the dimension
+        of a space, or the sign of a derivative.
+      </p>
+
+      <p>
+        A <term>criterion</term> is a particular condition, feature, or result used in a
+        response. A <term>control structure</term> is the broader means by which such
+        information supports selection, evaluation, validation, or decision-making.
+        The two ideas are related but not interchangeable. The statement
+        <q>there is a free variable</q> may serve as a criterion in one response; the
+        associated control structure concerns how that criterion is used to classify or
+        validate a conclusion.
+      </p>
+
+      <p>
+        This distinction prevents the analysis from becoming keyword counting. A word
+        such as <q>pivot</q>, <q>dimension</q>, or <q>consistent</q> does not identify a
+        control structure by itself. Researchers must determine what mathematical role
+        the idea plays in the response and whether it is being used to support a
+        judgment.
+      </p>
+
+      <p>
+        The same criterion may also support different judgments in different contexts.
+        Its force depends on the mathematical state already established and on the goal
+        of the question. Control is therefore interpreted relative to the problem, not
+        as a universal association between a phrase and a code.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-ck-cent-operations-controls">
+      <title>Operations and Controls</title>
+
+      <p>
+        An <term>operation</term> creates, transforms, or computes with a mathematical
+        object. A <term>control</term> interprets a result and uses it to guide or justify
+        a decision. Compare the following statements.
+        <dl width="narrow">
+          <li>
+            <title>Operation</title>
+            <p><q>I row reduced the augmented matrix.</q></p>
+          </li>
+          <li>
+            <title>Control</title>
+            <p><q>The reduced matrix has no contradictory row, so the system is consistent.</q></p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        The first statement reports an action. The second interprets a feature of the
+        result and draws a judgment from it. The distinction concerns the role a claim
+        plays, not merely the vocabulary it contains.
+      </p>
+
+      <p>
+        Operations and controls can interact since the result of an operation
+        may become the criterion used in a later decision. For example, row reduction is
+        an operation, but the resulting pivot pattern or contradictory row may provide
+        evidence used to classify the system.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-framework-adaptation">
+    <title>Adaptation to Short Written Responses</title>
+
+    <paragraphs xml:id="subsec-framework-evidence">
+      <title>Evidence Available in a Response</title>
+
+      <p>
+        The cK¢ framework describes a conception through a coordinated system of
+        problems, operators, representations, and controls. A short written response
+        usually reveals only a small portion of that system. It may state a criterion
+        and conclusion while omitting the operations that produced the criterion. It may
+        report a computation without explaining how the result was evaluated. It may
+        also leave a connection implicit because the student assumes that the reader
+        will supply it.
+      </p>
+
+      <p>
+        These omissions are not uniquely interpretable. A missing explanation may mean
+        that the student did not know the relevant connection, chose not to write it,
+        considered it obvious, misunderstood the prompt, or ran out of time. The response
+        alone cannot determine which explanation is correct. Researchers must therefore
+        distinguish an absence of written evidence from evidence that the student lacks
+        an idea.
+      </p>
+
+      <p>
+        The project operationalizes the theoretical framework at the level of a
+        <term>response-level trace</term>. It identifies local pieces of written
+        justification that may provide evidence related to control. The project's
+        <term>Episode Model</term> represents these traces by recording a criterion, an
+        inferential connection, and a judgment. This representation is a project
+        construct motivated by the cK¢ framework; it is not a component of the original
+        conception quadruplet.
+      </p>
+
+      <p>
+        An episode therefore has a deliberately limited interpretation. It records how
+        the written response appears to justify a local judgment. It does not describe
+        everything the student knew, did, believed, or could have done. The complete
+        definition and boundary rules appear in
+        <xref ref="ch-episode-model" text="title"/>.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-framework-claims">
+      <title>Permitted and Prohibited Claims</title>
+
+      <p>
+        Decision rationales should be based only on what can be directly observed in 
+        student's response. Here are some examples of language that is consistent with 
+        this approach.
+      </p>
+
+      <table xml:id="tab-framework-claim-language">
+        <title>Language consistent with the evidence boundary.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="48%"/>
+          <col width="52%"/>
+          <row header="yes" bottom="medium">
+            <cell>Supported response-level claim</cell>
+            <cell>Unsupported stronger claim</cell>
+          </row>
+          <row>
+            <cell>
+              <q>The response provides evidence related to a control structure.</q>
+            </cell>
+            <cell><q>The response gives insight into the student's conception.</q></cell>
+          </row>
+          <row>
+            <cell>
+              <q>The student appears to use the presence of a free variable as a
+              criterion in this response.</q>
+            </cell>
+            <cell>
+              <q>The student always reasons about solution sets through free
+              variables.</q>
+            </cell>
+          </row>
+          <row>
+            <cell>
+              <q>The written justification contains an episode connecting this
+              criterion to this judgment.</q>
+            </cell>
+            <cell>
+              <q>This student must have used AI to generate this response.</q>
+            </cell>
+          </row>
+          <row bottom="minor">
+            <cell>
+              <q>Across the sampled responses, this form of justification recurs under
+              the stated conditions.</q>
+            </cell>
+            <cell>
+              <q>This is a pattern in the student's thought process.</q>
+            </cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        The left column does not prevent researchers from developing broader findings.
+        It requires those findings to be built from an appropriate body of evidence.
+        Repeated patterns across questions, students, or contexts may support claims
+        about the corpus or about the performance of the analytic method. Such claims
+        must still specify the sampled situations and should not be presented as direct
+        access to an individual's complete conception.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-framework-question-frame">
+      <title>Question-Level Analytic Context</title>
+
+      <p>
+        A short response is interpreted relative to the exact question it answers. The
+        words alone are insufficient because the validity and significance of a
+        criterion depend on what the problem establishes and what conclusion the student
+        is asked to justify.
+      </p>
+
+      <p>
+        Before responses to a question are analyzed, the research team must establish a
+        <term>question-level analytic context</term> containing at least:
+      </p>
+
+      <ul>
+        <li>the exact prompt and any accompanying instructions;</li>
+        <li>the mathematical objects, data, and representations supplied;</li>
+        <li>the judgment, explanation, or computation requested;</li>
+        <li>the mathematical state that may be treated as given;</li>
+        <li>a defensible reference analysis or solution;</li>
+        <li>the distinct goals that a complete response should address; and</li>
+        <li>
+          the definitions, results, and forms of reasoning available in the course
+          context.
+        </li>
+      </ul>
+
+      <p>
+        Consider the criterion <q>a free variable exists.</q> If a system is already
+        known to be consistent, that criterion can support the judgment that the solution
+        is not unique. If consistency has not been established, a free variable does not
+        by itself show that any solution exists. The written criterion is the same, but
+        its inferential force changes with the question's mathematical state.
+      </p>
+
+      <p>
+        The question-level context also separates local validity from complete goal
+        coverage. A response may contain a sound inference but address only one part of
+        the prompt. Conversely, a correct final answer may contain no visible
+        justification. The project evaluates these properties separately rather than
+        treating final-answer correctness as evidence for a control structure.
+      </p>
+
+      <p>
+        The codebook and controlled vocabulary are therefore not applied as universal
+        dictionaries. They are interpreted through question-specific information that
+        identifies relevant criteria, possible judgments, valid connections, and common
+        incomplete or incorrect uses. The construction of that information is described
+        in <xref ref="ch-codebook" text="title"/>.
+      </p>
+    </paragraphs>
+  </section>
+
+  <conclusion>
+    <p>
+      The cK¢ framework gives the project a situated account of mathematical knowing and
+      a language for describing operations, representations, and control. The project
+      adopts its emphasis on control while restricting its immediate claims to evidence
+      visible in a particular response and interpreted within a particular question.
+      The Episode Model provides the next step: a response-level representation of the
+      local justification through which that evidence appears.
+    </p>
+  </conclusion>
+</chapter>

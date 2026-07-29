@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-pipeline-trace">
+  <title>Field-by-Field Pipeline Trace</title>
+
+  <introduction>
+    <p>
+      This chapter follows five small synthetic responses through the current
+      deterministic short-answer baseline. The fixtures are designed to make each stage
+      result predictable. They are not student data, research findings, or the frozen
+      <c>CS1</c>–<c>CS10</c> codebook.
+    </p>
+
+    <p>
+      The trace uses a synthetic vocabulary containing <c>pivot_in_every_col</c>,
+      <c>system_consistent</c>, <c>free_var_exists</c>, and
+      <c>no_unique_solution</c>. Its synthetic codebook contains three keyword rules:
+      <c>pivot_in_every_col</c> maps to <c>TRACE-CS-PIVOT</c>,
+      <c>free_var_exists</c> maps to <c>TRACE-CS-FREE</c>, and
+      <c>no_unique_solution</c> maps to <c>TRACE-CS-NOT-UNIQUE</c>. These artificial
+      identifiers prevent the trace from implying claims about the governing research
+      codebook.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-trace-cases">
+    <title>Trace Fixtures</title>
+
+    <table xml:id="tab-trace-fixtures">
+      <title>Synthetic responses used in the trace.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="12%"/>
+        <col width="48%"/>
+        <col width="40%"/>
+        <row header="yes" bottom="medium"><cell><p>ID</p></cell><cell><p>Response text</p></cell><cell><p>Case exercised</p></cell></row>
+        <row><cell><p>T1</p></cell><cell><p><c>system_consistent because pivot_in_every_col</c></p></cell><cell><p>Canonical tokens and one matching code.</p></cell></row>
+        <row><cell><p>T2</p></cell><cell><p><c>no_unique_solution because free_var_exists</c></p></cell><cell><p>Canonical tokens and two distinct candidate codes.</p></cell></row>
+        <row><cell><p>T3</p></cell><cell><p>A unique solution is impossible because there is a free variable.</p></cell><cell><p>Ordinary student wording that the literal vocabulary baseline does not normalize.</p></cell></row>
+        <row><cell><p>T4</p></cell><cell><p><c>[1 0 0 0 | *]</c></p></cell><cell><p>Mathematical work without a verbal connector.</p></cell></row>
+        <row bottom="minor"><cell><p>T5</p></cell><cell><p>No.</p></cell><cell><p>Bare answer without justification.</p></cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      All five fixtures use one synthetic question, import, vocabulary version, codebook
+      version, and pipeline run. That shared provenance lets the stage tables be read as
+      one coherent execution.
+    </p>
+  </section>
+
+  <section xml:id="sec-trace-ingest">
+    <title>Stage 1: Ingest and Derive</title>
+
+    <p>
+      Core ingest registers the source file and writes generic events. Short-answer
+      derive then creates one <c>responses</c> row per eligible event. The following table
+      suppresses unrelated event fields but preserves the identifiers needed downstream.
+    </p>
+
+    <table xml:id="tab-trace-stage1">
+      <title>Selected <c>responses</c> fields after derive.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="13%"/><col width="13%"/><col width="20%"/><col width="54%"/>
+        <row header="yes" bottom="medium"><cell><p><c>response_id</c></p></cell><cell><p><c>import_id</c></p></cell><cell><p><c>question_id</c></p></cell><cell><p><c>response_text</c></p></cell></row>
+        <row><cell><p>trace-t1</p></cell><cell><p>1</p></cell><cell><p>trace-question</p></cell><cell><p><c>system_consistent because pivot_in_every_col</c></p></cell></row>
+        <row><cell><p>trace-t2</p></cell><cell><p>1</p></cell><cell><p>trace-question</p></cell><cell><p><c>no_unique_solution because free_var_exists</c></p></cell></row>
+        <row><cell><p>trace-t3</p></cell><cell><p>1</p></cell><cell><p>trace-question</p></cell><cell><p>A unique solution is impossible because there is a free variable.</p></cell></row>
+        <row><cell><p>trace-t4</p></cell><cell><p>1</p></cell><cell><p>trace-question</p></cell><cell><p><c>[1 0 0 0 | *]</c></p></cell></row>
+        <row bottom="minor"><cell><p>trace-t5</p></cell><cell><p>1</p></cell><cell><p>trace-question</p></cell><cell><p>No.</p></cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      The visible identifiers above are abbreviated for readability. In a real database,
+      response identifiers are stable hash-derived text values, and the response rows also
+      retain student, timestamp, and course information.
+    </p>
+  </section>
+
+  <section xml:id="sec-trace-screen">
+    <title>Stage 2: Screen</title>
+
+    <p>
+      The rule screener looks only at response text. It excludes blanks, no-effort text,
+      bare yes/no answers, and some very short unsupported responses. It includes a
+      response with a recognized connector. Mathematical work without a connector is
+      flagged for review.
+    </p>
+
+    <table xml:id="tab-trace-stage2">
+      <title>Selected <c>screenings</c> fields.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="14%"/><col width="12%"/><col width="16%"/><col width="16%"/><col width="42%"/>
+        <row header="yes" bottom="medium"><cell><p><c>response_id</c></p></cell><cell><p><c>run_id</c></p></cell><cell><p><c>label</c></p></cell><cell><p><c>confidence</c></p></cell><cell><p><c>rationale</c></p></cell></row>
+        <row><cell><p>trace-t1</p></cell><cell><p>8</p></cell><cell><p><c>INCLUDE</c></p></cell><cell><p>0.85</p></cell><cell><p>Contains a connector linking observation to conclusion.</p></cell></row>
+        <row><cell><p>trace-t2</p></cell><cell><p>8</p></cell><cell><p><c>INCLUDE</c></p></cell><cell><p>0.85</p></cell><cell><p>Contains a connector linking observation to conclusion.</p></cell></row>
+        <row><cell><p>trace-t3</p></cell><cell><p>8</p></cell><cell><p><c>INCLUDE</c></p></cell><cell><p>0.85</p></cell><cell><p>Contains a connector linking observation to conclusion.</p></cell></row>
+        <row><cell><p>trace-t4</p></cell><cell><p>8</p></cell><cell><p><c>FLAG</c></p></cell><cell><p>0.55</p></cell><cell><p>Mathematical work is present, but no connector links it to a conclusion.</p></cell></row>
+        <row bottom="minor"><cell><p>trace-t5</p></cell><cell><p>8</p></cell><cell><p><c>EXCLUDE</c></p></cell><cell><p>0.90</p></cell><cell><p>Bare yes/no answer with no verbal justification.</p></cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      Confidence is a heuristic score, not a calibrated probability. Extraction receives
+      only the three <c>INCLUDE</c> rows. T4 and T5 remain in the database and later receive
+      an escalation disposition; they are not deleted.
+    </p>
+  </section>
+
+  <section xml:id="sec-trace-extract">
+    <title>Stage 3: Extract</title>
+
+    <p>
+      The keyword extractor locates the first supported connector. In a sentence of the
+      form <q><m>X</m> because <m>Y</m></q>, the right clause becomes the legacy
+      <c>premise</c> and the left clause becomes the legacy <c>conclusion</c>. It then
+      searches each clause for a literal canonical-form vocabulary token. The longest
+      canonical token found in a clause is kept. A clause with no literal token is stored
+      as cleaned raw text and marks the step OOV.
+    </p>
+
+    <table xml:id="tab-trace-stage3-chains">
+      <title>Selected <c>chains</c> fields.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="15%"/><col width="15%"/><col width="15%"/><col width="55%"/>
+        <row header="yes" bottom="medium"><cell><p><c>chain_id</c></p></cell><cell><p><c>response_id</c></p></cell><cell><p><c>run_id</c></p></cell><cell><p><c>extractor_notes</c></p></cell></row>
+        <row><cell><p>101</p></cell><cell><p>trace-t1</p></cell><cell><p>8</p></cell><cell><p><c>connector=because</c></p></cell></row>
+        <row><cell><p>102</p></cell><cell><p>trace-t2</p></cell><cell><p>8</p></cell><cell><p><c>connector=because</c></p></cell></row>
+        <row bottom="minor"><cell><p>103</p></cell><cell><p>trace-t3</p></cell><cell><p>8</p></cell><cell><p><c>connector=because</c></p></cell></row>
+      </tabular>
+    </table>
+
+    <table xml:id="tab-trace-stage3-steps">
+      <title>Selected <c>chain_steps</c> fields.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="12%"/><col width="12%"/><col width="28%"/><col width="34%"/><col width="14%"/>
+        <row header="yes" bottom="medium"><cell><p><c>chain_id</c></p></cell><cell><p><c>step_index</c></p></cell><cell><p><c>premise</c></p></cell><cell><p><c>conclusion</c></p></cell><cell><p><c>oov_flag</c></p></cell></row>
+        <row><cell><p>101</p></cell><cell><p>1</p></cell><cell><p><c>pivot_in_every_col</c></p></cell><cell><p><c>system_consistent</c></p></cell><cell><p>0</p></cell></row>
+        <row><cell><p>102</p></cell><cell><p>1</p></cell><cell><p><c>free_var_exists</c></p></cell><cell><p><c>no_unique_solution</c></p></cell><cell><p>0</p></cell></row>
+        <row bottom="minor"><cell><p>103</p></cell><cell><p>1</p></cell><cell><p>there is a free variable</p></cell><cell><p>A unique solution is impossible</p></cell><cell><p>1</p></cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      T3 demonstrates a deliberate baseline limitation. A human recognizes the phrase
+      <q>there is a free variable</q>, but the baseline vocabulary matcher searches for the
+      literal token <c>free_var_exists</c>. The raw phrase is preserved and OOV is set
+      rather than silently normalizing the paraphrase. The current extractor produces at
+      most one step and does not store a separate inferential-link text or link-status
+      field.
+    </p>
+  </section>
+
+  <section xml:id="sec-trace-match">
+    <title>Stage 4: Match</title>
+
+    <p>
+      The keyword matcher compares the stored premise and conclusion with accepted codebook
+      keyword patterns and semicolon-delimited surface markers. It records one row per
+      distinct code, with every firing rationale joined into one explanation. Structural
+      <c>slot=term</c> patterns do not fire in the current baseline.
+    </p>
+
+    <table xml:id="tab-trace-stage4">
+      <title>Selected <c>matches</c> fields for the synthetic codebook.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="13%"/><col width="13%"/><col width="22%"/><col width="16%"/><col width="36%"/>
+        <row header="yes" bottom="medium"><cell><p><c>match_id</c></p></cell><cell><p><c>step_id</c></p></cell><cell><p><c>code_id</c></p></cell><cell><p><c>version_id</c></p></cell><cell><p><c>rationale</c></p></cell></row>
+        <row><cell><p>201</p></cell><cell><p>1001</p></cell><cell><p><c>TRACE-CS-PIVOT</c></p></cell><cell><p>3</p></cell><cell><p>Keyword pattern <c>pivot_in_every_col</c> matched on the premise.</p></cell></row>
+        <row><cell><p>202</p></cell><cell><p>1002</p></cell><cell><p><c>TRACE-CS-FREE</c></p></cell><cell><p>3</p></cell><cell><p>Keyword pattern <c>free_var_exists</c> matched on the premise.</p></cell></row>
+        <row bottom="minor"><cell><p>203</p></cell><cell><p>1002</p></cell><cell><p><c>TRACE-CS-NOT-UNIQUE</c></p></cell><cell><p>3</p></cell><cell><p>Keyword pattern <c>no_unique_solution</c> matched on the conclusion.</p></cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      T3 produces no match in this synthetic setup because neither raw clause contains a
+      synthetic keyword pattern. No row is written to represent <q>zero matches</q>; that
+      absence is interpreted by the disposer. Candidate-code presence does not establish
+      that a code is conceptually correct, nor do the null correctness fields establish an
+      incorrect criterion or link. They simply have not been scored.
+    </p>
+  </section>
+
+  <section xml:id="sec-trace-dispose">
+    <title>Stage 5: Dispose</title>
+
+    <p>
+      The rule disposer reads the screening label, chain presence and size, OOV count,
+      and distinct candidate codes. The first applicable rule wins.
+    </p>
+
+    <table xml:id="tab-trace-stage5">
+      <title>Selected <c>dispositions</c> fields.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="14%"/><col width="12%"/><col width="24%"/><col width="50%"/>
+        <row header="yes" bottom="medium"><cell><p><c>response_id</c></p></cell><cell><p><c>run_id</c></p></cell><cell><p><c>disposition</c></p></cell><cell><p><c>trigger_note</c></p></cell></row>
+        <row><cell><p>trace-t1</p></cell><cell><p>8</p></cell><cell><p><c>auto_accept</c></p></cell><cell><p>Single clean match: <c>TRACE-CS-PIVOT</c>.</p></cell></row>
+        <row><cell><p>trace-t2</p></cell><cell><p>8</p></cell><cell><p><c>standard_review</c></p></cell><cell><p>Two distinct codes: <c>TRACE-CS-FREE</c> and <c>TRACE-CS-NOT-UNIQUE</c>.</p></cell></row>
+        <row><cell><p>trace-t3</p></cell><cell><p>8</p></cell><cell><p><c>terminology_flag</c></p></cell><cell><p>One out-of-vocabulary step.</p></cell></row>
+        <row><cell><p>trace-t4</p></cell><cell><p>8</p></cell><cell><p><c>escalate</c></p></cell><cell><p><c>FLAG</c> at Stage 2.</p></cell></row>
+        <row bottom="minor"><cell><p>trace-t5</p></cell><cell><p>8</p></cell><cell><p><c>escalate</c></p></cell><cell><p><c>EXCLUDE</c> at Stage 2.</p></cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      <c>auto_accept</c> means only that the current cascade found one clean candidate.
+      It does not turn the tool proposal into a final research code. T4 and T5 illustrate
+      why human review is a standing layer rather than a sixth computational stage: a
+      person may confirm exclusion, recover a codable episode from work, or leave the case
+      unresolved without changing the five-stage architecture.
+    </p>
+  </section>
+
+  <section xml:id="sec-trace-human-review">
+    <title>Human Review</title>
+
+    <subsection xml:id="subsec-trace-review-actions">
+      <title>Review Actions</title>
+
+    <p>
+      The following decisions illustrate how a reviewer might use the stored evidence.
+      They are examples, not results from an implemented review page.
+    </p>
+
+    <table xml:id="tab-trace-review">
+      <title>Illustrative review decisions.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="10%"/><col width="20%"/><col width="25%"/><col width="45%"/>
+        <row header="yes" bottom="medium"><cell><p>ID</p></cell><cell><p>Tool route</p></cell><cell><p>Reviewer action</p></cell><cell><p>Reason</p></cell></row>
+        <row><cell><p>T1</p></cell><cell><p><c>auto_accept</c></p></cell><cell><p>Confirm <c>TRACE-CS-PIVOT</c>.</p></cell><cell><p>The synthetic question frame defines the pivot criterion as the relevant control and the trace contains no competing evidence.</p></cell></row>
+        <row><cell><p>T2</p></cell><cell><p><c>standard_review</c></p></cell><cell><p>Replace the two-code candidate set with <c>TRACE-CS-FREE</c>.</p></cell><cell><p>The second hit came from a judgment token, not a distinct criterion-to-judgment control. The reviewer records why the keyword hit was a false alternate.</p></cell></row>
+        <row><cell><p>T3</p></cell><cell><p><c>terminology_flag</c></p></cell><cell><p>Map the phrase to <c>free_var_exists</c>, then add the appropriate code.</p></cell><cell><p>The wording is an attested paraphrase of an existing vocabulary proposition, not evidence for a new control.</p></cell></row>
+        <row><cell><p>T4</p></cell><cell><p><c>escalate</c></p></cell><cell><p>Leave unresolved pending question context.</p></cell><cell><p>Work is visible, but no judgment or inferential connection can be recovered from the fixture alone.</p></cell></row>
+        <row bottom="minor"><cell><p>T5</p></cell><cell><p><c>escalate</c></p></cell><cell><p>Confirm that no episode is codable.</p></cell><cell><p>The response supplies a judgment but no identifiable criterion.</p></cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      For T2 and T3, the reviewer should preserve the original tool-code list, the final
+      reviewer-code list, and a rationale in the override log. T4's unresolved state belongs
+      in review status and notes because unresolved is not an override edit type. Local
+      correctness and goal coverage would be assessed from the actual question frame; this
+      synthetic trace does not invent those values.
+    </p>
+    </subsection>
+
+    <subsection xml:id="subsec-trace-final-record">
+      <title>Final Auditable Record</title>
+
+    <p>
+      A final record is not one flattened label. It is a connected set of records that lets
+      another analyst reconstruct what the tool proposed and what the reviewer changed.
+      For T2, the audit path is:
+    </p>
+
+    <table xml:id="tab-trace-final-record">
+      <title>Illustrative final record for T2.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="24%"/><col width="76%"/>
+        <row header="yes" bottom="medium"><cell><p>Record</p></cell><cell><p>Preserved value</p></cell></row>
+        <row><cell><p>Source</p></cell><cell><p>Import 1, response <c>trace-t2</c>, synthetic question <c>trace-question</c>.</p></cell></row>
+        <row><cell><p>Run provenance</p></cell><cell><p>Run 8, deterministic baseline implementation labels, synthetic vocabulary version 2, synthetic codebook version 3.</p></cell></row>
+        <row><cell><p>Screening</p></cell><cell><p><c>INCLUDE</c>, confidence 0.85, connector rationale.</p></cell></row>
+        <row><cell><p>Extraction</p></cell><cell><p>One ordered step: <c>free_var_exists</c> to <c>no_unique_solution</c>; OOV 0; connector <c>because</c>.</p></cell></row>
+        <row><cell><p>Tool candidates</p></cell><cell><p><c>TRACE-CS-FREE</c> and <c>TRACE-CS-NOT-UNIQUE</c>, each with its firing rationale.</p></cell></row>
+        <row><cell><p>Tool route</p></cell><cell><p><c>standard_review</c>; two distinct candidates.</p></cell></row>
+        <row><cell><p>Review</p></cell><cell><p>Completed by a named reviewer against run 8 and the stated question frame.</p></cell></row>
+        <row bottom="minor"><cell><p>Override</p></cell><cell><p><c>replace</c>; tool list contains both candidates; reviewer list contains <c>TRACE-CS-FREE</c>; rationale explains that the second hit names a judgment rather than a separate control.</p></cell></row>
+      </tabular>
+    </table>
+
+    <p>
+      This structure preserves uncertainty and correction as data. It also keeps a future
+      reanalysis possible: a new matcher can create a new run without rewriting run 8, and
+      the earlier reviewer decision remains interpretable against the versions that were
+      active when it was made.
+    </p>
+    </subsection>
+  </section>
+</chapter>

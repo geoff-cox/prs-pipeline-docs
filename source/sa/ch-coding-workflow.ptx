@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<chapter xml:id="ch-coding-workflow">
+  <title>Coding Workflow</title>
+
+  <introduction>
+    <p>
+      Coding is a sequence of decisions, not one judgment that a response <q>looks
+      right</q> or <q>seems wrong.</q> First record the evidence present in the
+      response. Then represent that evidence as one or more episodes, apply the
+      permitted codebook resources, evaluate the mathematics, and document any
+      uncertainty.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-coding-before">
+    <title>Before Coding</title>
+
+    <paragraphs xml:id="subsec-coding-context">
+      <title>Read the Question Context</title>
+
+      <p>
+        When coding, begin with the exact question and identify:
+        <ul>
+          <li>the information supplied to the student;</li>
+          <li>the mathematical objects and representations shown;</li>
+          <li>the conclusion, explanation, or computation requested;</li>
+          <li>each distinct goal the response is expected to address; and</li>
+          <li>the agreed mathematical state and 
+            <xref ref="g-valid-link-set" text="custom">valid-inference set</xref>
+            for the task.</li>
+        </ul>
+      </p>
+
+      <p>
+        A phrase can support different judgments in different contexts. For example,
+        <q>a free variable exists</q> rules out a unique solution when the system is known
+        to be consistent, but it does not by itself establish that any solution exists.
+        The question context determines what the criterion means and which inference is
+        valid.
+      </p>
+
+      <p>
+        Keep the question, reference mathematics, listed goals, and working codebook
+        available throughout the pass unless the study design deliberately hides one of
+        them.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-versions">
+      <title>Confirm Governing Versions</title>
+      <p>
+        Every coding record must be interpretable later. Before coding, confirm the
+        versions of the materials that govern the pass. At minimum, record:
+        <ul>
+          <li>the handbook or workflow version;</li>
+          <li>the Coding Protocol <m>\pi</m> version;</li>
+          <li>the codebook version, when the codebook is available;</li>
+          <li>the question-specific working-codebook version or identifier; and</li>
+          <li>the controlled-vocabulary version when vocabulary normalization is used.</li>
+        </ul>
+      </p>
+      <p>
+        Use the versions assigned for the batch, even if a newer draft appears during
+        coding. A rule that seems inadequate should be flagged for later revision; it
+        should not be silently changed halfway through the batch. Otherwise, apparent
+        coder disagreement may actually reflect different rules.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-independent-pass">
+      <title>Protect the Independent Pass</title>
+      <p>
+        Independent passes must follow the access rules stated in the assigned
+        worksheet. Do not use unauthorized materials. We need to preserve the 
+        independent record before beginning an assisted, comparison, or review pass.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-coding-pass">
+    <title>The Coding Pass</title>
+    <p>
+      Complete the following steps in order. Later steps depend on earlier ones, and a
+      disagreement should be located at the earliest step where two analyses diverge.
+      Do not let a likely code determine the episode structure, and do not let a correct
+      final answer excuse a weak inference.
+    </p>
+
+    <paragraphs xml:id="subsec-coding-screen">
+      <title>Step 1: Screen</title>
+
+      <p>
+        Screening asks whether the response contains analyzable justification. It does
+        not ask whether the response is mathematically correct. An incorrect explanation
+        may be codable, while a correct bare answer may contain no codable justification.
+      </p>
+
+      <p>
+        Read the entire response and record a screening decision with a brief rationale.
+        Continue to episode analysis when the response contains, or plausibly contains,
+        a mathematical criterion connected to a judgment. Preserve uncertain cases for
+        review rather than excluding them merely because the reasoning is unfamiliar or
+        difficult to parse.
+      </p>
+
+      <p>
+        Blank responses, bare answers, question restatements, and operation-only work
+        require the specific rules in <xref ref="ch-edge-cases-decisions" text="title"/>.
+        At this stage, record what is present; do not infer the most likely justification
+        from the answer.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-segment">
+      <title>Step 2: Segment</title>
+
+      <p>
+        Segmentation determines how many local criterion-to-judgment moves appear and
+        where their boundaries fall. Work from the response itself before consulting
+        likely codes. Connector words such as <q>so</q>, <q>because</q>, <q>since</q>, and
+        <q>therefore</q> are useful signals, but they are not definitions of episode
+        boundaries.
+      </p>
+
+      <p>
+        Use one episode candidate for each distinct move in which a cited feature
+        supports a judgment. The written order may differ from the analytic order:
+        <q><m>J</m> because <m>C</m></q> still represents
+        <m>C\rightarrow J</m>. A single sentence may contain several chained moves, and
+        several sentences may elaborate one move.
+      </p>
+
+      <p>
+        The current nesting-retention policy remains open in the source materials.
+        Until a later protocol supersedes the record-everything rule, preserve every
+        identifiable episode, mark its relation, and note any defensible alternative
+        segmentation. Do not collapse a possible sub-step merely to simplify the sheet.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-transcribe">
+      <title>Step 3: Record Criterion and Judgment</title>
+
+      <p>
+        For each episode candidate, record the criterion and judgment before writing the
+        inferential link. Use the student's own words in fields that require verbatim
+        evidence.
+        <dl width="narrow">
+          <li>
+            <title>Criterion</title>
+            <p>
+              Copy the words, symbols, or stated result that function as the reason. Do not
+              import a theorem, condition, or intermediate fact the student did not name.
+            </p>
+          </li>
+          <li>
+            <title>Judgment</title>
+            <p>
+              Copy the conclusion, classification, or decision the student draws. Do not
+              replace it with the answer the student should have given.
+            </p>
+          </li>
+        </dl>
+      </p>
+      <p>
+        A criterion without a judgment and a judgment without a criterion are preserved
+        as incomplete evidence. Missing information remains missing. Record
+        <c>complete = 1</c> only when both a criterion and a judgment are identifiable;
+        otherwise record <c>complete = 0</c>. An absent inferential link alone does not
+        make the episode incomplete.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-link">
+      <title>Step 4: Record the Inferential Link</title>
+      <p>
+        Record the minimal link: the smallest justification supported by the response
+        that suffices to connect the criterion to the judgment. The purpose is to
+        represent the student's justification, not to write a complete textbook proof.
+      </p>
+
+      <p>
+        Assign one evidence status:
+        <dl width="narrow">
+          <li>
+            <title><c>explicit</c></title>
+            <p>The connection is directly stated or clearly expressed in the wording.</p>
+          </li>
+          <li>
+            <title><c>implicit</c></title>
+            <p>
+              The connection is unstated but recoverable without adding a new
+              mathematical reason.
+            </p>
+          </li>
+          <li>
+            <title><c>absent</c></title>
+            <p>No inferential link can be recovered without guessing or repairing.</p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        Connector words are evidence of a connection, not evidence that the connection
+        is valid. Conversely, the absence of a connector does not force
+        <c>link_stated = absent</c> when the relationship is otherwise clear. When no
+        link is recoverable, enter the project's designated missing-link value, such as
+        <c>[none stated]</c>, and preserve the complete episode if both criterion and
+        judgment are still present.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-relation">
+      <title>Step 5: Record Episode Relations</title>
+
+      <p>
+        When a response contains more than one episode, record how the episodes relate.
+        Use the definitions in <xref ref="sec-episode-relations" text="title"/>.
+        <dl width="narrow">
+          <li>
+            <title>Chained</title>
+            <p>
+              The judgment of one episode becomes the criterion of another. Identify the
+              earlier episode, for example <c>chained(1)</c>.
+            </p>
+          </li>
+          <li>
+            <title>Independent</title>
+            <p>
+              Separate episodes provide distinct justifications without one depending on
+              the other.
+            </p>
+          </li>
+          <li>
+            <title>Nested</title>
+            <p>
+              One episode functions as a sub-step within a larger episode or argument.
+            </p>
+          </li>
+          <li>
+            <title>Unresolved</title>
+            <p>
+              More than one relation or segmentation is defensible under the current
+              evidence or policy.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        Episode existence and retention policy are separate decisions. Preserve the
+        visible structure first. A later uniform policy may determine whether parent and
+        child episodes are both included in a particular analysis.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-match">
+      <title>Step 6: Match the Codebook</title>
+
+      <p>
+        Perform this step only when the assigned work mode permits codebook access.
+        Compare each episode with the frozen question-specific working codebook. Consider
+        the code definition, inclusion and exclusion rules, positive and near-miss
+        examples, confusable codes, and the question-specific criterion-to-judgment
+        relationship.
+      </p>
+
+      <p>
+        Do not assign a code from an isolated keyword. A response that mentions pivots
+        may actually rely on dimension, consistency, or a comparison between the number
+        of pivots and variables. Code the role the idea plays in the episode.
+      </p>
+
+      <p>
+        Record the best-supported code in <c>code</c>. When more than one code plausibly
+        fits the same episode, preserve runner-up codes in <c>alt_codes</c> and explain
+        the ambiguity. Distinguish this from a response containing several distinct
+        episodes, each of which may receive its own code.
+      </p>
+
+      <p>
+        Do not force a nearest match. Record an <term>OOV</term> case when relevant
+        student language is not represented in the controlled vocabulary. Record a
+        <term>no-match</term> case when the episode is representable but no current
+        codebook entry describes the control adequately. The detailed diagnostic
+        process appears in <xref ref="ch-edge-cases-decisions" text="title"/>.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-correctness">
+      <title>Step 7: Evaluate Correctness</title>
+
+      <p>
+        Evaluate correctness only after the episode has been identified. For each
+        complete episode, assign
+        <md>
+          \operatorname{code}(e_k)=(c_k^1,c_k^2),
+        </md>
+        using the normative reference for the exact question.
+        <dl width="medium">
+          <li>
+            <title>Criterion correctness, <m>c_k^1</m></title>
+            <p>
+              Record 1 when the criterion is true in the actual mathematical state and 0
+              when it is false.
+            </p>
+          </li>
+          <li>
+            <title>Inferential validity, <m>c_k^2</m></title>
+            <p>
+              Record 1 when the criterion validly supports the judgment for this question
+              and 0 when it does not.
+            </p>
+          </li>
+        </dl>
+      </p>
+      <p>
+        Score the two components independently. A true criterion followed by an invalid
+        inference is the important case <m>(1,0)</m>, not a vaguely <q>mostly correct</q>
+        response. Leave both digits blank for an incomplete episode; blank is not the
+        same as <m>(0,0)</m>.
+      </p>
+      <p>
+        A score of <m>(1,1)</m> certifies the local justification, not the complete
+        answer. Do not change an episode's correctness code because the response omits
+        another requested conclusion.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-goal-coverage">
+      <title>Step 8: Evaluate Goal Coverage</title>
+
+      <p>
+        Compare the response's judgments with the goals listed in the question-specific
+        frame. Record which goals each episode addresses and which requested outputs
+        remain uncovered. Use <c>off-target</c> when a judgment addresses none of the
+        listed goals and <c>unclear</c>, with a note, when its relation to the goals cannot
+        be determined.
+      </p>
+
+      <p>
+        Goal coverage is not a reason to discard an episode. A response may contain a
+        mathematically sound local episode while failing to answer the full question.
+        Conversely, it may state the requested final answer through an invalid inference.
+        Preserve both facts separately.
+      </p>
+
+      <p>
+        The source materials do not yet define one final response-level aggregation rule
+        for episode goal-coverage annotations. Until such a rule is adopted, record the
+        episode-level coverage and the response-level missing goals explicitly rather
+        than inventing a summary score.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-confidence">
+      <title>Step 9: Record Confidence and Rationale</title>
+
+      <p>
+        Confidence describes the coding decision, not the student's mathematical
+        correctness. Use the project's three-point scale:
+        <dl width="narrow">
+          <li>
+            <title><c>3</c></title>
+            <p><term>Highly confident</term>. The reading is clear and there is no plausible alternative.</p>
+          </li>
+          <li>
+            <title><c>2</c></title>
+            <p>
+              <term>Fairly confident</term>. The reading is clear, but another coder could reasonably
+              interpret the case differently.
+            </p>
+          </li>
+          <li>
+            <title><c>1</c></title>
+            <p>
+              <term>Unsure</term>. The reading is unclear or ambiguous.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        A number without an explanation is weak data. For every low-confidence decision,
+        name the source of uncertainty: screening, boundary, criterion, link, judgment,
+        relation, matching, correctness, coverage, vocabulary, or policy. Never leave a
+        <c>confidence = 1</c> row without a note.
+      </p>
+
+      <p>
+        Write rationales that are brief, specific, and tied to visible evidence. Useful
+        forms include:
+        <ul>
+          <li><q>Included because the response states a criterion and a judgment connected by <q>so.</q></q></li>
+          <li><q>The judgment is missing; the response states only that a free variable exists.</q></li>
+          <li><q>Two episodes are recorded because the first judgment becomes the second criterion.</q></li>
+          <li><q>No code assigned because the episode relies on dimension rather than the mentioned pivot term.</q></li>
+        </ul>
+      </p>
+
+      <p>
+        Avoid claims about what the student <q>understands</q> or <q>must have meant.</q>
+        Describe the response and the coding decision.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-coding-route">
+      <title>Step 10: Route or Escalate</title>
+
+      <p>
+        Finish by recording the disposition required by the current review policy. The
+        source materials use dispositions such as ordinary review, terminology review,
+        no-match review, and escalation; computational materials also include labels such
+        as <c>auto_accept</c> and <c>standard_review</c>. Use the exact allowed values and
+        triggers supplied for the batch rather than inventing a new label.
+      </p>
+
+      <p>
+        Escalate or flag a case when the current evidence or rules do not support a
+        defensible ordinary decision. Common reasons include:
+        <ul>
+          <li>uncertain screening or episode boundaries;</li>
+          <li>competing interpretations of a criterion, link, or judgment;</li>
+          <li>nested reasoning affected by an unresolved retention policy;</li>
+          <li>multiple plausible code matches;</li>
+          <li>OOV or no-match reasoning;</li>
+          <li>insufficient normative information for correctness;</li>
+          <li>an apparent contradiction in the question or protocol; or</li>
+          <li>a recurring case that may require a codebook or guidance revision.</li>
+        </ul>
+      </p>
+
+      <p>
+        State what decision is blocked and what evidence would resolve it. An unresolved
+        case is a legitimate research record. It is preferable to a confident-looking
+        code that the evidence does not support.
+      </p>
+
+      <p>
+        In a tool-review pass, preserve both the computational proposal and
+        the human action or override. The assigned review worksheet or tool
+        documentation supplies the allowed action vocabulary and required
+        fields; this chapter governs the evidence-first review principle.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-coding-sheet">
+    <title>Coding Sheet Reference</title>
+    <p>
+      Use one row per episode. A response with several episodes receives several
+      episode rows, while a response with no complete episode still requires a
+      response-level record showing what was observed and how it was screened.
+    </p>
+    <p>
+      Complete only the fields authorized by the assigned worksheet. The
+      authoritative data dictionary is
+      <xref ref="app-coding-sheet" text="title"/>; the worksheet identifies which
+      fields are available, required, or withheld for the current milestone.
+    </p>
+    <remark xml:id="rem-coding-no-silent-revision">
+      <title>Do Not Silently Revise Earlier Rows</title>
+      <p>
+        When you discover that your interpretation has drifted, do not quietly 
+        rewrite earlier rows so that the original coding process disappears.
+      </p>
+    </remark>
+  </section>
+
+  <section xml:id="sec-coding-checklist">
+    <title>Final Checklist</title>
+
+    <p>
+      Before submitting a record or batch, confirm:
+      <ol>
+      <li><p>I used the assigned question context and governing versions.</p></li>
+      <li><p>I recorded evidence before interpretation.</p></li>
+      <li><p>I did not repair missing reasoning.</p></li>
+      <li><p>I preserved ambiguity, alternatives, and uncertainty.</p></li>
+      <li><p>I completed only fields authorized for this milestone.</p></li>
+      <li><p>I did not overwrite an earlier independent or proposed record.</p></li>
+      </ol>
+    </p>
+
+    <p>
+      Milestone-specific completion and submission checks belong to the assigned
+      worksheet.
+    </p>
+  </section>
+
+  <conclusion>
+    <p>
+      A defensible coding record shows not only the final code but how the researcher
+      reached it. The workflow preserves the original response, separates episode
+      extraction from codebook matching, distinguishes mathematical truth from
+      inferential validity, and records where uncertainty remains. These features allow
+      later <xref ref="g-calibration" text="title"/>, 
+      <xref ref="g-adjudication" text="title"/>, tool comparison, and methodological 
+      revision without reconstructing the coder's decisions from memory.
+    </p>
+  </conclusion>
+</chapter>

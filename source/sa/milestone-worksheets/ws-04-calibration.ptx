@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<section xml:id="sec-ws-04-calibration">
+  <title>Worksheet 4: Calibration and Adjudication</title>
+
+  <objectives>
+    <ul>
+      <li>Complete a full coding pass independently under the same frozen materials as another coder.</li>
+      <li>Preserve both independent records before any comparison begins.</li>
+      <li>Locate disagreements at the earliest workflow decision where the records diverge.</li>
+      <li>Adjudicate from visible evidence and governing rules without forcing agreement.</li>
+      <li>Use calibration evidence to assess readiness and identify needed remediation or artifact revision.</li>
+    </ul>
+  </objectives>
+
+  <introduction>
+    <p>
+      This worksheet is the fourth milestone in the researcher training sequence.
+      Calibration tests whether researchers can apply the same frozen framework,
+      protocol, codebook, vocabulary, and question-specific materials independently.
+      Agreement reached only after discussion is not evidence of independent
+      reproducibility. Each coder must first complete and lock a full record.
+    </p>
+
+    <p>
+      Calibration is development work. Its purpose is to diagnose where the human
+      method is stable and where coders, examples, code definitions, question frames,
+      or protocol rules require further work. The assigned calibration responses must
+      remain separate from the held-out validation corpus.
+    </p>
+
+    <p>
+      Comparison begins only after the research lead confirms that all independent
+      records are complete and preserved. During comparison, disagreement is treated
+      as evidence. Coders identify the earliest divergent decision, state the support
+      for each reading, and resolve the case only when one interpretation is better
+      supported by the response and current rules.
+    </p>
+
+    <remark xml:id="rem-ws-04-status">
+      <title>Milestone status</title>
+      <p>
+        Completing a calibration packet does not automatically authorize work with
+        project responses. The research lead must apply the readiness rule recorded in
+        the packet, review the pattern of disagreements, and document an advancement,
+        remediation, repetition, or materials-revision decision.
+      </p>
+    </remark>
+  </introduction>
+
+  <subsection xml:id="subsec-ws-04-overview">
+    <title>Milestone at a Glance</title>
+
+    <table xml:id="tab-ws-04-overview">
+      <title>Purpose and output of the calibration milestone.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="22%"/>
+        <col width="78%"/>
+        <row header="yes" bottom="medium">
+          <cell>Item</cell>
+          <cell>Description</cell>
+        </row>
+        <row>
+          <cell>Primary purpose</cell>
+          <cell>Assess independent reproducibility of the complete human coding method and diagnose the earliest source of disagreement.</cell>
+        </row>
+        <row>
+          <cell>Work mode</cell>
+          <cell>Independent full coding, followed by authorized comparison and adjudication.</cell>
+        </row>
+        <row>
+          <cell>Data</cell>
+          <cell>A shared calibration set that is excluded from held-out validation.</cell>
+        </row>
+        <row>
+          <cell>Governing materials</cell>
+          <cell>The same frozen question frames, protocol, codebook, vocabulary, handbook, and schema for every coder.</cell>
+        </row>
+        <row>
+          <cell>Primary deliverables</cell>
+          <cell>Locked independent records, a field-level comparison, disagreement records, adjudicated or unresolved results, and a readiness review.</cell>
+        </row>
+        <row bottom="minor">
+          <cell>Next milestone</cell>
+          <cell>Supervised coding of approved project responses, after the research lead documents readiness.</cell>
+        </row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-prerequisites">
+    <title>Prerequisites and Assigned Reading</title>
+
+    <p>
+      Begin only after the research lead has accepted Worksheet 3 and supplied a
+      versioned calibration packet. Review the following material before opening the
+      response set:
+    </p>
+
+    <ol>
+      <li>
+        <p>
+          <xref ref="sec-practice-calibration" text="title"/> and
+          <xref ref="sec-practice-readiness" text="title"/> in
+          <xref ref="ch-practice-calibration" text="title"/>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <xref ref="subsec-disagreement-types" text="title"/>,
+          <xref ref="subsec-disagreement-notes" text="title"/>,
+          <xref ref="subsec-disagreement-adjudication" text="title"/>, and
+          <xref ref="subsec-disagreement-unresolved" text="title"/> in
+          <xref ref="ch-edge-cases-decisions" text="title"/>.
+        </p>
+      </li>
+      <li>
+        <p>
+          The ten steps in <xref ref="sec-coding-pass" text="title"/> and the
+          preservation rule in <xref ref="sec-coding-sheet" text="title"/>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <xref ref="subsec-study-calibration" text="title"/>,
+          <xref ref="subsec-study-adjudication" text="title"/>, and
+          <xref ref="subsec-study-human-ceiling" text="title"/> in
+          <xref ref="ch-study-design" text="title"/>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <xref ref="subsec-app-coding-sheet-response-fields" text="title"/>,
+          <xref ref="subsec-app-coding-sheet-episode-fields" text="title"/>,
+          <xref ref="subsec-app-coding-sheet-analytic-fields" text="title"/>, and
+          <xref ref="subsec-app-coding-sheet-provenance-fields" text="title"/> in
+          <xref ref="app-coding-sheet" text="title"/>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <xref ref="sec-app-protocol-workflow" text="title"/>,
+          <xref ref="sec-app-protocol-review" text="title"/>, and
+          <xref ref="sec-app-protocol-provenance" text="title"/> in
+          <xref ref="app-protocol-summary" text="title"/>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <xref ref="subsec-data-records-preserve" text="title"/>,
+          <xref ref="subsec-data-version-discipline" text="title"/>, and
+          <xref ref="subsec-data-work-sessions" text="title"/> in
+          <xref ref="ch-data-management" text="title"/>.
+        </p>
+      </li>
+    </ol>
+
+    <warning xml:id="warn-ws-04-examples">
+      <title>Do not consult solved examples during the independent phase</title>
+      <p>
+        The worked-example chapter may be used later for authorized remediation. Do not
+        search it for a response that resembles an item in the calibration packet unless
+        the packet explicitly permits that access.
+      </p>
+    </warning>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-phases">
+    <title>Access Rules by Phase</title>
+
+    <p>
+      Calibration has three phases. The research lead controls the transition between
+      them. Do not begin a later phase merely because your own record is complete.
+    </p>
+
+    <table xml:id="tab-ws-04-phases">
+      <title>Materials available during each calibration phase.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="20%"/>
+        <col width="40%"/>
+        <col width="40%"/>
+        <row header="yes" bottom="medium">
+          <cell>Phase</cell>
+          <cell>You may use</cell>
+          <cell>You must not use</cell>
+        </row>
+        <row>
+          <cell>Independent coding</cell>
+          <cell>The assigned response packet, frozen handbook, protocol, codebook, vocabulary, question frames, normative references, and coding schema.</cell>
+          <cell>Another coder's work, adjudicated results, comparison summaries, machine proposals, or response-specific advice.</cell>
+        </row>
+        <row>
+          <cell>Comparison</cell>
+          <cell>All locked independent records for the assigned coder pair or group, the disagreement taxonomy, and the governing materials.</cell>
+          <cell>Silent edits to either independent record or a machine-generated answer used to settle the disagreement.</cell>
+        </row>
+        <row bottom="minor">
+          <cell>Adjudication</cell>
+          <cell>The original question and response, all preserved coder records, the governing materials, and the authorized adjudicator or research lead.</cell>
+          <cell>Compromise without evidence, undocumented policy changes, or replacement of the original records.</cell>
+        </row>
+      </tabular>
+    </table>
+
+    <warning xml:id="warn-ws-04-transition">
+      <title>Wait for the comparison release</title>
+      <p>
+        The research lead must confirm that every required independent record has been
+        locked before coder identities or annotations are revealed. Early comparison
+        compromises the calibration evidence for all affected responses.
+      </p>
+    </warning>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-packet">
+    <title>Check the Calibration Packet</title>
+
+    <p>
+      Before coding, confirm that the packet defines the corpus, shared resources,
+      comparison plan, and readiness rule. Record the supplied values below. Do not
+      choose a readiness threshold after seeing the results.
+    </p>
+
+    <table xml:id="tab-ws-04-packet-manifest">
+      <title>Calibration packet manifest.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="34%"/>
+        <col width="66%"/>
+        <row header="yes" bottom="medium">
+          <cell>Required item</cell>
+          <cell>Value or confirmation</cell>
+        </row>
+        <row><cell>Calibration batch ID</cell><cell>Record the stable identifier supplied for the shared set.</cell></row>
+        <row><cell>Corpus role</cell><cell>Confirm that the set is labeled calibration or development and excluded from held-out validation.</cell></row>
+        <row><cell>Coder assignments</cell><cell>Record the approved coder IDs and comparison grouping.</cell></row>
+        <row><cell>Question and response IDs</cell><cell>Confirm complete, stable identifiers and identical assignments across coders.</cell></row>
+        <row><cell>Question materials</cell><cell>Record each question-frame and normative-reference version.</cell></row>
+        <row><cell>Analytic materials</cell><cell>Record the handbook, protocol, codebook, and vocabulary versions.</cell></row>
+        <row><cell>Schema and comparison form</cell><cell>Record the coding-sheet, comparison-sheet, and adjudication-record versions.</cell></row>
+        <row><cell>Readiness rule</cell><cell>Record the pre-specified quantitative and qualitative evidence the research lead will use. If no numerical threshold is adopted, state that explicitly.</cell></row>
+        <row><cell>Agreement summaries</cell><cell>Record which decisions will receive pre-adjudication agreement summaries and who will calculate them.</cell></row>
+        <row><cell>Work-session requirements</cell><cell>Record required session fields, sitting limits, and submission deadlines.</cell></row>
+        <row bottom="minor"><cell>Approved project location</cell><cell>Confirm where independent, comparison, and adjudication records must be stored.</cell></row>
+      </tabular>
+    </table>
+
+    <warning xml:id="warn-ws-04-stop-packet">
+      <title>Stop when shared materials differ</title>
+      <p>
+        Stop and contact the research lead if coders received different question
+        contexts, codebook versions, schemas, response sets, or readiness instructions.
+        Calibration cannot measure reproducibility when the governing conditions differ.
+      </p>
+    </warning>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-record-layers">
+    <title>Records to Preserve</title>
+
+    <table xml:id="tab-ws-04-record-layers">
+      <title>Calibration record layers and their roles.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="23%"/>
+        <col width="31%"/>
+        <col width="46%"/>
+        <row header="yes" bottom="medium">
+          <cell>Layer</cell>
+          <cell>Created when</cell>
+          <cell>Preservation rule</cell>
+        </row>
+        <row>
+          <cell>Independent coder record</cell>
+          <cell>Before any comparison</cell>
+          <cell>One immutable full coding record per coder, including confidence, notes, and governing versions.</cell>
+        </row>
+        <row>
+          <cell>Comparison record</cell>
+          <cell>After all independent records are locked</cell>
+          <cell>Aligns corresponding decisions and marks agreement, difference, or non-comparability without changing either source record.</cell>
+        </row>
+        <row>
+          <cell>Disagreement record</cell>
+          <cell>For every substantive divergence</cell>
+          <cell>Records the earliest disagreement type, each reading, visible evidence, and governing reference.</cell>
+        </row>
+        <row>
+          <cell>Adjudication record</cell>
+          <cell>After evidence-based review</cell>
+          <cell>Stores the resolved decision or explicit unresolved status and the rationale. It does not replace coder records.</cell>
+        </row>
+        <row bottom="minor">
+          <cell>Follow-up proposal</cell>
+          <cell>When calibration exposes a recurring weakness</cell>
+          <cell>Records proposed training, example, vocabulary, codebook, question-frame, or policy changes for versioned review.</cell>
+        </row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-fields">
+    <title>Fields for This Milestone</title>
+
+    <p>
+      Use the assigned schema and field mapping. The independent record contains the
+      complete human coding workflow. Comparison and adjudication are stored in new
+      layers rather than inserted into the locked coder records.
+    </p>
+
+    <table xml:id="tab-ws-04-fields">
+      <title>Fields completed during calibration.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="30%"/>
+        <col width="18%"/>
+        <col width="52%"/>
+        <row header="yes" bottom="medium">
+          <cell>Field or record group</cell>
+          <cell>Action</cell>
+          <cell>Calibration rule</cell>
+        </row>
+        <row>
+          <cell>Response, episode, analytic, confidence, and provenance fields</cell>
+          <cell>Complete independently</cell>
+          <cell>Each coder completes all fields authorized by the frozen protocol without consulting another record.</cell>
+        </row>
+        <row>
+          <cell>Session log</cell>
+          <cell>Complete independently</cell>
+          <cell>Record the required start, stop, interruption, or fatigue information specified in the packet.</cell>
+        </row>
+        <row>
+          <cell>Field alignment</cell>
+          <cell>Complete during comparison</cell>
+          <cell>Map corresponding response- and episode-level decisions. Preserve non-alignment when episode structures differ.</cell>
+        </row>
+        <row>
+          <cell><c>disagreement_type</c></cell>
+          <cell>Complete when records diverge</cell>
+          <cell>Assign the earliest applicable taxonomy value. Record later consequences separately when useful.</cell>
+        </row>
+        <row>
+          <cell>Coder evidence and alternatives</cell>
+          <cell>Complete when records diverge</cell>
+          <cell>Preserve each original value and rationale, then add the exact response or question evidence supporting each reading.</cell>
+        </row>
+        <row>
+          <cell><c>adjudication_status</c></cell>
+          <cell>Complete after review</cell>
+          <cell>Use the assigned value for resolved, unresolved, pending, or not required.</cell>
+        </row>
+        <row>
+          <cell>Adjudicated value and rationale</cell>
+          <cell>Complete when resolved</cell>
+          <cell>State the supported result and the governing rule. Do not enter a consensus value without a rationale.</cell>
+        </row>
+        <row>
+          <cell>Follow-up action</cell>
+          <cell>Complete when needed</cell>
+          <cell>Record no change, targeted practice, example revision, vocabulary proposal, codebook clarification, question-frame correction, policy proposal, or planned recoding.</cell>
+        </row>
+        <row bottom="minor">
+          <cell>Machine proposal and tool-review fields</cell>
+          <cell>Leave blank</cell>
+          <cell>Calibration of the human method must remain separate from later workflow–human comparison unless the study protocol defines a distinct condition.</cell>
+        </row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-procedure">
+    <title>Calibration Procedure</title>
+
+    <ol>
+      <li>
+        <p>
+          <em>Verify the packet.</em> Confirm shared question contexts, response IDs,
+          frozen versions, coder assignments, readiness rules, and approved storage.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Complete the independent pass.</em> Apply all ten workflow steps to every
+          assigned response. Record uncertainty rather than requesting another coder's
+          interpretation.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Lock each independent record.</em> Submit through the approved project
+          location and preserve the coder ID, timestamp, versions, and work-session log.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Release comparison only after all records are locked.</em> The research
+          lead confirms procedural integrity before revealing paired records.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Compare field by field.</em> Begin with screening and episode structure,
+          then compare components, relations, matches, correctness, coverage, status,
+          disposition, confidence, and notes. Do not compare final codes alone.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Identify the earliest divergence.</em> Use the disagreement taxonomy.
+          Later differences may be consequences of an earlier boundary or component
+          disagreement.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Inspect low-confidence agreements.</em> Agreement does not guarantee that
+          the shared decision is supported. Flag cases in which coders used the same
+          unsupported assumption or reported substantial uncertainty.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Preserve pre-adjudication summaries.</em> Calculate or submit the records
+          needed for the pre-specified agreement summaries before any value is changed
+          through adjudication.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Adjudicate from evidence.</em> Return to the exact question and response,
+          state the evidence for each interpretation, consult the frozen materials, and
+          adopt a result only when one reading is better supported.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Preserve unresolved cases.</em> Record the competing interpretations, the
+          evidence for each, and the rule or information that is missing.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Classify follow-up.</em> Distinguish individual remediation from a shared
+          artifact problem. Do not create an immediate one-case exception during the
+          calibration meeting.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Complete the readiness record.</em> Summarize demonstrated competencies,
+          recurring difficulties, unresolved limitations, and the research lead's
+          advancement decision.
+        </p>
+      </li>
+    </ol>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-assignment">
+    <title>Assignment</title>
+
+    <exercise xml:id="ex-ws-04-manifest">
+      <title>Part A: Complete the Packet Manifest</title>
+      <statement>
+        <p>
+          Record every required packet item and version before opening the first
+          response. Report any mismatch rather than substituting a local copy.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-04-independent">
+      <title>Part B: Complete and Lock the Independent Coding</title>
+      <statement>
+        <p>
+          Code every assigned response using the full workflow and assigned schema.
+          Preserve complete and incomplete episodes, alternatives, low confidence,
+          OOV, no match, unresolved decisions, and all governing versions. Submit and
+          lock the record before comparison.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-04-align">
+      <title>Part C: Align the Independent Records</title>
+      <statement>
+        <p>
+          After the research lead releases the records, align them by
+          <c>response_id</c> and corresponding episode decisions. When episode counts or
+          boundaries differ, preserve the mismatch rather than forcing a one-to-one row
+          pairing.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-04-disagreements">
+      <title>Part D: Classify Disagreements</title>
+      <statement>
+        <p>
+          For each substantive difference:
+          <ol>
+            <li>identify the earliest workflow stage at which the records diverge;</li>
+            <li>assign the applicable disagreement type;</li>
+            <li>copy each coder's original value and rationale;</li>
+            <li>state the visible evidence for each reading; and</li>
+            <li>identify any later fields affected by the earlier difference.</li>
+          </ol>
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-04-agreements">
+      <title>Part E: Review Low-Confidence Agreements</title>
+      <statement>
+        <p>
+          Inspect every agreement involving confidence 1, an unresolved note, a policy
+          concern, or an unusual inference. Record whether the agreement appears
+          independently well supported or whether both coders may have made the same
+          unsupported assumption.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-04-summary">
+      <title>Part F: Preserve the Pre-Adjudication Summary</title>
+      <statement>
+        <p>
+          Submit the locked comparison needed for the pre-specified agreement analyses.
+          Do not begin adjudication until the research lead confirms that the
+          pre-adjudication record has been preserved.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-04-adjudicate">
+      <title>Part G: Adjudicate or Preserve as Unresolved</title>
+      <statement>
+        <p>
+          For each disagreement, apply the adjudication procedure in
+          <xref ref="subsec-disagreement-adjudication" text="title"/>. Record a resolved
+          result only when the evidence and frozen rules support it. Otherwise, record
+          <c>unresolved</c> and state what prevents a defensible final decision.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-04-follow-up">
+      <title>Part H: Classify Follow-Up Needs</title>
+      <statement>
+        <p>
+          For every recurring difficulty, determine whether the evidence supports:
+          <ul>
+            <li>no change;</li>
+            <li>targeted coder remediation;</li>
+            <li>a new or revised worked example;</li>
+            <li>a vocabulary proposal;</li>
+            <li>a codebook clarification;</li>
+            <li>a question-frame or normative-reference correction;</li>
+            <li>a protocol or retention-policy proposal; or</li>
+            <li>planned recoding after a versioned change.</li>
+          </ul>
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-04-readiness">
+      <title>Part I: Complete the Readiness Evidence Record</title>
+      <statement>
+        <p>
+          Using <xref ref="tab-practice-readiness" text="title"/>, record evidence for
+          each competency, the principal remaining difficulties, any limitations on
+          future authorization, and the research lead's decision. Do not reduce the
+          decision to one agreement statistic unless the packet explicitly adopts that
+          rule.
+        </p>
+      </statement>
+    </exercise>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-questions">
+    <title>Questions, Conflicts, and Incidents</title>
+
+    <table xml:id="tab-ws-04-questions">
+      <title>Required action when calibration conditions are threatened.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="33%"/>
+        <col width="67%"/>
+        <row header="yes" bottom="medium">
+          <cell>Situation</cell>
+          <cell>Required action</cell>
+        </row>
+        <row><cell>You receive a different packet or version from another coder</cell><cell>Stop and notify the research lead. Do not harmonize materials privately.</cell></row>
+        <row><cell>You see another coder's work before locking your record</cell><cell>Stop, preserve the work completed before exposure, and report the incident. The research lead determines whether affected responses must be replaced.</cell></row>
+        <row><cell>Episode structures cannot be aligned one to one</cell><cell>Record a <c>BOUNDARY</c> or related disagreement and compare the competing structures without forcing row alignment.</cell></row>
+        <row><cell>Both coders agree but used the same unsupported assumption</cell><cell>Flag a low-confidence or policy concern. Agreement alone does not validate the decision.</cell></row>
+        <row><cell>A codebook or protocol flaw becomes apparent</cell><cell>Preserve the current-version coding, record the artifact problem, and create a follow-up proposal. Do not revise the rule during the active comparison.</cell></row>
+        <row><cell>The response remains ambiguous after review</cell><cell>Preserve the alternatives and record an unresolved adjudication status.</cell></row>
+        <row><cell>A privacy, access, or identifier problem appears</cell><cell>Stop the affected work and follow the incident or data-quality procedure in <xref ref="ch-data-management" text="title"/>.</cell></row>
+        <row bottom="minor"><cell>The readiness rule is missing or changed after results are viewed</cell><cell>Do not issue an advancement decision until the research lead documents the rule and the effect of the change.</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-deliverables">
+    <title>Deliverables</title>
+
+    <p>
+      Submit the following through the approved project location:
+      <ol>
+        <li>the completed calibration packet manifest;</li>
+        <li>one locked independent full-coding record for each assigned coder;</li>
+        <li>the work-session logs required by the packet;</li>
+        <li>the field-level comparison record;</li>
+        <li>the preserved pre-adjudication agreement input or summary;</li>
+        <li>one disagreement record for every substantive divergence;</li>
+        <li>the adjudicated result or explicit unresolved status for each disagreement;</li>
+        <li>the follow-up and artifact-revision proposals;</li>
+        <li>the competency-based readiness record; and</li>
+        <li>the version record below.</li>
+      </ol>
+    </p>
+
+    <table xml:id="tab-ws-04-version-record">
+      <title>Version information to preserve with the calibration submission.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="35%"/>
+        <col width="65%"/>
+        <row header="yes" bottom="medium"><cell>Field</cell><cell>Entry</cell></row>
+        <row><cell><c>worksheet_version</c></cell><cell><c>ws-04-calibration-v0.1</c></cell></row>
+        <row><cell><c>pass_type</c></cell><cell><c>calibration</c></cell></row>
+        <row><cell><c>batch_id</c></cell><cell>Record the calibration batch identifier.</cell></row>
+        <row><cell><c>coder_ids</c></cell><cell>Record the approved project identifiers for the compared coders.</cell></row>
+        <row><cell><c>handbook_version</c></cell><cell>Record the assigned version.</cell></row>
+        <row><cell><c>protocol_version</c></cell><cell>Record the assigned version.</cell></row>
+        <row><cell><c>codebook_version</c></cell><cell>Record the assigned frozen version.</cell></row>
+        <row><cell><c>vocabulary_version</c></cell><cell>Record the assigned frozen version.</cell></row>
+        <row><cell><c>question_frame_version</c></cell><cell>Record every version represented in the batch.</cell></row>
+        <row><cell><c>comparison_schema_version</c></cell><cell>Record the assigned comparison and adjudication schema.</cell></row>
+        <row bottom="minor"><cell><c>completed_at</c></cell><cell>Record the final submission date.</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-checklist">
+    <title>Completion Checklist</title>
+
+    <p>
+      Before submitting, confirm that:
+      <ul>
+        <li>every coder used the same frozen response set and governing materials;</li>
+        <li>all independent records were complete and locked before comparison;</li>
+        <li>no coder consulted another record or machine proposal during the independent phase;</li>
+        <li>comparison began with screening and episode structure rather than final codes;</li>
+        <li>every disagreement is classified at its earliest divergent decision;</li>
+        <li>each reading is supported by exact response, question, or governing-rule evidence;</li>
+        <li>pre-adjudication information was preserved before resolution;</li>
+        <li>unresolved cases remain visible;</li>
+        <li>artifact proposals do not silently change current-version records;</li>
+        <li>readiness evidence addresses the full competency model; and</li>
+        <li>all files remain in the approved project location without identifying information in notes.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-04-review">
+    <title>Review and Advancement</title>
+
+    <p>
+      The research lead first reviews procedural integrity: identical assigned
+      materials, preserved independence, complete records, correct versions, and a
+      locked pre-adjudication comparison. Analytic review then examines disagreement
+      patterns, low-confidence agreements, adjudication quality, unresolved cases, and
+      evidence across the readiness competencies in
+      <xref ref="tab-practice-readiness" text="title"/>.
+    </p>
+
+    <p>
+      Possible outcomes are:
+      <dl width="narrow">
+        <li>
+          <title>Advance to supervised coding</title>
+          <p>The calibration evidence demonstrates independent, defensible use of the complete method under the pre-specified readiness rule.</p>
+        </li>
+        <li>
+          <title>Targeted remediation</title>
+          <p>Complete a new focused set addressing the earliest recurring difficulty, then append the remediation evidence to the readiness record.</p>
+        </li>
+        <li>
+          <title>Repeat calibration</title>
+          <p>Complete a fresh calibration set when independence was compromised, disagreements remain broadly unstable, or the first set was not sufficiently diagnostic.</p>
+        </li>
+        <li>
+          <title>Resolve a materials problem</title>
+          <p>Revise and version a defective question frame, codebook entry, vocabulary item, example, schema, or protocol rule, then determine which cases require recoding.</p>
+        </li>
+        <li>
+          <title>Preserve a limited authorization</title>
+          <p>Advance only for specified question families or decision types while requiring secondary review for documented limitations.</p>
+        </li>
+      </dl>
+    </p>
+
+    <p>
+      The advancement record must state the evidence used, the governing versions,
+      remaining limitations, any required secondary review, and the date of the
+      decision. Original calibration, comparison, and adjudication records remain
+      unchanged.
+    </p>
+  </subsection>
+</section>

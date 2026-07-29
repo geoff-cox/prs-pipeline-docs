@@ -1,0 +1,659 @@
+<chapter xml:id="ch-episode-model">
+  <title>The Episode Model</title>
+
+  <introduction>
+    <p>
+      The theoretical framework in <xref ref="ch-theoretical-foundation" text="title"/>
+      explains why the project attends to mathematical control while remaining cautious
+      about claims concerning student knowledge. The <term>Episode Model</term> provides
+      the corresponding response-level analytic unit. It represents the underlying
+      links visible in a short written response without treating that response
+      as a complete conception or a transcript of the student's thought process.
+    </p>
+
+    <p>
+      The model separates three questions that are easily blurred in ordinary coding:
+      <ol>
+        <li>
+          <p>What mathematical condition or feature does the response cite?</p>
+        </li>
+        <li>
+          <p>How does the response connect that condition to a conclusion?</p>
+        </li>
+        <li>
+          <p>What conclusion does the response draw?</p>
+        </li>
+      </ol>
+      This separation allows researchers to distinguish a false observation from an
+      invalid inference, an incomplete link from a complete one, and a sound
+      local argument from an answer that addresses every part of the question.
+    </p>
+
+    <p>
+      This chapter is the canonical source for the model's terminology, notation, and
+      current policy choices. It defines the analytic objects. It does not prescribe the
+      step-by-step coding workflow, the spreadsheet schema, or the computational
+      implementation. Those belong to <xref ref="ch-coding-workflow" text="title"/> and
+      the pipeline chapters.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-episode-definition">
+    <title>Definition and Notation</title>
+
+    <paragraphs xml:id="subsec-episode-sequence">
+      <title>Episode Sequences</title>
+
+      <p>
+        Let <m>x</m> denote one student's written response to a particular question. The
+        response may contain no identifiable justification, one local justification, or
+        several related justifications. The ordered collection extracted from the
+        response is the <term>episode sequence</term>
+        <md>
+          E(x)=\langle e_1,e_2,\ldots,e_n\rangle.
+        </md>
+      </p>
+
+      <p>
+        The order follows the development of the written reasoning, normally by the
+        order in which the judgments appear. The sequence is therefore not merely an
+        unordered set of codes. It preserves whether one conclusion becomes the basis
+        for another and whether several reasons are offered separately.
+      </p>
+
+      <p>
+        A response with no identifiable criterion-to-judgment structure has no complete
+        episode. Depending on the governing screening policy, the response may be
+        excluded, preserved as partial evidence, or routed for review. The existence of
+        a mathematically correct final answer does not, by itself, create an episode.
+      </p>
+    </paragraphs>
+
+    <assemblage xml:id="subsec-episode-components">
+      <title>Criterion, Inferential Link, and Judgment</title>
+
+      <p>
+        Each episode has the form
+        <md>
+          e_k=(C_k,I_k,J_k),
+        </md>
+        where the components have distinct roles.
+        <dl width="medium">
+          <li>
+            <title>Criterion, <m>C_k</m></title>
+            <p>
+              The observation, fact, condition, intermediate result, or mathematical
+              feature cited as a reason. It is what the response points to. Examples
+              include the existence of a free variable, the number of pivots, the sign of
+              a derivative, or the absence of a contradictory row.
+            </p>
+          </li>
+
+          <li>
+            <title>Inferential link, <m>I_k</m></title>
+            <p>
+              The justification link that carries the criterion to the judgment. It states 
+              why the cited feature supports the conclusion in the context of the question.
+              The link may be stated directly, recoverable from the wording, invalid, or not
+              recoverable at all.
+            </p>
+          </li>
+
+          <li>
+            <title>Judgment, <m>J_k</m></title>
+            <p>
+              The conclusion, classification, validation, or decision drawn from the
+              criterion. It is what the response settles, such as concluding that a
+              system is consistent, that a solution is not unique, or that a function is
+              increasing.
+            </p>
+          </li>
+        </dl>
+      </p>
+    </assemblage>
+
+    <p>
+      In compact form,
+      <md>
+        \text{criterion}
+        \quad\underset{\text{link}}{\xrightarrow{\text{inferential}}}\quad
+        \text{judgment}.
+      </md>
+    </p>
+
+    <example xml:id="ex-episode-canonical">
+      <title>One Complete Episode</title>
+      <statement>
+        <p>Consider the response:</p>
+
+        <blockquote>
+          <p>There is a free variable, so the solution cannot be unique.</p>
+        </blockquote>
+
+        <p>
+          One defensible representation is
+          <md>
+            e_1=(C_1,I_1,J_1),
+          </md>
+          where
+          <dl width="narrow">
+            <li>
+              <title><m>C_1</m></title>
+              <p>A free variable exists.</p>
+            </li>
+            <li>
+              <title><m>I_1</m></title>
+              <p>
+                In the stated context, the existence of a free variable rules out one
+                unique solution.
+              </p>
+            </li>
+            <li>
+              <title><m>J_1</m></title>
+              <p>The solution is not unique.</p>
+            </li>
+          </dl>
+        </p>
+      </statement>
+    </example>
+
+    <p>
+      The criterion and judgment should remain as close as possible to the claims the
+      student actually made. The inferential link may require a concise analytic
+      paraphrase, but that paraphrase must represent the connection supported by the
+      response rather than a stronger argument supplied by the researcher.
+    </p>
+
+    <paragraphs xml:id="subsec-episode-visible-trace">
+      <title>A Visible Trace, Not a Mental State</title>
+
+      <p>
+        An episode is a <term>visible trace of justification</term>. It records evidence
+        present in one response to one question. It does not claim to describe everything
+        the student knew, believed, considered, or did before writing.
+      </p>
+
+      <p>
+        The Episode Model is motivated by the cK¢ framework, especially its treatment of
+        control structures and validation, but the triple <m>(C,I,J)</m> is a
+        project-developed analytic device. It is not part of the original conception
+        quadruplet <m>(P,R,L,\Sigma)</m>. An episode may provide evidence related to a
+        control structure; it is not itself a complete conception.
+      </p>
+
+      <p>
+        Appropriate claims therefore remain tied to the response:
+        <ul>
+          <li>the response cites a particular criterion;</li>
+          <li>the written link contains a particular episode; or</li>
+          <li>the response provides evidence related to a control structure.</li>
+        </ul>
+        Claims about stable beliefs, complete conceptions, or reasoning not visible in
+        the response require additional evidence beyond the Episode Model.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-episode-evidence-status">
+    <title>Evidence Status and Completeness</title>
+
+    <assemblage xml:id="subsec-episode-explicit-implicit-absent">
+      <title>Explicit, Implicit, and Absent Links</title>
+
+      <p>
+        The criterion and judgment usually correspond to claims made in the response.
+        The inferential link is often less direct. The project records its evidence
+        status using three values.
+        <dl width="narrow">
+          <li>
+            <title><c>explicit</c></title>
+            <p>
+              The response directly states the relevant relationship or justification. Words
+              such as <q>because</q>, <q>since</q>, <q>so</q>, and <q>therefore</q> may
+              signal an explicit connection, although a connector word alone does not
+              guarantee that the link is mathematically valid.
+            </p>
+          </li>
+          <li>
+            <title><c>implicit</c></title>
+            <p>
+              The link is not stated directly, but the connection is recoverable from
+              the response without adding a new mathematical idea or repairing the
+              argument. A careful reader can state the minimal link needed to express
+              the relation already supported by the writing.
+            </p>
+          </li>
+          <li>
+            <title><c>absent</c></title>
+            <p>
+              The response contains a criterion and a judgment, but no link connecting
+              them can be recovered without guessing, importing an unsupported idea, or
+              replacing the student's reasoning with a better argument.
+            </p>
+          </li>
+        </dl>
+      </p>
+
+      <p>
+        These values describe the <em>link only</em>. Under the current protocol, an
+        absent link does not by itself make the episode incomplete. If both a criterion
+        and a judgment are identifiable, the episode remains complete, with the link
+        recorded as absent. Its inferential-validity digit is then <m>0</m>, because no
+        valid link supports the stated step.
+      </p>
+    </assemblage>
+
+    <assemblage xml:id="subsec-episode-complete-incomplete">
+      <title>Complete and Incomplete Episodes</title>
+
+      <p>
+        Under the current policy, an episode is <term>complete</term> when both its
+        criterion <m>C_k</m> and judgment <m>J_k</m> are identifiable. Its inferential
+        link <m>I_k</m> is then classified as <c>explicit</c>, <c>implicit</c>, or 
+        <c>absent</c>.
+      </p>
+
+      <p>
+        An episode is <term>incomplete</term> when either the criterion or the judgment is
+        missing or too ambiguous to identify responsibly. For example,
+      </p>
+
+      <blockquote>
+        <p><q>There is a free variable.</q></p>
+      </blockquote>
+
+      <p>
+        supplies a possible criterion but no judgment. The student might intend to rule
+        out a unique solution, assert infinitely many solutions, identify a variable, or
+        make some other claim. Choosing among those conclusions would add information
+        not present in the response.
+      </p>
+
+      <p>
+        Similarly, a bare answer such as <q>No, the solution is not unique</q> provides a
+        judgment but no criterion. It may answer the question correctly, but it does not
+        identify the link used to reach that answer.
+      </p>
+
+      <p>
+        Incomplete episodes may be preserved as partial evidence, but they do not receive
+        the two-digit correctness annotation defined in
+        <xref ref="subsec-episode-two-digit-code" text="title"/>. Blank correctness
+        fields mean <q>not eligible for scoring</q>; they must not be replaced by
+        <m>(0,0)</m>.
+      </p>
+    </assemblage>
+
+    <paragraphs xml:id="subsec-episode-no-repair">
+      <title>Do Not Repair the Response</title>
+
+      <p>
+        The analytic task is to represent the link the student provided, not
+        the stronger link the student could have provided. A researcher may
+        clarify wording, normalize synonymous mathematical expressions, and record the
+        minimal link sufficient to license the step. A researcher may not supply a missing criterion,
+        invent a judgment, or import a mathematical step merely because it would make
+        the argument correct.
+      </p>
+
+      <p>
+        The boundary is between <term>recovery</term> and <term>invention</term>.
+        Recovery makes an already supported relation explicit. Invention adds a relation
+        that the response does not support. When that boundary is uncertain, the
+        uncertainty should be recorded and reviewed rather than concealed through a
+        polished reconstruction.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-episode-relations">
+    <title>Relations Among Episodes</title>
+
+    <p>
+      A response may contain several episodes. Their relationship is part of the
+      analytic structure and should be represented separately from the codes assigned to
+      the individual episodes.
+    </p>
+
+    <paragraphs xml:id="subsec-episode-chained">
+      <title>Chained Episodes</title>
+
+      <p>
+        Episodes are <term>chained</term> when the judgment of one episode becomes the
+        criterion of another. Formally, for distinct episodes <m>e_i</m> and <m>e_j</m>,
+        a chain occurs when
+        <md>
+          J_i=C_j
+        </md>
+        up to an acceptable mathematical paraphrase.
+      </p>
+
+      <p>
+        For example,
+      </p>
+
+      <blockquote>
+        <p>
+          There are fewer pivots than variables, so there is a free variable.
+          Therefore, the solution cannot be unique.
+        </p>
+      </blockquote>
+
+      <p>
+        contains the chain
+        <md>
+          \begin{aligned}
+            e_1 \amp:
+            \text{fewer pivots than variables}
+            \longrightarrow
+            \text{a free variable exists},\\
+            e_2 \amp:
+            \text{a free variable exists}
+            \longrightarrow
+            \text{the solution is not unique}.
+          \end{aligned}
+        </md>
+        The first judgment supplies the next criterion.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-episode-independent">
+      <title>Independent Episodes</title>
+
+      <p>
+        Episodes are <term>independent</term> when they provide separate,
+        non-interacting justifications. Neither episode uses the other episode's
+        judgment as a criterion or sub-step. Independent episodes may support the same
+        conclusion through different mathematical ideas, such as a pivot argument and a
+        dimension argument, or they may address different parts of a multipart prompt.
+      </p>
+
+      <p>
+        Independence is a relation among reasoning moves, not a claim that the ideas are
+        unrelated within mathematics. It means only that the written response presents
+        them as separate lines of justification.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-episode-nested">
+      <title>Nested Episodes</title>
+
+      <p>
+        Episodes are <term>nested</term> when one identifiable episode functions as a
+        sub-step inside a larger criterion-to-judgment argument. A nested episode may
+        also be chained with another episode; the two terms describe different features
+        and are not mutually exclusive.
+      </p>
+
+      <p>
+        The existence of nested structure is an analytic observation. The decision to
+        retain the parent episode, the child episode, or both is a coding policy. The
+        mathematics alone does not determine that choice.
+      </p>
+
+      <remark xml:id="rem-episode-nesting-policy">
+        <title>Current Nesting Policy: Open</title>
+        <p>
+          The source materials do not yet contain a ratified rule for collapsing nested
+          episodes. Until that policy is fixed, the working rule is to preserve every
+          defensible episode, record the relation among them, and avoid silently merging
+          or deleting a level. A final policy must be frozen before formal validation, as
+          described in <xref ref="ch-study-design" text="title"/>.
+        </p>
+      </remark>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-episode-correctness">
+    <title>Correctness Overlay</title>
+
+    <p>
+      The Episode Model describes the structure of a justification. Correctness is a
+      separate annotation placed on complete episodes. This separation prevents the
+      model from treating a mathematically wrong episode as though it were not an
+      episode and prevents a correct final answer from being mistaken for evidence of a
+      particular justification.
+    </p>
+
+    <paragraphs xml:id="subsec-episode-normative-reference">
+      <title>Normative Mathematical Reference</title>
+
+      <p>
+        Correctness is evaluated against a <term>normative reference</term> prepared for
+        the question. It contains two kinds of information:
+        <ul>
+          <li>
+            the actual mathematical state of the problem, used to determine whether a
+            stated criterion is true; and
+          </li>
+          <li>
+            the question-specific valid-inference set <m>\mathcal{T}_q</m>, containing
+            the criterion-to-judgment links accepted as mathematically valid for question
+            <m>q</m>.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        The reference must include all conditions supplied by the question. For example,
+        the existence of a free variable rules out a unique solution when the system is
+        known to be consistent. Without consistency, the same observation does not by
+        itself establish that solutions exist. Link validity is therefore
+        question-relative rather than a universal relation between isolated phrases.
+      </p>
+
+      <p>
+        The normative reference is developed and versioned with the question-specific
+        analytic frame described in
+        <xref ref="ch-codebook" text="title"/>.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-episode-two-digit-code">
+      <title>Criterion and Link Correctness</title>
+
+      <p>
+        Each complete episode receives the correctness annotation
+        <md>
+          \operatorname{code}(e_k)=(c_k^1,c_k^2)\in\{0,1\}^2,
+        </md>
+        where the two digits answer different questions.
+      </p>
+
+      <dl width="narrow">
+        <li>
+          <title>Criterion correctness, <m>c_k^1</m></title>
+          <p>
+            Set <m>c_k^1=1</m> when the criterion <m>C_k</m> is true in the actual
+            mathematical state and <m>c_k^1=0</m> when it is false.
+          </p>
+        </li>
+
+        <li>
+          <title>Inferential validity, <m>c_k^2</m></title>
+          <p>
+            Set <m>c_k^2=1</m> when the link <m>I_k</m> validly supports the judgment
+            <m>J_k</m> in the question context and <m>c_k^2=0</m> when the link is
+            invalid or absent.
+          </p>
+        </li>
+      </dl>
+
+      <p>
+        The possible annotations are:
+      </p>
+
+      <table xml:id="tab-episode-correctness-codes">
+        <title>Interpretation of the two-digit correctness annotation.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="18%"/>
+          <col width="82%"/>
+          <row header="yes" bottom="medium">
+            <cell>Code</cell>
+            <cell>Interpretation</cell>
+          </row>
+          <row>
+            <cell><m>(1,1)</m></cell>
+            <cell>True criterion and valid inferential link.</cell>
+          </row>
+          <row>
+            <cell><m>(1,0)</m></cell>
+            <cell>True criterion, but the inferential link is invalid or absent.</cell>
+          </row>
+          <row>
+            <cell><m>(0,1)</m></cell>
+            <cell>
+              False criterion, although the general criterion-to-judgment relationship
+              is valid.
+            </cell>
+          </row>
+          <row bottom="minor">
+            <cell><m>(0,0)</m></cell>
+            <cell>False criterion and invalid or absent inferential link.</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        The digits are independent. A student may cite a true feature but use it through
+        an invalid inference, producing <m>(1,0)</m>. Conversely, the general inference
+        may be valid even though the criterion is false in the student's computed state,
+        producing <m>(0,1)</m>.
+      </p>
+
+      <p>
+        Incomplete episodes receive no correctness annotation because one of the claims
+        required for evaluation is missing. A blank annotation means <q>not scored</q>,
+        not <q>both parts are wrong.</q>
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-episode-local-global">
+      <title>Local Link and Goal Coverage</title>
+
+      <p>
+        The correctness annotation evaluates one local reasoning move. It does not
+        determine whether the response fully answers the question. The project therefore
+        keeps <term>link quality</term> and <term>goal coverage</term> separate.
+      </p>
+
+      <p>
+        Goal coverage records which required part or parts of the question are addressed
+        by an episode's judgment. A judgment may cover one listed goal, several goals,
+        none of the goals, or have unclear coverage. For example, the response
+      </p>
+
+      <blockquote>
+        <p>There are two pivots, so one variable is free.</p>
+      </blockquote>
+
+      <p>
+        may contain a <m>(1,1)</m> episode while failing to identify the free variable,
+        name the basic variables, or state whether the solution is unique. The
+        link is sound, but the response has only partial goal coverage.
+      </p>
+
+      <p>
+        The converse can also occur: a response may state the requested final answer but
+        support it with an invalid inference or no codable justification. Thus:
+        <ul>
+          <li>a sound episode does not guarantee a complete answer;</li>
+          <li>a correct answer does not guarantee a sound episode; and</li>
+          <li>a bare correct answer does not identify a control structure.</li>
+        </ul>
+      </p>
+
+      <p>
+        The current source materials specify goal coverage for individual episode
+        judgments. They do not yet supply a final formal aggregation rule for combining
+        all episode-level coverage annotations into a single response-level score. That
+        rule should be fixed with the coding protocol before confirmatory validation.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-episode-summary">
+    <title>Notation and Policy Summary</title>
+
+    <table xml:id="tab-episode-policy-summary">
+      <title>Canonical Episode Model notation and current policy.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="24%"/>
+        <col width="32%"/>
+        <col width="44%"/>
+        <row header="yes" bottom="medium">
+          <cell>Item</cell>
+          <cell>Notation or values</cell>
+          <cell>Canonical meaning or current policy</cell>
+        </row>
+        <row>
+          <cell>Response</cell>
+          <cell><m>x</m></cell>
+          <cell>One written answer interpreted in its exact question context.</cell>
+        </row>
+        <row>
+          <cell>Episode sequence</cell>
+          <cell><m>E(x)=\langle e_1,\ldots,e_n\rangle</m></cell>
+          <cell>Ordered local justifications extracted from the response.</cell>
+        </row>
+        <row>
+          <cell>Episode</cell>
+          <cell><m>e_k=(C_k,I_k,J_k)</m></cell>
+          <cell>Criterion, inferential link, and judgment.</cell>
+        </row>
+        <row>
+          <cell>Link status</cell>
+          <cell><c>explicit</c>, <c>implicit</c>, <c>absent</c></cell>
+          <cell>
+            Describes the evidence for the link. An absent link does not alone make the
+            episode incomplete.
+          </cell>
+        </row>
+        <row>
+          <cell>Completeness</cell>
+          <cell><c>complete</c>, <c>incomplete</c></cell>
+          <cell>
+            Complete when both criterion and judgment are identifiable; incomplete when
+            either is missing or irreducibly ambiguous.
+          </cell>
+        </row>
+        <row>
+          <cell>Episode relations</cell>
+          <cell><c>chained(k)</c>, <c>independent</c>, blank</cell>
+          <cell>
+            Preserve identifiable structure. Blank records a lone episode. Detected
+            nesting is an analytic observation preserved in <c>notes</c>, not a sheet
+            value; the final nested-episode retention policy remains open.
+          </cell>
+        </row>
+        <row>
+          <cell>Correctness</cell>
+          <cell><m>(c_k^1,c_k^2)</m></cell>
+          <cell>
+            Criterion truth and inferential validity, assigned only to complete episodes.
+          </cell>
+        </row>
+        <row bottom="minor">
+          <cell>Goal coverage</cell>
+          <cell>question-goal labels</cell>
+          <cell>
+            Records which requested outcomes an episode's judgment addresses; kept
+            separate from episode correctness.
+          </cell>
+        </row>
+      </tabular>
+    </table>
+  </section>
+
+  <conclusion>
+    <p>
+      The Episode Model represents a response as an ordered sequence of local
+      criterion-to-judgment moves. It preserves the inferential link, distinguishes
+      complete from partial evidence, records relations among multiple episodes, and
+      overlays criterion truth and inferential validity without confusing either with
+      full-question completion. The next chapter connects these response-level episodes
+      to the project's shared control-structure library and question-specific normative
+      information.
+    </p>
+  </conclusion>
+</chapter>

@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix xml:id="app-protocol-summary">
+  <title>Current Coding Protocol Summary</title>
+
+  <introduction>
+    <p>
+      This appendix is the compact operational summary of the current coding protocol.
+      It does not place historical policies beside current rules. The version fields on a
+      coding record determine which protocol governed that record; prior versions and
+      superseded decisions belong in the research journal and repository history.
+    </p>
+
+    <remark xml:id="rem-app-protocol-status">
+      <title>Status: Derived Operational Summary</title>
+      <p>
+        This appendix is a controlled operational summary derived from the canonical
+        framework and handbook chapters and the frozen Coding Protocol <m>\pi</m>; it
+        does not define rules of its own. The full explanations and examples remain in
+        Parts II and III, and the field-level specification is
+        <xref ref="app-coding-sheet" text="title"/>. When this summary appears to
+        conflict with a versioned protocol supplied for a coding batch, stop and ask
+        the research lead which artifact governs. Do not resolve a version conflict by
+        choosing the rule you prefer.
+      </p>
+    </remark>
+  </introduction>
+
+  <section xml:id="sec-app-protocol-evidence">
+    <title>Evidence Boundary</title>
+
+    <ol>
+      <li>
+        <p>
+          Code the justification visible in the response. Do not claim that one short
+          response reveals a student's complete conception, belief, or mental process.
+        </p>
+      </li>
+      <li>
+        <p>
+          Read the complete question, supplied mathematical state, requested goals, and
+          assigned normative reference before interpreting the response.
+        </p>
+      </li>
+      <li>
+        <p>
+          Record the student's wording before paraphrasing. Do not repair omitted
+          conditions, replace terminology, import a theorem, or supply a conclusion the
+          student did not make.
+        </p>
+      </li>
+      <li>
+        <p>
+          Preserve uncertainty, competing readings, OOV language, and no-match outcomes
+          as data rather than forcing the nearest convenient category.
+        </p>
+      </li>
+    </ol>
+  </section>
+
+  <section xml:id="sec-app-protocol-workflow">
+    <title>Required Coding Sequence</title>
+
+    <table xml:id="tab-app-protocol-workflow">
+      <title>Current response-coding sequence.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="14%"/>
+        <col width="27%"/>
+        <col width="59%"/>
+        <row header="yes" bottom="medium">
+          <cell>Step</cell>
+          <cell>Decision</cell>
+          <cell>Current rule</cell>
+        </row>
+        <row>
+          <cell>1</cell>
+          <cell>Screen</cell>
+          <cell>Decide whether the response contains analyzable mathematical justification. Do not screen on correctness.</cell>
+        </row>
+        <row>
+          <cell>2</cell>
+          <cell>Segment</cell>
+          <cell>Identify every defensible episode before matching codes. Preserve alternative segmentations in notes.</cell>
+        </row>
+        <row>
+          <cell>3</cell>
+          <cell>Transcribe</cell>
+          <cell>Copy the criterion and judgment verbatim. Keep reconstructed reasoning out of verbatim fields.</cell>
+        </row>
+        <row>
+          <cell>4</cell>
+          <cell>Record the link</cell>
+          <cell>Write the minimal link sufficient to license the step and classify it as <c>explicit</c>, <c>implicit</c>, or <c>absent</c>.</cell>
+        </row>
+        <row>
+          <cell>5</cell>
+          <cell>Relate episodes</cell>
+          <cell>Mark <c>chained(k)</c> or <c>independent</c>, leaving the relation blank for a lone episode; note detected nesting. Do not collapse defensible episodes under the interim nesting rule.</cell>
+        </row>
+        <row>
+          <cell>6</cell>
+          <cell>Match</cell>
+          <cell>Use code definitions and question-specific inferential relationships, not isolated keywords. Preserve alternate matches, OOV, and no-match cases.</cell>
+        </row>
+        <row>
+          <cell>7</cell>
+          <cell>Evaluate correctness</cell>
+          <cell>For complete episodes, judge criterion truth and inferential validity separately.</cell>
+        </row>
+        <row>
+          <cell>8</cell>
+          <cell>Evaluate coverage</cell>
+          <cell>Record which question goals are addressed. Do not lower a local correctness annotation because the response is incomplete overall.</cell>
+        </row>
+        <row>
+          <cell>9</cell>
+          <cell>Record uncertainty</cell>
+          <cell>Assign coder confidence and write a specific rationale for difficult or low-confidence decisions.</cell>
+        </row>
+        <row bottom="minor">
+          <cell>10</cell>
+          <cell>Route</cell>
+          <cell>Apply the assigned disposition or escalation rule. Preserve unresolved cases and prior proposals.</cell>
+        </row>
+      </tabular>
+    </table>
+  </section>
+
+  <section xml:id="sec-app-protocol-episode-rules">
+    <title>Episode Rules</title>
+
+    <dl width="medium">
+      <li>
+        <title>Episode form</title>
+        <p>
+          Each episode is <m>e_k=(C_k,I_k,J_k)</m>: criterion, inferential link,
+          judgment. A response is represented by the ordered sequence
+          <m>E(x)=\langle e_1,\ldots,e_n\rangle</m>.
+        </p>
+      </li>
+      <li>
+        <title>Completeness</title>
+        <p>
+          An episode is complete exactly when a criterion and a judgment are
+          identifiable. A missing criterion or judgment makes it incomplete and
+          unscored.
+        </p>
+      </li>
+      <li>
+        <title>Link status</title>
+        <p>
+          <c>explicit</c> means a link or justification is stated; <c>implicit</c> means
+          the minimal link is recoverable; <c>absent</c> means no justification is
+          recoverable. An absent link alone does not make an episode incomplete.
+        </p>
+      </li>
+      <li>
+        <title>Absent links</title>
+        <p>
+          When no justification is recoverable, record <c>[none stated]</c> in the
+          link field and classify the link as absent. Do not invent a justification.
+          <c>[none stated]</c> never changes completeness and never blocks the two
+          correctness digits: <m>c^1</m> and <m>c^2</m> are still evaluated from the
+          criterion and judgment as written (Coding Protocol <m>\pi</m> §4). In
+          practice an absent link rarely survives a valid entailment — if a standard
+          principle licensed the step, the link would be recoverable and therefore
+          implicit — but the evaluation, not that shortcut, is the rule.
+        </p>
+      </li>
+      <li>
+        <title>Current nesting rule</title>
+        <p>
+          The final retention policy for nested or chained episodes remains open.
+          Until it is frozen, record every defensible episode, mark the relation, and
+          place any proposed merger in notes.
+        </p>
+      </li>
+    </dl>
+  </section>
+
+  <section xml:id="sec-app-protocol-matching">
+    <title>Matching and Vocabulary Rules</title>
+
+    <ol>
+      <li>
+        <p>
+          Complete a blind extraction pass without codebook access when the assigned
+          study design requires it. Leave code-dependent fields blank rather than
+          guessing.
+        </p>
+      </li>
+      <li>
+        <p>
+          Match the whole criterion-to-judgment relationship against the current
+          question-specific working codebook. A shared word does not establish a match.
+        </p>
+      </li>
+      <li>
+        <p>
+          When several codes plausibly fit one episode, record a primary code and all
+          defensible alternatives. When separate episodes enact separate controls, code
+          the episodes separately.
+        </p>
+      </li>
+      <li>
+        <p>
+          Use <term>OOV</term> when relevant terminology or a canonical proposition is
+          missing from the controlled vocabulary. Use <term>no match</term> when the
+          episode can be expressed in available vocabulary but no current codebook entry
+          describes the relationship adequately.
+        </p>
+      </li>
+      <li>
+        <p>
+          A new term or code is a proposal, not an immediate research category. Review it
+          across similar and near-miss cases before acceptance.
+        </p>
+      </li>
+    </ol>
+  </section>
+
+  <section xml:id="sec-app-protocol-correctness">
+    <title>Correctness and Goal Coverage</title>
+
+    <p>
+      Every complete episode receives the pair
+      <md>
+        \operatorname{code}(e_k)=(c_k^1,c_k^2),
+      </md>
+      where <m>c_k^1</m> evaluates the criterion against the actual problem state and
+      <m>c_k^2</m> evaluates whether the inferential link licenses the judgment for the
+      assigned question frame.
+    </p>
+
+    <table xml:id="tab-app-protocol-correctness">
+      <title>Interpretation of the correctness pair.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="16%"/>
+        <col width="84%"/>
+        <row header="yes" bottom="medium">
+          <cell>Pair</cell>
+          <cell>Interpretation</cell>
+        </row>
+        <row>
+          <cell><m>(1,1)</m></cell>
+          <cell>The criterion is true and the inference is valid.</cell>
+        </row>
+        <row>
+          <cell><m>(1,0)</m></cell>
+          <cell>The criterion is true, but it does not validly support the judgment.</cell>
+        </row>
+        <row>
+          <cell><m>(0,1)</m></cell>
+          <cell>The criterion is false, although the criterion-to-judgment relationship is valid as an inference pattern.</cell>
+        </row>
+        <row>
+          <cell><m>(0,0)</m></cell>
+          <cell>The criterion is false and the inference is invalid.</cell>
+        </row>
+        <row bottom="minor">
+          <cell>blank</cell>
+          <cell>The episode is incomplete or cannot be evaluated under the assigned normative reference.</cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      The pair evaluates a local justification, not the whole response. Record goal
+      coverage separately: the identifier(s) of the question goals the episode's
+      judgment addresses, <c>off-target</c> when it addresses none, or <c>unclear</c>
+      with a note when it cannot be determined (Coding Protocol <m>\pi</m> §2). Goal
+      coverage never removes a row and never changes a code or correctness digit.
+    </p>
+  </section>
+
+  <section xml:id="sec-app-protocol-review">
+    <title>Independence, Review, and Adjudication</title>
+
+    <ol>
+      <li>
+        <p>
+          During an independent pass, do not inspect another coder's work or solicit
+          their answer.
+        </p>
+      </li>
+      <li>
+        <p>
+          In a tool-review pass, preserve the machine proposal. Record the human action
+          as <c>confirm</c>, <c>add</c>, <c>remove</c>, <c>replace</c>, or
+          <c>reject_all</c>, with a rationale.
+        </p>
+      </li>
+      <li>
+        <p>
+          When coders disagree, classify the earliest divergence using the current
+          taxonomy: <c>SCREEN</c>, <c>BOUNDARY</c>, <c>CRITERION</c>, <c>LINK</c>,
+          <c>JUDGMENT</c>, <c>RELATION</c>, <c>MATCH</c>, <c>CORRECTNESS</c>,
+          <c>COVERAGE</c>, <c>VOCABULARY</c>, <c>POLICY</c>, or <c>OTHER</c>.
+        </p>
+      </li>
+      <li>
+        <p>
+          Adjudicate from the original question and response, the visible evidence, and
+          the governing materials. Preserve the case as unresolved when the evidence or
+          current policy does not support one defensible decision.
+        </p>
+      </li>
+      <li>
+        <p>
+          Test a proposed guidance revision on the motivating case, at least two similar
+          cases, and at least one near miss before adoption.
+        </p>
+      </li>
+    </ol>
+  </section>
+
+  <section xml:id="sec-app-protocol-provenance">
+    <title>Version and Record Discipline</title>
+
+    <ul>
+      <li>
+        <p>
+          Record the governing handbook, protocol, codebook, vocabulary, and
+          question-frame versions before beginning a batch.
+        </p>
+      </li>
+      <li>
+        <p>
+          Preserve the independent first pass, confidence notes, disagreement records,
+          adjudicated result, review actions, rationales, reviewer, and date.
+        </p>
+      </li>
+      <li>
+        <p>
+          Do not silently revise earlier rows. Record coder drift and use an approved
+          recalibration or recoding pass.
+        </p>
+      </li>
+      <li>
+        <p>
+          Freeze the analytic materials before formal validation. A mid-validation
+          change requires a new version and an explicit decision about recoding prior
+          records.
+        </p>
+      </li>
+      <li>
+        <p>
+          Handle student responses only in approved systems. Do not submit real response
+          text to an external service unless that specific use and provider are approved.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <section xml:id="sec-app-protocol-final-check">
+    <title>Submission Check</title>
+
+    <p>
+      Before submitting a response or batch, verify that you:
+    </p>
+
+    <ul>
+      <li><p>used the complete question context and correct governing versions;</p></li>
+      <li><p>preserved source wording and did not repair the response;</p></li>
+      <li><p>recorded every defensible episode and its relation;</p></li>
+      <li><p>kept extraction, matching, correctness, and coverage separate;</p></li>
+      <li><p>preserved alternate matches, OOV, no-match, and unresolved cases;</p></li>
+      <li><p>left incomplete episodes unscored;</p></li>
+      <li><p>explained low-confidence decisions and overrides;</p></li>
+      <li><p>preserved prior proposals and review history; and</p></li>
+      <li><p>kept all research data in approved project systems.</p></li>
+    </ul>
+
+    <p>
+      The field-level companion to this summary is
+      <xref ref="app-coding-sheet" text="title"/>.
+    </p>
+  </section>
+</appendix>

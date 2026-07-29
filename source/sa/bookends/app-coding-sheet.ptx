@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appendix xml:id="app-coding-sheet">
+  <title>Coding Sheet Data Dictionary</title>
+
+  <introduction>
+    <p>
+      This appendix defines the information that must be preserved when a response is
+      coded. It is authoritative at the level of meaning and controlled values. A CSV
+      may place all fields in one wide table, while a database may separate response,
+      episode, review, and provenance records. Either representation is acceptable if
+      it preserves the same distinctions and stable identifiers.
+    </p>
+
+    <p>
+      The analytic unit is normally one row per episode. A response with several
+      episodes therefore appears on several episode rows. A response with no identifiable
+      episode still requires a response-level record for screening, rationale, and
+      disposition; an episode-sheet implementation may represent this as a stub row with
+      <c>episode_n</c> blank and <c>complete</c> equal to 0.
+    </p>
+
+    <remark xml:id="rem-app-coding-sheet-authority">
+      <title>Use the Assigned Schema</title>
+      <p>
+        Field names below are the canonical names used in this book. When an assigned
+        database or sheet uses different physical column names, follow the supplied
+        mapping rather than creating parallel columns. Never rename identifiers or
+        normalize student text during coding.
+      </p>
+    </remark>
+
+    <remark xml:id="rem-app-coding-sheet-versions">
+      <title>Authoritative home and mirrored versions</title>
+      <p>
+        This appendix is the single authoritative in-book home for field meanings and
+        controlled values. It mirrors Coder's Handbook v0.2 §5 and Coding Protocol
+        <m>\pi</m> 0.1 §7 (which added <c>link_recorded</c>, <c>goal_coverage</c>,
+        <c>alt_codes</c>, and <c>protocol_version</c>); if this appendix and those
+        frozen instruments ever disagree, the frozen instruments govern and this
+        appendix is the defect. Every other book location that lists fields or values
+        — worksheets, the protocol summary, chapter tables — is a cross-referencing
+        view of this appendix, not a second specification.
+      </p>
+    </remark>
+  </introduction>
+
+  <section xml:id="sec-app-coding-sheet-fields">
+    <title>Episode-Level Fields</title>
+
+    <paragraphs xml:id="subsec-app-coding-sheet-response-fields">
+      <title>Response Identity and Screening</title>
+
+      <table xml:id="tab-app-coding-sheet-response-fields">
+        <title>Response-level fields.</title>
+        <tabular top="major" bottom="minor">
+          <col width="28%" halign="center" />
+          <col width="72%" halign="left" />
+          <row header="yes" bottom="medium">
+            <cell><p>Field</p></cell>
+            <cell><p>Definition and entry rule</p></cell>
+          </row>
+          <row>
+            <cell><p><c>response_id</c></p></cell>
+            <cell><p>Copy exactly. It maps every coder record to the same response.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>question_id</c></p></cell>
+            <cell><p>Copy exactly. It maps to the exact question text and question-specific guidelines.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>screening_decision</c></p></cell>
+            <cell>
+              <p>
+                Records whether the response continues to episode analysis. Screening cares about analyzable responses, not mathematical correctness. Possible values:
+                <c>INCLUDE</c>, <c>EXCLUDE</c>, or <c>FLAG</c>.
+              </p>
+            </cell>
+          </row>
+          <row>
+            <cell><p><c>screening_rationale</c></p></cell>
+            <cell><p>States the visible basis for the screening decision. Avoid vague rationales such as <q>unclear</q> without identifying what is missing.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>missing_goals</c></p></cell>
+            <cell><p>Lists parts of question prompt that are not addressed by the response. Keep separate from episode correctness.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>response_status</c></p></cell>
+            <cell>
+              <p>
+                A special label that described the overall condition of the response. Possible values:
+              </p>
+              <p>
+                <line><c>ORDINARY</c>: no special condition found.</line>
+                <line><c>OOV</c>: out of the current vocabulary.</line>
+                <line><c>NO_MATCH</c>: no code in the codebook fits any episode.</line>
+                <line><c>UNRESOLVED</c>: the response needs discussion.</line>
+              </p>
+            </cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>disposition</c></p></cell>
+            <cell><p>Records the next action. The schema permits six values: <c>auto_accept</c>, <c>standard_review</c>, <c>problem_type_flag</c>, <c>terminology_flag</c>, <c>no_match</c>, or <c>escalate</c>. The current deterministic baseline never produces <c>problem_type_flag</c>.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-app-coding-sheet-episode-fields">
+      <title>Episode Content and Structure</title>
+
+      <table xml:id="tab-app-coding-sheet-episode-fields">
+        <title>Fields that describe one episode.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="28%"/>
+          <col width="72%"/>
+          <row header="yes" bottom="medium">
+            <cell><p>Field</p></cell>
+            <cell><p>Definition and entry rule</p></cell>
+          </row>
+          <row>
+            <cell><p><c>episode_n</c></p></cell>
+            <cell><p>Numbers episodes within a response in the order their judgments appear. Leave blank when there is no identifiable episode. Possible values: <c>1</c>, <c>2</c>, <c>3</c>, …</p></cell>
+          </row>
+          <row>
+            <cell><p><c>criterion_verbatim</c></p></cell>
+            <cell><p>Copies the student's words that provide <m>C_k</m>. Do not fill-in any unstated justification gaps here.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>link_recorded</c></p></cell>
+            <cell><p>Records the minimal link sufficient to connect the criterion to the judgment or <c>[none stated]</c>.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>judgment_verbatim</c></p></cell>
+            <cell><p>Copies the student's words that provide <m>J_k</m>.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>link_stated</c></p></cell>
+            <cell><p>Describes link evidence only: an explicit connector, a recoverable unstated justification, or no recoverable justification. Possible values: <c>explicit</c>, <c>implicit</c>, or <c>absent</c>.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>complete</c></p></cell>
+            <cell><p>Indicates when both a criterion and a judgment are identifiable. An absent link alone does not make the episode incomplete. Possible values: <c>0</c> or <c>1</c>.</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>relation</c></p></cell>
+            <cell><p>Records how this episode relates to other episodes in the same response. Possible values: <c>chained(k)</c> when this episode's criterion is episode <em>k</em>'s judgment, <c>independent</c> when it stands apart, or blank for a lone episode (Handbook §5; Coding Protocol <m>\pi</m> §6 interim rule). Detected nesting is noted in <c>notes</c> pending the open retention decision; richer values such as <c>nested(k)</c> are proposals, not current sheet values.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-app-coding-sheet-analytic-fields">
+      <title>Matching, Correctness, Coverage, and Uncertainty</title>
+
+      <table xml:id="tab-app-coding-sheet-analytic-fields">
+        <title>Analytic annotation fields.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="21%"/>
+          <col width="22%"/>
+          <col width="57%"/>
+          <row header="yes" bottom="medium">
+            <cell><p>Field</p></cell>
+            <cell><p>Allowed form</p></cell>
+            <cell><p>Definition and entry rule</p></cell>
+          </row>
+          <row>
+            <cell><p><c>code</c></p></cell>
+            <cell><p>One accepted code ID or blank</p></cell>
+            <cell><p>Primary control-structure match for this episode. Leave blank during a blind pass and when no current code is adequate.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>alt_codes</c></p></cell>
+            <cell><p>Zero or more code IDs</p></cell>
+            <cell><p>Preserves other plausible codes for the same episode. Do not use this field for codes belonging to separate episodes.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>oov_note</c></p></cell>
+            <cell><p>Verbatim unfamiliar term or blank</p></cell>
+            <cell><p>Copies relevant terminology not represented adequately in the controlled vocabulary. Do not silently translate it into preferred course language.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>c1</c></p></cell>
+            <cell><p>0, 1, or blank</p></cell>
+            <cell><p>Criterion correctness: 1 when the criterion is true in the actual problem state, 0 when false. Leave blank for incomplete or unevaluable episodes.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>c2</c></p></cell>
+            <cell><p>0, 1, or blank</p></cell>
+            <cell><p>Inferential validity: 1 when the criterion licenses the judgment for this question, 0 otherwise. Evaluated from the criterion and judgment as written; an absent link never blocks the digits and does not by itself determine the value (Coding Protocol <m>\pi</m> §4).</p></cell>
+          </row>
+          <row>
+            <cell><p><c>goal_coverage</c></p></cell>
+            <cell><p>Goal identifiers, <c>off-target</c>, or <c>unclear</c></p></cell>
+            <cell><p>Lists the question goals addressed by this episode's judgment. It does not alter <c>c1</c> or <c>c2</c>.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>confidence</c></p></cell>
+            <cell><p>3, 2, or 1</p></cell>
+            <cell><p>Coder confidence in the recorded analysis: 3 confident, 2 plausible but arguable, 1 genuinely unsure. This is not student correctness.</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>notes</c></p></cell>
+            <cell><p>Brief evidence-based text</p></cell>
+            <cell><p>Records ambiguity, alternatives, policy questions, or context needed later. A confidence value of 1 requires a specific note.</p></cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-app-coding-sheet-provenance-fields">
+      <title>Provenance and Review History</title>
+
+      <table xml:id="tab-app-coding-sheet-provenance-fields">
+        <title>Fields required to interpret and audit the coding record.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="21%"/>
+          <col width="22%"/>
+          <col width="57%"/>
+          <row header="yes" bottom="medium">
+            <cell><p>Field</p></cell>
+            <cell><p>Allowed form</p></cell>
+            <cell><p>Definition and entry rule</p></cell>
+          </row>
+          <row>
+            <cell><p><c>coder_id</c></p></cell>
+            <cell><p>Approved project identifier</p></cell>
+            <cell><p>Identifies the coder without placing personal information in ordinary analysis exports.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>coded_at</c></p></cell>
+            <cell><p>Approved timestamp format</p></cell>
+            <cell><p>Records when the independent or assigned pass was completed.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>handbook_version</c></p></cell>
+            <cell><p>Version label</p></cell>
+            <cell><p>Version of the workflow and handbook guidance governing the record.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>protocol_version</c></p></cell>
+            <cell><p>Version label</p></cell>
+            <cell><p>Version of the coding protocol governing policy choices.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>codebook_version</c></p></cell>
+            <cell><p>Version label or blank</p></cell>
+            <cell><p>Question-specific codebook used for matching. Leave blank during a genuinely blind pass.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>vocabulary_version</c></p></cell>
+            <cell><p>Version label or blank</p></cell>
+            <cell><p>Controlled-vocabulary version available during extraction or review.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>question_frame_version</c></p></cell>
+            <cell><p>Version label</p></cell>
+            <cell><p>Identifies the normative question frame used for correctness and coverage decisions.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>review_action</c></p></cell>
+            <cell><p><c>confirm</c>, <c>add</c>, <c>remove</c>, <c>replace</c>, <c>reject_all</c>, or assigned value</p></cell>
+            <cell><p>Records a human action on a prior proposal. Store it as a new review record rather than overwriting the proposal.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>review_rationale</c></p></cell>
+            <cell><p>Brief evidence-based text</p></cell>
+            <cell><p>Explains the review action and identifies the affected decision.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>disagreement_type</c></p></cell>
+            <cell><p>One or more taxonomy values</p></cell>
+            <cell><p>Classifies the earliest point of divergence. Possible values: <c>SCREEN</c>, <c>BOUNDARY</c>, <c>CRITERION</c>, <c>LINK</c>, <c>JUDGMENT</c>, <c>RELATION</c>, <c>MATCH</c>, <c>CORRECTNESS</c>, <c>COVERAGE</c>, <c>VOCABULARY</c>, <c>POLICY</c>, or <c>OTHER</c>; the defining taxonomy is <xref ref="tab-disagreement-taxonomy"/>.</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>adjudication_status</c></p></cell>
+            <cell><p><c>not_required</c>, <c>pending</c>, <c>resolved</c>, or <c>unresolved</c></p></cell>
+            <cell><p>Records whether comparison produced a final decision. An unresolved result is preserved rather than replaced by forced agreement.</p></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        A physical sheet may repeat response- and provenance-level values on every
+        episode row. A normalized database may store them once and join them by stable
+        identifiers. The research meaning is unchanged.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-app-coding-sheet-examples">
+    <title>Completed Rows</title>
+
+    <p>
+      The rows below illustrate the most important combinations. They are abbreviated:
+      required version and reviewer fields are represented by the final provenance
+      column rather than repeated individually.
+    </p>
+
+    <table xml:id="tab-app-coding-sheet-completed-rows">
+      <title>Representative coding-sheet rows.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="10%"/>
+        <col width="7%"/>
+        <col width="17%"/>
+        <col width="17%"/>
+        <col width="17%"/>
+        <col width="9%"/>
+        <col width="9%"/>
+        <col width="14%"/>
+        <row header="yes" bottom="medium">
+          <cell><p>Response</p></cell>
+          <cell><p>Ep.</p></cell>
+          <cell><p>Criterion</p></cell>
+          <cell><p>Link</p></cell>
+          <cell><p>Judgment</p></cell>
+          <cell><p>Status</p></cell>
+          <cell><p>Correct.</p></cell>
+          <cell><p>Code / note</p></cell>
+        </row>
+        <row>
+          <cell><p><c>EX-01</c></p></cell>
+          <cell><p>1</p></cell>
+          <cell><p><q>There is a free variable</q></p></cell>
+          <cell><p>Free variable rules out one unique solution</p></cell>
+          <cell><p><q>the solution is not unique</q></p></cell>
+          <cell><p><c>explicit</c>; complete</p></cell>
+          <cell><p><m>(1,1)</m></p></cell>
+          <cell><p><c>CS-free-variable</c>; confidence 3</p></cell>
+        </row>
+        <row>
+          <cell><p><c>EX-02</c></p></cell>
+          <cell><p>1</p></cell>
+          <cell><p><q>fewer pivots than variables</q></p></cell>
+          <cell><p>An unpivoted variable is free</p></cell>
+          <cell><p><q>one variable is free</q></p></cell>
+          <cell><p><c>explicit</c>; complete</p></cell>
+          <cell><p><m>(1,1)</m></p></cell>
+          <cell><p><c>CS-pivot-count</c>; relation blank, chain recorded on episode 2</p></cell>
+        </row>
+        <row>
+          <cell><p><c>EX-02</c></p></cell>
+          <cell><p>2</p></cell>
+          <cell><p><q>one variable is free</q></p></cell>
+          <cell><p>Free variable rules out one unique solution</p></cell>
+          <cell><p><q>the solution is not unique</q></p></cell>
+          <cell><p><c>explicit</c>; <c>chained(1)</c></p></cell>
+          <cell><p><m>(1,1)</m></p></cell>
+          <cell><p><c>CS-free-variable</c>; confidence 3</p></cell>
+        </row>
+        <row>
+          <cell><p><c>EX-03</c></p></cell>
+          <cell><p>—</p></cell>
+          <cell><p>—</p></cell>
+          <cell><p><c>[none stated]</c></p></cell>
+          <cell><p><q>No, the solution is not unique.</q></p></cell>
+          <cell><p>incomplete stub</p></cell>
+          <cell><p>—</p></cell>
+          <cell><p>bare answer; no episode code; confidence 3</p></cell>
+        </row>
+        <row bottom="minor">
+          <cell><p><c>EX-04</c></p></cell>
+          <cell><p>1</p></cell>
+          <cell><p><q>The solution set has one degree of freedom</q></p></cell>
+          <cell><p>One degree of freedom gives a line, not a point</p></cell>
+          <cell><p><q>it is a line rather than a point</q></p></cell>
+          <cell><p><c>explicit</c>; complete</p></cell>
+          <cell><p><m>(1,1)</m></p></cell>
+          <cell><p>OOV term preserved; no forced code; confidence 2</p></cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      The example codes are descriptive placeholders, not replacements for the current
+      frozen codebook IDs. In project data, copy the assigned code IDs and version label
+      exactly. See <xref ref="app-protocol-summary" text="title"/> for the policies that
+      govern completion of these fields.
+    </p>
+  </section>
+</appendix>

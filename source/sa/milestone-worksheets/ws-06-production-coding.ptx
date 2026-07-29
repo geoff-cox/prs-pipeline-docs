@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<section xml:id="sec-ws-06-production-coding">
+  <title>Worksheet 6: Production Coding</title>
+
+  <objectives>
+    <ul>
+      <li>Produce auditable coding records within a documented authorization scope.</li>
+      <li>Apply frozen analytic materials consistently across an assigned production batch.</li>
+      <li>Preserve source provenance, independent decisions, review history, and unresolved cases.</li>
+      <li>Detect coder drift, artifact conflicts, and data-quality problems without silently rewriting earlier work.</li>
+      <li>Complete batch-level quality checks and route records according to the pre-specified review plan.</li>
+    </ul>
+  </objectives>
+
+  <introduction>
+    <p>
+      This worksheet governs routine production coding after the research lead has
+      issued a dated authorization under Worksheet 5. Production coding creates
+      research records that may later support substantive analysis, codebook
+      development, reliability studies, or computational evaluation. The work must
+      therefore remain traceable from the original response and question through every
+      coding, review, and adjudication decision.
+    </p>
+
+    <p>
+      Production does not mean that difficult cases should be forced into ordinary
+      categories or that established records may be cleaned up silently. A reliable
+      production process preserves ambiguity, OOV and no-match cases, low confidence,
+      unresolved decisions, and later overrides. It also records the exact handbook,
+      protocol, codebook, vocabulary, question-frame, schema, and software conditions
+      that governed the batch.
+    </p>
+
+    <p>
+      This worksheet does not set one universal batch size, review percentage, or
+      acceptance threshold because the current project record does not establish those
+      values. The production packet must state them before coding begins. A held-out
+      validation batch requires the separate freeze and access controls in
+      <xref ref="ch-study-design" text="title"/> and is not authorized merely by this
+      worksheet.
+    </p>
+
+    <remark xml:id="rem-ws-06-status">
+      <title>Milestone status</title>
+      <p>
+        Production authorization is limited to the scope recorded by the research lead.
+        It may specify question families, artifact versions, review requirements, data
+        locations, and decisions that still require secondary review. Authorization may
+        be narrowed or suspended when drift, material changes, or stewardship problems
+        arise.
+      </p>
+    </remark>
+  </introduction>
+
+  <subsection xml:id="subsec-ws-06-overview">
+    <title>Milestone at a Glance</title>
+
+    <table xml:id="tab-ws-06-overview">
+      <title>Purpose and output of production coding.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="22%"/>
+        <col width="78%"/>
+        <row header="yes" bottom="medium"><cell>Item</cell><cell>Description</cell></row>
+        <row><cell>Primary purpose</cell><cell>Create complete, versioned, auditable human coding records for an approved project batch.</cell></row>
+        <row><cell>Work mode</cell><cell>Authorized independent coding followed by the pre-specified review, sampling, or adjudication process.</cell></row>
+        <row><cell>Data</cell><cell>Only the production records identified in the approved batch manifest.</cell></row>
+        <row><cell>Governing materials</cell><cell>Frozen batch-specific question frames, normative references, protocol, codebook, vocabulary, schema, and authorization record.</cell></row>
+        <row><cell>Primary deliverables</cell><cell>A locked production record, session and issue logs, integrity report, review records, and a batch disposition.</cell></row>
+        <row bottom="minor"><cell>Not authorized</cell><cell>Unapproved data access, held-out validation reuse, silent recoding, artifact editing, or external transmission.</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-prerequisites">
+    <title>Prerequisites and Assigned Reading</title>
+
+    <p>
+      Begin only after receiving a current production-authorization record and a
+      complete batch packet. Review:
+    </p>
+
+    <ol>
+      <li><p>The full ten-step procedure in <xref ref="sec-coding-pass" text="title"/> and the universal checklist in <xref ref="sec-coding-checklist" text="title"/>.</p></li>
+      <li><p><xref ref="sec-edge-case-playbook" text="title"/>, <xref ref="subsec-disagreement-notes" text="title"/>, and <xref ref="subsec-disagreement-unresolved" text="title"/> in <xref ref="ch-edge-cases-decisions" text="title"/>.</p></li>
+      <li><p><xref ref="sec-practice-readiness" text="title"/> and <xref ref="sec-practice-feedback" text="title"/> in <xref ref="ch-practice-calibration" text="title"/>.</p></li>
+      <li><p><xref ref="sec-app-coding-sheet-fields" text="title"/> in <xref ref="app-coding-sheet" text="title"/>.</p></li>
+      <li><p><xref ref="sec-app-protocol-workflow" text="title"/>, <xref ref="sec-app-protocol-review" text="title"/>, <xref ref="sec-app-protocol-provenance" text="title"/>, and <xref ref="sec-app-protocol-final-check" text="title"/> in <xref ref="app-protocol-summary" text="title"/>.</p></li>
+      <li><p><xref ref="sec-data-access" text="title"/>, <xref ref="sec-data-files" text="title"/>, <xref ref="sec-data-reproducibility" text="title"/>, and <xref ref="sec-data-communication" text="title"/> in <xref ref="ch-data-management" text="title"/>.</p></li>
+      <li><p>The question-specific working codebook, normative reference, and goals assigned to every question represented in the batch.</p></li>
+    </ol>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-authorization">
+    <title>Confirm Authorization Boundaries</title>
+
+    <p>
+      Production authorization applies only to the work named in the authorization
+      record. Record the limits before opening the batch.
+    </p>
+
+    <table xml:id="tab-ws-06-authorization">
+      <title>Production-authorization boundaries.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="32%"/>
+        <col width="68%"/>
+        <row header="yes" bottom="medium"><cell>Boundary</cell><cell>Required record</cell></row>
+        <row><cell>Coder authorization ID</cell><cell>Record the dated decision issued after supervised coding.</cell></row>
+        <row><cell>Question scope</cell><cell>List the question families, topics, or specific question IDs the coder is authorized to handle.</cell></row>
+        <row><cell>Decision scope</cell><cell>Record any fields or decision types that still require secondary review.</cell></row>
+        <row><cell>Artifact scope</cell><cell>Record the authorized handbook, protocol, codebook, vocabulary, question-frame, and schema versions.</cell></row>
+        <row><cell>Data scope</cell><cell>Record the approved corpus, storage location, access level, and permitted exports or derivatives.</cell></row>
+        <row><cell>Review scope</cell><cell>Record which records receive full, sampled, triggered, or other pre-specified review.</cell></row>
+        <row bottom="minor"><cell>Expiration or reconsideration trigger</cell><cell>Record any date, artifact change, drift event, new question family, or incident requiring renewed authorization.</cell></row>
+      </tabular>
+    </table>
+
+    <warning xml:id="warn-ws-06-scope">
+      <title>Do not extend authorization by analogy</title>
+      <p>
+        Familiar mathematics or a similar question does not authorize coding outside
+        the recorded scope. Obtain a new or amended authorization before working with a
+        new question family, dataset, access level, or materially changed artifact.
+      </p>
+    </warning>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-access">
+    <title>Materials and Access Rules</title>
+
+    <table xml:id="tab-ws-06-access">
+      <title>Resources available and prohibited during production coding.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="50%"/>
+        <col width="50%"/>
+        <row header="yes" bottom="medium"><cell>You may use</cell><cell>You must not use</cell></row>
+        <row><cell>The approved project system, assigned production batch, and authorized derivatives</cell><cell>Unassigned records, raw exports outside your access scope, or personal copies</cell></row>
+        <row><cell>The exact question context, stable IDs, normative references, and goals supplied in the packet</cell><cell>Privately reconstructed context or materials from a different question version</cell></row>
+        <row><cell>The frozen analytic and storage artifacts named in the manifest</cell><cell>Draft, unlabeled, older, newer, or locally modified substitutes</cell></row>
+        <row><cell>The approved research-lead channel for governing-rule, access, and incident questions</cell><cell>Another coder's response-specific record before the assigned review stage</cell></row>
+        <row><cell>Machine proposals only when the packet explicitly defines a tool-review condition and preservation layer</cell><cell>Pipeline output during a human-only independent condition</cell></row>
+        <row><cell>The approved review records released under the batch plan</cell><cell>Adjudicated or validation labels not authorized for the current stage</cell></row>
+        <row bottom="minor"><cell>Approved institutional services and devices</cell><cell>External AI, public search, messaging, cloud storage, transcription, or translation services without specific approval</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-packet">
+    <title>Check the Production Batch</title>
+
+    <p>
+      The batch manifest is the operational source of truth for this assignment. Verify
+      each item before coding. Do not infer a missing value from the previous batch.
+    </p>
+
+    <table xml:id="tab-ws-06-packet-manifest">
+      <title>Production batch manifest.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="35%"/>
+        <col width="65%"/>
+        <row header="yes" bottom="medium"><cell>Required item</cell><cell>Value or confirmation</cell></row>
+        <row><cell>Batch ID and corpus purpose</cell><cell>Record the stable batch identifier and whether the batch supports production analysis, development, or another approved purpose.</cell></row>
+        <row><cell>Inclusion boundary</cell><cell>Record the source, date range, course or offering scope, question set, and exclusions supplied by the research lead.</cell></row>
+        <row><cell>Source and derivative provenance</cell><cell>Record the approved source reference, import or derivative identifier, and transformation version.</cell></row>
+        <row><cell>Question and response IDs</cell><cell>Confirm every assigned record has stable identifiers and no duplicates or missing rows under the supplied manifest.</cell></row>
+        <row><cell>Question materials</cell><cell>Record each prompt, representation, goals, question-frame version, and normative-reference version.</cell></row>
+        <row><cell>Analytic materials</cell><cell>Record handbook, protocol, codebook, vocabulary, and schema versions.</cell></row>
+        <row><cell>Review condition</cell><cell>Record human-only, tool-review, double-coding, or other assigned condition and the information withheld during the independent pass.</cell></row>
+        <row><cell>Review plan</cell><cell>Record the pre-specified full, sampled, triggered, or other review rule, reviewer assignment, and release timing.</cell></row>
+        <row><cell>Escalation and disposition values</cell><cell>Record the exact allowed statuses, routes, and contacts for analytic and stewardship problems.</cell></row>
+        <row><cell>Work-session requirements</cell><cell>Record the required timing, sitting, interruption, and drift fields.</cell></row>
+        <row><cell>Submission and lock procedure</cell><cell>Record the approved location, naming rule, due date, integrity check, and lock method.</cell></row>
+        <row bottom="minor"><cell>Held-out status</cell><cell>Confirm that the batch is not held-out validation, or attach the separate frozen validation protocol that authorizes it.</cell></row>
+      </tabular>
+    </table>
+
+    <warning xml:id="warn-ws-06-stop-manifest">
+      <title>Do not code from an incomplete or mixed-version batch</title>
+      <p>
+        Stop when identifiers, context, versions, review rules, provenance, or storage
+        instructions are missing or inconsistent. Do not combine files from different
+        packets to create a usable-looking batch.
+      </p>
+    </warning>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-fields">
+    <title>Production Records</title>
+
+    <table xml:id="tab-ws-06-fields">
+      <title>Records required during production coding.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="30%"/>
+        <col width="18%"/>
+        <col width="52%"/>
+        <row header="yes" bottom="medium"><cell>Record group</cell><cell>Action</cell><cell>Production rule</cell></row>
+        <row><cell>Response and episode coding fields</cell><cell>Complete</cell><cell>Apply the assigned full workflow and schema to every response, including response-level stubs when no complete episode exists.</cell></row>
+        <row><cell>Analytic and routing fields</cell><cell>Complete</cell><cell>Preserve primary and alternate matches, OOV, no match, correctness, coverage, confidence, status, and disposition under the exact allowed values.</cell></row>
+        <row><cell>Provenance fields</cell><cell>Complete</cell><cell>Record coder, time, batch, source, and every governing artifact version needed to interpret the record later.</cell></row>
+        <row><cell>Work-session log</cell><cell>Complete as assigned</cell><cell>Record the coding conditions required to examine time, fatigue, interruption, and drift.</cell></row>
+        <row><cell>Issue and incident log</cell><cell>Complete when needed</cell><cell>Separate analytic uncertainty from privacy, access, identifier, file-integrity, version, and provenance problems.</cell></row>
+        <row><cell>Independent record</cell><cell>Lock</cell><cell>Preserve the completed first-pass layer before review, machine proposals, comparison, or adjudication are released.</cell></row>
+        <row><cell>Review and override records</cell><cell>Complete during authorized review</cell><cell>Preserve the original proposal and record the reviewer action, rationale, reviewer, timestamp, disagreement type, and resulting status.</cell></row>
+        <row><cell>Adjudication record</cell><cell>Complete when required</cell><cell>Store the supported result or unresolved status separately from coder and proposal layers.</cell></row>
+        <row bottom="minor"><cell>Artifact-change proposal</cell><cell>Complete when needed</cell><cell>Record proposed revisions without changing the frozen materials or reinterpreting earlier records in place.</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-procedure">
+    <title>Production Coding Procedure</title>
+
+    <ol>
+      <li><p><em>Confirm authorization.</em> Verify that the batch, questions, artifacts, review condition, and data location fall within the current authorization record.</p></li>
+      <li><p><em>Verify the batch manifest.</em> Confirm source provenance, stable identifiers, question context, versions, review rules, and lock procedure.</p></li>
+      <li><p><em>Start a work session.</em> Record the required start time and coding conditions before opening the first response.</p></li>
+      <li><p><em>Code evidence first.</em> Apply the ten workflow steps in order. Do not let a likely code, correct final answer, or machine proposal determine the extraction.</p></li>
+      <li><p><em>Preserve difficult cases.</em> Record alternatives, confidence, OOV, no match, policy gaps, and unresolved status rather than forcing completion.</p></li>
+      <li><p><em>Use the assigned routes.</em> Apply the packet's exact status and disposition values. Do not invent a local route or private exception.</p></li>
+      <li><p><em>Stop or pause the affected work when necessary.</em> Privacy, access, corruption, identifier, provenance, or mixed-version problems require immediate escalation. Analytic ambiguity may be recorded and routed while unaffected coding continues.</p></li>
+      <li><p><em>Record suspected drift.</em> When your interpretation changes, preserve earlier records and notify the research lead. Do not revise a completed portion of the batch silently.</p></li>
+      <li><p><em>End the work session.</em> Record the stop time, interruptions, fatigue, and unresolved work required by the packet.</p></li>
+      <li><p><em>Perform the batch integrity check.</em> Verify identifiers, required fields, versions, notes, relations, permitted values, storage location, and absence of identifying information in notes.</p></li>
+      <li><p><em>Lock the independent production record.</em> Submit through the approved project location before review information is released.</p></li>
+      <li><p><em>Complete the assigned review condition.</em> Apply full, sampled, triggered, double-coded, or tool-review procedures exactly as specified in the manifest.</p></li>
+      <li><p><em>Preserve every review action.</em> Do not overwrite the independent record or computational proposal. Link corrections and adjudication to the original record.</p></li>
+      <li><p><em>Close the batch.</em> The research lead records acceptance, required corrections, unresolved records, drift findings, artifact proposals, and any recoding or authorization decision.</p></li>
+    </ol>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-assignment">
+    <title>Assignment</title>
+
+    <exercise xml:id="ex-ws-06-manifest">
+      <title>Part A: Complete the Authorization and Batch Manifest</title>
+      <statement><p>Record the production-authorization boundaries and every manifest item. Stop if the batch lies outside the authorized scope or contains mixed or missing versions.</p></statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-06-code">
+      <title>Part B: Complete the Production Coding</title>
+      <statement><p>Apply the full workflow to every assigned response. Complete only the fields authorized for the assigned condition, preserve all evidence and uncertainty, and use the exact packet statuses and routes.</p></statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-06-sessions">
+      <title>Part C: Maintain Work-Session and Drift Records</title>
+      <statement><p>Record required session information. When suspected drift appears, identify the first affected point, preserve prior rows, stop silent revision, and notify the research lead.</p></statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-06-issues">
+      <title>Part D: Maintain the Issue and Incident Log</title>
+      <statement><p>Classify each issue as analytic, artifact, privacy, access, file integrity, identifier, version, or provenance. Record the immediate action and the records affected.</p></statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-06-integrity">
+      <title>Part E: Perform the Batch Integrity Check</title>
+      <statement>
+        <p>
+          Confirm that:
+          <ul>
+            <li>every record has the assigned stable identifiers;</li>
+            <li>all required fields and governing versions are present;</li>
+            <li>episode numbers and relations are internally consistent;</li>
+            <li>low-confidence and unresolved records contain specific notes;</li>
+            <li>OOV, no-match, alternatives, and missing goals remain visible;</li>
+            <li>no prior record or proposal has been overwritten;</li>
+            <li>no identifying information appears in notes or file names;</li>
+            <li>the batch remains in the approved location; and</li>
+            <li>the submitted record matches the manifest response count and inclusion boundary.</li>
+          </ul>
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-06-lock">
+      <title>Part F: Lock the Independent Batch</title>
+      <statement><p>Submit the production record, manifest, work-session log, and issue log through the approved location. Record the submission identifier, assigned integrity confirmation, and lock timestamp supplied by the project procedure.</p></statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-06-review">
+      <title>Part G: Complete the Assigned Review</title>
+      <statement><p>Review only the records released under the manifest. Preserve the independent value or machine proposal, then record the human action, rationale, reviewer, timestamp, disagreement type, and resulting status.</p></statement>
+    </exercise>
+
+    <exercise xml:id="ex-ws-06-close">
+      <title>Part H: Complete the Batch Closure Record</title>
+      <statement><p>Record accepted records, corrections, unresolved cases, excluded or quarantined records, drift findings, artifact proposals, required recoding, and any change to the coder's authorization.</p></statement>
+    </exercise>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-escalation">
+    <title>Production Escalation Guide</title>
+
+    <table xml:id="tab-ws-06-escalation">
+      <title>Required action for production problems.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="28%"/>
+        <col width="39%"/>
+        <col width="33%"/>
+        <row header="yes" bottom="medium"><cell>Problem</cell><cell>Immediate action</cell><cell>Record to preserve</cell></row>
+        <row><cell>Possible privacy or access incident</cell><cell>Stop affected work and contact the research lead immediately.</cell><cell>What occurred, when, which account, system, or file was involved, and actions already taken.</cell></row>
+        <row><cell>Unapproved storage or external-service request</cell><cell>Do not transfer the data. Request a project-level approval decision.</cell><cell>Proposed service, intended use, records involved, and permission needed.</cell></row>
+        <row><cell>Missing, corrupt, duplicated, or conflicting identifiers</cell><cell>Quarantine the affected record and stop dependent coding.</cell><cell>Stable IDs, source reference, observed conflict, and affected rows.</cell></row>
+        <row><cell>Missing or mixed artifact versions</cell><cell>Pause the affected batch or question family until the assigned versions are restored.</cell><cell>Files received, labels present, expected versions, and records already coded.</cell></row>
+        <row><cell>Analytic ambiguity or no defensible match</cell><cell>Preserve alternatives, confidence, status, and assigned route; continue unaffected records.</cell><cell>Evidence, current rule, competing readings, and decision blocked.</cell></row>
+        <row><cell>Recurring codebook, vocabulary, or question-frame gap</cell><cell>Collect comparable cases and submit an artifact proposal rather than a one-case exception.</cell><cell>Original cases, similar cases, near miss, and proposed change.</cell></row>
+        <row><cell>Suspected coder drift</cell><cell>Stop silent revision and notify the research lead for recalibration, review expansion, or planned recoding.</cell><cell>When the shift appeared, affected question families or fields, and completed record IDs.</cell></row>
+        <row bottom="minor"><cell>Serious validation-set issue</cell><cell>Follow the frozen validation protocol. Do not revise the method from the held-out case without a documented study decision.</cell><cell>The case, frozen condition, flaw identified, and decision about restart, separation, or exploratory reporting.</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-deliverables">
+    <title>Deliverables</title>
+
+    <p>
+      Submit:
+      <ol>
+        <li>the current production-authorization record;</li>
+        <li>the completed batch manifest and inclusion-boundary confirmation;</li>
+        <li>the locked independent production record;</li>
+        <li>the work-session and coder-drift log;</li>
+        <li>the issue, escalation, and incident log;</li>
+        <li>the batch integrity report;</li>
+        <li>all required review, override, comparison, or adjudication records;</li>
+        <li>the artifact-change and recoding proposals;</li>
+        <li>the batch closure and authorization decision; and</li>
+        <li>the version record below.</li>
+      </ol>
+    </p>
+
+    <table xml:id="tab-ws-06-version-record">
+      <title>Version information to preserve with the production batch.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="36%"/>
+        <col width="64%"/>
+        <row header="yes" bottom="medium"><cell>Field</cell><cell>Entry</cell></row>
+        <row><cell><c>worksheet_version</c></cell><cell><c>ws-06-production-coding-v0.1</c></cell></row>
+        <row><cell><c>pass_type</c></cell><cell>Record the assigned production or review condition.</cell></row>
+        <row><cell><c>batch_id</c></cell><cell>Record the stable production-batch ID.</cell></row>
+        <row><cell><c>authorization_id</c></cell><cell>Record the current production-authorization decision.</cell></row>
+        <row><cell><c>source_or_import_id</c></cell><cell>Record the approved source or derivative provenance identifier.</cell></row>
+        <row><cell><c>coder_id</c></cell><cell>Use the assigned project identifier.</cell></row>
+        <row><cell><c>reviewer_ids</c></cell><cell>Record the approved project identifiers for reviewers or adjudicators.</cell></row>
+        <row><cell><c>handbook_version</c></cell><cell>Record the frozen batch version.</cell></row>
+        <row><cell><c>protocol_version</c></cell><cell>Record the frozen batch version.</cell></row>
+        <row><cell><c>codebook_version</c></cell><cell>Record every version represented in the batch.</cell></row>
+        <row><cell><c>vocabulary_version</c></cell><cell>Record every version represented in the batch.</cell></row>
+        <row><cell><c>question_frame_version</c></cell><cell>Record every version represented in the batch.</cell></row>
+        <row><cell><c>schema_version</c></cell><cell>Record the coding, review, and adjudication schema versions.</cell></row>
+        <row><cell><c>review_plan_version</c></cell><cell>Record the pre-specified review rule used for the batch.</cell></row>
+        <row bottom="minor"><cell><c>closed_at</c></cell><cell>Record the final batch-closure date.</cell></row>
+      </tabular>
+    </table>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-checklist">
+    <title>Batch Completion Checklist</title>
+
+    <p>
+      Before closure, confirm that:
+      <ul>
+        <li>the coder, questions, dataset, artifacts, and review condition fall within the recorded authorization;</li>
+        <li>the batch manifest and source provenance are complete;</li>
+        <li>every response and episode uses stable project identifiers;</li>
+        <li>all governing versions and required work-session records are present;</li>
+        <li>evidence was recorded before interpretation and missing reasoning was not repaired;</li>
+        <li>ambiguity, alternatives, OOV, no match, low confidence, and unresolved cases remain visible;</li>
+        <li>the exact assigned status and disposition values were used;</li>
+        <li>independent records and machine proposals were preserved before review;</li>
+        <li>review actions, rationales, reviewers, and timestamps are linked rather than overwritten;</li>
+        <li>privacy, access, identifier, file-integrity, version, and provenance issues were handled through the approved route;</li>
+        <li>no identifying information or unapproved copy remains in notes, file names, or external systems;</li>
+        <li>suspected coder drift and required recoding are documented; and</li>
+        <li>the batch closure record states what is accepted, pending, unresolved, excluded, or subject to later revision.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-06-review-closure">
+    <title>Batch Review and Closure</title>
+
+    <p>
+      The research lead or authorized reviewer applies the review rule recorded before
+      coding began. The source materials do not specify one universal review rate;
+      therefore, the completed batch is evaluated against the manifest rather than an
+      unstated expectation added after results are known.
+    </p>
+
+    <p>
+      Possible batch outcomes are:
+      <dl width="narrow">
+        <li><title>Accept</title><p>The batch is procedurally complete and the required review supports its use under the recorded versions.</p></li>
+        <li><title>Accept with linked corrections</title><p>Specific reviewed values are corrected in a separate layer while the independent record remains preserved.</p></li>
+        <li><title>Expand review</title><p>The observed error, uncertainty, or drift pattern requires review of additional records under a documented rule.</p></li>
+        <li><title>Recalibrate the coder</title><p>Production authorization is paused or narrowed until targeted calibration demonstrates restored stability.</p></li>
+        <li><title>Quarantine affected records</title><p>Privacy, access, corruption, identifier, or provenance problems prevent ordinary use until resolved.</p></li>
+        <li><title>Version an artifact change</title><p>A codebook, vocabulary, question-frame, protocol, schema, or review-rule defect requires a new version and an explicit decision about recoding.</p></li>
+        <li><title>Preserve unresolved</title><p>The batch closes with specified cases remaining unresolved because the current evidence or rules do not support a unique decision.</p></li>
+      </dl>
+    </p>
+
+    <p>
+      Closure must state the accepted records, remaining review obligations, unresolved
+      cases, artifact proposals, recoding decisions, and any change to authorization.
+      Earlier records remain tied to the versions under which they were produced.
+    </p>
+  </subsection>
+</section>

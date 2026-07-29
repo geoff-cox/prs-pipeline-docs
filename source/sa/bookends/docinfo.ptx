@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<docinfo xmlns:xi="http://www.w3.org/2001/XInclude">
+<docinfo>
 
   <latex-image-preamble>
     \usepackage{graphicx}
@@ -20,10 +20,10 @@
   </macros>
 
   <blurb shelf="none">
-    Documentation for the Short Answer service of PROTEUS, a multi-question-type
-    automation pipeline. This book covers the staged process that screens
-    student short-answer responses, reconstructs reasoning chains, and proposes
-    control-structure codes for human review.
+    A research journal and undergraduate guide for the PROTEUS Short-Answer
+    project. The book separates the project's stable analytic framework and
+    coding protocol from current software documentation, training materials,
+    and dated research records.
   </blurb>
 
   <rename element="solution">↕️</rename>

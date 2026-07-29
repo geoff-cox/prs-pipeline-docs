@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<chapter xml:id="ch-edge-cases-decisions">
+  <title>Edge Cases &amp; Human Decisions</title>
+  
+  <objectives>
+    <ul>
+      <li>Separate screening, segmentation, interpretation, matching, and correctness decisions.</li>
+      <li>Handle common non-standard responses without repairing or discarding evidence.</li>
+      <li>Distinguish ambiguity, out-of-vocabulary language, and codebook no-match cases.</li>
+      <li>Classify disagreements at the earliest point where two analyses diverge.</li>
+      <li>Write evidence-based notes and preserve genuinely unresolved cases.</li>
+    </ul>
+  </objectives>
+
+  <introduction>
+
+    <p>
+      An <term>edge case</term> is a response for which the ordinary workflow does
+      not yield an immediate, high-confidence decision. The difficulty may concern
+      screening, segmentation, component interpretation, matching, correctness,
+      goal coverage, or the adequacy of the governing materials.
+    </p>
+
+    <p>
+      Edge cases are not noise. They may expose ambiguity in a response, overlap in
+      the codebook, missing vocabulary, an unstated mathematical assumption, or a
+      gap in the protocol. Preserve the evidence, identify the exact difficult
+      decision, and resolve, escalate, or retain the case as unresolved according
+      to the current rules.
+    </p>
+
+    <p>
+      Apply the evidence-first and no-repair principles from
+      <xref ref="ch-coding-workflow" text="title"/>. This chapter gives the
+      consequences of those principles for unusual cases rather than redefining
+      the Episode Model.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-decision-types">
+    <title>Major Decision Types</title>
+    <p>
+      Difficult cases become easier to discuss when the decision types remain separate.
+      A response can be easy to screen but difficult to segment, easy to extract but
+      difficult to match, or mathematically correct while providing no codable
+      justification. Begin by naming the decision at issue rather than describing the
+      entire response as <q>confusing</q> or <q>wrong.</q>
+    </p>
+    <table xml:id="tab-edge-major-decisions">
+      <title>Major human decision points.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="20%"/>
+        <col width="42%"/>
+        <col width="38%"/>
+        <row header="yes" bottom="medium">
+          <cell><p>Decision</p></cell>
+          <cell><p>Main question</p></cell>
+          <cell><p>Possible outcome</p></cell>
+        </row>
+        <row>
+          <cell><p>Screening</p></cell>
+          <cell><p>Does the response contain analyzable justification?</p></cell>
+          <cell><p>Include, exclude, or route for review.</p></cell>
+        </row>
+        <row>
+          <cell><p>Segmentation</p></cell>
+          <cell><p>How many episodes are present, and where are their boundaries?</p></cell>
+          <cell><p>One, several, incomplete, or unresolved.</p></cell>
+        </row>
+        <row>
+          <cell><p>Interpretation</p></cell>
+          <cell><p>What are the criterion, inferential link, and judgment?</p></cell>
+          <cell><p>Record a supported reading, an alternative reading, or a missing component.</p></cell>
+        </row>
+        <row>
+          <cell><p>Matching</p></cell>
+          <cell><p>Which working-codebook entries fit the episode?</p></cell>
+          <cell><p>Primary match, alternate match, no match, or vocabulary review.</p></cell>
+        </row>
+        <row>
+          <cell><p>Correctness</p></cell>
+          <cell><p>Is the criterion true, and is the inference valid for this question?</p></cell>
+          <cell><p>Assign the two digits when eligible, or leave them blank.</p></cell>
+        </row>
+        <row>
+          <cell><p>Goal coverage</p></cell>
+          <cell><p>Which requested outputs does the response address?</p></cell>
+          <cell><p>The goal identifier(s) addressed, <c>off-target</c>, or <c>unclear</c> with a note.</p></cell>
+        </row>
+        <row bottom="minor">
+          <cell><p>Framework revision</p></cell>
+          <cell><p>Does the case expose a problem in the vocabulary, codebook, examples, or protocol?</p></cell>
+          <cell><p>Propose clarification, gather similar cases, or preserve as unresolved.</p></cell>
+        </row>
+      </tabular>
+    </table>
+    <paragraphs xml:id="subsec-decision-screening">
+      <title>Screening Decisions</title>
+      <p>
+Apply Step 1 of <xref ref="ch-coding-workflow" text="title"/>. Screening
+concerns codability, not correctness: an incorrect explanation may be
+analyzable, while a correct bare answer may contain no codable justification.
+</p>
+<p>
+Preserve blank, bare-answer, restatement, operation-only, hedged, and
+conditional responses according to the playbook below. Describe what is
+visible; do not infer the justification the student probably intended.
+</p>
+</paragraphs>
+    <paragraphs xml:id="subsec-decision-segmentation">
+      <title>Segmentation Decisions</title>
+      <p>
+        Segmentation asks how many criterion-to-judgment moves are present. Connector
+        words are useful signals, but sentence boundaries and connector counts do not
+        determine episode boundaries. One sentence can contain several chained moves,
+        and several sentences can elaborate one move.
+      </p>
+      <p>
+        When two segmentations are plausible, record the primary segmentation and
+        describe the alternative. Do not convert a boundary disagreement into a code
+        disagreement: the coders may agree about every mathematical idea but disagree
+        about whether the response contains one episode or two.
+      </p>
+      <remark xml:id="rem-edge-nesting-interim">
+        <title>Current Interim Rule for Nested Structure</title>
+        <p>
+          The final retention policy for nested episodes remains open. Until a versioned
+          protocol replaces this interim rule, record every identifiable episode, mark
+          relations with the current sheet values (<c>chained(k)</c>,
+          <c>independent</c>, or blank for a lone episode), note detected nesting, and
+          do not silently collapse or drop a level. Put a proposed alternative in the
+          notes. This preserves the structure needed to apply a later policy uniformly.
+        </p>
+      </remark>
+    </paragraphs>
+    <paragraphs xml:id="subsec-decision-interpretation">
+      <title>Component Interpretation</title>
+      <p>
+Begin with a literal inventory of the words, symbols, and calculations in the
+response. Then identify the criterion, link, and judgment supported by that
+evidence. Apply the canonical completeness and link-status definitions from
+<xref ref="ch-episode-model" text="title"/>. In particular, an absent link
+does not make an episode incomplete when both criterion and judgment are
+identifiable.
+</p>
+<p>
+A computed result may be only an operation in one response and the criterion
+of an episode in another. Ask whether the student uses the result to evaluate,
+classify, or decide something. Preserve genuinely ambiguous roles rather than
+resolving them by preference.
+</p>
+</paragraphs>
+    <paragraphs xml:id="subsec-decision-matching">
+      <title>Matching Decisions</title>
+      <p>
+        Match an episode against the full codebook entry: definition, inclusion and
+        exclusion rules, examples, near misses, confusable codes, and the
+        question-specific criterion-to-judgment relationship. A shared keyword is not
+        enough. A response mentioning pivots may rely on a pivot count, a comparison
+        between pivots and variables, consistency, dimension, or some combination of
+        these ideas.
+      </p>
+      <p>
+        Distinguish two failure types:
+        <dl width="narrow">
+          <li>
+            <title>Out of vocabulary</title>
+            <p>
+              The response uses relevant language or a mathematical proposition that
+              the controlled vocabulary does not represent adequately.
+            </p>
+          </li>
+          <li>
+            <title>No match</title>
+            <p>
+              The episode can be represented using existing terms, but no current
+              codebook entry adequately classifies its control or criterion-to-judgment
+              relationship.
+            </p>
+          </li>
+        </dl>
+      </p>
+      <p>
+        Neither case should be forced into the nearest code. Preserve the student's
+        wording, identify whether the problem concerns a synonym, a new proposition, a
+        new control structure, an overly narrow code, or reasoning outside the project's
+        scope, and route it for review. A single unusual response may motivate a
+        proposal, but new terms and codes should be accepted only after review across
+        similar and near-miss cases.
+      </p>
+    </paragraphs>
+    <paragraphs xml:id="subsec-decision-correctness">
+      <title>Correctness and Goal-Coverage Decisions</title>
+      <p>
+Apply the canonical correctness and goal-coverage rules from
+<xref ref="ch-episode-model" text="title"/> and
+<xref ref="ch-coding-workflow" text="title"/>. Evaluate criterion truth,
+inferential validity, and question-goal coverage separately. A correct final
+answer does not validate an unsupported link, and a sound local episode does
+not establish complete goal coverage.
+</p>
+</paragraphs>
+  </section>
+
+  <section xml:id="sec-edge-case-playbook">
+    <title>Edge-Case Playbook</title>
+    <p>
+      The table below gives the default action for frequent response types. It does not
+      replace the current coding protocol. The confidence column gives a normal
+      expectation, not a mandatory score: clear evidence can make an unusual response
+      high confidence, while missing question context can make an ordinary response low
+      confidence.
+    </p>
+    <table xml:id="tab-edge-case-playbook">
+      <title>Common edge cases and the evidence-preserving response.</title>
+      <tabular halign="left" top="major" bottom="minor">
+        <col width="18%"/>
+        <col width="52%"/>
+        <col width="30%"/>
+        <row header="yes" bottom="medium">
+          <cell><p>You see</p></cell>
+          <cell><p>Required action</p></cell>
+          <cell><p>Escalate when</p></cell>
+        </row>
+        <row>
+          <cell><p>Blank or whitespace only</p></cell>
+          <cell>
+            <p>
+              Preserve one response record with no episode content; set <c>complete</c>=0 and note <q>blank.</q>
+            </p>
+            <p><em>Typical confidence:</em> <c>3</c></p>
+          </cell>
+          <cell><p>The record appears truncated or data loss is possible.</p></cell>
+        </row>
+        <row>
+          <cell><p>Bare answer with no justification</p></cell>
+          <cell>
+            <p>Record the stated judgment, leave the criterion missing, set <c>complete</c>=0, and note <q>bare answer.</q></p>
+            <p><em>Typical confidence:</em> <c>3</c></p>
+          </cell>
+          <cell><p>The answer may contain compressed mathematical evidence rather than a bare judgment.</p></cell>
+        </row>
+        <row>
+          <cell><p>Restatement or <q>I don't know</q></p></cell>
+          <cell>
+            <p>Preserve the response record, set <c>complete</c>=0, and state what occurred.</p>
+            <p><em>Typical confidence:</em> <c>3</c></p>
+          </cell>
+          <cell><p>The restatement appears to add a criterion or interpretation.</p></cell>
+        </row>
+        <row>
+          <cell><p>Pure computation with no verdict</p></cell>
+          <cell>
+            <p>Treat it as operations only. Do not create an episode unless the response uses a result to support a judgment.</p>
+            <p><em>Typical confidence:</em> <c>2-3</c></p>
+          </cell>
+          <cell><p>It is unclear whether a displayed result functions as an unstated judgment.</p></cell>
+        </row>
+        <row>
+          <cell><p>Hedged or conditional reasoning</p></cell>
+          <cell>
+            <p>Identify whether the hedge itself states a criterion and judgment. Code it when both are supported; otherwise preserve it as incomplete.</p>
+            <p><em>Typical confidence:</em> <c>1-2</c></p>
+          </cell>
+          <cell><p>Several mathematical readings of the condition are plausible.</p></cell>
+        </row>
+        <row>
+          <cell><p>Unfamiliar or off-standard terminology</p></cell>
+          <cell>
+            <p>Code the episode structure normally, copy the term verbatim into <c>oov_note</c>, and do not translate it silently.</p>
+            <p><em>Typical confidence:</em> <c>1-2</c></p>
+          </cell>
+          <cell><p>The term may represent a new control, a synonym, or reasoning outside scope.</p></cell>
+        </row>
+        <row>
+          <cell><p>Theorem or proposition cited only by number</p></cell>
+          <cell>
+            <p>Record the citation verbatim as the cited basis and flag the reference. Do not import the theorem's content unless the study instructions authorize it.</p>
+            <p><em>Typical confidence:</em> <c>2</c></p>
+          </cell>
+          <cell><p>The cited result is needed to determine the link or lies outside the approved reference materials.</p></cell>
+        </row>
+        <row>
+          <cell><p>Correct answer supported by an invalid link</p></cell>
+          <cell>
+            <p>Code the episode normally and assign criterion and link correctness separately. Resist the halo effect of the final answer.</p>
+            <p><em>Typical confidence:</em> <c>2-3</c></p>
+          </cell>
+          <cell><p>Validity depends on an unstated condition or disputed normative reference.</p></cell>
+        </row>
+        <row>
+          <cell><p>Two defensible readings</p></cell>
+          <cell>
+            <p>Record the primary reading, describe the alternative, set confidence no higher than 2, and preserve the competing evidence.</p>
+            <p><em>Typical confidence:</em> <c>1-2</c></p>
+          </cell>
+          <cell><p>The readings would change segmentation, code assignment, or correctness.</p></cell>
+        </row>
+        <row>
+          <cell><p>Several plausible codes for one episode</p></cell>
+          <cell>
+            <p>Choose a primary code only when one definition is better supported; record the remaining plausible codes in <c>alt_codes</c>.</p>
+            <p><em>Typical confidence:</em> <c>1-2</c></p>
+          </cell>
+          <cell><p>The definitions overlap or no principled preference is available.</p></cell>
+        </row>
+        <row bottom="minor">
+          <cell><p>Existing vocabulary but no code</p></cell>
+          <cell>
+            <p>Record <term>no match</term>; do not manufacture an OOV label or choose the nearest code.</p>
+            <p><em>Typical confidence:</em> <c>2</c></p>
+          </cell>
+          <cell><p>The pattern recurs or suggests that an existing code is too narrow.</p></cell>
+        </row>
+        </tabular>
+    </table>
+  </section>
+
+  <section xml:id="sec-disagreement">
+    <title>Disagreement and Adjudication</title>
+    <p>
+      Disagreement is informative only when the project records what the coders
+      disagreed about. Begin with the earliest workflow decision at which the two coding
+      records diverge. A later difference may disappear once that earlier difference is
+      resolved. For example, different code assignments may be consequences of
+      different episode boundaries rather than independent matching disagreements.
+    </p>
+    <paragraphs xml:id="subsec-disagreement-types">
+      <title>Classifying the Earliest Disagreement</title>
+      <table xml:id="tab-disagreement-taxonomy">
+        <title>Disagreement types used during comparison and calibration.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="22%"/>
+          <col width="78%"/>
+          <row header="yes" bottom="medium">
+            <cell><p>Type</p></cell>
+            <cell><p>Meaning</p></cell>
+          </row>
+          <row>
+            <cell><p><c>SCREEN</c></p></cell>
+            <cell><p>Different screening decision.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>BOUNDARY</c></p></cell>
+            <cell><p>Different number or boundary of episodes.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>CRITERION</c></p></cell>
+            <cell><p>Different interpretation of <m>C_k</m>.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>LINK</c></p></cell>
+            <cell><p>Different interpretation or evidence status for <m>I_k</m>.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>JUDGMENT</c></p></cell>
+            <cell><p>Different interpretation of <m>J_k</m>.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>RELATION</c></p></cell>
+            <cell><p>Different chained, independent, nested, or unresolved relation.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>MATCH</c></p></cell>
+            <cell><p>Different primary or alternate code assignment.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>CORRECTNESS</c></p></cell>
+            <cell><p>Different criterion-truth or link-validity annotation.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>COVERAGE</c></p></cell>
+            <cell><p>Different assessment of the goals addressed.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>VOCABULARY</c></p></cell>
+            <cell><p>Different OOV, canonical-term, or no-match treatment.</p></cell>
+          </row>
+          <row>
+            <cell><p><c>POLICY</c></p></cell>
+            <cell><p>Different coding conventions or protocol versions applied.</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>OTHER</c></p></cell>
+            <cell><p>A disagreement not captured above; explain it in the note.</p></cell>
+          </row>
+        </tabular>
+      </table>
+      <p>
+        More than one label may apply, but identify the earliest one. Do not begin by
+        asking which coder is correct. First determine whether the coders noticed
+        different evidence, interpreted the same evidence differently, used different
+        mathematical references, or applied different rules.
+      </p>
+    </paragraphs>
+    <paragraphs xml:id="subsec-disagreement-notes">
+      <title>Writing an Evidence-Based Note</title>
+      <p>
+        A useful note is brief enough to scan but specific enough that another reviewer
+        can reconstruct the issue. Include:
+        <ol>
+          <li>the decision being recorded;</li>
+          <li>the exact response evidence supporting it;</li>
+          <li>the competing reading, when one exists;</li>
+          <li>the question context or rule consulted; and</li>
+          <li>the resulting action or unresolved status.</li>
+        </ol>
+      </p>
+      <paragraphs xml:id="par-edge-note-template">
+        <title>Compact Note Template</title>
+        <program language="text">
+          Decision: [screening, boundary, component, match, correctness, or coverage]
+          Evidence: [exact words, symbols, or calculation]
+          Alternative: [competing reading, or none]
+          Reference: [question fact, codebook entry, or protocol rule]
+          Action: [coded result, escalation, or unresolved]
+        </program>
+      </paragraphs>
+      <p>
+        Prefer notes such as <q>The judgment is missing; the response states only that a
+        free variable exists</q> or <q>Two episodes are present because the first judgment
+        becomes the criterion of the second.</q> Avoid unsupported claims such as
+        <q>The student understands,</q> <q>This is obviously what the student meant,</q>
+        or <q>The response seems wrong.</q>
+      </p>
+    </paragraphs>
+    <paragraphs xml:id="subsec-disagreement-adjudication">
+      <title>Adjudication Procedure</title>
+      <p>
+        Adjudication is a structured comparison, not a negotiation toward the quickest
+        compromise. For each disagreement:
+        <ol>
+          <li>return to the original question and response;</li>
+          <li>identify the earliest disagreement type;</li>
+          <li>state the evidence for each interpretation;</li>
+          <li>consult the governing codebook, normative reference, and protocol version;</li>
+          <li>adopt a decision only when one interpretation is better supported; and</li>
+          <li>record whether the case indicates a needed revision to the coding materials.</li>
+        </ol>
+      </p>
+
+      <p>
+        Preserve the original proposal, the human decision, and the 
+        rationale according to the assigned review procedure. Record 
+        an evidence-based rationale for every override so later 
+        analysis can distinguish tool error, coder disagreement,
+        ambiguity, codebook weakness, and missing vocabulary.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-disagreement-unresolved">
+      <title>Preserving an Unresolved Case</title>
+
+      <p>
+        Leave a case unresolved when the available evidence and governing materials do
+        not support one interpretation over the alternatives. Unresolved is a valid
+        analytic status, not a failure to complete the work. Record the competing
+        interpretations, the evidence for each, the missing information or policy, and
+        the decision that cannot yet be made.
+      </p>
+
+      <p>
+        Do not create a new rule for one response during an active coding round. A
+        recurring pattern may justify a proposed vocabulary term, codebook revision,
+        exclusion rule, worked example, or protocol clarification. Test the proposed
+        revision on the original case, similar cases, and at least one near miss. Adopt
+        it only through the project's versioned revision process; earlier records remain
+        tied to the rules under which they were coded.
+      </p>
+
+      <p>
+        A well-documented unresolved case can later support calibration, reliability
+        analysis, codebook refinement, and evaluation of the computational pipeline.
+        Forced agreement removes precisely the evidence needed to understand where the
+        method is fragile.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-edge-final-checklist">
+    <title>Edge-Case Review Checklist</title>
+    <p>
+      Before closing or escalating a difficult case, ask:
+      <ol>
+        <li><p>What exact decision is difficult?</p></li>
+        <li><p>What visible evidence supports each reading?</p></li>
+        <li><p>What current rule or resource was consulted?</p></li>
+        <li><p>Should the case be resolved, escalated, or preserved as unresolved?</p></li>
+      </ol>
+    </p>
+  </section>
+
+  <conclusion>
+    <p>
+      Edge cases are where the analytic framework, codebook, protocol, and
+      computational tool are tested most directly. Careful handling requires more than
+      selecting a label: the coder must locate the difficult decision, preserve the
+      student's evidence, separate competing interpretations, and record why the case
+      was resolved or left open. These records make disagreement analyzable and allow
+      the project to improve its methods without erasing the conditions under which
+      earlier decisions were made.
+    </p>
+  </conclusion>
+</chapter>

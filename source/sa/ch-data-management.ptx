@@ -1,0 +1,336 @@
+<chapter xml:id="ch-data-management">
+  <title>Data Management and Guidelines</title>
+
+  <objectives>
+    <ul>
+      <li>Handle student responses only through approved project systems.</li>
+      <li>Protect identifiers without assuming that masked responses are anonymous.</li>
+      <li>Preserve the provenance needed to reproduce every coding decision.</li>
+      <li>Raise privacy, access, and analytic questions through the correct channel.</li>
+    </ul>
+  </objectives>
+
+  <introduction>
+    <p>
+      Student responses are both research evidence and potentially identifying records.
+      Responsible work therefore has two inseparable aims. <term>Privacy stewardship</term>
+      limits who can view, copy, transmit, or publish the data. <term>Provenance
+      stewardship</term> preserves where each record came from, which analytic rules were
+      used, and how an initial decision became a final one. A dataset that is secure but
+      analytically untraceable is not research-ready. Neither is a perfectly documented
+      dataset that has been handled through unapproved systems.
+    </p>
+
+    <p>
+      This chapter gives the minimum practices supported by the current project record.
+      It supplements the coding procedures in
+      <xref ref="ch-coding-workflow" text="title"/> and the training sequence in
+      <xref ref="ch-practice-calibration" text="title"/>. It does not replace the
+      governing IRB protocol or institutional data-governance requirements.
+    </p>
+
+    <remark xml:id="rem-data-scope">
+      <title>Local procedures must still be approved</title>
+      <p>
+        The source journal does not yet name one final shared storage location, complete
+        access-control scheme, backup procedure, or retention schedule. Those choices
+        remain research-team and institutional decisions. Until they are settled, do not
+        improvise. Use only the accounts, folders, devices, and transfer methods explicitly
+        approved for the current assignment.
+      </p>
+    </remark>
+  </introduction>
+
+  <section xml:id="sec-data-access">
+    <title>Data Access and Privacy</title>
+
+    <paragraphs xml:id="subsec-data-approved-access">
+      <title>Use Only Approved Systems</title>
+
+      <p>
+        Access to research data is granted for a specific project purpose. It does not
+        authorize unrestricted copying or reuse. Student researchers must:
+        <ul>
+          <li>use only approved project accounts, folders, and devices;</li>
+          <li>open only the files needed for the assigned work;</li>
+          <li>avoid copying responses into personal documents or note-taking systems;</li>
+          <li>avoid sending responses through personal email or messaging services;</li>
+          <li>avoid placing responses in unapproved cloud storage; and</li>
+          <li>follow any additional access restrictions attached to the dataset.</li>
+        </ul>
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-data-identifiers">
+      <title>Identifiers Reduce Exposure; They Do Not Guarantee Anonymity</title>
+
+      <p>
+        Use project identifiers rather than student names in coding sheets, notes, file
+        names, tables, and discussion. Copy identifiers exactly. Do not replace them with
+        memorable initials or informal nicknames, and do not attempt to infer the student
+        behind an identifier.
+      </p>
+
+      <p>
+        Masking a name is not the same as making a response anonymous. Free-text answers
+        may contain names, personal experiences, or other self-identifying language.
+        Course section, instructor, and timestamp fields may also make a record
+        re-identifiable when combined. Treat the response text and its metadata as
+        protected research data even when the visible student field is an opaque ID.
+      </p>
+
+      <p>
+        Notes, presentations, screenshots, and demonstrations require the same care as
+        the source file. Do not include identifying information in any of them. Use
+        synthetic examples or explicitly approved excerpts when illustrating the method.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-data-external-services">
+      <title>External Services Require Specific Approval</title>
+
+      <p>
+        Do not submit real student responses to a language model, chatbot, transcription
+        service, translation service, or other third-party system unless you have approval. 
+        Removing the student-name column is not by itself sufficient.
+      </p>
+
+      <p>
+        Before any real response is routed to an external API, the research team must
+        confirm the data-sharing basis with the IRB or institutional data-governance
+        office and verify the provider conditions required by that approval. Until then,
+        use hand-written synthetic responses for prompt development, demonstrations,
+        debugging, and external-tool testing.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-data-files">
+    <title>File and Identifier Practices</title>
+
+    <paragraphs xml:id="subsec-data-source-files">
+      <title>Preserve the Source Record</title>
+
+      <p>
+        The raw export is the provenance anchor. Do not edit it to correct spelling,
+        standardize IDs, remove rows, or make the file easier to read. Corrections and
+        transformations belong in a documented derivative or in an approved upstream
+        process. A later researcher must be able to determine exactly what the project
+        received and how the working record was produced from it.
+      </p>
+
+      <p>
+        The current project decision is that real short-answer exports remain local-only
+        and untracked: they are never committed to the source repository because free-text
+        responses may identify students.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-data-file-naming">
+      <title>Name Files Without Adding Personal Information</title>
+
+      <p>
+        The journal does not yet define a universal file-name template. Until the team
+        adopts one, use the naming convention supplied with the assignment and preserve
+        canonical source names. New derivative names should describe the dataset or work
+        stage without containing student names, initials, email addresses, or other direct
+        identifiers. Avoid ambiguous names such as <c>final.csv</c>,
+        <c>final2.csv</c>, or <c>newest.xlsx</c>; the associated record should make the
+        dataset, stage, and version distinguishable.
+      </p>
+
+      <p>
+        Do not rename a shared file merely to make it convenient for one local workflow.
+        When a local alias or temporary copy is necessary, keep it in the approved working
+        location and document which canonical file it represents.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-data-stable-identifiers">
+      <title>Use Stable Identifiers Consistently</title>
+
+      <p>
+        Every coding record must retain the supplied <c>response_id</c> and
+        <c>question_id</c>. The response identifier is the stable key used to connect the
+        source response, episode rows, candidate codes, human reviews, and adjudicated
+        result. Never substitute a row position from a sorted spreadsheet or a coder's own
+        numbering system for the project identifier.
+      </p>
+
+      <p>
+        Within a response, number episodes in the order required by the current coding
+        protocol. Stable response and episode identifiers allow a disagreement note to
+        point to the exact analytic unit without reproducing the student's text in an
+        email or message.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-data-import-provenance">
+      <title>Retain Import Provenance</title>
+
+      <p>
+        The ingest record carries context that supports later verification and duplicate
+        detection. When available, preserve:
+        <ul>
+          <li>the original row number in the source export;</li>
+          <li>the source file path or approved source label;</li>
+          <li>the source-file hash recorded by the import process;</li>
+          <li>the normalized submission timestamp;</li>
+          <li>the course or section identifier; and</li>
+          <li>the import identifier and import note.</li>
+        </ul>
+      </p>
+
+      <p>
+        These fields are not invitations to expose more student information. They are
+        provenance fields retained inside the approved project environment so that a
+        questionable row can be traced to its source and a repeated import can be
+        recognized rather than duplicated.
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-data-reproducibility">
+    <title>Reproducible Work</title>
+
+    <paragraphs xml:id="subsec-data-records-preserve">
+      <title>Preserve the Full Decision Record</title>
+
+      <p>
+        A final code without its history cannot show whether agreement arose
+        independently, through adjudication, or through silent revision. For every
+        assigned batch, retain:
+        <ul>
+          <li>the response and question identifiers;</li>
+          <li>the exact source response inside the approved data system;</li>
+          <li>the handbook, protocol, codebook, and vocabulary versions;</li>
+          <li>the coder's independent first-pass analysis;</li>
+          <li>confidence and uncertainty notes;</li>
+          <li>all disagreement classifications;</li>
+          <li>the adjudicated result;</li>
+          <li>the rationale for every override;</li>
+          <li>proposed changes to coding materials; and</li>
+          <li>the date and reviewer associated with each decision.</li>
+        </ul>
+      </p>
+
+      <p>
+        Do not replace an earlier interpretation by silently editing it. Preserve the
+        proposal and the later decision. This makes coder drift, machine influence,
+        adjudication, and framework revision available for analysis rather than erasing
+        them from the record.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-data-version-discipline">
+      <title>Record Versions Before Coding</title>
+
+      <p>
+        Confirm the governing versions before beginning a batch. A codebook or policy
+        revision does not retroactively change the meaning of a record coded under an
+        earlier version. When a rule changes, record the change, identify the affected
+        artifacts, and decide explicitly whether earlier records require recoding.
+      </p>
+
+      <p>
+        Formal validation requires a version freeze as described in
+        <xref ref="ch-study-design" text="title"/>. Changing the screening rules,
+        normative reference, codebook, vocabulary, nesting policy, or adjudication
+        procedure during a held-out comparison can make measured disagreement reflect
+        moving rules rather than differences among coders or systems.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-data-work-sessions">
+      <title>Record Work Sessions and Coder Drift</title>
+
+      <p>
+        Coding conditions affect the data. Use focused sittings of approximately
+        45-60 minutes rather than continuing through obvious fatigue. When coding time is
+        part of the study, record the start and stop time in the required work log.
+      </p>
+
+      <p>
+        Do not revisit earlier rows and silently change them after your interpretation of
+        the rules shifts. For now, just record the suspected drift.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-data-repro-check">
+      <title>Batch Completion Check</title>
+
+      <p>
+        Before submitting a batch, confirm that:
+        <ol>
+          <li>all required records use stable project identifiers;</li>
+          <li>the governing versions are present;</li>
+          <li>low-confidence decisions include a specific note;</li>
+          <li>alternate interpretations and no-match cases remain visible;</li>
+          <li>earlier proposals have not been overwritten;</li>
+          <li>the batch contains no student names or copied identifiers in notes; and</li>
+          <li>the files remain inside the approved project location.</li>
+        </ol>
+      </p>
+    </paragraphs>
+  </section>
+
+  <section xml:id="sec-data-communication">
+    <title>Questions, Notes, and Escalation</title>
+
+    <paragraphs xml:id="subsec-data-independent-questions">
+      <title>Protect Independent Coding</title>
+      
+      <p>
+        When a worksheet requires independent work, follow its communication restrictions.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-data-useful-question">
+      <title>Write a Question That Can Be Resolved</title>
+
+      <p>
+        Analytic questions and disagreement notes should use the evidence-based 
+        format in <xref ref="subsec-disagreement-notes" text="title"/>.
+      </p>
+    </paragraphs>
+
+    <paragraphs xml:id="subsec-data-escalation-types">
+      <title>Match the Escalation to the Problem</title>
+
+      <table xml:id="tab-data-escalation-types">
+        <title>Common escalation routes.</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="25%"/>
+          <col width="42%"/>
+          <col width="33%"/>
+          <row header="yes" bottom="medium">
+            <cell>Problem</cell>
+            <cell>Immediate action</cell>
+            <cell>Record to preserve</cell>
+          </row>
+          <row>
+            <cell>Possible privacy or access incident</cell>
+            <cell>Stop the affected work.</cell>
+            <cell>What occurred, when, which system or file was involved, and what actions were already taken.</cell>
+          </row>
+          <row bottom="minor">
+            <cell>Unapproved storage or external-service request</cell>
+            <cell>Do not upload or transfer the data. Request a project-level decision.</cell>
+            <cell>The proposed system, intended use, data involved, and approval question.</cell>
+          </row>
+        </tabular>
+      </table>
+    </paragraphs>
+  </section>
+
+  <conclusion>
+    <p>
+      Good stewardship makes the research trustworthy in two directions. It protects
+      students by limiting access, disclosure, and unapproved transmission. It protects
+      the analysis by preserving source provenance, governing versions, independent
+      judgments, disagreements, and revisions. Every research assistant contributes to
+      both responsibilities whenever they open a response, enter a code, save a file, or
+      ask for help.
+    </p>
+  </conclusion>
+</chapter>

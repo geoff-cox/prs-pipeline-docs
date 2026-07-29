@@ -1,0 +1,770 @@
+<section xml:id="sec-ws-01-onboarding">
+  <title>Onboarding Practice</title>
+
+  <objectives>
+    <ul>
+      <li>Recognize complete, incomplete, and multi-episode responses.</li>
+      <li>Distinguish mathematical operations from controls.</li>
+      <li>Identify criteria, inferential links, and judgments in responses.</li>
+    </ul>
+  </objectives>
+
+  <introduction>
+    <p>
+      <term>Instructions</term>. Read the review items below and complete the practice questions. 
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec-ws-01-before">
+    <title>Review</title>
+
+    <p>
+      Read the following sections to prepare for the practice questions:
+      <ol>
+        <li><p><xref ref="subsec-project-boundaries" text="title"/></p></li>
+        <li><p><xref ref="subsec-ck-cent-operations-controls" text="title"/>.</p></li>
+        <li><p><xref ref="subsec-episode-components" text="title"/></p></li>
+        <li><p><xref ref="subsec-episode-explicit-implicit-absent" text="title"/></p></li>
+        <li><p><xref ref="subsec-episode-complete-incomplete" text="title"/></p></li>
+        <li>
+          <p>
+            Worked Examples:
+            <ul>
+              <li><xref ref="example-one-complete" text="title"/></li>
+              <li><xref ref="example-incomplete" text="title"/></li>
+              <li><xref ref="example-chained" text="title"/></li>
+            </ul>
+          </p>
+        </li>
+      </ol>
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-ws-01-context">
+    <title>Mathematical Context</title>
+
+    <assemblage xml:id="assemblage-ws-01-question">
+      <title>Training Question</title>
+
+      <p>
+          The reduced row echelon form of the augmented matrix of a system in the
+          variables <m>x_1,x_2,x_3</m> is
+          <md>
+          \left[
+          \begin{array}{ccc|c}
+              1 &amp; 0 &amp; 2  &amp; 3\\
+              0 &amp; 1 &amp; -1 &amp; 4\\
+              0 &amp; 0 &amp; 0  &amp; 0
+          \end{array}
+          \right].
+          </md>
+          Is the system consistent? Does it have a unique solution? Identify the basic
+          and free variables. Explain your reasoning.
+      </p>
+
+      <p>
+          For this worksheet, use the following normative reference:
+          <ul>
+          <li>the system is consistent;</li>
+          <li><m>x_1</m> and <m>x_2</m> are basic variables;</li>
+          <li><m>x_3</m> is a free variable; and</li>
+          <li>the system has infinitely many solutions and is not unique.</li>
+          </ul>
+      </p>
+    </assemblage>
+  </subsection>
+
+  <worksheet xml:id="subsec-ws-01-practice">
+    <title>Practice Questions</title>
+
+    <exercise xml:id="ex-ws-01-operation-control">
+      <title>Operation or Control</title>
+
+      <statement>
+        <p>
+          Identify each operation and control-structure in the following 
+          student responses.
+        </p>
+
+        <tabular valign="top">
+          <col width="7%"/>
+          <col width="93%"/>
+          <row>
+            <cell><p>R1</p></cell>
+            <cell><p><c>I row reduced the augmented matrix.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R2</p></cell>
+            <cell><p><c>The bottom row is zero, so there are infinitely many solutions.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R3</p></cell>
+            <cell><p><c>I counted two pivots.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R4</p></cell>
+            <cell><p><c>Column three has no pivot, so x_3 is free.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R5</p></cell>
+            <cell><p><c>I solved for x1 and x2, and that left x3 free.</c></p></cell>
+          </row>
+        </tabular>
+      </statement>
+
+      <!-- <solution>
+        <title>Solution</title>
+        
+        <p>
+          An <term>operation</term> is a mathematical action performed on the system. A
+          <term>control</term> is a decision or validation drawn from a feature.
+        </p>
+
+        <tabular valign="top" top="minor">
+          <col width="18%" halign="right"/>
+          <col width="82%" halign="left"/>
+
+          <row>
+            <cell><p>R1</p></cell>
+            <cell><p><c>I row reduced the augmented matrix.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>Operation</p></cell>
+            <cell><p><c>I row reduced the augmented matrix.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>Control</p></cell>
+            <cell><p>None</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>Rationale</p></cell>
+            <cell><p>Row reduction is an action performed on the matrix; nothing is drawn based on it.</p></cell>
+          </row>
+
+          <row>
+            <cell><p>R2</p></cell>
+            <cell><p><c>The bottom row is zero, so there are infinitely many solutions.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>Operation</p></cell>
+            <cell><p>None</p></cell>
+          </row>
+          <row>
+            <cell><p>Control</p></cell>
+            <cell><p><c>The bottom row is zero, so there are infinitely many solutions.</c></p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>Rationale</p></cell>
+            <cell>
+              <p>Since no action was performed, there is no operation.</p>
+              <p>
+                A feature (the zero row) is read and used to reach a validating decision (infinitely many solutions).
+              </p>
+            </cell>
+          </row>
+
+          <row>
+            <cell><p>R3</p></cell>
+            <cell><p><c>I counted two pivots.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>Operation</p></cell>
+            <cell><p><c>I counted two pivots.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>Control</p></cell>
+            <cell><p>None</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>Rationale</p></cell>
+            <cell>
+              <p>
+                Counting pivots is an action performed on the matrix. Although the
+                resulting pivot count could later serve as a criterion, this statement
+                does not use it to make a decision.
+              </p>
+            </cell>
+          </row>
+
+          <row>
+            <cell><p>R4</p></cell>
+            <cell><p><c>Column three has no pivot, so x_3 is free.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>Operation</p></cell>
+            <cell><p>None</p></cell>
+          </row>
+          <row>
+            <cell><p>Control</p></cell>
+            <cell><p><c>Column three has no pivot, so x_3 is free.</c></p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>Rationale</p></cell>
+            <cell>
+              <p>Since no action was performed, there is no operation.</p>
+              <p>The criteria (no pivot in the column) is used to classify <m>x_3</m> as free.</p>
+            </cell>
+          </row>
+
+          <row>
+            <cell><p>R5</p></cell>
+            <cell><p><c>I solved for x1 and x2, and that left x3 free.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>Operation</p></cell>
+            <cell><p><c>I solved for x1 and x2</c></p></cell>
+          </row>
+          <row>
+            <cell><p>Control</p></cell>
+            <cell><p><c>I solved for x1 and x2, and that left x3 free.</c></p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p>Rationale</p></cell>
+            <cell>
+              <p>
+                Solving for <c>x1</c> and <c>x2</c> is an operation. Whereas, using this result to determine that <c>x3 is free</c> is a control.
+              </p>
+            </cell>
+          </row>
+        </tabular>
+      </solution> -->
+    </exercise>
+
+    <exercise xml:id="ex-ws-01-components">
+      <title>Identify Episode Components</title>
+
+      <statement>
+        <p>
+          For each response below, record:
+          <ol>
+            <li>the criterion <m>C</m>, copied from the student's words when present;</li>
+            <li>the minimal link <m>I</m> sufficient to justify the step;</li>
+            <li>the judgment <m>J</m>, copied from the student's words when present;</li>
+            <li>whether the link is <c>explicit</c>, <c>implicit</c>, or <c>absent</c>; and</li>
+            <li>whether the episode is complete.</li>
+          </ol>
+        </p>
+
+        <tabular>
+          <col width="7%"/>
+          <col width="93%"/>
+          <row>
+            <cell><p>R1</p></cell>
+            <cell><p><c>The augmented matrix has no [0 0 0 1] row, so the system</c></p></cell>
+          </row>
+          <row>
+            <cell/>
+            <cell><p><c>is consistent.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R2</p></cell>
+            <cell><p><c>The third column has no pivot. Therefore, x_3 is free.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R3</p></cell>
+            <cell><p><c>There are two pivots.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R4</p></cell>
+            <cell><p><c>x1 and x2 are basic variables.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R5</p></cell>
+            <cell><p><c>The system has a free variable then the solution is not unique.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R6</p></cell>
+            <cell><p><c>The system is consistent, and it has infinitely-many solns.</c></p></cell>
+          </row>
+        </tabular>
+      </statement>
+
+      <!-- <solution>
+        <title>Sample Solution</title>
+        
+        <p>
+          Copy the criterion and judgment exactly from the student's words. State the 
+          minimal link that justifies the step without strengthening it. Mark the 
+          episode complete only when both a criterion and a judgment are present. An 
+          absent link alone does not make an episode incomplete, however, a missing 
+          criterion or judgment does.
+        </p>
+
+        <tabular valign="top" top="minor">
+          <col width="18%" halign="right"/>
+          <col width="76%" halign="left"/>
+
+          <row>
+            <cell><p>R1</p></cell>
+            <cell>
+              <line><c>The augmented matrix has no [0 0 0 1] row, so the system</c></line>
+              <line><c>is consistent.</c></line>
+            </cell>
+          </row>
+          <row>
+            <cell><p><m>C</m></p></cell>
+            <cell><p><c>The augmented matrix has no [0 0 0 1] row</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>I</m></p></cell>
+            <cell><p>The absence of a contradictory row means the system is inconsistent.</p></cell>
+          </row>
+          <row>
+            <cell><p><m>J</m></p></cell>
+            <cell><p><c>the system is consistent</c></p></cell>
+          </row>
+          <row>
+            <cell><p><c>link_status</c></p></cell>
+            <cell><p><c>explicit</c> (signaled by <q>so</q>)</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>complete</c></p></cell>
+            <cell><p><c>1</c></p></cell>
+          </row>
+
+          <row>
+            <cell><p>R2</p></cell>
+            <cell><p><c>The third column has no pivot. Therefore, x_3 is free.</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>C</m></p></cell>
+            <cell><p><c>The third column has no pivot</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>I</m></p></cell>
+            <cell><p>A variable whose column contains no pivot is free.</p></cell>
+          </row>
+          <row>
+            <cell><p><m>J</m></p></cell>
+            <cell><p><c>x_3 is free</c></p></cell>
+          </row>
+          <row>
+            <cell><p><c>link_status</c></p></cell>
+            <cell><p><c>explicit</c> (signaled by <q>Therefore</q>)</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>complete</c></p></cell>
+            <cell><p><c>1</c></p></cell>
+          </row>
+
+          <row>
+            <cell><p>R3</p></cell>
+            <cell><p><c>There are two pivots.</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>C</m></p></cell>
+            <cell><p><c>There are two pivots</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>I</m></p></cell>
+            <cell><p>None stated</p></cell>
+          </row>
+          <row>
+            <cell><p><m>J</m></p></cell>
+            <cell><p>Missing</p></cell>
+          </row>
+          <row>
+            <cell><p><c>link_status</c></p></cell>
+            <cell><p><c>absent</c></p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>complete</c></p></cell>
+            <cell><p><c>0</c> (no judgment)</p></cell>
+          </row>
+
+          <row>
+            <cell><p>R4</p></cell>
+            <cell><p><c>x1 and x2 are basic variables.</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>C</m></p></cell>
+            <cell><p><c>x1 and x2 are basic variables</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>I</m></p></cell>
+            <cell><p>None stated</p></cell>
+          </row>
+          <row>
+            <cell><p><m>J</m></p></cell>
+            <cell><p>Missing</p></cell>
+          </row>
+          <row>
+            <cell><p><c>link_status</c></p></cell>
+            <cell><p><c>absent</c></p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>complete</c></p></cell>
+            <cell><p><c>0</c> (no judgment)</p></cell>
+          </row>
+
+          <row>
+            <cell><p>R5</p></cell>
+            <cell>
+              <line><c>The system has a free variable then the solution is</c></line>
+              <line><c>not unique.</c></line>
+            </cell>
+          </row>
+          <row>
+            <cell><p><m>C</m></p></cell>
+            <cell><p><c>The system has a free variable</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>I</m></p></cell>
+            <cell><p>A free variable can take more than one value, producing more than one solution.</p></cell>
+          </row>
+          <row>
+            <cell><p><m>J</m></p></cell>
+            <cell><p><c>the solution is not unique</c></p></cell>
+          </row>
+          <row>
+            <cell><p><c>link_status</c></p></cell>
+            <cell><p><c>explicit</c> (signaled by <q>then</q>). Note, <q>then</q> is weaker than <q>so</q> or <q>therefore</q>, so <c>implicit</c> + <c>confidence=2</c> is a defensible alternative.</p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>complete</c></p></cell>
+            <cell><p><c>1</c></p></cell>
+          </row>
+
+        </tabular>
+
+        <p>
+          For R6, the conjunction <c>and</c> joins two assertions but does not state
+          that one justifies the other. The most conservative segmentation logs two 
+          incomplete, independent episodes.
+        </p>
+
+        <tabular valign="top" top="minor">
+          <col width="18%" halign="right"/>
+          <col width="76%" halign="left"/>
+          <row>
+            <cell><p>R6</p></cell>
+            <cell><p><c>The system is consistent, and it has infinitely-many solns.</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>C_1</m></p></cell>
+            <cell><p><c>The system is consistent</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>I_1</m></p></cell>
+            <cell><p>None stated</p></cell>
+          </row>
+          <row>
+            <cell><p><m>J_1</m></p></cell>
+            <cell><p>Missing</p></cell>
+          </row>
+          <row>
+            <cell><p><c>link_status</c></p></cell>
+            <cell><p><c>absent</c></p></cell>
+          </row>
+          <row>
+            <cell><p><c>complete</c></p></cell>
+            <cell><p><c>0</c> (no judgment)</p></cell>
+          </row>
+          <row>
+            <cell><p><m>C_2</m></p></cell>
+            <cell><p><c>has infinitely-many solns</c></p></cell>
+          </row>
+          <row>
+            <cell><p><m>I_2</m></p></cell>
+            <cell><p>None stated</p></cell>
+          </row>
+          <row>
+            <cell><p><m>J_2</m></p></cell>
+            <cell><p>Missing</p></cell>
+          </row>
+          <row>
+            <cell><p><c>link_status</c></p></cell>
+            <cell><p><c>absent</c></p></cell>
+          </row>
+          <row bottom="minor">
+            <cell><p><c>complete</c></p></cell>
+            <cell><p><c>0</c> (no judgment)</p></cell>
+          </row>
+        </tabular>
+
+        <p>
+          Defensible alternative: reading <c>The system is consistent</c> as the criterion 
+          and <c>infinitely-many solutions</c> as the judgment gives an implicit link, but 
+          that step is not valid on its own (a consistent system need not have infinitely 
+          many solutions), so the cleaner coding cites no criterion.
+        </p>
+      
+      </solution> -->
+    </exercise>
+
+    <exercise xml:id="ex-ws-01-screen-segment">
+      <title>Screen and Segment Responses</title>
+
+      <statement>
+        <p>
+          For each response:
+          <ol>
+            <li>state whether it contains analyzable mathematical justification;</li>
+            <li>identify the number of defensible episodes;</li>
+            <li>mark each episode complete or incomplete; and</li>
+            <li>state any relation among episodes.</li>
+          </ol>
+        </p>
+        
+        <tabular valign="top">
+          <col width="10%"/>
+          <col width="90%"/>
+          <row>
+            <cell><p>R1</p></cell>
+            <cell><p><c>No.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R2</p></cell>
+            <cell><p><c>There is a free variable, so the solution cannot be unique.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R3</p></cell>
+            <cell><p><c>x1 = 3 - 2x3, x2 = 4 + x3.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R4</p></cell>
+            <cell><p><c>There are fewer pivots than variables, so x_3 is free.</c></p></cell>
+          </row>
+          <row>
+            <cell/>
+            <cell><p><c>Therefore, the solution is not unique.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R5</p></cell>
+            <cell><p><c>The last row is zero, so the system is consistent.</c></p></cell>
+          </row>
+          <row>
+            <cell/>
+            <cell><p><c>Also, the third column has no pivot, so x_3 is free.</c></p></cell>
+          </row>
+          <row>
+            <cell><p>R6</p></cell>
+            <cell><p><c>I do not know.</c></p></cell>
+          </row>
+        </tabular>
+      </statement>
+
+      <!-- <solution>
+
+        <p>
+        <dl width="narrow">
+          <li>
+            <title>R1</title>
+            <p>
+              The response does not contain analyzable mathematical justification.
+              It contains one incomplete, judgment-only episode:
+              <dl width="narrow">
+                <li>
+                  <title>Criterion</title>
+                  <p>Missing.</p>
+                </li>
+                <li>
+                  <title>Judgment</title>
+                  <p><q>No.</q></p>
+                </li>
+              </dl>
+              There is no relation to another episode.
+            </p>
+          </li>
+
+          <li>
+            <title>R2</title>
+            <p>
+              The response contains analyzable mathematical justification and one
+              complete episode:
+              <dl width="narrow">
+                <li>
+                  <title>Criterion</title>
+                  <p><q>There is a free variable.</q></p>
+                </li>
+                <li>
+                  <title>Judgment</title>
+                  <p><q>The solution cannot be unique.</q></p>
+                </li>
+              </dl>
+              The word <q>so</q> explicitly connects the criterion to the judgment.
+              There is no relation to another episode.
+            </p>
+          </li>
+
+          <li>
+            <title>R3</title>
+            <p>
+              The response contains mathematical work but no analyzable
+              justification. It reports expressions for <m>x_1</m> and <m>x_2</m>
+              without using them to support a judgment. It therefore contains no
+              defensible episode.
+            </p>
+          </li>
+
+          <li>
+            <title>R4</title>
+            <p>
+              The response contains analyzable mathematical justification and two
+              complete, chained episodes.
+            </p>
+
+            <p>
+              The first episode is:
+              <dl width="narrow">
+                <li>
+                  <title>Criterion</title>
+                  <p><q>There are fewer pivots than variables.</q></p>
+                </li>
+                <li>
+                  <title>Judgment</title>
+                  <p><q><m>x_3</m> is free.</q></p>
+                </li>
+              </dl>
+            </p>
+
+            <p>
+              The second episode is:
+              <dl width="narrow">
+                <li>
+                  <title>Criterion</title>
+                  <p><q><m>x_3</m> is free.</q></p>
+                </li>
+                <li>
+                  <title>Judgment</title>
+                  <p><q>The solution is not unique.</q></p>
+                </li>
+              </dl>
+            </p>
+
+            <p>
+              The judgment of the first episode becomes the criterion of the second,
+              so the relation is <c>chained(1)</c>.
+            </p>
+          </li>
+
+          <li>
+            <title>R5</title>
+            <p>
+              The response contains analyzable mathematical justification and two
+              complete, independent episodes.
+            </p>
+
+            <p>
+              The first episode is:
+              <dl width="narrow">
+                <li>
+                  <title>Criterion</title>
+                  <p><q>The last row is zero.</q></p>
+                </li>
+                <li>
+                  <title>Judgment</title>
+                  <p><q>The system is consistent.</q></p>
+                </li>
+              </dl>
+            </p>
+
+            <p>
+              The second episode is:
+              <dl width="narrow">
+                <li>
+                  <title>Criterion</title>
+                  <p><q>The third column has no pivot.</q></p>
+                </li>
+                <li>
+                  <title>Judgment</title>
+                  <p><q><m>x_3</m> is free.</q></p>
+                </li>
+              </dl>
+            </p>
+
+            <p>
+              Neither judgment supplies the criterion for the other episode, so the
+              episodes are independent.
+            </p>
+          </li>
+
+          <li>
+            <title>R6</title>
+            <p>
+              The response does not contain analyzable mathematical justification.
+              <q>I do not know</q> is not a mathematical criterion or judgment about
+              the system, so the response contains no defensible episode.
+            </p>
+          </li>
+        </dl>
+      </p>
+      </solution>
+
+      <solution>
+        <p>
+          Screening asks only whether a response contains analyzable justification, not
+          whether it is mathematically correct. Record the structure that is present; do not
+          supply the argument the reference mathematics makes obvious.
+        </p>
+        <dl width="wide">
+          <li>
+            <title>R1 — <c>No.</c></title>
+            <p>
+              No analyzable justification: a bare answer with no reasoning. Zero episodes;
+              nothing to mark complete or relate. Screen out, preserved as a response-level
+              stub.
+            </p>
+          </li>
+          <li>
+            <title>R2 — <c>There is a free variable, so the solution cannot be unique.</c></title>
+            <p>
+              Contains justification. One episode, complete (a criterion and a judgment are
+              both present). No relation — a single (lone) episode.
+            </p>
+          </li>
+          <li>
+            <title>R3 — <c>x1 = 3 - 2x3, x2 = 4 + x3.</c></title>
+            <p>
+              Mathematical work is present, but it is a parametric description of the solution
+              set — an operation performed on the answer, not a criterion-to-judgment
+              justification. No complete episode. Because work is shown, preserve it for
+              review rather than excluding it outright the way a blank would be.
+            </p>
+          </li>
+          <li>
+            <title>R4 — <c>There are fewer pivots than variables, so x_3 is free. Therefore, the solution is not unique.</c></title>
+            <p>
+              Contains justification. Two episodes, both complete, <term>chained</term>: the
+              judgment of the first (<m>x_3</m> is free) is named as the criterion of the
+              second. Because the student states the middle term, it is the second episode's
+              criterion, not a link folded inside one episode.
+            </p>
+          </li>
+          <li>
+            <title>R5 — <c>The last row is zero, so the system is consistent. Also, the third column has no pivot, so x_3 is free.</c></title>
+            <p>
+              Contains justification. Two episodes, both complete, <term>independent</term>:
+              two separate reasons are offered, and the second episode's criterion is not the
+              first's judgment. <q>Also</q> signals a parallel reason, not a chain.
+            </p>
+          </li>
+          <li>
+            <title>R6 — <c>I do not know.</c></title>
+            <p>
+              No analyzable justification: a no-effort response. Zero episodes; nothing to
+              mark or relate. Screen out, preserved as a response-level stub.
+            </p>
+          </li>
+        </dl>
+      </solution> -->
+    </exercise>
+  </worksheet>
+
+  <subsection xml:id="subsec-ws-01-deliverables">
+    <title>Blind Pass Readiness</title>
+    <p>
+      You are ready for the blind episode pass when you can:
+      <ul>
+          <li>state the project's <xref ref="g-evidence-boundary" text="title"/> accurately;</li>
+          <li>identify <m>C</m>, <m>I</m>, and <m>J</m> without strengthening the response;</li>
+          <li>distinguish operations from control structures;</li>
+          <li>apply link status and completeness as separate decisions;</li>
+          <li>recognize common incomplete and multi-episode cases;</li>
+          <li>write concise evidence-based rationales; and</li>
+          <li>identify uncertainty rather than conceal it;</li>
+      </ul>
+    </p>
+  </subsection>
+
+</section>
