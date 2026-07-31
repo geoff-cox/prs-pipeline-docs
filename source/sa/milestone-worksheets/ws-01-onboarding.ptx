@@ -120,7 +120,7 @@
         </tabular>
 
         <p>
-          Note: An <term>operation</term> is a mathematical action performed on the system. A
+          (<em>Edited</em>) Note: An <term>operation</term> is a mathematical action performed on the system. A
           <term>control</term> is a decision or validation drawn from a feature.
         </p>
       </statement>
@@ -656,8 +656,7 @@
 
         <p>
           (<em>Edited</em>) Note: Screening asks only whether a response contains analyzable justification, not
-          whether it is mathematically correct. Record the structure that is present; do not
-          supply the argument the reference mathematics makes obvious.
+          whether it is mathematically correct.
         </p>
       </statement>
 

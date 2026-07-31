@@ -176,8 +176,7 @@
         Each stage records its output and rationale instead of retaining only a final
         label. This staged design allows a reviewer to determine whether a disagreement
         arose during screening, episode extraction, code matching, correctness
-        assessment, or disposition. The pipeline is described in
-        <xref ref="ch-pipeline-overview" text="title"/>.
+        assessment, or disposition.
       </p>
     </paragraphs>
 

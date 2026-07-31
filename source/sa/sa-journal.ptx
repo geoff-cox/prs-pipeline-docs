@@ -64,14 +64,14 @@
     <!-- PART IV: COMPUTATIONAL PIPELINE                                  -->
     <!-- ================================================================ -->
 
-    <part xml:id="part-computational-pipeline">
+    <!-- <part xml:id="part-computational-pipeline">
       <title>Computational Pipeline</title>
 
       <xi:include href="./ch-pipeline-overview.ptx" />
       <xi:include href="./ch-pipeline-user-guide.ptx" />
       <xi:include href="./ch-pipeline-trace.ptx" />
-      <!-- <xi:include href="./ch-technical-orientation.ptx" /> -->
-    </part>
+      <xi:include href="./ch-technical-orientation.ptx" />
+    </part> -->
 
     <backmatter xml:id="backmatter">
       <title>Reference Material</title>

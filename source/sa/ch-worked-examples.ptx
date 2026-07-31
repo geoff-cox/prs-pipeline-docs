@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <chapter xml:id="ch-worked-examples">
   <title>Worked Examples</title>
 
@@ -442,7 +441,7 @@
       </p>
     </aside>
 
-    <example xml:id="example-multiple-controls">
+    <!-- <example xml:id="example-multiple-controls">
       <title>Several Controls and a Segmentation Choice</title>
 
       <statement>
@@ -462,7 +461,7 @@
         </sidebyside>
       </statement>
 
-      <!-- <solution>
+      <solution>
         <title>Potential Coding</title>
         <p>
           <dl width="narrow">
@@ -555,7 +554,7 @@
             </li>
           </dl>
         </p>
-      </solution> -->
+      </solution>
     </example>
 
     <example xml:id="example-oov">
@@ -572,7 +571,7 @@
         </sidebyside>
       </statement>
 
-      <!-- <solution>
+      <solution>
         <title>Potential Coding</title>
 
         <p>
@@ -652,7 +651,7 @@
             </li>
           </dl>
         </p>
-      </solution> -->
+      </solution>
     </example>
 
     <example xml:id="example-unresolved">
@@ -670,7 +669,7 @@
         </sidebyside>
       </statement>
 
-      <!-- <solution>
+      <solution>
         <title>Potential Coding</title>
         <p>
           <dl width="narrow">
@@ -747,7 +746,7 @@
             </li>
           </dl>
         </p>
-      </solution> -->
+      </solution>
     </example>
 
     <example xml:id="example-invalid-link">
@@ -764,7 +763,7 @@
         </sidebyside>
       </statement>
 
-      <!-- <solution>
+      <solution>
         <title>Potential Coding</title>
 
         <p>
@@ -842,7 +841,7 @@
             </li>
           </dl>
         </p>
-      </solution> -->
+      </solution>
     </example>
 
     <example xml:id="example-partial-coverage">
@@ -859,7 +858,7 @@
         </sidebyside>
       </statement>
 
-      <!-- <solution>
+      <solution>
         <title>Potential Coding</title>
 
         <p>
@@ -932,7 +931,7 @@
             </li>
           </dl>
         </p>
-      </solution> -->
+      </solution>
     </example>
 
     <example xml:id="example-bare-answer">
@@ -949,7 +948,7 @@
         </sidebyside>
       </statement>
 
-      <!-- <solution>
+      <solution>
         <title>Potential Coding</title>
 
         <p>
@@ -1023,11 +1022,11 @@
             </li>
           </dl>
         </p>
-      </solution> -->
-    </example>
+      </solution>
+    </example> -->
   </section>
 
-  <section xml:id="sec-examples-summary">
+  <!-- <section xml:id="sec-examples-summary">
     <title>Summary of the Examples</title>
 
     <table xml:id="tab-examples-summary">
@@ -1088,13 +1087,13 @@
         </row>
       </tabular>
     </table>
-  </section>
+  </section> -->
 
   <!-- ============================================================ -->
   <!-- SECTION X: PREVIOUS EXAMPLES                                 -->
   <!-- ============================================================ -->
 
-  <section xml:id="sec-exercise-episode-warmup">
+  <!-- <section xml:id="sec-exercise-episode-warmup">
     <title>Episode Identification Practice (Original ToDo List)</title>
 
     <introduction>
@@ -1267,7 +1266,7 @@
       </table>
     </subsection>
 
-    <!-- <subsection xml:id="subsec-warmup-watch">
+    <subsection xml:id="subsec-warmup-watch">
       <title>Things to watch for</title>
 
       <p>
@@ -1304,12 +1303,9 @@
           </li>
         </dl>
       </p>
-    </subsection> -->
+    </subsection>
 
-    <!-- ================================================================= -->
-    <!-- ANSWER KEY. See the note at the top of this file about hiding this -->
-    <!-- subsection from the student-facing build.                          -->
-    <!-- <subsection xml:id="subsec-warmup-solution">
+    <subsection xml:id="subsec-warmup-solution">
       <title>Coding solution</title>
 
       <p>
@@ -1423,9 +1419,9 @@
           </p>
         </li>
       </dl>
-    </subsection> -->
+    </subsection>
 
-  </section>
+  </section> -->
 
   <!-- ============================================================ -->
   <!-- SECTION 6: EXAMPLES                                          -->
