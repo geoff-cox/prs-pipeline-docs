@@ -47,6 +47,14 @@
       output-dir="pdf"
       output-filename="sa-journal.pdf"
     />
+    <target
+      name="sa-sol"
+      source="sa/sa-journal.ptx"
+      publication="sa-journal-sol-pub.ptx"
+      output-dir="sa-sol"
+      deploy-dir="sa-sol"
+      format="html"
+    />
     <target 
       name="dnd"
       source="dnd/dnd-journal.ptx"

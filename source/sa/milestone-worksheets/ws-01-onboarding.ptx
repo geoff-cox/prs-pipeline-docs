@@ -125,7 +125,7 @@
         </p>
       </statement>
 
-      <!-- <solution component="instructor">
+      <solution component="solution">
         <title>R1</title>
 
         <tabular valign="top">
@@ -151,7 +151,7 @@
         </tabular>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R2</title>
 
         <tabular valign="top">
@@ -183,7 +183,7 @@
         </tabular>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R3</title>
 
         <tabular valign="top">
@@ -216,7 +216,7 @@
         </tabular>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R4</title>
 
         <tabular valign="top">
@@ -245,7 +245,7 @@
         </tabular>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R5</title>
 
         <tabular valign="top">
@@ -285,7 +285,7 @@
             </cell>
           </row>
         </tabular>
-      </solution> -->
+      </solution>
     </exercise>
 
     <exercise xml:id="ex-ws-01-components">
@@ -342,7 +342,7 @@
         </p>
       </statement>
 
-      <!-- <solution component="instructor">
+      <solution component="solution">
         <title>R1</title>
 
         <tabular valign="top">
@@ -376,7 +376,7 @@
         </tabular>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R2</title>
 
         <tabular valign="top">
@@ -410,7 +410,7 @@
         </tabular>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R3</title>
 
         <tabular valign="top">
@@ -452,7 +452,7 @@
         </p>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R4</title>
 
         <tabular valign="top">
@@ -503,7 +503,7 @@
         </p>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R5</title>
 
         <tabular valign="top">
@@ -537,7 +537,7 @@
         </tabular>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R6</title>
 
         <tabular valign="top">
@@ -607,7 +607,7 @@
           for your choice and possibly downgrade the confidence (e.g.,
           <c>confidence=2</c>).
         </p>
-      </solution> -->
+      </solution>
     </exercise>
 
     <exercise xml:id="ex-ws-01-screen-segment">
@@ -661,7 +661,7 @@
         </p>
       </statement>
 
-      <!-- <solution component="instructor">
+      <solution component="solution">
         <title>R1</title>
 
         <tabular valign="top">
@@ -705,7 +705,7 @@
         </p>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R2</title>
 
         <tabular valign="top">
@@ -743,7 +743,7 @@
         </tabular>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R3</title>
 
         <tabular valign="top">
@@ -781,7 +781,7 @@
         </p>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R4</title>
 
         <tabular valign="top">
@@ -834,7 +834,7 @@
         </tabular>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R5</title>
 
         <tabular valign="top">
@@ -893,7 +893,7 @@
         </p>
       </solution>
 
-      <solution component="instructor">
+      <solution component="solution">
         <title>R6</title>
 
         <tabular valign="top">
@@ -930,7 +930,7 @@
           R1/R6 marks the boundary between flag and exclude: an attempted answer without
           justification is flagged, while an explicit no-attempt is excluded.
         </p>
-      </solution> -->
+      </solution>
     
     </exercise>
   </worksheet>
