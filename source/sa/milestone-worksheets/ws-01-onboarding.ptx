@@ -120,12 +120,12 @@
         </tabular>
 
         <p>
-          (<em>Edited</em>) Note: An <term>operation</term> is a mathematical action performed on the system. A
-          <term>control</term> is a decision or validation drawn from a feature.
+          Note: An <term>operation</term> is a mathematical action performed on the system. A
+          <term>control</term> is a decision or validation drawn from a feature of the system.
         </p>
       </statement>
 
-      <solution component="solution">
+      <solution>
         <title>R1</title>
 
         <tabular valign="top">
@@ -151,7 +151,7 @@
         </tabular>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R2</title>
 
         <tabular valign="top">
@@ -183,7 +183,7 @@
         </tabular>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R3</title>
 
         <tabular valign="top">
@@ -216,7 +216,7 @@
         </tabular>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R4</title>
 
         <tabular valign="top">
@@ -245,7 +245,7 @@
         </tabular>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R5</title>
 
         <tabular valign="top">
@@ -327,7 +327,7 @@
         </tabular>
 
         <p>
-          (<em>Edited</em>) Note: Link status stays blank for an incomplete episode. 
+          Note: Link status stays blank for an incomplete episode. 
           <c>absent</c> is reserved for when both a criterion and a judgment are 
           stated but no justification-link can be recovered; that episode remains
           <em>complete</em>. Separately, every <c>complete=0</c> row notes whether 
@@ -336,7 +336,7 @@
         </p>
       </statement>
 
-      <solution component="solution">
+      <solution>
         <title>R1</title>
 
         <tabular valign="top">
@@ -370,7 +370,7 @@
         </tabular>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R2</title>
 
         <tabular valign="top">
@@ -404,7 +404,7 @@
         </tabular>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R3</title>
 
         <tabular valign="top">
@@ -446,7 +446,7 @@
         </p>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R4</title>
 
         <tabular valign="top">
@@ -497,7 +497,7 @@
         </p>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R5</title>
 
         <tabular valign="top">
@@ -531,7 +531,7 @@
         </tabular>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R6</title>
 
         <tabular valign="top">
@@ -612,8 +612,8 @@
           For each response:
           <ol>
             <li>state whether it contains analyzable mathematical justification;</li>
-            <li>(<em>edited</em>) identify the defensible episodes and their components;</li>
-            <li>(<em>edited</em>) mark each episode's completeness (yes=<c>1</c> or no=<c>0</c>); and</li>
+            <li>identify the defensible episodes and their components;</li>
+            <li>mark each episode's completeness (yes=<c>1</c> or no=<c>0</c>); and</li>
             <li>state any <xref ref="sec-episode-relations" text="custom">relation</xref> among episodes.</li>
           </ol>
         </p>
@@ -649,12 +649,12 @@
         </tabular>
 
         <p>
-          (<em>Edited</em>) Note: Screening asks only whether a response contains analyzable justification, not
+          Note: Screening asks only whether a response contains analyzable justification, not
           whether it is mathematically correct.
         </p>
       </statement>
 
-      <solution component="solution">
+      <solution>
         <title>R1</title>
 
         <tabular valign="top">
@@ -672,33 +672,48 @@
           </row>
           <row>
             <cell><p>(b)</p></cell>
-            <cell colspan="2" halign="left"><p><mdash/></p></cell>
+            <cell colspan="2" halign="left"><p>One incomplete episode:</p></cell>
+          </row>
+          <row>
+            <cell/>
+            <cell><p><m>e_1 = C_1</m>:</p></cell>
+            <cell><p><mdash/></p></cell>
+          </row>
+          <row>
+            <cell/>
+            <cell><p><m>J_1</m>:</p></cell>
+            <cell><p><q>No.</q></p></cell>
           </row>
           <row>
             <cell><p>(c)</p></cell>
-            <cell colspan="2" halign="left"><p><mdash/></p></cell>
+            <cell><p><m>e_1</m>-complete:</p></cell>
+            <cell><p><c>0</c></p></cell>
           </row>
           <row>
             <cell><p>(d)</p></cell>
-            <cell colspan="2" halign="left"><p><mdash/></p></cell>
+            <cell colspan="2" halign="left"><p><mdash/> (relation stays blank)</p></cell>
           </row>
         </tabular>
 
         <p>
-          An answer is attempted, but what it refers to is unknown. Choosing one would add 
-          information the response does not contain, so not even a bare-answer row is 
-          recorded. In contrast, the statement <q>x1 and x2 are basic variables</q> in the 
-          previous exercise is very likely a judgment from an implicit inference based on the
-          form of the matrix system.
+          A verdict token can only be a judgment; it names no feature of the
+          mathematical state, so its slot is settled by form even though its
+          referent is not: the question asks four things, and <q>No.</q> does
+          not identify which it answers (read against uniqueness it is correct;
+          read against consistency it is not). Record the judgment verbatim and
+          leave the referent unresolved: the verbatim field records the
+          student's words, not a goal mapping. Expanding the token or choosing
+          its goal would be repair. Note the ambiguity and reduce confidence.
         </p>
 
         <p>
-          Flag for review with a note rather than excluding since any contribution
-          to <xref ref="g-goal-coverage" text="title"/> is handled in a later milestone, not here.
+          Include rather than flag or exclude: the response is coded, and 
+          the unknown part of the question it refers to is deferred to a later
+          milestone.
         </p>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R2</title>
 
         <tabular valign="top">
@@ -736,7 +751,7 @@
         </tabular>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R3</title>
 
         <tabular valign="top">
@@ -767,14 +782,14 @@
         </tabular>
 
         <p>
-          Mathematical work is present, but it is not clear whether that
-          is the student's answer or just work shown. So, avoid coding it
-          as an episode. Because work is shown, flag it for review rather
-          than excluding it outright.
+          There is genuine ambiguity here since it is not clear if this 
+          lone assertion belongs in a criterion or judgment slot.
+          Is this the student's answer or just work shown without a 
+          judgment? Flag it for review rather than excluding it outright.
         </p>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R4</title>
 
         <tabular valign="top">
@@ -827,7 +842,7 @@
         </tabular>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R5</title>
 
         <tabular valign="top">
@@ -886,7 +901,7 @@
         </p>
       </solution>
 
-      <solution component="solution">
+      <solution>
         <title>R6</title>
 
         <tabular valign="top">
