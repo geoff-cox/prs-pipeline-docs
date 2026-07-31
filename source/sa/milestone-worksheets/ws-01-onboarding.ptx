@@ -276,12 +276,6 @@
                 Instead, it is the result of an operation: solving determined x1 and 
                 x2 and left x3 unconstrained.
               </p>
-              <p>
-                Caution: <c>explicit</c>, <c>implicit</c>, and <c>absent</c> describe 
-                the inferential link only. Do not describe a criterion as 
-                <q>implicit</q>. A component is stated in the response, carried by 
-                shown work, or missing.
-              </p>
             </cell>
           </row>
         </tabular>
