@@ -5,9 +5,20 @@
 
   <book xml:id="proteus-short-answer-journal">
     <title>PROTEUS Short-Answer</title>
-    <subtitle>A Research Journal and Reference Guide</subtitle>
+    <subtitle>A Research Journal &amp; Guide</subtitle>
 
-    <xi:include href="./bookends/frontmatter.ptx" />
+    <frontmatter>
+      <bibinfo>
+        <date><today/></date>
+      </bibinfo>
+
+      <titlepage>
+        <titlepage-items/>
+      </titlepage>
+
+      <xi:include href="./bookends/pre-purpose.ptx" />
+      <xi:include href="./bookends/pre-how-to-use.ptx" />
+    </frontmatter>
 
     <!-- ================================================================ -->
     <!-- PART I: PROJECT AND RESEARCH DESIGN                              -->
@@ -44,7 +55,7 @@
       <xi:include href="./ch-edge-cases-decisions.ptx" />
       <xi:include href="./ch-worked-examples.ptx" />
       <xi:include href="./ch-coding-methodology.ptx" />
-      <xi:include href="./ch-data-management.ptx" />
+      <!-- <xi:include href="./ch-data-management.ptx" /> -->
       <xi:include href="./ch-milestone-worksheets.ptx" />
 
     </part>

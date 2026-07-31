@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<preface xml:id="pre-purpose">
+  <title>Purpose and Audience</title>
+
+  <p>
+    This book is the working reference for the PROTEUS Short-Answer project. The
+    project studies the mathematical justification visible in short student responses,
+    develops a human coding procedure for representing that justification, implements
+    an auditable computational workflow, and evaluates how well the resulting human and
+    computational records support research.
+  </p>
+
+  <p>
+    The book serves four connected purposes:
+    <ol>
+      <li>
+        <p>
+          introduce the research problem, theoretical motivation, analytic framework,
+          and proposed validation study;
+        </p>
+      </li>
+      <li>
+        <p>
+          define the canonical concepts and governing rules used to identify, represent,
+          code, and review episodes of justification;
+        </p>
+      </li>
+      <li>
+        <p>
+          train research assistants through a staged sequence of onboarding, blind
+          extraction, codebook-assisted coding, calibration, supervised coding, and
+          authorized production work; and
+        </p>
+      </li>
+      <li>
+        <p>
+          document the current computational pipeline while preserving the decisions,
+          experiments, open questions, and version history needed to interpret the
+          project as it develops.
+        </p>
+      </li>
+    </ol>
+  </p>
+
+  <p>
+    The principal audiences are undergraduate research assistants and collaborators 
+    evaluating or extending the method. These readers do not need the same material 
+    at the same time. The next preface provides reading paths and explains which part 
+    of the book governs each type of decision.
+  </p>
+
+  <p>
+    The project analyzes evidence visible in a response to a particular question. It
+    does not treat one short response as a complete account of what a student knew,
+    believed, considered, or could do in another setting. Human researchers remain
+    responsible for the mathematical reference, episode interpretation, codebook,
+    adjudication, and research claims.
+  </p>
+
+  <p>
+    Computational outputs are therefore proposals and records for human review, not
+    automatic research findings. A pipeline may organize responses, propose episode
+    structures and code matches, record confidence, or route difficult cases. Those
+    outputs must remain linked to the original evidence, governing versions, and any
+    later human confirmation, revision, rejection, or unresolved status.
+  </p>
+
+</preface>

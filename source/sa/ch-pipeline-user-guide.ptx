@@ -65,8 +65,7 @@
           exports under the repository's ignored <c>data/private/</c> directory or another
           approved protected location. Do not assume an export is response-free merely
           because its <c>Input</c> column is blank; short-answer text may appear in
-          <c>Action</c>. Follow <xref ref="ch-data-management" text="title"/> before
-          moving, sharing, or uploading any research data.
+          <c>Action</c>. 
         </p>
       </warning>
     </subsection>

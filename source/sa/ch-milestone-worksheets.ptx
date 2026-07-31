@@ -1,12 +1,6 @@
 <chapter xml:id="ch-coder-milestones" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Milestones</title>
 
-  <introduction>
-    <p>
-      
-    </p>
-  </introduction>
-
   <xi:include href="./milestone-worksheets/ws-01-onboarding.ptx" />
   <!-- <xi:include href="./milestone-worksheets/ws-02-blind-pass.ptx" /> -->
   <!-- <xi:include href="./milestone-worksheets/ws-03-codebook-pass.ptx" /> -->

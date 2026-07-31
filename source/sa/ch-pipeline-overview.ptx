@@ -162,9 +162,7 @@
         rejected by hash, and re-derivation skips already present response identities.
         Missing identifiers or timestamps and malformed timestamps are logged and
         counted as malformed rather than guessed. Ingest does not interpret the
-        mathematics, decide codability, or de-identify data by itself. Authorization
-        and identifier handling remain researcher responsibilities under
-        <xref ref="ch-data-management" text="title"/>.
+        mathematics, decide codability, or de-identify data by itself. 
       </p>
     </subsection>
 
@@ -347,9 +345,6 @@
       Not every desired version is a first-class run field. In particular, the current
       run schema has no dedicated software-commit, coding-protocol, or question-frame
       version column. These values must not be claimed as automatically captured.
-      Until the schema provides dedicated fields, a reproducible run should record
-      them explicitly in run notes or a linked immutable artifact, following the
-      version discipline in <xref ref="sec-data-reproducibility" text="title"/>.
     </p>
 
     <p>

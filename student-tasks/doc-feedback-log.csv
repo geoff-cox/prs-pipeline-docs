@@ -1,2 +1,0 @@
-date,document,location (section/table/xml:id),issue_type (confusing-term|undefined-jargon|unparseable-table|broken-xref|unclear-sentence|missing-example|other),description,suggestion (optional),severity (blocker|slowed-me-down|minor)
-2026-07-20,ch-automation-roadmap-report.ptx,Stage 3 section,undefined-jargon,"EXAMPLE ROW - 'canonical form' used before it is defined; I had to jump to the glossary","define inline on first use or link the glossary entry",slowed-me-down
